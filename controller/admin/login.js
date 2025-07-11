@@ -168,7 +168,7 @@ module.exports.VerifyOtp = async (req, res) => {
 
             // ✅ Optionally update password
             if (password) {
-                const hashedPassword = HashPassword(password); // Make sure it's synchronous or await if it's bcrypt.hash
+                const hashedPassword =await HashPassword(password); // Make sure it's synchronous or await if it's bcrypt.hash
                 await model.UpdatePassword(email, hashedPassword);
                 return res.send({
                     result: true,
