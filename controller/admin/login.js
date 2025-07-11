@@ -345,7 +345,7 @@ module.exports.Login = async (req, res) => {
                 message: "Password mismatch"
             })
         }
-        let token = GenerateToken({
+        let token = GenerateOtp({
             user_id: checkUser[0]?.u_id,
             name: checkEmail[0]?.u_firstname + checkEmail[0].u_lastname,
             email: checkEmail[0]?.u_email,
