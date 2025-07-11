@@ -331,14 +331,14 @@ module.exports.Login = async (req, res) => {
                 message: "Email and password are required"
             })
         }
-        let checkUser = await model.CheckEmail(email)
-        if (checkUser.length === 0) {
+        let checkEmail = await model.CheckEmail(email)
+        if (checkEmail.length === 0) {
             return res.send({
                 result: false,
                 message: "User not found. Invalid email"
             })
         }
-        let comparePassword = await ComparePassword(password, checkUser[0]?.u_password)
+        let comparePassword = await ComparePassword(password, checkEmail[0]?.u_password)
         if (!comparePassword) {
             return res.send({
                 result: false,
@@ -346,7 +346,7 @@ module.exports.Login = async (req, res) => {
             })
         }
         let token = GenerateOtp({
-            user_id: checkUser[0]?.u_id,
+            user_id: checkEmail[0]?.u_id,
             name: checkEmail[0]?.u_firstname + checkEmail[0].u_lastname,
             email: checkEmail[0]?.u_email,
             phone: checkEmail[0]?.u_phone,
@@ -356,7 +356,7 @@ module.exports.Login = async (req, res) => {
             result: true,
             message: "Login successful",
             data: {
-                id: checkUser[0]?.u_id,
+                id: checkEmail[0]?.u_id,
                 name: checkEmail[0]?.u_firstname + checkEmail[0].u_lastname,
                 email: checkEmail[0]?.u_email,
                 phone: checkEmail[0]?.u_phone,
