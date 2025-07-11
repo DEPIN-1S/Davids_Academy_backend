@@ -13,8 +13,8 @@ module.exports.CheckPhone = async (phone) => {
 }
 
 module.exports.CreateUser = async (firstname, lastname, email, password, phone, token) => {
-    let Query = `insert into users (u_firstname,u_lastname,u_email,u_password,u_mobile,u_token) values(?,?,?,?,?,?)`
-    return await query(Query, [firstname, lastname, email, password, phone, token])
+    let Query = `insert into users (u_firstname,u_lastname,u_email,u_password,u_mobile,u_token,u_role) values(?,?,?,?,?,?,?)`
+    return await query(Query, [firstname, lastname, email, password, phone, token, "admin"])
 }
 
 module.exports.UpdateToken = async (email) => {
