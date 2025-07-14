@@ -3,7 +3,7 @@
 const { body } = require('express-validator');
 
 module.exports.questionTypeValidation = [
-    body('examType')
+    body('questionType')
         .trim()
         .notEmpty()
         .withMessage('ExamType is required')

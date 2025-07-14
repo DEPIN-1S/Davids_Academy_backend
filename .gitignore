@@ -1,5 +1,8 @@
 .env
 node_modules
 package-lock.json
-package-lock.json
-logs
+# Ignore all .log files
+*.log
+# Ignore log directory
+logs/
+*.log.*

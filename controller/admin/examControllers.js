@@ -33,7 +33,7 @@ module.exports.createQuestionType = async (req, res) => {
         logger.info('Successfully inserted questionType: %s', questionType);
         return res.status(200).json({
             result: true,
-            message: 'Exam type saved successfully',
+            message: 'Question type saved successfully',
             data: { questionType: questionType }
         });
 
@@ -67,8 +67,8 @@ module.exports.updateQuestionType = async (req, res) => {
         logger.info('Successfully inserted questionType: %s', questionType);
         return res.status(200).json({
             result: true,
-            message: 'Exam type updated successfully',
-            data: { questionType: questionType }
+            message: 'Question type updated successfully',
+            data: { id: id, questionType: questionType }
         });
 
     } catch (error) {
@@ -100,13 +100,13 @@ module.exports.deleteQuestionType = async (req, res) => {
         logger.info('Successfully inserted questionType: %s', id);
         return res.status(200).json({
             result: true,
-            message: 'Exam type saved successfully',
+            message: 'Question type deleted successfully',
             data: result
         });
 
     } catch (error) {
         // 3. Log unexpected errors
-        logger.error('createQuestionType error: %o', error);
+        logger.error('deleteQuestionType error: %o', error);
         return res.status(500).json({
             result: false,
             message: error.message || 'Internal Server Error',

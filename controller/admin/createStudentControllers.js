@@ -1,4 +1,4 @@
-const model = require('../../model/admin/createStudent')
+const model = require('../../model/admin/createStudentModels')
 const { HashPassword, ComparePassword } = require('../../utils/bcrypt')
 const { GenerateOtp } = require('../../utils/generateOtp')
 const { transporter } = require('../../utils/mailer')
@@ -119,7 +119,7 @@ module.exports.CreateStudent = async (req, res) => {
                                             </body>
                                             </html>
                                             `
-        let createUser = await model.CreateStudent(firstname, lastname, email, hashedPassword, phone, otp)
+        let createUser = await model.createStudent(firstname, lastname, email, hashedPassword, phone)
         if (createUser.affectedRows > 0) {
             await transporter.sendMail({
                 from: "Dr LifeBoat <nocontact@drlifeboat.com>",

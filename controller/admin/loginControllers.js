@@ -1,4 +1,4 @@
-const model = require('../../model/admin/login')
+const model = require('../../model/admin/loginModels')
 const { HashPassword, ComparePassword } = require('../../utils/bcrypt')
 const { GenerateOtp } = require('../../utils/generateOtp')
 const { transporter } = require('../../utils/mailer')
@@ -6,20 +6,21 @@ const { transporter } = require('../../utils/mailer')
 module.exports.CreateUser = async (req, res) => {
     try {
         const { firstname, lastname, email, phone, password } = req.body
+        const role = 2;
         if (!firstname || !lastname || !email || !phone || !password) {
             return res.send({
                 result: false,
                 message: 'First name, last name, email, phone and password are requried'
             })
         }
-        let checkEmail = await model.CheckEmail(email)
+        let checkEmail = await model.checkEmail(email)
         if (checkEmail.length > 0) {
             return res.send({
                 result: false,
                 message: "Email already exist"
             })
         }
-        let checkPhone = await model.CheckPhone(phone)
+        let checkPhone = await model.checkPhone(phone)
         if (checkPhone.length > 0) {
             return res.send({
                 result: false,
@@ -119,7 +120,7 @@ module.exports.CreateUser = async (req, res) => {
                                             </body>
                                             </html>
                                             `
-        let createUser = await model.CreateUser(firstname, lastname, email, hashedPassword, phone, otp)
+        let createUser = await model.createUser(firstname, lastname, email, hashedPassword, phone)
         if (createUser.affectedRows > 0) {
             await transporter.sendMail({
                 from: "Dr LifeBoat <nocontact@drlifeboat.com>",

@@ -527,3 +527,404 @@
 {"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 14:48:49"}
 {"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 14:48:51"}
 {"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 14:48:52"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 14:49:38"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 14:49:38"}
+{"level":"info","message":"POST /api/exam/examType 404 2ms","meta":{"req":{"headers":{"accept":"*/*","accept-encoding":"gzip, deflate, br","cache-control":"no-cache","connection":"keep-alive","content-length":"31","content-type":"application/json","host":"localhost:6040","postman-token":"db79cdd7-a843-4f51-b6cf-56ba4f4cfbfb","user-agent":"PostmanRuntime/7.43.4"},"httpVersion":"1.1","method":"POST","originalUrl":"/api/exam/examType","query":{},"url":"/api/exam/examType"},"res":{"statusCode":404},"responseTime":2},"service":"david-academy-api","timestamp":"2025-07-14 14:52:06"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 14:52:37"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 14:52:38"}
+{"level":"info","message":"POST /api/exam/examType 404 3ms","meta":{"req":{"headers":{"accept":"*/*","accept-encoding":"gzip, deflate, br","cache-control":"no-cache","connection":"keep-alive","content-length":"35","content-type":"application/json","host":"localhost:6040","postman-token":"3a6d5f5b-0785-4dcd-a442-1a3c979d31ae","user-agent":"PostmanRuntime/7.43.4"},"httpVersion":"1.1","method":"POST","originalUrl":"/api/exam/examType","query":{},"url":"/api/exam/examType"},"res":{"statusCode":404},"responseTime":3},"service":"david-academy-api","timestamp":"2025-07-14 14:52:48"}
+{"level":"info","message":"POST /api/exam/examType 404 1ms","meta":{"req":{"headers":{"accept":"*/*","accept-encoding":"gzip, deflate, br","cache-control":"no-cache","connection":"keep-alive","content-length":"35","content-type":"application/json","host":"localhost:6040","postman-token":"e2b8c30b-91f4-41b3-8b20-1cd79ab065f4","user-agent":"PostmanRuntime/7.43.4"},"httpVersion":"1.1","method":"POST","originalUrl":"/api/exam/examType","query":{},"url":"/api/exam/examType"},"res":{"statusCode":404},"responseTime":1},"service":"david-academy-api","timestamp":"2025-07-14 14:52:50"}
+{"level":"warn","message":"Validation failed for createQuestionType: [ 'ExamType is required', [length]: 1 ]","service":"david-academy-api","timestamp":"2025-07-14 14:53:03"}
+{"level":"info","message":"POST /api/exam/questionType 400 12ms","meta":{"req":{"headers":{"accept":"*/*","accept-encoding":"gzip, deflate, br","cache-control":"no-cache","connection":"keep-alive","content-length":"35","content-type":"application/json","host":"localhost:6040","postman-token":"16b71c2e-c111-4867-a301-fb20abf833f5","user-agent":"PostmanRuntime/7.43.4"},"httpVersion":"1.1","method":"POST","originalUrl":"/api/exam/questionType","query":{},"url":"/api/exam/questionType"},"res":{"statusCode":400},"responseTime":12},"service":"david-academy-api","timestamp":"2025-07-14 14:53:03"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 14:53:20"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 14:53:20"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 14:53:22"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 14:53:22"}
+{"level":"info","message":"Attempting to insert questionType: examType","service":"david-academy-api","timestamp":"2025-07-14 14:53:25"}
+{"level":"info","message":"insertQuestionType: inserting \"examType\"","service":"david-academy-api","timestamp":"2025-07-14 14:53:25"}
+{"level":"info","message":"insertQuestionType: success, insertedId=6","service":"david-academy-api","timestamp":"2025-07-14 14:53:25"}
+{"level":"info","message":"Successfully inserted questionType: examType","service":"david-academy-api","timestamp":"2025-07-14 14:53:25"}
+{"level":"info","message":"POST /api/exam/questionType 200 151ms","meta":{"req":{"headers":{"accept":"*/*","accept-encoding":"gzip, deflate, br","cache-control":"no-cache","connection":"keep-alive","content-length":"35","content-type":"application/json","host":"localhost:6040","postman-token":"41c5b684-4c9a-4376-a00a-04146568ea27","user-agent":"PostmanRuntime/7.43.4"},"httpVersion":"1.1","method":"POST","originalUrl":"/api/exam/questionType","query":{},"url":"/api/exam/questionType"},"res":{"statusCode":200},"responseTime":151},"service":"david-academy-api","timestamp":"2025-07-14 14:53:25"}
+{"level":"info","message":"Attempting to delete questionType: 1","service":"david-academy-api","timestamp":"2025-07-14 14:53:41"}
+{"level":"info","message":"deleteQuestionType: deleting id=1 to \"%s\"","service":"david-academy-api","timestamp":"2025-07-14 14:53:41"}
+{"level":"info","message":"deleteQuestionType: success, affectedRows=1","service":"david-academy-api","timestamp":"2025-07-14 14:53:41"}
+{"level":"info","message":"Successfully inserted questionType: 1","service":"david-academy-api","timestamp":"2025-07-14 14:53:41"}
+{"level":"info","message":"DELETE /api/exam/questionType/1 200 157ms","meta":{"req":{"headers":{"accept":"*/*","accept-encoding":"gzip, deflate, br","cache-control":"no-cache","connection":"keep-alive","content-length":"31","content-type":"application/json","host":"localhost:6040","postman-token":"41c6d78b-0a56-4dd7-af0b-696113e97175","user-agent":"PostmanRuntime/7.43.4"},"httpVersion":"1.1","method":"DELETE","originalUrl":"/api/exam/questionType/1","query":{},"url":"/api/exam/questionType/1"},"res":{"statusCode":200},"responseTime":157},"service":"david-academy-api","timestamp":"2025-07-14 14:53:41"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 14:54:04"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 14:54:05"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 14:54:14"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 14:54:14"}
+{"level":"info","message":"Attempting to delete questionType: 2","service":"david-academy-api","timestamp":"2025-07-14 14:57:31"}
+{"level":"info","message":"deleteQuestionType: deleting id=2 to \"%s\"","service":"david-academy-api","timestamp":"2025-07-14 14:57:31"}
+{"level":"info","message":"deleteQuestionType: success, affectedRows=1","service":"david-academy-api","timestamp":"2025-07-14 14:57:31"}
+{"level":"info","message":"Successfully inserted questionType: 2","service":"david-academy-api","timestamp":"2025-07-14 14:57:31"}
+{"level":"info","message":"DELETE /api/exam/questionType/2 200 263ms","meta":{"req":{"headers":{"accept":"*/*","accept-encoding":"gzip, deflate, br","cache-control":"no-cache","connection":"keep-alive","content-length":"31","content-type":"application/json","host":"localhost:6040","postman-token":"a136b88b-91a0-4ee8-8346-a502aa029228","user-agent":"PostmanRuntime/7.43.4"},"httpVersion":"1.1","method":"DELETE","originalUrl":"/api/exam/questionType/2","query":{},"url":"/api/exam/questionType/2"},"res":{"statusCode":200},"responseTime":263},"service":"david-academy-api","timestamp":"2025-07-14 14:57:31"}
+{"level":"info","message":"PATCH /api/exam/examType/2 404 1ms","meta":{"req":{"headers":{"accept":"*/*","accept-encoding":"gzip, deflate, br","cache-control":"no-cache","connection":"keep-alive","content-length":"29","content-type":"application/json","host":"localhost:6040","postman-token":"78fb1874-dbd8-438e-a418-1b63fb29cdfb","user-agent":"PostmanRuntime/7.43.4"},"httpVersion":"1.1","method":"PATCH","originalUrl":"/api/exam/examType/2","query":{},"url":"/api/exam/examType/2"},"res":{"statusCode":404},"responseTime":1},"service":"david-academy-api","timestamp":"2025-07-14 14:57:46"}
+{"level":"info","message":"Attempting to update questionType by id: 2","service":"david-academy-api","timestamp":"2025-07-14 14:57:55"}
+{"level":"info","message":"updateQuestionType: updating id=2 to \"\"","service":"david-academy-api","timestamp":"2025-07-14 14:57:55"}
+{"level":"info","message":"updateQuestionType: success, affectedRows=1","service":"david-academy-api","timestamp":"2025-07-14 14:57:55"}
+{"level":"info","message":"Successfully inserted questionType: ","service":"david-academy-api","timestamp":"2025-07-14 14:57:55"}
+{"level":"info","message":"PATCH /api/exam/questionType/2 200 113ms","meta":{"req":{"headers":{"accept":"*/*","accept-encoding":"gzip, deflate, br","cache-control":"no-cache","connection":"keep-alive","content-length":"29","content-type":"application/json","host":"localhost:6040","postman-token":"fdfa5e3b-4035-45d7-aa71-6e2979e5adde","user-agent":"PostmanRuntime/7.43.4"},"httpVersion":"1.1","method":"PATCH","originalUrl":"/api/exam/questionType/2","query":{},"url":"/api/exam/questionType/2"},"res":{"statusCode":200},"responseTime":113},"service":"david-academy-api","timestamp":"2025-07-14 14:57:55"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 14:59:02"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 14:59:02"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 14:59:04"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 14:59:04"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 14:59:46"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 14:59:47"}
+{"level":"info","message":"Attempting to update questionType by id: 2","service":"david-academy-api","timestamp":"2025-07-14 14:59:59"}
+{"level":"info","message":"updateQuestionType: updating id=2 to \"update\"","service":"david-academy-api","timestamp":"2025-07-14 14:59:59"}
+{"level":"info","message":"updateQuestionType: success, affectedRows=1","service":"david-academy-api","timestamp":"2025-07-14 14:59:59"}
+{"level":"info","message":"Successfully inserted questionType: update","service":"david-academy-api","timestamp":"2025-07-14 14:59:59"}
+{"level":"info","message":"PATCH /api/exam/questionType/2 200 208ms","meta":{"req":{"headers":{"accept":"*/*","accept-encoding":"gzip, deflate, br","cache-control":"no-cache","connection":"keep-alive","content-length":"33","content-type":"application/json","host":"localhost:6040","postman-token":"b057ed96-da07-4a81-a99b-9cf175303353","user-agent":"PostmanRuntime/7.43.4"},"httpVersion":"1.1","method":"PATCH","originalUrl":"/api/exam/questionType/2","query":{},"url":"/api/exam/questionType/2"},"res":{"statusCode":200},"responseTime":208},"service":"david-academy-api","timestamp":"2025-07-14 14:59:59"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 15:00:28"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 15:00:29"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 15:00:29"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 15:00:30"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 15:00:30"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 15:00:31"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 15:00:37"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 15:00:37"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 15:05:31"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 15:05:32"}
+{"level":"info","message":"Attempting to update questionType by id: 2","service":"david-academy-api","timestamp":"2025-07-14 15:05:43"}
+{"level":"info","message":"updateQuestionType: updating id=2 to \"update1234\"","service":"david-academy-api","timestamp":"2025-07-14 15:05:43"}
+{"level":"info","message":"updateQuestionType: success, affectedRows=1","service":"david-academy-api","timestamp":"2025-07-14 15:05:44"}
+{"level":"info","message":"Successfully inserted questionType: update1234","service":"david-academy-api","timestamp":"2025-07-14 15:05:44"}
+{"level":"info","message":"PATCH /api/exam/questionType/2 200 199ms","meta":{"req":{"headers":{"accept":"*/*","accept-encoding":"gzip, deflate, br","cache-control":"no-cache","connection":"keep-alive","content-length":"37","content-type":"application/json","host":"localhost:6040","postman-token":"ab6511e9-86cc-4bd3-be11-2bf761721d53","user-agent":"PostmanRuntime/7.43.4"},"httpVersion":"1.1","method":"PATCH","originalUrl":"/api/exam/questionType/2","query":{},"url":"/api/exam/questionType/2"},"res":{"statusCode":200},"responseTime":199},"service":"david-academy-api","timestamp":"2025-07-14 15:05:44"}
+{"level":"info","message":"Attempting to delete questionType: 2","service":"david-academy-api","timestamp":"2025-07-14 15:06:11"}
+{"level":"info","message":"deleteQuestionType: deleting id=2 to \"%s\"","service":"david-academy-api","timestamp":"2025-07-14 15:06:11"}
+{"level":"info","message":"deleteQuestionType: success, affectedRows=1","service":"david-academy-api","timestamp":"2025-07-14 15:06:12"}
+{"level":"info","message":"Successfully inserted questionType: 2","service":"david-academy-api","timestamp":"2025-07-14 15:06:12"}
+{"level":"info","message":"DELETE /api/exam/questionType/2 200 258ms","meta":{"req":{"headers":{"accept":"*/*","accept-encoding":"gzip, deflate, br","cache-control":"no-cache","connection":"keep-alive","content-length":"31","content-type":"application/json","host":"localhost:6040","postman-token":"f6a541ff-3524-45ef-8b9e-1029408ba046","user-agent":"PostmanRuntime/7.43.4"},"httpVersion":"1.1","method":"DELETE","originalUrl":"/api/exam/questionType/2","query":{},"url":"/api/exam/questionType/2"},"res":{"statusCode":200},"responseTime":258},"service":"david-academy-api","timestamp":"2025-07-14 15:06:12"}
+{"level":"info","message":"Attempting to delete questionType: 3","service":"david-academy-api","timestamp":"2025-07-14 15:06:19"}
+{"level":"info","message":"deleteQuestionType: deleting id=3 to \"%s\"","service":"david-academy-api","timestamp":"2025-07-14 15:06:19"}
+{"level":"info","message":"deleteQuestionType: success, affectedRows=1","service":"david-academy-api","timestamp":"2025-07-14 15:06:19"}
+{"level":"info","message":"Successfully inserted questionType: 3","service":"david-academy-api","timestamp":"2025-07-14 15:06:19"}
+{"level":"info","message":"DELETE /api/exam/questionType/3 200 164ms","meta":{"req":{"headers":{"accept":"*/*","accept-encoding":"gzip, deflate, br","cache-control":"no-cache","connection":"keep-alive","content-length":"31","content-type":"application/json","host":"localhost:6040","postman-token":"b1fa1f08-6093-4062-9f80-e6387e7e5ba9","user-agent":"PostmanRuntime/7.43.4"},"httpVersion":"1.1","method":"DELETE","originalUrl":"/api/exam/questionType/3","query":{},"url":"/api/exam/questionType/3"},"res":{"statusCode":200},"responseTime":164},"service":"david-academy-api","timestamp":"2025-07-14 15:06:19"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:03:48"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:03:49"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:03:49"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:08:32"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:08:32"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:08:32"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:08:38"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:08:39"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:08:39"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:08:41"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:08:41"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:08:42"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:08:44"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:08:45"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:08:45"}
+{"level":"info","message":"🔄 MySQL keep-alive ping successful","service":"david-academy-api","timestamp":"2025-07-14 16:13:45"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:15:22"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:15:23"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:15:23"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:15:43"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:15:43"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:15:44"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:15:48"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:15:48"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:15:48"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:15:51"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:15:52"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:15:52"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:15:54"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:15:54"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:15:54"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:15:57"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:15:58"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:15:58"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:16:04"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:16:04"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:16:05"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:16:08"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:16:08"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:16:09"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:16:10"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:16:10"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:16:10"}
+{"level":"info","message":"🔄 MySQL keep-alive ping successful","service":"david-academy-api","timestamp":"2025-07-14 16:21:10"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:23:12"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:23:12"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:23:12"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:23:31"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:23:31"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:23:31"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:23:33"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:23:33"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:23:33"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:23:35"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:23:36"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:23:36"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:23:37"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:23:38"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:23:38"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:23:40"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:23:40"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:23:41"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:23:47"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:23:47"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:23:48"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:23:50"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:23:51"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:23:51"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:23:56"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:23:57"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:23:57"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:23:58"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:23:59"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:23:59"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:24:01"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:24:01"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:24:01"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:24:01"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:24:02"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:24:02"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:25:28"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:25:28"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:25:29"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:26:41"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:26:41"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:26:41"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:27:14"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:27:14"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:27:14"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:27:18"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:27:18"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:27:19"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:27:23"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:27:23"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:27:23"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:28:18"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:28:18"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:28:18"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:28:19"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:28:19"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:28:20"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:28:26"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:28:26"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:28:27"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:28:40"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:28:40"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:28:41"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:29:11"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:29:11"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:29:11"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:29:30"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:29:30"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:29:30"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:31:08"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:31:08"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:31:08"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:34:14"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:34:14"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:34:14"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:34:18"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:34:18"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:34:19"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:34:34"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:34:34"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:34:34"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:34:35"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:34:35"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:34:36"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:34:37"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:34:37"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:34:38"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:34:40"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:34:40"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:34:40"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:34:42"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:34:42"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:34:42"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:34:44"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:34:44"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:34:44"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:34:49"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:34:49"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:34:50"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:34:53"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:34:53"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:34:54"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:34:54"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:34:55"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:34:55"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:35:00"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:35:00"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:35:00"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:35:01"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:35:01"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:35:02"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:35:03"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:35:03"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:35:04"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:35:11"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:35:11"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:35:12"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:35:13"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:35:13"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:35:13"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:35:18"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:35:18"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:35:19"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:35:21"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:35:21"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:35:21"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:35:24"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:35:24"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:35:24"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:35:52"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:35:52"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:35:53"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:35:53"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:35:53"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:35:54"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:35:54"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:35:55"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:35:55"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:35:58"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:35:58"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:35:58"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:35:59"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:35:59"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:35:59"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:36:05"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:36:05"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:36:06"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:36:18"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:36:18"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:36:18"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:36:36"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:36:36"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:36:36"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:36:36"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:36:37"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:37:28"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:37:29"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:37:29"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:37:30"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:37:30"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:37:30"}
+{"level":"info","message":"POST /api/user/create 200 238ms","meta":{"req":{"headers":{"accept":"*/*","accept-encoding":"gzip, deflate, br","cache-control":"no-cache","connection":"keep-alive","content-length":"136","content-type":"application/json","host":"localhost:6040","postman-token":"c0b79045-0f2e-4371-b930-48cd5ef4fecf","user-agent":"PostmanRuntime/7.43.4"},"httpVersion":"1.1","method":"POST","originalUrl":"/api/user/create","query":{},"url":"/api/user/create"},"res":{"statusCode":200},"responseTime":238},"service":"david-academy-api","timestamp":"2025-07-14 16:38:02"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:38:23"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:38:24"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:38:24"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:38:25"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:38:25"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:38:25"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:38:28"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:38:28"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:38:29"}
+{"level":"info","message":"POST /api/user/create 200 147ms","meta":{"req":{"headers":{"accept":"*/*","accept-encoding":"gzip, deflate, br","cache-control":"no-cache","connection":"keep-alive","content-length":"136","content-type":"application/json","host":"localhost:6040","postman-token":"cae6f5f0-ed5c-4a25-9427-6c5b11e4e73d","user-agent":"PostmanRuntime/7.43.4"},"httpVersion":"1.1","method":"POST","originalUrl":"/api/user/create","query":{},"url":"/api/user/create"},"res":{"statusCode":200},"responseTime":147},"service":"david-academy-api","timestamp":"2025-07-14 16:39:21"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:42:12"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:42:12"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:42:12"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:42:37"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:42:37"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:42:38"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:44:04"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:44:04"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:44:04"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:44:24"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:44:25"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:44:25"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:44:30"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:44:30"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:44:30"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:44:46"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:44:46"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:44:47"}
+{"level":"info","message":"POST /api/user/create 200 250ms","meta":{"req":{"headers":{"accept":"*/*","accept-encoding":"gzip, deflate, br","cache-control":"no-cache","connection":"keep-alive","content-length":"136","content-type":"application/json","host":"localhost:6040","postman-token":"a6aa83a1-068d-4cce-bf83-8b8b7f1f4325","user-agent":"PostmanRuntime/7.43.4"},"httpVersion":"1.1","method":"POST","originalUrl":"/api/user/create","query":{},"url":"/api/user/create"},"res":{"statusCode":200},"responseTime":250},"service":"david-academy-api","timestamp":"2025-07-14 16:45:45"}
+{"level":"info","message":"POST /api/user/create 200 177ms","meta":{"req":{"headers":{"accept":"*/*","accept-encoding":"gzip, deflate, br","cache-control":"no-cache","connection":"keep-alive","content-length":"136","content-type":"application/json","host":"localhost:6040","postman-token":"0314c53f-e287-4c14-9bf4-e09bd71c613d","user-agent":"PostmanRuntime/7.43.4"},"httpVersion":"1.1","method":"POST","originalUrl":"/api/user/create","query":{},"url":"/api/user/create"},"res":{"statusCode":200},"responseTime":177},"service":"david-academy-api","timestamp":"2025-07-14 16:45:51"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:45:56"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:45:56"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:45:57"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:46:22"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:46:22"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:46:22"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:48:52"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:48:52"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:48:52"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:49:41"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:49:41"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:49:41"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:50:02"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:50:03"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:50:03"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:50:31"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:50:32"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:50:32"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:52:27"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:52:28"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:52:28"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:52:29"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:52:29"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:52:30"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:52:33"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:52:33"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:52:33"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:53:15"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:53:15"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:53:16"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:53:24"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:53:24"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:53:24"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:53:26"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:53:26"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:53:27"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:53:35"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:53:35"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:53:35"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:54:07"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:54:07"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:54:07"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:54:10"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:54:10"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:54:11"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:54:12"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:54:12"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:54:12"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:54:36"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:54:36"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:54:36"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:56:05"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:56:05"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:56:06"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:56:16"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:56:17"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:56:17"}
+{"level":"info","message":"POST /api/user/create 200 3ms","meta":{"req":{"headers":{"accept":"*/*","accept-encoding":"gzip, deflate, br","cache-control":"no-cache","connection":"keep-alive","content-length":"136","content-type":"application/json","host":"localhost:6040","postman-token":"306b5d7a-87ad-48c6-bf4c-1a3faf408ab0","user-agent":"PostmanRuntime/7.43.4"},"httpVersion":"1.1","method":"POST","originalUrl":"/api/user/create","query":{},"url":"/api/user/create"},"res":{"statusCode":200},"responseTime":3},"service":"david-academy-api","timestamp":"2025-07-14 16:56:53"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:58:12"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:58:12"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:58:13"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:58:15"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:58:15"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:58:15"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 16:58:20"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 16:58:21"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 16:58:21"}
+{"level":"info","message":"Checked email: msambhunarayan@gmail.com - Found: 1","service":"david-academy-api","timestamp":"2025-07-14 16:58:28"}
+{"level":"info","message":"POST /api/user/create 200 130ms","meta":{"req":{"headers":{"accept":"*/*","accept-encoding":"gzip, deflate, br","cache-control":"no-cache","connection":"keep-alive","content-length":"136","content-type":"application/json","host":"localhost:6040","postman-token":"afcf4d4c-5ca5-4320-a0d2-d33834f98f92","user-agent":"PostmanRuntime/7.43.4"},"httpVersion":"1.1","method":"POST","originalUrl":"/api/user/create","query":{},"url":"/api/user/create"},"res":{"statusCode":200},"responseTime":130},"service":"david-academy-api","timestamp":"2025-07-14 16:58:28"}
+{"level":"info","message":"Checked email: bepokatu@forexnews.bg - Found: 1","service":"david-academy-api","timestamp":"2025-07-14 17:00:15"}
+{"level":"info","message":"POST /api/user/create 200 337ms","meta":{"req":{"headers":{"accept":"*/*","accept-encoding":"gzip, deflate, br","cache-control":"no-cache","connection":"keep-alive","content-length":"143","content-type":"application/json","host":"localhost:6040","postman-token":"cbb18e2d-3ce3-4a47-bef1-45db02d90721","user-agent":"PostmanRuntime/7.43.4"},"httpVersion":"1.1","method":"POST","originalUrl":"/api/user/create","query":{},"url":"/api/user/create"},"res":{"statusCode":200},"responseTime":337},"service":"david-academy-api","timestamp":"2025-07-14 17:00:16"}
+{"level":"info","message":"Checked email: bepokatu@forexnews.bg - Found: 1","service":"david-academy-api","timestamp":"2025-07-14 17:00:19"}
+{"level":"info","message":"POST /api/user/create 200 129ms","meta":{"req":{"headers":{"accept":"*/*","accept-encoding":"gzip, deflate, br","cache-control":"no-cache","connection":"keep-alive","content-length":"143","content-type":"application/json","host":"localhost:6040","postman-token":"7603462b-f9d1-4055-a795-60b141a7dcde","user-agent":"PostmanRuntime/7.43.4"},"httpVersion":"1.1","method":"POST","originalUrl":"/api/user/create","query":{},"url":"/api/user/create"},"res":{"statusCode":200},"responseTime":129},"service":"david-academy-api","timestamp":"2025-07-14 17:00:19"}
+{"level":"info","message":"Checked email: qyluburo@forexnews.bg - Found: 0","service":"david-academy-api","timestamp":"2025-07-14 17:00:40"}
+{"level":"error","message":"Error checking phone (9249902770): ER_BAD_FIELD_ERROR: Unknown column 'phone' in 'WHERE'","service":"david-academy-api","timestamp":"2025-07-14 17:00:40"}
+{"level":"info","message":"POST /api/user/create 200 445ms","meta":{"req":{"headers":{"accept":"*/*","accept-encoding":"gzip, deflate, br","cache-control":"no-cache","connection":"keep-alive","content-length":"143","content-type":"application/json","host":"localhost:6040","postman-token":"02df3529-9303-4b48-8e8a-5ec1e8baf3b6","user-agent":"PostmanRuntime/7.43.4"},"httpVersion":"1.1","method":"POST","originalUrl":"/api/user/create","query":{},"url":"/api/user/create"},"res":{"statusCode":200},"responseTime":445},"service":"david-academy-api","timestamp":"2025-07-14 17:00:40"}
+{"level":"info","message":"🔄 MySQL keep-alive ping successful","service":"david-academy-api","timestamp":"2025-07-14 17:03:21"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 17:04:20"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 17:04:21"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 17:04:21"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 17:04:22"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 17:04:22"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 17:04:23"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 17:04:23"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 17:04:23"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 17:04:26"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 17:04:26"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 17:04:26"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 17:04:37"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 17:04:38"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-14 17:04:38"}
