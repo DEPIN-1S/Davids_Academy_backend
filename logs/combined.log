@@ -501,3 +501,29 @@
 {"level":"info","message":"deleteExamType: success, affectedRows=1","service":"david-academy-api","timestamp":"2025-07-14 14:37:19"}
 {"level":"info","message":"Successfully inserted ExamType: 1","service":"david-academy-api","timestamp":"2025-07-14 14:37:19"}
 {"level":"info","message":"DELETE /api/exam/examType/1 200 118ms","meta":{"req":{"headers":{"accept":"*/*","accept-encoding":"gzip, deflate, br","cache-control":"no-cache","connection":"keep-alive","content-length":"31","content-type":"application/json","host":"localhost:6040","postman-token":"bdd8a058-67f9-4674-a134-a77c527f074c","user-agent":"PostmanRuntime/7.43.4"},"httpVersion":"1.1","method":"DELETE","originalUrl":"/api/exam/examType/1","query":{},"url":"/api/exam/examType/1"},"res":{"statusCode":200},"responseTime":118},"service":"david-academy-api","timestamp":"2025-07-14 14:37:19"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 14:47:30"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 14:47:31"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 14:47:33"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 14:47:33"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 14:47:41"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 14:47:41"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 14:47:48"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 14:47:48"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 14:47:55"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 14:47:55"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 14:48:16"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 14:48:16"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 14:48:17"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 14:48:17"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 14:48:20"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 14:48:20"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 14:48:26"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 14:48:27"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 14:48:45"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 14:48:45"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 14:48:47"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 14:48:47"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 14:48:49"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 14:48:49"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-14 14:48:51"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-14 14:48:52"}

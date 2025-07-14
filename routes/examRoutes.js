@@ -2,26 +2,26 @@
 var express = require('express');
 // Create a new router instance
 var route = express.Router();
-const { examTypeValidation } = require('../validations/examValidation');
+const { questionTypeValidation } = require('../validations/examValidation');
 // Import controller functions for authentication
-const { createExamType, updateExamType, deleteExamType } = require('../controller/admin/examControllers');
+const { createQuestionType, updateQuestionType, deleteQuestionType } = require('../controller/admin/examControllers');
 /**
  * @route   POST /examType
  * @desc    Validate and insert a new exam type into the database
  * @access  Private
  */
-route.post('/examType', examTypeValidation, createExamType);
+route.post('/questionType', questionTypeValidation, createQuestionType);
 /**
- * @route   PATCH /examType
+ * @route   PATCH /questionType
  * @desc   update exam type from the database
  * @access  Public
  */
-route.patch('/examType/:id', examTypeValidation, updateExamType);
+route.patch('/questionType/:id', questionTypeValidation, updateQuestionType);
 /**
- * @route   PATCH /examType
+ * @route   PATCH /questionType
  * @desc    Delete  exam type from the database
  * @access  Public
  */
-route.delete('/examType/:id', examTypeValidation, deleteExamType);
+route.delete('/questionType/:id', questionTypeValidation, deleteQuestionType);
 // Export the router to be used in the main app
 module.exports = route;

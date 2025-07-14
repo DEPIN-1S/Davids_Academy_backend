@@ -2,7 +2,7 @@
 
 const { body } = require('express-validator');
 
-module.exports.examTypeValidation = [
+module.exports.questionTypeValidation = [
     body('examType')
         .trim()
         .notEmpty()

@@ -5,27 +5,27 @@ const util = require('util');
 const query = util.promisify(db.query).bind(db);
 const logger = require('../../utils/logger');
 /**
- * Inserts a new exam type into the tb_examType table.
+ * Inserts a new exam type into the tb_questionType table.
  *
  * @async
- * @function insertExamType
+ * @function insertQuestionType
  * @param   {string} type - The exam type to insert.
  * @returns {Promise<object>} The result of the INSERT operation.
  * @throws  Will throw an error if the database query fails.
  */
-async function insertExamType(type) {
+async function insertQuestionType(type) {
     const sql = `
-    INSERT INTO tb_examType (type)
+    INSERT INTO tb_questionType (type)
     VALUES (?)
   `;
-    logger.info('insertExamType: inserting "%s"', type);
+    logger.info('insertQuestionType: inserting "%s"', type);
 
     try {
         const result = await query(sql, [type]);
-        logger.info('insertExamType: success, insertedId=%d', result.insertId);
+        logger.info('insertQuestionType: success, insertedId=%d', result.insertId);
         return result;
     } catch (err) {
-        logger.error('insertExamType: error inserting "%s": %o', type, err);
+        logger.error('insertQuestionType: error inserting "%s": %o', type, err);
         throw err;
     }
 }
@@ -34,46 +34,46 @@ async function insertExamType(type) {
  * Updates an existing exam type in the tb_exam_type table.
  *
  * @async
- * @function updateExamType
- * @param   {string} examType - The new exam type value.
+ * @function updateQuestionType
+ * @param   {string} questionType - The new exam type value.
  * @param   {number} id       - The primary key ID of the row to update.
  * @returns {Promise<object>} The result of the UPDATE operation.
  * @throws  Will throw an error if the database query fails.
  */
-async function updateExamType(examType, id) {
-    const sql = `UPDATE tb_examType SET type = ? WHERE id=?`;
-    logger.info('updateExamType: updating id=%d to "%s"', id, examType);
+async function updateQuestionType(questionType, id) {
+    const sql = `UPDATE tb_questionType SET type = ? WHERE id=?`;
+    logger.info('updateQuestionType: updating id=%d to "%s"', id, questionType);
     try {
-        const result = await query(sql, [examType, id]);
+        const result = await query(sql, [questionType, id]);
         if (result.affectedRows === 0) {
-            logger.warn('updateExamType: no rows updated for id=%d', id);
+            logger.warn('updateQuestionType: no rows updated for id=%d', id);
         } else {
-            logger.info('updateExamType: success, affectedRows=%d', result.affectedRows);
+            logger.info('updateQuestionType: success, affectedRows=%d', result.affectedRows);
         }
         return result;
     } catch (err) {
-        logger.error('updateExamType: error updating id=%d: %o', id, err);
+        logger.error('updateQuestionType: error updating id=%d: %o', id, err);
         throw err;
     }
 }
-async function deleteExamType(id) {
-    const sql = `UPDATE tb_examType SET isDeleted=true WHERE id=?`;
-    logger.info('deleteExamType: deleting id=%d to "%s"', id);
+async function deleteQuestionType(id) {
+    const sql = `UPDATE tb_questionType SET isDeleted=true WHERE id=?`;
+    logger.info('deleteQuestionType: deleting id=%d to "%s"', id);
     try {
         const result = await query(sql, [id]);
         if (result.affectedRows === 0) {
-            logger.warn('deleteExamType: no rows deleted for id=%d', id);
+            logger.warn('deleteQuestionType: no rows deleted for id=%d', id);
         } else {
-            logger.info('deleteExamType: success, affectedRows=%d', result.affectedRows);
+            logger.info('deleteQuestionType: success, affectedRows=%d', result.affectedRows);
         }
         return result;
     } catch (err) {
-        logger.error('deleteExamType: error deleting id=%d: %o', id, err);
+        logger.error('deleteQuestionType: error deleting id=%d: %o', id, err);
         throw err;
     }
 }
 module.exports = {
-    insertExamType,
-    updateExamType,
-    deleteExamType,
+    insertQuestionType,
+    updateQuestionType,
+    deleteQuestionType,
 };

@@ -4,42 +4,42 @@ const { validationResult } = require('express-validator');
 const model = require('../../model/admin/examModels');
 const logger = require('../../utils/logger');  // Your Winston instance
 /**
- * POST /api/exam/examType
- * Body: { examType: string }
+ * POST /api/exam/questionType
+ * Body: { questionType: string }
  */
-module.exports.createExamType = async (req, res) => {
+module.exports.createQuestionType = async (req, res) => {
     // 1. Validate request
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         const msgs = errors.array().map(err => err.msg);
-        logger.warn('Validation failed for createExamType: %o', msgs);
+        logger.warn('Validation failed for createQuestionType: %o', msgs);
         return res.status(400).json({
             result: false,
             errors: msgs,
         });
     }
-    const { examType } = req.body;
-    logger.info('Attempting to insert ExamType: %s', examType);
+    const { questionType } = req.body;
+    logger.info('Attempting to insert questionType: %s', questionType);
     try {
         // 2. Insert into DB
-        const result = await model.insertExamType(examType);
+        const result = await model.insertQuestionType(questionType);
         if (result.affectedRows === 0) {
-            logger.error('No rows affected inserting ExamType: %s', examType);
+            logger.error('No rows affected inserting questionType: %s', questionType);
             return res.status(500).json({
                 result: false,
-                message: 'Failed to add ExamType in the database',
+                message: 'Failed to add questionType in the database',
             });
         }
-        logger.info('Successfully inserted ExamType: %s', examType);
+        logger.info('Successfully inserted questionType: %s', questionType);
         return res.status(200).json({
             result: true,
             message: 'Exam type saved successfully',
-            data: { examType: examType }
+            data: { questionType: questionType }
         });
 
     } catch (error) {
         // 3. Log unexpected errors
-        logger.error('createExamType error: %o', error);
+        logger.error('createQuestionType error: %o', error);
         return res.status(500).json({
             result: false,
             message: error.message || 'Internal Server Error',
@@ -47,33 +47,33 @@ module.exports.createExamType = async (req, res) => {
     }
 };
 /**
- * PATCH /api/exam/examType
- * Body: { id: int,examType: string }
+ * PATCH /api/exam/questionType
+ * Body: { id: int,questionType: string }
  */
-module.exports.updateExamType = async (req, res) => {
+module.exports.updateQuestionType = async (req, res) => {
     const { id } = req.params;
-    const { examType } = req.body;
-    logger.info('Attempting to update ExamType by id: %s', id);
+    const { questionType } = req.body;
+    logger.info('Attempting to update questionType by id: %s', id);
     try {
         // 2. Insert into DB
-        const result = await model.updateExamType(examType, id);
+        const result = await model.updateQuestionType(questionType, id);
         if (result.affectedRows === 0) {
-            logger.error('No rows affected inserting ExamType: %s', examType);
+            logger.error('No rows affected inserting questionType: %s', questionType);
             return res.status(500).json({
                 result: false,
-                message: 'Failed to add ExamType in the database',
+                message: 'Failed to add questionType in the database',
             });
         }
-        logger.info('Successfully inserted ExamType: %s', examType);
+        logger.info('Successfully inserted questionType: %s', questionType);
         return res.status(200).json({
             result: true,
             message: 'Exam type updated successfully',
-            data: { examType: examType }
+            data: { questionType: questionType }
         });
 
     } catch (error) {
         // 3. Log unexpected errors
-        logger.error('updateExamType error: %o', error);
+        logger.error('updateQuestionType error: %o', error);
         return res.status(500).json({
             result: false,
             message: error.message || 'Internal Server Error',
@@ -81,23 +81,23 @@ module.exports.updateExamType = async (req, res) => {
     }
 };
 /**
- * PATCH /api/exam/examType
+ * PATCH /api/exam/questionType
  * Body: { id: int }
  */
-module.exports.deleteExamType = async (req, res) => {
+module.exports.deleteQuestionType = async (req, res) => {
     const { id } = req.params;
-    logger.info('Attempting to delete ExamType: %s', id);
+    logger.info('Attempting to delete questionType: %s', id);
     try {
         // 2. Insert into DB
-        const result = await model.deleteExamType(id);
+        const result = await model.deleteQuestionType(id);
         if (result.affectedRows === 0) {
-            logger.error('No rows affected deleting ExamType: %s', id);
+            logger.error('No rows affected deleting questionType: %s', id);
             return res.status(500).json({
                 result: false,
-                message: 'Failed to delete ExamType in the database',
+                message: 'Failed to delete questionType in the database',
             });
         }
-        logger.info('Successfully inserted ExamType: %s', id);
+        logger.info('Successfully inserted questionType: %s', id);
         return res.status(200).json({
             result: true,
             message: 'Exam type saved successfully',
@@ -106,7 +106,7 @@ module.exports.deleteExamType = async (req, res) => {
 
     } catch (error) {
         // 3. Log unexpected errors
-        logger.error('createExamType error: %o', error);
+        logger.error('createQuestionType error: %o', error);
         return res.status(500).json({
             result: false,
             message: error.message || 'Internal Server Error',
