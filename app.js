@@ -31,8 +31,10 @@ app.use(cors({
 }));
 app.use(express.static("./"));
 
-const adminRoute = require('./routes/adminRoute')
-app.use('/davidacademy/admin', adminRoute)
+const adminRoute = require('./routes/adminRoutes')
+app.use('/api/', adminRoute)
+const examRoute = require('./routes/examRoutes')
+app.use('/api/', examRoute)
 
 server.listen(6040, () => {
   console.log("server running on port 6040");

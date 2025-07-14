@@ -144,8 +144,6 @@ module.exports.CreateUser = async (req, res) => {
         })
     }
 }
-
-
 module.exports.VerifyOtp = async (req, res) => {
     try {
         let { email, otp, password } = req.body
@@ -168,7 +166,7 @@ module.exports.VerifyOtp = async (req, res) => {
 
             // ✅ Optionally update password
             if (password) {
-                const hashedPassword =await HashPassword(password); // Make sure it's synchronous or await if it's bcrypt.hash
+                const hashedPassword = await HashPassword(password); // Make sure it's synchronous or await if it's bcrypt.hash
                 await model.UpdatePassword(email, hashedPassword);
                 return res.send({
                     result: true,
@@ -192,8 +190,6 @@ module.exports.VerifyOtp = async (req, res) => {
         })
     }
 }
-
-
 module.exports.ForgotPassword = async (req, res) => {
     try {
         let { email } = req.body
@@ -320,8 +316,6 @@ module.exports.ForgotPassword = async (req, res) => {
         })
     }
 }
-
-
 module.exports.Login = async (req, res) => {
     try {
         const { email, password } = req.body
