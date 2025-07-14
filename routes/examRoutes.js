@@ -22,6 +22,6 @@ route.patch('/examType/:id', examTypeValidation, updateExamType);
  * @desc    Delete  exam type from the database
  * @access  Public
  */
-route.patch('/examType/:id', examTypeValidation, deleteExamType);
+route.delete('/examType/:id', examTypeValidation, deleteExamType);
 // Export the router to be used in the main app
 module.exports = route;
