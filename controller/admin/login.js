@@ -1,7 +1,7 @@
 const model = require('../../model/admin/login')
-const { HashPassword, ComparePassword } = require('../../util/bcrypt')
-const { GenerateOtp } = require('../../util/generateOtp')
-const { transporter } = require('../../util/mailer')
+const { HashPassword, ComparePassword } = require('../../utils/bcrypt')
+const { GenerateOtp } = require('../../utils/generateOtp')
+const { transporter } = require('../../utils/mailer')
 
 module.exports.CreateUser = async (req, res) => {
     try {

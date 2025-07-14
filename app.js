@@ -1,41 +1,81 @@
-var express = require("express");
-var cors = require("cors");
-var app = express();
-var https = require("https");
-var http = require("http");
-const fs = require("fs");
-require("dotenv").config({ encoding: "latin1" });
+// server.js
 
-// var privateKey = fs.readFileSync('/etc/ssl/private.key', 'utf8').toString();
+require('dotenv').config({ encoding: 'latin1' });
 
-// var certificate = fs.readFileSync('/etc/ssl/certificate.crt', 'utf8').toString();
+const fs = require('fs');
+const http = require('http');
+const https = require('https');
+const express = require('express');
+const cors = require('cors');
+const expressWinston = require('express-winston');
 
-// var ca = fs.readFileSync('/etc/ssl/ca_bundle.crt').toString();
+const logger = require('./utils/logger');
 
-// var options = { key: privateKey, cert: certificate, ca: ca };
+const app = express();
 
-// var server = https.createServer(options, app);
+// ─── HTTPS SETUP ────────────────────────────────────────────────────────────────
 
-var server = http.createServer(app);
+let server;
+if (process.env.USE_HTTPS === 'true') {
+  const key = fs.readFileSync(process.env.SSL_KEY_PATH, 'utf8');
+  const cert = fs.readFileSync(process.env.SSL_CERT_PATH, 'utf8');
+  const ca = fs.readFileSync(process.env.SSL_CA_PATH, 'utf8');
+  server = https.createServer({ key, cert, ca }, app);
+  logger.info('HTTPS server enabled');
+} else {
+  server = http.createServer(app);
+  logger.info('HTTP server enabled');
+}
+
+// ─── MIDDLEWARE ────────────────────────────────────────────────────────────────
+
 app.use(express.json());
-app.use(
-  express.urlencoded({
-    extended: false,
-  })
-);
+app.use(express.urlencoded({ extended: false }));
 app.use(cors({
-  origin: '*', // or specify your frontend domain
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
-  exposedHeaders: ['X-Frame-Options', 'Content-Security-Policy']
 }));
-app.use(express.static("./"));
 
-const adminRoute = require('./routes/adminRoutes')
-app.use('/api/', adminRoute)
-const examRoute = require('./routes/examRoutes')
-app.use('/api/', examRoute)
+// ─── REQUEST LOGGING ────────────────────────────────────────────────────────────
+// Logs all HTTP requests via Winston
+app.use(expressWinston.logger({
+  winstonInstance: logger,
+  meta: true,
+  msg: '{{req.method}} {{req.url}} {{res.statusCode}} {{res.responseTime}}ms',
+}));
 
-server.listen(6040, () => {
-  console.log("server running on port 6040");
+// ─── ROUTES ────────────────────────────────────────────────────────────────────
+
+const adminRoutes = require('./routes/adminRoutes');
+const examRoutes = require('./routes/examRoutes');
+
+app.use('/api/admin', adminRoutes);
+app.use('/api/exam', examRoutes);
+
+// ─── 404 HANDLER ──────────────────────────────────────────────────────────────
+
+app.use((req, res) => {
+  res.status(404).json({ result: false, message: 'Not Found' });
+});
+
+// ─── ERROR LOGGING & HANDLER ──────────────────────────────────────────────────
+
+// Logs error via Winston, then returns JSON
+app.use(expressWinston.errorLogger({
+  winstonInstance: logger,
+}));
+
+app.use((err, req, res, next) => {
+  res.status(err.status || 500).json({
+    result: false,
+    message: err.message || 'Internal Server Error',
+  });
+});
+
+// ─── START SERVER ──────────────────────────────────────────────────────────────
+
+const PORT = process.env.PORT || 6040;
+server.listen(PORT, () => {
+  logger.info(`Server listening on port ${PORT}`);
 });

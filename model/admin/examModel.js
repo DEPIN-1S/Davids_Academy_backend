@@ -8,7 +8,7 @@ const query = util.promisify(db.query).bind(db);
  */
 module.exports.insertExamType = async (type) => {
     const sql = `
-    INSERT INTO tb_exam_type (type)
+    INSERT INTO tb_examType (type)
     VALUES (?)
   `;
     return await query(sql, [type]);
