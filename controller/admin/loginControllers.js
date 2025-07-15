@@ -1,368 +1,181 @@
-const model = require('../../model/admin/loginModels')
-const { HashPassword, ComparePassword } = require('../../utils/bcrypt')
-const { GenerateOtp } = require('../../utils/generateOtp')
-const { transporter } = require('../../utils/mailer')
+const model = require('../../model/admin/loginModels');
+const { HashPassword, ComparePassword } = require('../../utils/bcrypt');
+const { GenerateOtp } = require('../../utils/generateOtp');
+const { transporter } = require('../../utils/mailer');
+const { generateAccessToken, generateRefreshToken } = require('../../utils/token');
+const logger = require('../../utils/logger');
 
+/**
+ * @desc Register a new user and send OTP via email
+ * @route POST /api/user/create
+ * @access Public
+ */
 module.exports.CreateUser = async (req, res) => {
     try {
-        const { firstname, lastname, email, phone, password } = req.body
-        const role = 2;
-        if (!firstname || !lastname || !email || !phone || !password) {
-            return res.send({
-                result: false,
-                message: 'First name, last name, email, phone and password are requried'
-            })
+        const { firstname, lastname, email, mobile, password } = req.body;
+        const role = 2; // Default student role
+        if (!firstname || !lastname || !email || !mobile || !password) {
+            logger.warn("Missing fields in registration");
+            return res.send({ result: false, message: 'All fields are required' });
         }
-        let checkEmail = await model.checkEmail(email)
+        const checkEmail = await model.checkEmail(email);
         if (checkEmail.length > 0) {
-            return res.send({
-                result: false,
-                message: "Email already exist"
-            })
+            logger.warn(`Email already registered: ${email}`);
+            return res.send({ result: false, message: 'Email already exists' });
         }
-        let checkPhone = await model.checkPhone(phone)
-        if (checkPhone.length > 0) {
-            return res.send({
-                result: false,
-                message: "Phone already exist"
-            })
+        const checkMobile = await model.checkmobile(mobile);
+        if (checkMobile.length > 0) {
+            logger.warn(`Mobile already registered: ${mobile}`);
+            return res.send({ result: false, message: 'Mobile already exists' });
         }
-        const hashedPassword = await HashPassword(password)
-        const otp = GenerateOtp()
-        let htmlTemplate = `
-        <!DOCTYPE html>
-        <html>
-        <head>
-        <meta charset="UTF-8">
-        <title>OTP Verification - Davids Academy</title>
-        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-        <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            background: #f0f4f8;
-            margin: 0;
-            padding: 0;
-            }
-            .container {
-                max-width: 600px;
-                margin: 40px auto;
-                background: #ffffff;
-                border-radius: 12px;
-                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-                overflow: hidden;
-                }
-                .header {
-                    background: linear-gradient(90deg, #0062E6, #33AEFF);
-                    color: white;
-                    padding: 25px;
-                    text-align: center;
-                    font-size: 24px;
-                    font-weight: 500;
-                    letter-spacing: 1px;
-                    }
-                    .content {
-                        padding: 35px 30px;
-                        text-align: center;
-                        }
-                        .greeting {
-                            font-size: 18px;
-                            color: #444;
-                            margin-bottom: 12px;
-                            }
-                            .info {
-                                font-size: 16px;
-                                color: #666;
-                                margin-bottom: 25px;
-                                }
-                                .otp-code {
-                                    display: inline-block;
-                                    font-size: 36px;
-                                    color: #222;
-                                    background: #f2f8ff;
-                                    border: 2px dashed #007bff;
-                                    padding: 15px 25px;
-                                    letter-spacing: 6px;
-                                    border-radius: 8px;
-                                    font-weight: bold;
-                                    margin-bottom: 25px;
-                                    }
-                                    .note {
-                                        font-size: 15px;
-                                        color: #777;
-                                        margin-top: 20px;
-                                        }
-                                        .footer {
-                                            background: #f9f9f9;
-                                            text-align: center;
-                                            font-size: 13px;
-                                            color: #aaa;
-                                            padding: 20px;
-                                            border-top: 1px solid #eee;
-                                            }
-                                            </style>
-                                            </head>
-                                            <body>
-                                            <div class="container">
-                                            <div class="header">
-                                            Davids Academy - OTP Verification
-                                            </div>
-                                            <div class="content">
-                                            <div class="greeting">Hello! ${firstname} ${lastname}</div>
-                                            <div class="info">Use the following One-Time Password (OTP) to complete your verification:</div>
-                                            <div class="otp-code">${otp}</div>
-                                            <div class="info">This OTP is valid for the next <strong>10 minutes</strong>. Do not share it with anyone.</div>
-                                            <div class="note">If you did not request this OTP, you can safely ignore this email.</div>
-                                            </div>
-                                            <div class="footer">
-                                            &copy; 2025 Davids Academy. All rights reserved.
-                                            </div>
-                                            </div>
-                                            </body>
-                                            </html>
-                                            `
-        let createUser = await model.createUser(firstname, lastname, email, hashedPassword, phone)
+        const hashedPassword = await HashPassword(password);
+        const otp = GenerateOtp();
+        const createUser = await model.createStudent(firstname, lastname, email, hashedPassword, mobile, role, otp);
         if (createUser.affectedRows > 0) {
             await transporter.sendMail({
                 from: "Dr LifeBoat <nocontact@drlifeboat.com>",
                 to: email,
                 subject: "Email Verification - Davids Academy",
-                html: htmlTemplate
-            })
-            return res.send({
-                result: true,
-                message: "Registartion successfull, verification code sent to your mail"
-            })
+                html: buildOtpTemplate(firstname, lastname, otp)
+            });
+            logger.info(`User registered successfully: ${email}`);
+            return res.send({ result: true, message: 'Registration successful. OTP sent to your email.' });
         } else {
-            return res.send({
-                result: false,
-                message: "Failed to create user"
-            })
+            logger.error(`Failed to insert user: ${email}`);
+            return res.send({ result: false, message: 'User creation failed' });
         }
     } catch (error) {
-        return res.send({
-            result: false,
-            message: error.message
-        })
+        logger.error(`CreateUser error: ${error.message}`);
+        return res.send({ result: false, message: error.message });
     }
-}
+};
+/**
+ * @desc Verify user OTP
+ */
 module.exports.VerifyOtp = async (req, res) => {
     try {
-        let { email, otp, password } = req.body
+        const { email, otp, password } = req.body;
         if (!email || !otp) {
-            return res.send({
-                result: false,
-                message: "Email and otp are required"
-            })
+            return res.send({ result: false, message: 'Email and OTP are required' });
         }
-        let checkEmail = await model.CheckEmail(email)
-        if (checkEmail.length === 0) {
-            return res.send({
-                result: false,
-                message: "Email not found. Invalid email"
-            })
+
+        const user = await model.CheckEmail(email);
+        if (user.length === 0) {
+            logger.warn(`VerifyOtp failed: email not found - ${email}`);
+            return res.send({ result: false, message: 'Email not found' });
         }
-        if (otp == checkEmail[0]?.u_token) {
-            // ✅ Clear OTP
+
+        if (otp == user[0]?.token) {
             await model.UpdateToken(email);
 
-            // ✅ Optionally update password
             if (password) {
-                const hashedPassword = await HashPassword(password); // Make sure it's synchronous or await if it's bcrypt.hash
-                await model.UpdatePassword(email, hashedPassword);
-                return res.send({
-                    result: true,
-                    message: "Password reseted successfully"
-                })
+                const hashed = await HashPassword(password);
+                await model.UpdatePassword(email, hashed);
+                logger.info(`Password reset for user: ${email}`);
+                return res.send({ result: true, message: 'Password reset successful' });
             }
-            return res.send({
-                result: true,
-                message: "Otp verification successfull"
-            })
-        } else {
-            return res.send({
-                result: false,
-                message: "Invalid otp"
-            })
+
+            logger.info(`OTP verified successfully for ${email}`);
+            return res.send({ result: true, message: 'OTP verified successfully' });
         }
+
+        logger.warn(`Invalid OTP for ${email}`);
+        return res.send({ result: false, message: 'Invalid OTP' });
+
     } catch (error) {
-        return res.send({
-            result: false,
-            message: error.message
-        })
+        logger.error(`VerifyOtp error: ${error.message}`);
+        return res.send({ result: false, message: error.message });
     }
-}
+};
+/**
+ * @desc Send OTP for Forgot Password
+ */
 module.exports.ForgotPassword = async (req, res) => {
     try {
-        let { email } = req.body
+        const { email } = req.body;
         if (!email) {
-            return res.send({
-                result: false,
-                message: "Email is required"
-            })
+            return res.send({ result: false, message: 'Email is required' });
         }
-        let checkEmail = await model.CheckEmail(email)
-        if (checkEmail.length === 0) {
-            return res.send({
-                result: false,
-                message: "Email not found."
-            })
+
+        const user = await model.CheckEmail(email);
+        if (user.length === 0) {
+            logger.warn(`ForgotPassword failed: Email not found - ${email}`);
+            return res.send({ result: false, message: 'Email not found' });
         }
-        const otp = GenerateOtp()
-        let htmlTemplate = `
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>Password Reset - Davids Academy</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Roboto', sans-serif;
-      background: #f0f4f8;
-      margin: 0;
-      padding: 0;
-    }
-    .container {
-      max-width: 600px;
-      margin: 40px auto;
-      background: #ffffff;
-      border-radius: 12px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-      overflow: hidden;
-    }
-    .header {
-      background: linear-gradient(90deg, #0062E6, #33AEFF);
-      color: white;
-      padding: 25px;
-      text-align: center;
-      font-size: 24px;
-      font-weight: 500;
-      letter-spacing: 1px;
-    }
-    .content {
-      padding: 35px 30px;
-      text-align: center;
-    }
-    .greeting {
-      font-size: 18px;
-      color: #444;
-      margin-bottom: 12px;
-    }
-    .info {
-      font-size: 16px;
-      color: #666;
-      margin-bottom: 25px;
-    }
-    .otp-code {
-      display: inline-block;
-      font-size: 36px;
-      color: #222;
-      background: #f2f8ff;
-      border: 2px dashed #007bff;
-      padding: 15px 25px;
-      letter-spacing: 6px;
-      border-radius: 8px;
-      font-weight: bold;
-      margin-bottom: 25px;
-    }
-    .note {
-      font-size: 15px;
-      color: #777;
-      margin-top: 20px;
-    }
-    .footer {
-      background: #f9f9f9;
-      text-align: center;
-      font-size: 13px;
-      color: #aaa;
-      padding: 20px;
-      border-top: 1px solid #eee;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div class="header">
-      Davids Academy - Password Reset OTP
-    </div>
-    <div class="content">
-      <div class="greeting">Hello ${checkEmail[0]?.firstname} ${checkEmail[0]?.lastname},</div>
-      <div class="info">We received a request to reset your password. Use the following One-Time Password (OTP) to proceed:</div>
-      <div class="otp-code">${otp}</div>
-      <div class="info">This OTP is valid for the next <strong>10 minutes</strong>. Please do not share it with anyone.</div>
-      <div class="note">If you did not request a password reset, please ignore this email or contact support.</div>
-    </div>
-    <div class="footer">
-      &copy; 2025 Davids Academy. All rights reserved.
-    </div>
-  </div>
-</body>
-</html>
-`;
+
+        const otp = GenerateOtp();
+        await model.UpdateToken(email, otp); // Update OTP in DB
+
         await transporter.sendMail({
             from: "Dr LifeBoat <nocontact@drlifeboat.com>",
             to: email,
-            subject: "Email Verification - Davids Academy",
-            html: htmlTemplate
-        })
-        return res.send({
-            result: true,
-            message: "Reset password, verification code sent to your mail"
-        })
+            subject: "Password Reset - Davids Academy",
+            html: buildResetOtpTemplate(user[0]?.firstname, user[0]?.lastname, otp)
+        });
+
+        logger.info(`OTP sent for password reset: ${email}`);
+        return res.send({ result: true, message: 'OTP sent to email' });
 
     } catch (error) {
-        return res.send({
-            result: false,
-            message: error.message
-        })
+        logger.error(`ForgotPassword error: ${error.message}`);
+        return res.send({ result: false, message: error.message });
     }
-}
+};
+/**
+ * @desc User Login
+ */
 module.exports.Login = async (req, res) => {
     try {
-        const { email, password } = req.body
+        const { email, password } = req.body;
         if (!email || !password) {
-            return res.send({
-                result: false,
-                message: "Email and password are required"
-            })
+            return res.send({ result: false, message: 'Email and password are required' });
         }
-        let checkEmail = await model.CheckEmail(email)
-        if (checkEmail.length === 0) {
-            return res.send({
-                result: false,
-                message: "User not found. Invalid email"
-            })
+
+        const user = await model.checkEmail(email);
+        if (user.length === 0) {
+            logger.warn(`Login failed: email not found - ${email}`);
+            return res.send({ result: false, message: 'User not found' });
         }
-        let comparePassword = await ComparePassword(password, checkEmail[0]?.u_password)
-        if (!comparePassword) {
-            return res.send({
-                result: false,
-                message: "Password mismatch"
-            })
+
+        const isMatch = await ComparePassword(password, user[0]?.password);
+        if (!isMatch) {
+            logger.warn(`Login failed: incorrect password - ${email}`);
+            return res.send({ result: false, message: 'Invalid password' });
         }
-        let token = GenerateOtp({
-            user_id: checkEmail[0]?.u_id,
-            name: checkEmail[0]?.u_firstname + checkEmail[0].u_lastname,
-            email: checkEmail[0]?.u_email,
-            phone: checkEmail[0]?.u_phone,
-            role: checkEmail[0]?.u_role
-        })
+
+        const accessToken = generateAccessToken({  // Consider renaming to GenerateJWT
+            user_id: user[0]?.id,
+            name: user[0]?.firstname + ' ' + user[0]?.lastname,
+            email: user[0]?.email,
+            mobile: user[0]?.mobile,
+            role: user[0]?.role,
+        });
+        const refreshToken = generateRefreshToken({  // Consider renaming to GenerateJWT
+            user_id: user[0]?.id,
+            name: user[0]?.firstname + ' ' + user[0]?.lastname,
+            email: user[0]?.email,
+            mobile: user[0]?.mobile,
+            role: user[0]?.role,
+        });
+
+        logger.info(`User logged in: ${email}`);
         return res.send({
             result: true,
-            message: "Login successful",
+            message: 'Login successful',
             data: {
-                id: checkEmail[0]?.u_id,
-                name: checkEmail[0]?.u_firstname + checkEmail[0].u_lastname,
-                email: checkEmail[0]?.u_email,
-                phone: checkEmail[0]?.u_phone,
-                role: checkEmail[0]?.u_role,
-                token
+                id: user[0]?.id,
+                name: user[0]?.firstname + ' ' + user[0]?.lastname,
+                email: user[0]?.email,
+                mobile: user[0]?.mobile,
+                role: user[0]?.role,
+                tokenType: 'Bearer',
+                accessToken: accessToken,
+                refreshToken: refreshToken
             }
-        })
+        });
+
     } catch (error) {
-        return res.send({
-            result: false,
-            message: error.message
-        })
+        logger.error(`Login error: ${error.message}`);
+        return res.send({ result: false, message: error.message });
     }
-}
+};

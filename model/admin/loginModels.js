@@ -24,18 +24,18 @@ async function checkEmail(email) {
 }
 
 /**
- * Check if a phone number already exists in the database.
- * @param {string} phone - The user's phone to check.
+ * Check if a mobile number already exists in the database.
+ * @param {string} mobile - The user's mobile to check.
  * @returns {Promise<Array>} - Array of user rows.
  */
-async function checkPhone(phone) {
+async function checkmobile(mobile) {
     try {
-        const sql = `SELECT * FROM tb_users WHERE phone = ?`;
-        const result = await query(sql, [phone]);
-        logger.info(`Checked phone: ${phone} - Found: ${result.length}`);
+        const sql = `SELECT * FROM tb_users WHERE mobile = ?`;
+        const result = await query(sql, [mobile]);
+        logger.info(`Checked mobile: ${mobile} - Found: ${result.length}`);
         return result;
     } catch (error) {
-        logger.error(`Error checking phone (${phone}): ${error.message}`);
+        logger.error(`Error checking mobile (${mobile}): ${error.message}`);
         throw error;
     }
 }
@@ -46,15 +46,15 @@ async function checkPhone(phone) {
  * @param {string} lastname
  * @param {string} email
  * @param {string} password - Hashed password
- * @param {string} phone
+ * @param {string} mobile
  * @returns {Promise<Object>}
  */
-async function createStudent(firstname, lastname, email, password, phone) {
+async function createStudent(firstname, lastname, email, password, mobile) {
     const sql = `
-    INSERT INTO tb_users (firstname, lastname, email, password, phone, role)
+    INSERT INTO tb_users (firstname, lastname, email, password, mobile, role)
     VALUES (?, ?, ?, ?, ?, ?)`;
     try {
-        const result = await query(sql, [firstname, lastname, email, password, phone, 2]); // 2 = student
+        const result = await query(sql, [firstname, lastname, email, password, mobile, 2]); // 2 = student
         logger.info(`✅ Student created: ${email} (ID: ${result.insertId})`);
         return result;
     } catch (error) {
@@ -99,7 +99,7 @@ async function updatePassword(email, password) {
 }
 module.exports = {
     checkEmail,
-    checkPhone,
+    checkmobile,
     createStudent,
     updateToken,
     updatePassword,
