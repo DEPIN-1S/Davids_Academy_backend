@@ -113,3 +113,163 @@ module.exports.deleteQuestionType = async (req, res) => {
         });
     }
 };
+/**
+ * POST /api/exam/question
+ * Body: {  }
+ */
+module.exports.createQuestion = async (req, res) => {
+    logger.info('📥 Received request to add new question');
+    try {
+        // const errors = validationResult(req);
+        // if (!errors.isEmpty()) {
+        //     logger.warn('⚠️ Validation failed for question submission');
+        //     return res.status(400).json({
+        //         result: false,
+        //         errors: errors.array().map((err) => err.msg),
+        //     });
+        // }
+        const {
+            questionType,
+            question,
+            answer,
+            difficulty,
+            subject,
+            lesson,
+            clientNeedArea,
+            clientNeedTopic,
+            exhibit,
+            options,
+            explanationHeading,
+            explanationText,
+            info,
+            infoImage
+        } = req.body;
+
+        // check for questionType
+        if (questionType === 'MCQ') {
+            // Insert into tb_mcq
+            const mcqResult = await model.insertMcqQuestion({
+                question,
+                answer,
+                difficulty,
+                subject,
+                lesson,
+                clientNeedArea,
+                clientNeedTopic,
+                exhibit,
+            });
+            const questionId = mcqResult.insertId;
+            logger.info('questionId', questionId);
+            logger.info(`✅ Inserted MCQ (ID: ${questionId})`);
+            // Insert options into tb_mcqOptions
+            for (const option of options) {
+                await model.insertMcqOptions(questionId, option);
+                logger.info(`🔹 Inserted option for question ${questionId}: ${option}`);
+            }
+
+            logger.info(`🔹 Option added to question ${questionId}: ${options}`);
+            // Insert explanation into tb_mcqExplanation
+            if (explanationText) {
+                await model.insertMcqExplanation(questionId, explanationHeading, explanationText);
+                logger.info(`📝 Explanation added for question ${questionId}`);
+            }
+            if (info) {
+                await model.insertAdditionalInfo(questionId, info, infoImage);
+                logger.info(`📝 Additional information added for question ${questionId}`);
+            }
+            return res.status(201).json({
+                result: true,
+                message: 'MCQ Question added successfully',
+                questionId,
+                question,
+                answer,
+                difficulty,
+                subject,
+                lesson,
+                clientNeedArea,
+                clientNeedTopic,
+                exhibit,
+                options,
+                explanationHeading,
+                explanationText,
+                info,
+                infoImage
+            });
+        }
+
+    } catch (error) {
+        logger.error(`❌ Failed to add question: ${error.message}`);
+        return res.status(500).json({
+            result: false,
+            message: 'Internal Server Error',
+            error: error.message,
+        });
+    }
+};
+/**
+ * PUT /api/exam/question
+ * Body: { id: int,questionType: string }
+ */
+module.exports.updateQuestion = async (req, res) => {
+    const { id } = req.params;
+    const { questionType } = req.body;
+    logger.info('Attempting to update questionType by id: %s', id);
+    try {
+        // 2. Insert into DB
+        const result = await model.updateQuestionType(questionType, id);
+        if (result.affectedRows === 0) {
+            logger.error('No rows affected inserting questionType: %s', questionType);
+            return res.status(500).json({
+                result: false,
+                message: 'Failed to add questionType in the database',
+            });
+        }
+        logger.info('Successfully inserted questionType: %s', questionType);
+        return res.status(200).json({
+            result: true,
+            message: 'Question type updated successfully',
+            data: { id: id, questionType: questionType }
+        });
+
+    } catch (error) {
+        // 3. Log unexpected errors
+        logger.error('updateQuestionType error: %o', error);
+        return res.status(500).json({
+            result: false,
+            message: error.message || 'Internal Server Error',
+        });
+    }
+};
+/**
+ * PATCH /api/exam/question
+ * Body: { id: int }
+ */
+module.exports.deleteQuestion = async (req, res) => {
+    const { id } = req.params;
+    logger.info('Attempting to delete questionType: %s', id);
+    try {
+        // 2. Insert into DB
+        const result = await model.deleteQuestionType(id);
+        if (result.affectedRows === 0) {
+            logger.error('No rows affected deleting questionType: %s', id);
+            return res.status(500).json({
+                result: false,
+                message: 'Failed to delete questionType in the database',
+            });
+        }
+        logger.info('Successfully inserted questionType: %s', id);
+        return res.status(200).json({
+            result: true,
+            message: 'Question type deleted successfully',
+            data: result
+        });
+
+    } catch (error) {
+        // 3. Log unexpected errors
+        logger.error('deleteQuestionType error: %o', error);
+        return res.status(500).json({
+            result: false,
+            message: error.message || 'Internal Server Error',
+        });
+    }
+};
