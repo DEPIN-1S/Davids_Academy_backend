@@ -293,7 +293,42 @@ module.exports.createQuestion = async (req, res) => {
 
             });
         }
-        if (questionType === 'Sentence Highlight') { }
+        if (questionType === 'Sentence Highlight') {
+            const {
+                question,
+                tabs,
+                answer
+            } = req.body;
+            // Insert question into tb_dropdownQuestion
+            const questionResult = await model.insertSentenceQuestion(question, answer);
+            const questionId = questionResult.insertId;
+            logger.info(`✅ Added dropdown question with ID: ${questionId}`);
+            // Insert tabs into tb_DropdownQuestionTabs
+            for (const tab of tabs) {
+                await model.insertTab(questionId, tab.tabKey, tab.tabValue);
+                logger.info(`📄 Inserted tab "${tab.tabKey}" for question ${questionId}`);
+            }
+            // Insert explanation into tb_mcqExplanation
+            await model.insertMcqExplanation(questionId, explanationHeading, explanationText);
+            logger.info(`📝 Explanation added for question ${questionId}`);
+            await model.insertAdditionalInfo(questionId, info, infoImage);
+            logger.info(`📝 Additional information added for question ${questionId}`);
+            return res.status(201).json({
+                result: true,
+                message: "Sentence Highlight question created successfully",
+                data: {
+                    questionId,
+                    question,
+                    answer,
+                    tabs,
+                    explanationHeading,
+                    explanationText,
+                    info,
+                    infoImage
+                }
+
+            });
+        }
         if (questionType === 'Dropdown and Sort') { }
     } catch (error) {
         logger.error(`❌ Failed to add question: ${error.message}`);

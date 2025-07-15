@@ -201,6 +201,23 @@ async function insertDropdownQuestion(question) {
     }
 }
 /**
+ * Inserts a new dropdown question into `tb_dropdownQuestion`.
+ * @param {string} question - The question text.
+  * @param {string} answer - The answer text.
+ * @returns {Promise<object>} Result of the INSERT query.
+ */
+async function insertSentenceQuestion(question, answer) {
+    const sql = `INSERT INTO tb_questions (question,answer) VALUES (?,?)`;
+    try {
+        const result = await query(sql, [question, answer]);
+        logger.info(`✅ insertSentenceQuestion: Inserted question ID=${result.insertId}`);
+        return result;
+    } catch (err) {
+        logger.error(`❌ insertSentenceQuestion: Failed to insert question - ${err.message}`);
+        throw err;
+    }
+}
+/**
  * Inserts a tab for a dropdown question into `tb_DropdownQuestionTabs`.
  * @param {number} questionId - The question's ID.
  * @param {string} tabKey - Tab label.
@@ -286,5 +303,6 @@ module.exports = {
     insertTab,
     insertDropdownField,
     insertDropdownAnswer,
-    insertSortItems
+    insertSortItems,
+    insertSentenceQuestion
 };
