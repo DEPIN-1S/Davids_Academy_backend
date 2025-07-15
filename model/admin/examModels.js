@@ -218,6 +218,24 @@ async function insertTab(questionId, tabKey, tabValue) {
         throw err;
     }
 }
+/**
+ * Inserts sort item for a sorting question into `tb_sortItems`.
+ * @param {number} questionId - The question's ID.
+ * @param {string} sortItem - Tab label.
+ * @param {string} itemOrder - Tab content.
+ * @returns {Promise<object>} Result of the INSERT query.
+ */
+async function insertSortItems(questionId, sortItem, itemOrder) {
+    const sql = `INSERT INTO tb_sortItems (questionId, sortItem, itemOrder) VALUES (?, ?, ?)`;
+    try {
+        const result = await query(sql, [questionId, sortItem, itemOrder]);
+        logger.info(`📄 insertTab: Tab "${sortItem}" added for question ID=${questionId}`);
+        return result;
+    } catch (err) {
+        logger.error(`❌ insertTab: Failed for question ID=${questionId}, tabKey=${sortItem} - ${err.message}`);
+        throw err;
+    }
+}
 
 /**
  * Inserts dropdown options for a specific field into `tb_dropdowns`.
@@ -267,5 +285,6 @@ module.exports = {
     insertDropdownQuestion,
     insertTab,
     insertDropdownField,
-    insertDropdownAnswer
+    insertDropdownAnswer,
+    insertSortItems
 };

@@ -67,3 +67,34 @@ Dropdown question
     "info": "Patients with a history of severe allergies should carry an epinephrine auto-injector at all times.",
     "infoImage": "https://example.com/images/epipen-instruction.png"
 }
+Sorting question
+{"questionType":"Sorting",
+  "question": "Arrange the steps in the correct order for performing tracheostomy suctioning.",
+  "difficulty": "Medium",
+  "subject": 1,
+  "lesson": 3,
+  "clientNeedArea": 2,
+  "clientNeedTopic": 5,
+  "sortItems": [
+    {
+      "sortItem": "Turn on the suction device and set appropriate pressure.",
+      "itemOrder": 1
+    },
+    {
+      "sortItem": "Don sterile gloves and prepare catheter.",
+      "itemOrder": 2
+    },
+    {
+      "sortItem": "Insert catheter without applying suction.",
+      "itemOrder": 3
+    },
+    {
+      "sortItem": "Apply suction while withdrawing the catheter slowly.",
+      "itemOrder": 4
+    },
+    {
+      "sortItem": "Reassess client’s respiratory status.",
+      "itemOrder": 5
+    }
+  ]
+}

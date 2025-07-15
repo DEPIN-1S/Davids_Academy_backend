@@ -255,7 +255,44 @@ module.exports.createQuestion = async (req, res) => {
         }
         if (questionType === 'Drag Drop') { }
         if (questionType === 'Multiple Radio') { }
-        if (questionType === 'Sorting') { }
+        if (questionType === 'Sorting') {
+            const {
+                question,
+                sortItems
+            } = req.body;
+            // Insert question into tb_dropdownQuestion
+            const questionResult = await model.insertDropdownQuestion(question);
+            const questionId = questionResult.insertId;
+            logger.info(`✅ Added dropdown question with ID: ${questionId}`);
+            // Insert tabs into tb_DropdownQuestionTabs
+            for (const item of sortItems) {
+                await model.insertSortItems(questionId, item.sortItem, item.itemOrder);
+                logger.info(`📄 Inserted sort items "${item.sortItem}" for question ${questionId}`);
+            }
+            // Insert explanation into tb_mcqExplanation
+            if (explanationText) {
+                await model.insertMcqExplanation(questionId, explanationHeading, explanationText);
+                logger.info(`📝 Explanation added for question ${questionId}`);
+            }
+            if (info) {
+                await model.insertAdditionalInfo(questionId, info, infoImage);
+                logger.info(`📝 Additional information added for question ${questionId}`);
+            }
+            return res.status(201).json({
+                result: true,
+                message: "Sorting question created successfully",
+                data: {
+                    questionId,
+                    question,
+                    sortItems,
+                    explanationHeading,
+                    explanationText,
+                    info,
+                    infoImage
+                }
+
+            });
+        }
         if (questionType === 'Sentence Highlight') { }
         if (questionType === 'Dropdown and Sort') { }
     } catch (error) {
