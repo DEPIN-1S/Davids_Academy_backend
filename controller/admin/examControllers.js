@@ -244,7 +244,11 @@ module.exports.createQuestion = async (req, res) => {
                     question,
                     tabs,
                     dropdowns,
-                    answers
+                    answers,
+                    explanationHeading,
+                    explanationText,
+                    info,
+                    infoImage
                 }
 
             });

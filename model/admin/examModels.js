@@ -92,7 +92,7 @@ async function deleteQuestionType(id) {
  */
 async function insertMcqQuestion(data) {
     const sql = `
-    INSERT INTO tb_mcq (
+    INSERT INTO tb_questions (
       question, answer, difficulty, subject, lesson, clientNeedArea,
       clientNeedTopic, exhibit, isDeleted, createdAt, updatedAt
     )
@@ -190,7 +190,7 @@ async function insertAdditionalInfo(questionId, info, image = null) {
  * @returns {Promise<object>} Result of the INSERT query.
  */
 async function insertDropdownQuestion(question) {
-    const sql = `INSERT INTO tb_dropdownQuestion (question) VALUES (?)`;
+    const sql = `INSERT INTO tb_questions (question) VALUES (?)`;
     try {
         const result = await query(sql, [question]);
         logger.info(`✅ insertDropdownQuestion: Inserted question ID=${result.insertId}`);
@@ -200,7 +200,6 @@ async function insertDropdownQuestion(question) {
         throw err;
     }
 }
-
 /**
  * Inserts a tab for a dropdown question into `tb_DropdownQuestionTabs`.
  * @param {number} questionId - The question's ID.
@@ -209,7 +208,7 @@ async function insertDropdownQuestion(question) {
  * @returns {Promise<object>} Result of the INSERT query.
  */
 async function insertTab(questionId, tabKey, tabValue) {
-    const sql = `INSERT INTO tb_DropdownQuestionTabs (questionId, tabKey, tabValue) VALUES (?, ?, ?)`;
+    const sql = `INSERT INTO tb_questionTabs (questionId, tabKey, tabValue) VALUES (?, ?, ?)`;
     try {
         const result = await query(sql, [questionId, tabKey, tabValue]);
         logger.info(`📄 insertTab: Tab "${tabKey}" added for question ID=${questionId}`);
