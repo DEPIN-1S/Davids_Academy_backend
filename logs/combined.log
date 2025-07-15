@@ -83,3 +83,561 @@
 {"level":"info","message":"insertAdditionalInfo: Inserted info for questionId=20","service":"david-academy-api","timestamp":"2025-07-15 11:36:27"}
 {"level":"info","message":"📝 Additional information added for question 20","service":"david-academy-api","timestamp":"2025-07-15 11:36:27"}
 {"level":"info","message":"POST /api/exam/question 201 1353ms","meta":{"req":{"headers":{"accept":"*/*","accept-encoding":"gzip, deflate, br","cache-control":"no-cache","connection":"keep-alive","content-length":"792","content-type":"application/json","host":"localhost:6040","postman-token":"69a0714f-5d16-43ea-b098-f2b25331a940","user-agent":"PostmanRuntime/7.44.1"},"httpVersion":"1.1","method":"POST","originalUrl":"/api/exam/question","query":{},"url":"/api/exam/question"},"res":{"statusCode":201},"responseTime":1353},"service":"david-academy-api","timestamp":"2025-07-15 11:36:27"}
+{"level":"info","message":"Attempting to insert questionType: MCQ","service":"david-academy-api","timestamp":"2025-07-15 11:40:26"}
+{"level":"info","message":"insertQuestionType: inserting \"MCQ\"","service":"david-academy-api","timestamp":"2025-07-15 11:40:26"}
+{"level":"info","message":"insertQuestionType: success, insertedId=7","service":"david-academy-api","timestamp":"2025-07-15 11:40:27"}
+{"level":"info","message":"Successfully inserted questionType: MCQ","service":"david-academy-api","timestamp":"2025-07-15 11:40:27"}
+{"level":"info","message":"POST /api/exam/questionType 200 295ms","meta":{"req":{"headers":{"accept":"*/*","accept-encoding":"gzip, deflate, br","cache-control":"no-cache","connection":"keep-alive","content-length":"30","content-type":"application/json","host":"localhost:6040","postman-token":"bc97bdf9-9e72-4e09-baf7-8a4682bcbb55","user-agent":"PostmanRuntime/7.44.1"},"httpVersion":"1.1","method":"POST","originalUrl":"/api/exam/questionType","query":{},"url":"/api/exam/questionType"},"res":{"statusCode":200},"responseTime":295},"service":"david-academy-api","timestamp":"2025-07-15 11:40:27"}
+{"level":"info","message":"Attempting to insert questionType: Dropdown","service":"david-academy-api","timestamp":"2025-07-15 11:40:42"}
+{"level":"info","message":"insertQuestionType: inserting \"Dropdown\"","service":"david-academy-api","timestamp":"2025-07-15 11:40:42"}
+{"level":"info","message":"insertQuestionType: success, insertedId=8","service":"david-academy-api","timestamp":"2025-07-15 11:40:42"}
+{"level":"info","message":"Successfully inserted questionType: Dropdown","service":"david-academy-api","timestamp":"2025-07-15 11:40:42"}
+{"level":"info","message":"POST /api/exam/questionType 200 126ms","meta":{"req":{"headers":{"accept":"*/*","accept-encoding":"gzip, deflate, br","cache-control":"no-cache","connection":"keep-alive","content-length":"35","content-type":"application/json","host":"localhost:6040","postman-token":"2a7c6ccb-f690-43d6-880e-c98180d56cef","user-agent":"PostmanRuntime/7.44.1"},"httpVersion":"1.1","method":"POST","originalUrl":"/api/exam/questionType","query":{},"url":"/api/exam/questionType"},"res":{"statusCode":200},"responseTime":126},"service":"david-academy-api","timestamp":"2025-07-15 11:40:42"}
+{"level":"info","message":"Attempting to insert questionType: Drag Drop","service":"david-academy-api","timestamp":"2025-07-15 11:41:09"}
+{"level":"info","message":"insertQuestionType: inserting \"Drag Drop\"","service":"david-academy-api","timestamp":"2025-07-15 11:41:09"}
+{"level":"info","message":"insertQuestionType: success, insertedId=9","service":"david-academy-api","timestamp":"2025-07-15 11:41:09"}
+{"level":"info","message":"Successfully inserted questionType: Drag Drop","service":"david-academy-api","timestamp":"2025-07-15 11:41:09"}
+{"level":"info","message":"POST /api/exam/questionType 200 127ms","meta":{"req":{"headers":{"accept":"*/*","accept-encoding":"gzip, deflate, br","cache-control":"no-cache","connection":"keep-alive","content-length":"36","content-type":"application/json","host":"localhost:6040","postman-token":"02507a99-a3ef-4d45-8247-4e014721a964","user-agent":"PostmanRuntime/7.44.1"},"httpVersion":"1.1","method":"POST","originalUrl":"/api/exam/questionType","query":{},"url":"/api/exam/questionType"},"res":{"statusCode":200},"responseTime":127},"service":"david-academy-api","timestamp":"2025-07-15 11:41:09"}
+{"level":"info","message":"🔄 MySQL keep-alive ping successful","service":"david-academy-api","timestamp":"2025-07-15 11:41:24"}
+{"level":"info","message":"Attempting to insert questionType: Multiple Radio","service":"david-academy-api","timestamp":"2025-07-15 11:41:40"}
+{"level":"info","message":"insertQuestionType: inserting \"Multiple Radio\"","service":"david-academy-api","timestamp":"2025-07-15 11:41:40"}
+{"level":"info","message":"insertQuestionType: success, insertedId=10","service":"david-academy-api","timestamp":"2025-07-15 11:41:40"}
+{"level":"info","message":"Successfully inserted questionType: Multiple Radio","service":"david-academy-api","timestamp":"2025-07-15 11:41:40"}
+{"level":"info","message":"POST /api/exam/questionType 200 160ms","meta":{"req":{"headers":{"accept":"*/*","accept-encoding":"gzip, deflate, br","cache-control":"no-cache","connection":"keep-alive","content-length":"41","content-type":"application/json","host":"localhost:6040","postman-token":"33b60824-ece1-4a69-9a00-9737ec6afcd6","user-agent":"PostmanRuntime/7.44.1"},"httpVersion":"1.1","method":"POST","originalUrl":"/api/exam/questionType","query":{},"url":"/api/exam/questionType"},"res":{"statusCode":200},"responseTime":160},"service":"david-academy-api","timestamp":"2025-07-15 11:41:40"}
+{"level":"info","message":"Attempting to insert questionType: Sorting","service":"david-academy-api","timestamp":"2025-07-15 11:41:52"}
+{"level":"info","message":"insertQuestionType: inserting \"Sorting\"","service":"david-academy-api","timestamp":"2025-07-15 11:41:52"}
+{"level":"info","message":"insertQuestionType: success, insertedId=11","service":"david-academy-api","timestamp":"2025-07-15 11:41:52"}
+{"level":"info","message":"Successfully inserted questionType: Sorting","service":"david-academy-api","timestamp":"2025-07-15 11:41:52"}
+{"level":"info","message":"POST /api/exam/questionType 200 204ms","meta":{"req":{"headers":{"accept":"*/*","accept-encoding":"gzip, deflate, br","cache-control":"no-cache","connection":"keep-alive","content-length":"34","content-type":"application/json","host":"localhost:6040","postman-token":"f23c258e-f96d-4f83-8dba-671b9ed7cd93","user-agent":"PostmanRuntime/7.44.1"},"httpVersion":"1.1","method":"POST","originalUrl":"/api/exam/questionType","query":{},"url":"/api/exam/questionType"},"res":{"statusCode":200},"responseTime":204},"service":"david-academy-api","timestamp":"2025-07-15 11:41:52"}
+{"level":"info","message":"Attempting to insert questionType: Sentence highlight","service":"david-academy-api","timestamp":"2025-07-15 11:42:21"}
+{"level":"info","message":"insertQuestionType: inserting \"Sentence highlight\"","service":"david-academy-api","timestamp":"2025-07-15 11:42:21"}
+{"level":"info","message":"insertQuestionType: success, insertedId=12","service":"david-academy-api","timestamp":"2025-07-15 11:42:21"}
+{"level":"info","message":"Successfully inserted questionType: Sentence highlight","service":"david-academy-api","timestamp":"2025-07-15 11:42:21"}
+{"level":"info","message":"POST /api/exam/questionType 200 167ms","meta":{"req":{"headers":{"accept":"*/*","accept-encoding":"gzip, deflate, br","cache-control":"no-cache","connection":"keep-alive","content-length":"45","content-type":"application/json","host":"localhost:6040","postman-token":"b553efad-9a58-41df-bc3c-dd04dde1a9b4","user-agent":"PostmanRuntime/7.44.1"},"httpVersion":"1.1","method":"POST","originalUrl":"/api/exam/questionType","query":{},"url":"/api/exam/questionType"},"res":{"statusCode":200},"responseTime":167},"service":"david-academy-api","timestamp":"2025-07-15 11:42:21"}
+{"level":"info","message":"Attempting to insert questionType: Dropdown and Sort","service":"david-academy-api","timestamp":"2025-07-15 11:44:12"}
+{"level":"info","message":"insertQuestionType: inserting \"Dropdown and Sort\"","service":"david-academy-api","timestamp":"2025-07-15 11:44:12"}
+{"level":"info","message":"insertQuestionType: success, insertedId=13","service":"david-academy-api","timestamp":"2025-07-15 11:44:12"}
+{"level":"info","message":"Successfully inserted questionType: Dropdown and Sort","service":"david-academy-api","timestamp":"2025-07-15 11:44:12"}
+{"level":"info","message":"POST /api/exam/questionType 200 118ms","meta":{"req":{"headers":{"accept":"*/*","accept-encoding":"gzip, deflate, br","cache-control":"no-cache","connection":"keep-alive","content-length":"44","content-type":"application/json","host":"localhost:6040","postman-token":"6c6804f4-1d9c-4653-94ee-0c88e2a28ce1","user-agent":"PostmanRuntime/7.44.1"},"httpVersion":"1.1","method":"POST","originalUrl":"/api/exam/questionType","query":{},"url":"/api/exam/questionType"},"res":{"statusCode":200},"responseTime":118},"service":"david-academy-api","timestamp":"2025-07-15 11:44:12"}
+{"level":"info","message":"🔄 MySQL keep-alive ping successful","service":"david-academy-api","timestamp":"2025-07-15 11:46:24"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 11:48:25"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 11:48:25"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 11:48:25"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 11:48:29"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 11:48:29"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 11:48:29"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 11:48:33"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 11:48:33"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 11:48:33"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 11:48:35"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 11:48:35"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 11:48:35"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 11:48:43"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 11:48:43"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 11:48:44"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 11:48:49"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 11:48:50"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 11:48:50"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 11:48:52"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 11:48:52"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 11:48:53"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 11:49:01"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 11:49:01"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 11:49:02"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 11:49:03"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 11:49:04"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 11:49:04"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 11:49:09"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 11:49:09"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 11:49:09"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 11:49:10"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 11:49:10"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 11:49:11"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 11:49:13"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 11:49:14"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 11:49:14"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 11:49:21"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 11:49:22"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 11:49:22"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 11:49:22"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 11:49:23"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 11:49:26"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 11:49:26"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 11:49:26"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 11:49:32"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 11:49:32"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 11:49:32"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 11:49:40"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 11:49:40"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 11:49:40"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 11:49:46"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 11:49:46"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 11:49:47"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 11:49:52"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 11:49:52"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 11:49:52"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 11:49:53"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 11:49:53"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 11:49:55"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 11:49:56"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 11:49:56"}
+{"level":"info","message":"🔄 MySQL keep-alive ping successful","service":"david-academy-api","timestamp":"2025-07-15 11:54:56"}
+{"level":"info","message":"🔄 MySQL keep-alive ping successful","service":"david-academy-api","timestamp":"2025-07-15 11:59:56"}
+{"level":"info","message":"🔄 MySQL keep-alive ping successful","service":"david-academy-api","timestamp":"2025-07-15 12:04:56"}
+{"level":"info","message":"🔄 MySQL keep-alive ping successful","service":"david-academy-api","timestamp":"2025-07-15 12:09:56"}
+{"level":"info","message":"🔄 MySQL keep-alive ping successful","service":"david-academy-api","timestamp":"2025-07-15 12:14:56"}
+{"level":"info","message":"🔄 MySQL keep-alive ping successful","service":"david-academy-api","timestamp":"2025-07-15 12:19:56"}
+{"level":"info","message":"🔄 MySQL keep-alive ping successful","service":"david-academy-api","timestamp":"2025-07-15 12:24:56"}
+{"level":"info","message":"🔄 MySQL keep-alive ping successful","service":"david-academy-api","timestamp":"2025-07-15 12:29:56"}
+{"level":"info","message":"🔄 MySQL keep-alive ping successful","service":"david-academy-api","timestamp":"2025-07-15 12:34:56"}
+{"level":"info","message":"🔄 MySQL keep-alive ping successful","service":"david-academy-api","timestamp":"2025-07-15 12:39:56"}
+{"level":"info","message":"🔄 MySQL keep-alive ping successful","service":"david-academy-api","timestamp":"2025-07-15 12:44:56"}
+{"level":"info","message":"🔄 MySQL keep-alive ping successful","service":"david-academy-api","timestamp":"2025-07-15 12:49:56"}
+{"level":"info","message":"🔄 MySQL keep-alive ping successful","service":"david-academy-api","timestamp":"2025-07-15 12:54:56"}
+{"level":"info","message":"🔄 MySQL keep-alive ping successful","service":"david-academy-api","timestamp":"2025-07-15 12:59:56"}
+{"level":"info","message":"🔄 MySQL keep-alive ping successful","service":"david-academy-api","timestamp":"2025-07-15 13:04:56"}
+{"level":"info","message":"🔄 MySQL keep-alive ping successful","service":"david-academy-api","timestamp":"2025-07-15 13:09:56"}
+{"level":"info","message":"🔄 MySQL keep-alive ping successful","service":"david-academy-api","timestamp":"2025-07-15 13:14:56"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 13:18:09"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 13:18:09"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 13:18:10"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 13:18:11"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 13:18:12"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 13:18:12"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 13:18:22"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 13:18:22"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 13:18:23"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 13:18:25"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 13:18:26"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 13:18:26"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 13:18:32"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 13:18:32"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 13:18:33"}
+{"level":"info","message":"📥 Received request to add new question","service":"david-academy-api","timestamp":"2025-07-15 13:18:40"}
+{"level":"info","message":"insertMCQQuestion: Inserted MCQ with ID 21","service":"david-academy-api","timestamp":"2025-07-15 13:18:40"}
+{"level":"info","message":"questionId","service":"david-academy-api","timestamp":"2025-07-15 13:18:40"}
+{"level":"info","message":"✅ Inserted MCQ (ID: 21)","service":"david-academy-api","timestamp":"2025-07-15 13:18:40"}
+{"level":"info","message":"insertMcqOption: Inserted option for questionId=21","service":"david-academy-api","timestamp":"2025-07-15 13:18:40"}
+{"level":"info","message":"🔹 Inserted option for question 21: Epinephrine","service":"david-academy-api","timestamp":"2025-07-15 13:18:40"}
+{"level":"info","message":"insertMcqOption: Inserted option for questionId=21","service":"david-academy-api","timestamp":"2025-07-15 13:18:40"}
+{"level":"info","message":"🔹 Inserted option for question 21: Diphenhydramine","service":"david-academy-api","timestamp":"2025-07-15 13:18:40"}
+{"level":"info","message":"insertMcqOption: Inserted option for questionId=21","service":"david-academy-api","timestamp":"2025-07-15 13:18:40"}
+{"level":"info","message":"🔹 Inserted option for question 21: Hydrocortisone","service":"david-academy-api","timestamp":"2025-07-15 13:18:40"}
+{"level":"info","message":"insertMcqOption: Inserted option for questionId=21","service":"david-academy-api","timestamp":"2025-07-15 13:18:40"}
+{"level":"info","message":"🔹 Inserted option for question 21: Albuterol","service":"david-academy-api","timestamp":"2025-07-15 13:18:40"}
+{"level":"info","message":"🔹 Option added to question 21: Epinephrine,Diphenhydramine,Hydrocortisone,Albuterol","service":"david-academy-api","timestamp":"2025-07-15 13:18:40"}
+{"level":"info","message":"insertMCQExplanation: Inserted explanation for questionId=21","service":"david-academy-api","timestamp":"2025-07-15 13:18:40"}
+{"level":"info","message":"📝 Explanation added for question 21","service":"david-academy-api","timestamp":"2025-07-15 13:18:40"}
+{"level":"info","message":"insertAdditionalInfo: Inserted info for questionId=21","service":"david-academy-api","timestamp":"2025-07-15 13:18:40"}
+{"level":"info","message":"📝 Additional information added for question 21","service":"david-academy-api","timestamp":"2025-07-15 13:18:40"}
+{"level":"info","message":"POST /api/exam/question 201 671ms","meta":{"req":{"headers":{"accept":"*/*","accept-encoding":"gzip, deflate, br","cache-control":"no-cache","connection":"keep-alive","content-length":"792","content-type":"application/json","host":"localhost:6040","postman-token":"d47114fc-9da4-443d-ae74-e31f6304fffd","user-agent":"PostmanRuntime/7.44.1"},"httpVersion":"1.1","method":"POST","originalUrl":"/api/exam/question","query":{},"url":"/api/exam/question"},"res":{"statusCode":201},"responseTime":671},"service":"david-academy-api","timestamp":"2025-07-15 13:18:40"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 13:18:47"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 13:18:48"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 13:18:48"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 13:19:00"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 13:19:00"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 13:19:00"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 13:20:28"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 13:20:28"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 13:20:28"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 13:20:33"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 13:20:33"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 13:20:33"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 13:20:36"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 13:20:37"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 13:20:37"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 13:20:47"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 13:20:48"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 13:20:48"}
+{"level":"info","message":"🔄 MySQL keep-alive ping successful","service":"david-academy-api","timestamp":"2025-07-15 13:25:48"}
+{"level":"info","message":"🔄 MySQL keep-alive ping successful","service":"david-academy-api","timestamp":"2025-07-15 13:30:48"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 13:32:42"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 13:32:42"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 13:32:42"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 13:32:44"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 13:32:44"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 13:32:45"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 13:32:49"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 13:32:49"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 13:32:49"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 13:32:55"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 13:32:55"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 13:32:55"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 13:33:00"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 13:33:00"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 13:33:00"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 13:33:57"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 13:33:58"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 13:33:58"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 13:34:00"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 13:34:00"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 13:34:00"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 13:34:02"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 13:34:02"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 13:34:02"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 13:34:04"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 13:34:05"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 13:34:05"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 13:34:07"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 13:34:07"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 13:34:08"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 13:34:10"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 13:34:11"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 13:34:11"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 13:34:13"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 13:34:14"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 13:34:14"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 13:34:15"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 13:34:15"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 13:34:16"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 13:35:14"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 13:35:14"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 13:35:14"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 13:36:01"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 13:36:01"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 13:36:01"}
+{"level":"info","message":"🔄 MySQL keep-alive ping successful","service":"david-academy-api","timestamp":"2025-07-15 13:41:01"}
+{"level":"info","message":"🔄 MySQL keep-alive ping successful","service":"david-academy-api","timestamp":"2025-07-15 13:46:01"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 13:48:35"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 13:48:35"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 13:48:35"}
+{"level":"info","message":"🔄 MySQL keep-alive ping successful","service":"david-academy-api","timestamp":"2025-07-15 13:53:35"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 13:57:24"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 13:57:25"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 13:57:25"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 13:57:31"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 13:57:32"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 13:57:32"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 13:57:32"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 13:57:33"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 13:57:33"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 13:57:33"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 13:57:34"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 13:57:34"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 14:02:06"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 14:02:06"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 14:02:06"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 14:02:20"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 14:02:20"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 14:02:21"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 14:02:21"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 14:02:21"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 14:02:22"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 14:03:09"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 14:03:09"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 14:03:09"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 14:03:17"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 14:03:17"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 14:03:17"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 14:03:18"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 14:03:18"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 14:03:19"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 14:03:23"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 14:03:23"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 14:03:23"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 14:03:25"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 14:03:26"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 14:03:26"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 14:03:31"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 14:03:31"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 14:03:32"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 14:04:17"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 14:04:17"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 14:04:18"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 14:04:20"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 14:04:21"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 14:04:21"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 14:04:23"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 14:04:24"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 14:04:24"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 14:04:27"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 14:04:27"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 14:04:28"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 14:04:31"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 14:04:31"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 14:04:31"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 14:06:15"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 14:06:15"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 14:06:15"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 14:06:18"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 14:06:19"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 14:06:19"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 14:06:20"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 14:06:20"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 14:06:21"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 14:06:26"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 14:06:26"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 14:06:27"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 14:06:31"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 14:06:31"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 14:06:32"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 14:06:33"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 14:06:34"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 14:06:34"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 14:07:28"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 14:07:29"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 14:07:29"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 14:07:35"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 14:07:35"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 14:07:35"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 14:07:36"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 14:07:36"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 14:07:36"}
+{"level":"info","message":"📥 Received request to add new question","service":"david-academy-api","timestamp":"2025-07-15 14:09:26"}
+{"level":"info","message":"📥 Received request to add new question","service":"david-academy-api","timestamp":"2025-07-15 14:10:38"}
+{"level":"info","message":"✅ insertDropdownQuestion: Inserted question ID=1","service":"david-academy-api","timestamp":"2025-07-15 14:10:38"}
+{"level":"info","message":"✅ Added dropdown question with ID: 1","service":"david-academy-api","timestamp":"2025-07-15 14:10:38"}
+{"level":"info","message":"📄 insertTab: Tab \"Triage Note\" added for question ID=1","service":"david-academy-api","timestamp":"2025-07-15 14:10:38"}
+{"level":"info","message":"📄 Inserted tab \"Triage Note\" for question 1","service":"david-academy-api","timestamp":"2025-07-15 14:10:38"}
+{"level":"info","message":"📄 insertTab: Tab \"Vital Signs\" added for question ID=1","service":"david-academy-api","timestamp":"2025-07-15 14:10:38"}
+{"level":"info","message":"📄 Inserted tab \"Vital Signs\" for question 1","service":"david-academy-api","timestamp":"2025-07-15 14:10:38"}
+{"level":"info","message":"🔽 insertDropdownField: Added value \"asthma\" to field \"tachypnea\" (QID=1)","service":"david-academy-api","timestamp":"2025-07-15 14:10:38"}
+{"level":"info","message":"🔽 Dropdown field \"tachypnea\" -> \"asthma\"","service":"david-academy-api","timestamp":"2025-07-15 14:10:38"}
+{"level":"info","message":"🔽 insertDropdownField: Added value \"pneumonia\" to field \"tachypnea\" (QID=1)","service":"david-academy-api","timestamp":"2025-07-15 14:10:39"}
+{"level":"info","message":"🔽 Dropdown field \"tachypnea\" -> \"pneumonia\"","service":"david-academy-api","timestamp":"2025-07-15 14:10:39"}
+{"level":"info","message":"🔽 insertDropdownField: Added value \"hemothorax\" to field \"tachypnea\" (QID=1)","service":"david-academy-api","timestamp":"2025-07-15 14:10:39"}
+{"level":"info","message":"🔽 Dropdown field \"tachypnea\" -> \"hemothorax\"","service":"david-academy-api","timestamp":"2025-07-15 14:10:39"}
+{"level":"info","message":"🔽 insertDropdownField: Added value \"pneumothorax\" to field \"dull percussion\" (QID=1)","service":"david-academy-api","timestamp":"2025-07-15 14:10:39"}
+{"level":"info","message":"🔽 Dropdown field \"dull percussion\" -> \"pneumothorax\"","service":"david-academy-api","timestamp":"2025-07-15 14:10:39"}
+{"level":"info","message":"🔽 insertDropdownField: Added value \"hemothorax\" to field \"dull percussion\" (QID=1)","service":"david-academy-api","timestamp":"2025-07-15 14:10:39"}
+{"level":"info","message":"🔽 Dropdown field \"dull percussion\" -> \"hemothorax\"","service":"david-academy-api","timestamp":"2025-07-15 14:10:39"}
+{"level":"info","message":"🔽 insertDropdownField: Added value \"pleural effusion\" to field \"dull percussion\" (QID=1)","service":"david-academy-api","timestamp":"2025-07-15 14:10:40"}
+{"level":"info","message":"🔽 Dropdown field \"dull percussion\" -> \"pleural effusion\"","service":"david-academy-api","timestamp":"2025-07-15 14:10:40"}
+{"level":"info","message":"✅ insertDropdownAnswer: Correct answer \"asthma\" for field \"tachypnea\" added (QID=1)","service":"david-academy-api","timestamp":"2025-07-15 14:10:40"}
+{"level":"info","message":"✅ Answer for \"tachypnea\": asthma","service":"david-academy-api","timestamp":"2025-07-15 14:10:40"}
+{"level":"info","message":"✅ insertDropdownAnswer: Correct answer \"hemothorax\" for field \"dull percussion\" added (QID=1)","service":"david-academy-api","timestamp":"2025-07-15 14:10:40"}
+{"level":"info","message":"✅ Answer for \"dull percussion\": hemothorax","service":"david-academy-api","timestamp":"2025-07-15 14:10:40"}
+{"level":"info","message":"POST /api/exam/question 201 2285ms","meta":{"req":{"headers":{"accept":"*/*","accept-encoding":"gzip, deflate, br","cache-control":"no-cache","connection":"keep-alive","content-length":"1219","content-type":"application/json","host":"localhost:6040","postman-token":"09863252-ca9b-47b3-8fe0-361cb0656028","user-agent":"PostmanRuntime/7.44.1"},"httpVersion":"1.1","method":"POST","originalUrl":"/api/exam/question","query":{},"url":"/api/exam/question"},"res":{"statusCode":201},"responseTime":2285},"service":"david-academy-api","timestamp":"2025-07-15 14:10:40"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 14:10:49"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 14:10:49"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 14:10:49"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 14:11:07"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 14:11:07"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 14:11:08"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 14:11:20"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 14:11:21"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 14:11:21"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 14:11:24"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 14:11:25"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 14:11:25"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 14:11:26"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 14:11:26"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 14:11:30"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 14:11:30"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 14:11:31"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 14:11:31"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 14:11:31"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 14:11:32"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 14:11:41"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 14:11:41"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 14:11:41"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 14:11:44"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 14:11:44"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 14:11:45"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 14:11:55"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 14:11:55"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 14:11:56"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 14:11:58"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 14:11:58"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 14:11:58"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 14:12:32"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 14:12:32"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 14:12:32"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 14:12:36"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 14:12:36"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 14:12:36"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 14:12:37"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 14:12:37"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 14:12:38"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 14:12:51"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 14:12:51"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 14:12:51"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 14:13:02"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 14:13:02"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 14:13:02"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 14:13:06"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 14:13:06"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 14:13:06"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 14:13:07"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 14:13:07"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 14:13:08"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 14:13:08"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 14:13:09"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 14:13:09"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 14:13:34"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 14:13:34"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 14:13:35"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 14:13:37"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 14:13:37"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 14:13:38"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 14:13:54"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 14:13:54"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 14:13:54"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 14:14:22"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 14:14:22"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 14:14:22"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 14:14:30"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 14:14:30"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 14:14:30"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 14:14:31"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 14:14:31"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 14:14:31"}
+{"level":"info","message":"📥 Received request to add new question","service":"david-academy-api","timestamp":"2025-07-15 14:14:36"}
+{"level":"info","message":"✅ insertDropdownQuestion: Inserted question ID=2","service":"david-academy-api","timestamp":"2025-07-15 14:14:36"}
+{"level":"info","message":"✅ Added dropdown question with ID: 2","service":"david-academy-api","timestamp":"2025-07-15 14:14:36"}
+{"level":"info","message":"📄 insertTab: Tab \"Triage Note\" added for question ID=2","service":"david-academy-api","timestamp":"2025-07-15 14:14:36"}
+{"level":"info","message":"📄 Inserted tab \"Triage Note\" for question 2","service":"david-academy-api","timestamp":"2025-07-15 14:14:36"}
+{"level":"info","message":"📄 insertTab: Tab \"Vital Signs\" added for question ID=2","service":"david-academy-api","timestamp":"2025-07-15 14:14:36"}
+{"level":"info","message":"📄 Inserted tab \"Vital Signs\" for question 2","service":"david-academy-api","timestamp":"2025-07-15 14:14:36"}
+{"level":"info","message":"🔽 insertDropdownField: Added value \"asthma\" to field \"tachypnea\" (QID=2)","service":"david-academy-api","timestamp":"2025-07-15 14:14:36"}
+{"level":"info","message":"🔽 Dropdown field \"tachypnea\" -> \"asthma\"","service":"david-academy-api","timestamp":"2025-07-15 14:14:36"}
+{"level":"info","message":"🔽 insertDropdownField: Added value \"pneumonia\" to field \"tachypnea\" (QID=2)","service":"david-academy-api","timestamp":"2025-07-15 14:14:37"}
+{"level":"info","message":"🔽 Dropdown field \"tachypnea\" -> \"pneumonia\"","service":"david-academy-api","timestamp":"2025-07-15 14:14:37"}
+{"level":"info","message":"🔽 insertDropdownField: Added value \"hemothorax\" to field \"tachypnea\" (QID=2)","service":"david-academy-api","timestamp":"2025-07-15 14:14:37"}
+{"level":"info","message":"🔽 Dropdown field \"tachypnea\" -> \"hemothorax\"","service":"david-academy-api","timestamp":"2025-07-15 14:14:37"}
+{"level":"info","message":"🔽 insertDropdownField: Added value \"pneumothorax\" to field \"dull percussion\" (QID=2)","service":"david-academy-api","timestamp":"2025-07-15 14:14:37"}
+{"level":"info","message":"🔽 Dropdown field \"dull percussion\" -> \"pneumothorax\"","service":"david-academy-api","timestamp":"2025-07-15 14:14:37"}
+{"level":"info","message":"🔽 insertDropdownField: Added value \"hemothorax\" to field \"dull percussion\" (QID=2)","service":"david-academy-api","timestamp":"2025-07-15 14:14:37"}
+{"level":"info","message":"🔽 Dropdown field \"dull percussion\" -> \"hemothorax\"","service":"david-academy-api","timestamp":"2025-07-15 14:14:37"}
+{"level":"info","message":"🔽 insertDropdownField: Added value \"pleural effusion\" to field \"dull percussion\" (QID=2)","service":"david-academy-api","timestamp":"2025-07-15 14:14:37"}
+{"level":"info","message":"🔽 Dropdown field \"dull percussion\" -> \"pleural effusion\"","service":"david-academy-api","timestamp":"2025-07-15 14:14:37"}
+{"level":"info","message":"✅ insertDropdownAnswer: Correct answer \"asthma\" for field \"tachypnea\" added (QID=2)","service":"david-academy-api","timestamp":"2025-07-15 14:14:38"}
+{"level":"info","message":"✅ Answer for \"tachypnea\": asthma","service":"david-academy-api","timestamp":"2025-07-15 14:14:38"}
+{"level":"info","message":"✅ insertDropdownAnswer: Correct answer \"hemothorax\" for field \"dull percussion\" added (QID=2)","service":"david-academy-api","timestamp":"2025-07-15 14:14:38"}
+{"level":"info","message":"✅ Answer for \"dull percussion\": hemothorax","service":"david-academy-api","timestamp":"2025-07-15 14:14:38"}
+{"level":"error","message":"insertMCQExplanation: Failed to insert explanation: Error: ER_NO_REFERENCED_ROW_2: Cannot add or update a child row: a foreign key constraint fails (`u160357475_davidacademy`.`tb_mcqExplanation`, CONSTRAINT `tb_mcqExplanation_ibfk_1` FOREIGN KEY (`questionId`) REFERENCES `tb_mcq` (`id`) ON DELETE CASCADE)\n    at Sequence._packetToError (Z:\\lunar\\davidacademyBackend\\Davids_academy_backend\\node_modules\\mysql\\lib\\protocol\\sequences\\Sequence.js:47:14)\n    at Query.ErrorPacket (Z:\\lunar\\davidacademyBackend\\Davids_academy_backend\\node_modules\\mysql\\lib\\protocol\\sequences\\Query.js:79:18)\n    at Protocol._parsePacket (Z:\\lunar\\davidacademyBackend\\Davids_academy_backend\\node_modules\\mysql\\lib\\protocol\\Protocol.js:291:23)\n    at Parser._parsePacket (Z:\\lunar\\davidacademyBackend\\Davids_academy_backend\\node_modules\\mysql\\lib\\protocol\\Parser.js:433:10)\n    at Parser.write (Z:\\lunar\\davidacademyBackend\\Davids_academy_backend\\node_modules\\mysql\\lib\\protocol\\Parser.js:43:10)\n    at Protocol.write (Z:\\lunar\\davidacademyBackend\\Davids_academy_backend\\node_modules\\mysql\\lib\\protocol\\Protocol.js:38:16)\n    at Socket.<anonymous> (Z:\\lunar\\davidacademyBackend\\Davids_academy_backend\\node_modules\\mysql\\lib\\Connection.js:88:28)\n    at Socket.<anonymous> (Z:\\lunar\\davidacademyBackend\\Davids_academy_backend\\node_modules\\mysql\\lib\\Connection.js:526:10)\n    at Socket.emit (node:events:519:28)\n    at addChunk (node:internal/streams/readable:559:12)\n    --------------------\n    at Pool.query (Z:\\lunar\\davidacademyBackend\\Davids_academy_backend\\node_modules\\mysql\\lib\\Pool.js:199:23)\n    at node:internal/util:431:7\n    at new Promise (<anonymous>)\n    at Pool.<anonymous> (node:internal/util:417:12)\n    at Object.insertMcqExplanation (Z:\\lunar\\davidacademyBackend\\Davids_academy_backend\\model\\admin\\examModels.js:155:30)\n    at module.exports.createQuestion (Z:\\lunar\\davidacademyBackend\\Davids_academy_backend\\controller\\admin\\examControllers.js:232:29)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5) {\n  [stack]: 'Error: ER_NO_REFERENCED_ROW_2: Cannot add or update a child row: a foreign key constraint fails (`u160357475_davidacademy`.`tb_mcqExplanation`, CONSTRAINT `tb_mcqExplanation_ibfk_1` FOREIGN KEY (`questionId`) REFERENCES `tb_mcq` (`id`) ON DELETE CASCADE)\\n' +\n    '    at Sequence._packetToError (Z:\\\\lunar\\\\davidacademyBackend\\\\Davids_academy_backend\\\\node_modules\\\\mysql\\\\lib\\\\protocol\\\\sequences\\\\Sequence.js:47:14)\\n' +\n    '    at Query.ErrorPacket (Z:\\\\lunar\\\\davidacademyBackend\\\\Davids_academy_backend\\\\node_modules\\\\mysql\\\\lib\\\\protocol\\\\sequences\\\\Query.js:79:18)\\n' +\n    '    at Protocol._parsePacket (Z:\\\\lunar\\\\davidacademyBackend\\\\Davids_academy_backend\\\\node_modules\\\\mysql\\\\lib\\\\protocol\\\\Protocol.js:291:23)\\n' +\n    '    at Parser._parsePacket (Z:\\\\lunar\\\\davidacademyBackend\\\\Davids_academy_backend\\\\node_modules\\\\mysql\\\\lib\\\\protocol\\\\Parser.js:433:10)\\n' +\n    '    at Parser.write (Z:\\\\lunar\\\\davidacademyBackend\\\\Davids_academy_backend\\\\node_modules\\\\mysql\\\\lib\\\\protocol\\\\Parser.js:43:10)\\n' +\n    '    at Protocol.write (Z:\\\\lunar\\\\davidacademyBackend\\\\Davids_academy_backend\\\\node_modules\\\\mysql\\\\lib\\\\protocol\\\\Protocol.js:38:16)\\n' +\n    '    at Socket.<anonymous> (Z:\\\\lunar\\\\davidacademyBackend\\\\Davids_academy_backend\\\\node_modules\\\\mysql\\\\lib\\\\Connection.js:88:28)\\n' +\n    '    at Socket.<anonymous> (Z:\\\\lunar\\\\davidacademyBackend\\\\Davids_academy_backend\\\\node_modules\\\\mysql\\\\lib\\\\Connection.js:526:10)\\n' +\n    '    at Socket.emit (node:events:519:28)\\n' +\n    '    at addChunk (node:internal/streams/readable:559:12)\\n' +\n    '    --------------------\\n' +\n    '    at Pool.query (Z:\\\\lunar\\\\davidacademyBackend\\\\Davids_academy_backend\\\\node_modules\\\\mysql\\\\lib\\\\Pool.js:199:23)\\n' +\n    '    at node:internal/util:431:7\\n' +\n    '    at new Promise (<anonymous>)\\n' +\n    '    at Pool.<anonymous> (node:internal/util:417:12)\\n' +\n    '    at Object.insertMcqExplanation (Z:\\\\lunar\\\\davidacademyBackend\\\\Davids_academy_backend\\\\model\\\\admin\\\\examModels.js:155:30)\\n' +\n    '    at module.exports.createQuestion (Z:\\\\lunar\\\\davidacademyBackend\\\\Davids_academy_backend\\\\controller\\\\admin\\\\examControllers.js:232:29)\\n' +\n    '    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)',\n  [message]: 'ER_NO_REFERENCED_ROW_2: Cannot add or update a child row: a foreign key constraint fails (`u160357475_davidacademy`.`tb_mcqExplanation`, CONSTRAINT `tb_mcqExplanation_ibfk_1` FOREIGN KEY (`questionId`) REFERENCES `tb_mcq` (`id`) ON DELETE CASCADE)',\n  code: 'ER_NO_REFERENCED_ROW_2',\n  errno: 1452,\n  sqlMessage: 'Cannot add or update a child row: a foreign key constraint fails (`u160357475_davidacademy`.`tb_mcqExplanation`, CONSTRAINT `tb_mcqExplanation_ibfk_1` FOREIGN KEY (`questionId`) REFERENCES `tb_mcq` (`id`) ON DELETE CASCADE)',\n  sqlState: '23000',\n  index: 0,\n  sql: '\\n' +\n    '    INSERT INTO tb_mcqExplanation (questionId, heading, explanation, isDeleted, createdAt, updatedAt)\\n' +\n    \"    VALUES (2, 'Explanation', 'Epinephrine is the first-line treatment for anaphylaxis due to its rapid action in reversing severe allergic symptoms.', false, NOW(), NOW())\\n\" +\n    '  '\n}","service":"david-academy-api","timestamp":"2025-07-15 14:14:38"}
+{"level":"error","message":"❌ Failed to add question: ER_NO_REFERENCED_ROW_2: Cannot add or update a child row: a foreign key constraint fails (`u160357475_davidacademy`.`tb_mcqExplanation`, CONSTRAINT `tb_mcqExplanation_ibfk_1` FOREIGN KEY (`questionId`) REFERENCES `tb_mcq` (`id`) ON DELETE CASCADE)","service":"david-academy-api","timestamp":"2025-07-15 14:14:38"}
+{"level":"info","message":"POST /api/exam/question 500 2513ms","meta":{"req":{"headers":{"accept":"*/*","accept-encoding":"gzip, deflate, br","cache-control":"no-cache","connection":"keep-alive","content-length":"1219","content-type":"application/json","host":"localhost:6040","postman-token":"4a850a6f-98ea-43fa-83a8-eb0cce67c180","user-agent":"PostmanRuntime/7.44.1"},"httpVersion":"1.1","method":"POST","originalUrl":"/api/exam/question","query":{},"url":"/api/exam/question"},"res":{"statusCode":500},"responseTime":2513},"service":"david-academy-api","timestamp":"2025-07-15 14:14:38"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 14:16:44"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 14:16:44"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 14:16:44"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 14:16:45"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 14:16:45"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 14:16:46"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 14:16:52"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 14:16:53"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 14:16:53"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 14:16:54"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 14:16:54"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 14:16:55"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 14:17:23"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 14:17:23"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 14:17:24"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 14:17:24"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 14:17:24"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 14:17:29"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 14:17:29"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 14:17:30"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 14:17:31"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 14:17:31"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 14:17:31"}
+{"level":"info","message":"📥 Received request to add new question","service":"david-academy-api","timestamp":"2025-07-15 14:17:48"}
+{"level":"info","message":"insertMCQQuestion: Inserted MCQ with ID 22","service":"david-academy-api","timestamp":"2025-07-15 14:17:49"}
+{"level":"info","message":"questionId","service":"david-academy-api","timestamp":"2025-07-15 14:17:49"}
+{"level":"info","message":"✅ Inserted MCQ (ID: 22)","service":"david-academy-api","timestamp":"2025-07-15 14:17:49"}
+{"level":"info","message":"insertMcqOption: Inserted option for questionId=22","service":"david-academy-api","timestamp":"2025-07-15 14:17:49"}
+{"level":"info","message":"🔹 Inserted option for question 22: Epinephrine","service":"david-academy-api","timestamp":"2025-07-15 14:17:49"}
+{"level":"info","message":"insertMcqOption: Inserted option for questionId=22","service":"david-academy-api","timestamp":"2025-07-15 14:17:49"}
+{"level":"info","message":"🔹 Inserted option for question 22: Diphenhydramine","service":"david-academy-api","timestamp":"2025-07-15 14:17:49"}
+{"level":"info","message":"insertMcqOption: Inserted option for questionId=22","service":"david-academy-api","timestamp":"2025-07-15 14:17:49"}
+{"level":"info","message":"🔹 Inserted option for question 22: Hydrocortisone","service":"david-academy-api","timestamp":"2025-07-15 14:17:49"}
+{"level":"info","message":"insertMcqOption: Inserted option for questionId=22","service":"david-academy-api","timestamp":"2025-07-15 14:17:49"}
+{"level":"info","message":"🔹 Inserted option for question 22: Albuterol","service":"david-academy-api","timestamp":"2025-07-15 14:17:49"}
+{"level":"info","message":"🔹 Option added to question 22: Epinephrine,Diphenhydramine,Hydrocortisone,Albuterol","service":"david-academy-api","timestamp":"2025-07-15 14:17:49"}
+{"level":"info","message":"insertMCQExplanation: Inserted explanation for questionId=22","service":"david-academy-api","timestamp":"2025-07-15 14:17:50"}
+{"level":"info","message":"📝 Explanation added for question 22","service":"david-academy-api","timestamp":"2025-07-15 14:17:50"}
+{"level":"info","message":"insertAdditionalInfo: Inserted info for questionId=22","service":"david-academy-api","timestamp":"2025-07-15 14:17:50"}
+{"level":"info","message":"📝 Additional information added for question 22","service":"david-academy-api","timestamp":"2025-07-15 14:17:50"}
+{"level":"info","message":"POST /api/exam/question 201 1494ms","meta":{"req":{"headers":{"accept":"*/*","accept-encoding":"gzip, deflate, br","cache-control":"no-cache","connection":"keep-alive","content-length":"836","content-type":"application/json","host":"localhost:6040","postman-token":"8f7ca2af-2cf5-4f78-ad7e-82e08ec859f5","user-agent":"PostmanRuntime/7.44.1"},"httpVersion":"1.1","method":"POST","originalUrl":"/api/exam/question","query":{},"url":"/api/exam/question"},"res":{"statusCode":201},"responseTime":1494},"service":"david-academy-api","timestamp":"2025-07-15 14:17:50"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 14:18:11"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 14:18:11"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 14:18:12"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 14:18:14"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 14:18:14"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 14:18:15"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 14:18:24"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 14:18:25"}
+{"level":"info","message":"HTTP server enabled","service":"david-academy-api","timestamp":"2025-07-15 14:18:25"}
+{"level":"info","message":"Server listening on port 6040","service":"david-academy-api","timestamp":"2025-07-15 14:18:26"}
+{"level":"info","message":"✅ Connected to MySQL database","service":"david-academy-api","timestamp":"2025-07-15 14:18:26"}
+{"level":"info","message":"📥 Received request to add new question","service":"david-academy-api","timestamp":"2025-07-15 14:19:35"}
+{"level":"info","message":"✅ insertDropdownQuestion: Inserted question ID=3","service":"david-academy-api","timestamp":"2025-07-15 14:19:35"}
+{"level":"info","message":"✅ Added dropdown question with ID: 3","service":"david-academy-api","timestamp":"2025-07-15 14:19:35"}
+{"level":"info","message":"📄 insertTab: Tab \"Triage Note\" added for question ID=3","service":"david-academy-api","timestamp":"2025-07-15 14:19:36"}
+{"level":"info","message":"📄 Inserted tab \"Triage Note\" for question 3","service":"david-academy-api","timestamp":"2025-07-15 14:19:36"}
+{"level":"info","message":"📄 insertTab: Tab \"Vital Signs\" added for question ID=3","service":"david-academy-api","timestamp":"2025-07-15 14:19:36"}
+{"level":"info","message":"📄 Inserted tab \"Vital Signs\" for question 3","service":"david-academy-api","timestamp":"2025-07-15 14:19:36"}
+{"level":"info","message":"🔽 insertDropdownField: Added value \"asthma\" to field \"tachypnea\" (QID=3)","service":"david-academy-api","timestamp":"2025-07-15 14:19:36"}
+{"level":"info","message":"🔽 Dropdown field \"tachypnea\" -> \"asthma\"","service":"david-academy-api","timestamp":"2025-07-15 14:19:36"}
+{"level":"info","message":"🔽 insertDropdownField: Added value \"pneumonia\" to field \"tachypnea\" (QID=3)","service":"david-academy-api","timestamp":"2025-07-15 14:19:36"}
+{"level":"info","message":"🔽 Dropdown field \"tachypnea\" -> \"pneumonia\"","service":"david-academy-api","timestamp":"2025-07-15 14:19:36"}
+{"level":"info","message":"🔽 insertDropdownField: Added value \"hemothorax\" to field \"tachypnea\" (QID=3)","service":"david-academy-api","timestamp":"2025-07-15 14:19:36"}
+{"level":"info","message":"🔽 Dropdown field \"tachypnea\" -> \"hemothorax\"","service":"david-academy-api","timestamp":"2025-07-15 14:19:36"}
+{"level":"info","message":"🔽 insertDropdownField: Added value \"pneumothorax\" to field \"dull percussion\" (QID=3)","service":"david-academy-api","timestamp":"2025-07-15 14:19:37"}
+{"level":"info","message":"🔽 Dropdown field \"dull percussion\" -> \"pneumothorax\"","service":"david-academy-api","timestamp":"2025-07-15 14:19:37"}
+{"level":"info","message":"🔽 insertDropdownField: Added value \"hemothorax\" to field \"dull percussion\" (QID=3)","service":"david-academy-api","timestamp":"2025-07-15 14:19:37"}
+{"level":"info","message":"🔽 Dropdown field \"dull percussion\" -> \"hemothorax\"","service":"david-academy-api","timestamp":"2025-07-15 14:19:37"}
+{"level":"info","message":"🔽 insertDropdownField: Added value \"pleural effusion\" to field \"dull percussion\" (QID=3)","service":"david-academy-api","timestamp":"2025-07-15 14:19:37"}
+{"level":"info","message":"🔽 Dropdown field \"dull percussion\" -> \"pleural effusion\"","service":"david-academy-api","timestamp":"2025-07-15 14:19:37"}
+{"level":"info","message":"✅ insertDropdownAnswer: Correct answer \"asthma\" for field \"tachypnea\" added (QID=3)","service":"david-academy-api","timestamp":"2025-07-15 14:19:37"}
+{"level":"info","message":"✅ Answer for \"tachypnea\": asthma","service":"david-academy-api","timestamp":"2025-07-15 14:19:37"}
+{"level":"info","message":"✅ insertDropdownAnswer: Correct answer \"hemothorax\" for field \"dull percussion\" added (QID=3)","service":"david-academy-api","timestamp":"2025-07-15 14:19:38"}
+{"level":"info","message":"✅ Answer for \"dull percussion\": hemothorax","service":"david-academy-api","timestamp":"2025-07-15 14:19:38"}
+{"level":"error","message":"insertMCQExplanation: Failed to insert explanation: Error: ER_NO_REFERENCED_ROW_2: Cannot add or update a child row: a foreign key constraint fails (`u160357475_davidacademy`.`tb_explanation`, CONSTRAINT `tb_explanation_ibfk_1` FOREIGN KEY (`questionId`) REFERENCES `tb_mcq` (`id`) ON DELETE CASCADE)\n    at Sequence._packetToError (Z:\\lunar\\davidacademyBackend\\Davids_academy_backend\\node_modules\\mysql\\lib\\protocol\\sequences\\Sequence.js:47:14)\n    at Query.ErrorPacket (Z:\\lunar\\davidacademyBackend\\Davids_academy_backend\\node_modules\\mysql\\lib\\protocol\\sequences\\Query.js:79:18)\n    at Protocol._parsePacket (Z:\\lunar\\davidacademyBackend\\Davids_academy_backend\\node_modules\\mysql\\lib\\protocol\\Protocol.js:291:23)\n    at Parser._parsePacket (Z:\\lunar\\davidacademyBackend\\Davids_academy_backend\\node_modules\\mysql\\lib\\protocol\\Parser.js:433:10)\n    at Parser.write (Z:\\lunar\\davidacademyBackend\\Davids_academy_backend\\node_modules\\mysql\\lib\\protocol\\Parser.js:43:10)\n    at Protocol.write (Z:\\lunar\\davidacademyBackend\\Davids_academy_backend\\node_modules\\mysql\\lib\\protocol\\Protocol.js:38:16)\n    at Socket.<anonymous> (Z:\\lunar\\davidacademyBackend\\Davids_academy_backend\\node_modules\\mysql\\lib\\Connection.js:88:28)\n    at Socket.<anonymous> (Z:\\lunar\\davidacademyBackend\\Davids_academy_backend\\node_modules\\mysql\\lib\\Connection.js:526:10)\n    at Socket.emit (node:events:519:28)\n    at addChunk (node:internal/streams/readable:559:12)\n    --------------------\n    at Pool.query (Z:\\lunar\\davidacademyBackend\\Davids_academy_backend\\node_modules\\mysql\\lib\\Pool.js:199:23)\n    at node:internal/util:431:7\n    at new Promise (<anonymous>)\n    at Pool.<anonymous> (node:internal/util:417:12)\n    at Object.insertMcqExplanation (Z:\\lunar\\davidacademyBackend\\Davids_academy_backend\\model\\admin\\examModels.js:155:30)\n    at module.exports.createQuestion (Z:\\lunar\\davidacademyBackend\\Davids_academy_backend\\controller\\admin\\examControllers.js:232:29)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5) {\n  [stack]: 'Error: ER_NO_REFERENCED_ROW_2: Cannot add or update a child row: a foreign key constraint fails (`u160357475_davidacademy`.`tb_explanation`, CONSTRAINT `tb_explanation_ibfk_1` FOREIGN KEY (`questionId`) REFERENCES `tb_mcq` (`id`) ON DELETE CASCADE)\\n' +\n    '    at Sequence._packetToError (Z:\\\\lunar\\\\davidacademyBackend\\\\Davids_academy_backend\\\\node_modules\\\\mysql\\\\lib\\\\protocol\\\\sequences\\\\Sequence.js:47:14)\\n' +\n    '    at Query.ErrorPacket (Z:\\\\lunar\\\\davidacademyBackend\\\\Davids_academy_backend\\\\node_modules\\\\mysql\\\\lib\\\\protocol\\\\sequences\\\\Query.js:79:18)\\n' +\n    '    at Protocol._parsePacket (Z:\\\\lunar\\\\davidacademyBackend\\\\Davids_academy_backend\\\\node_modules\\\\mysql\\\\lib\\\\protocol\\\\Protocol.js:291:23)\\n' +\n    '    at Parser._parsePacket (Z:\\\\lunar\\\\davidacademyBackend\\\\Davids_academy_backend\\\\node_modules\\\\mysql\\\\lib\\\\protocol\\\\Parser.js:433:10)\\n' +\n    '    at Parser.write (Z:\\\\lunar\\\\davidacademyBackend\\\\Davids_academy_backend\\\\node_modules\\\\mysql\\\\lib\\\\protocol\\\\Parser.js:43:10)\\n' +\n    '    at Protocol.write (Z:\\\\lunar\\\\davidacademyBackend\\\\Davids_academy_backend\\\\node_modules\\\\mysql\\\\lib\\\\protocol\\\\Protocol.js:38:16)\\n' +\n    '    at Socket.<anonymous> (Z:\\\\lunar\\\\davidacademyBackend\\\\Davids_academy_backend\\\\node_modules\\\\mysql\\\\lib\\\\Connection.js:88:28)\\n' +\n    '    at Socket.<anonymous> (Z:\\\\lunar\\\\davidacademyBackend\\\\Davids_academy_backend\\\\node_modules\\\\mysql\\\\lib\\\\Connection.js:526:10)\\n' +\n    '    at Socket.emit (node:events:519:28)\\n' +\n    '    at addChunk (node:internal/streams/readable:559:12)\\n' +\n    '    --------------------\\n' +\n    '    at Pool.query (Z:\\\\lunar\\\\davidacademyBackend\\\\Davids_academy_backend\\\\node_modules\\\\mysql\\\\lib\\\\Pool.js:199:23)\\n' +\n    '    at node:internal/util:431:7\\n' +\n    '    at new Promise (<anonymous>)\\n' +\n    '    at Pool.<anonymous> (node:internal/util:417:12)\\n' +\n    '    at Object.insertMcqExplanation (Z:\\\\lunar\\\\davidacademyBackend\\\\Davids_academy_backend\\\\model\\\\admin\\\\examModels.js:155:30)\\n' +\n    '    at module.exports.createQuestion (Z:\\\\lunar\\\\davidacademyBackend\\\\Davids_academy_backend\\\\controller\\\\admin\\\\examControllers.js:232:29)\\n' +\n    '    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)',\n  [message]: 'ER_NO_REFERENCED_ROW_2: Cannot add or update a child row: a foreign key constraint fails (`u160357475_davidacademy`.`tb_explanation`, CONSTRAINT `tb_explanation_ibfk_1` FOREIGN KEY (`questionId`) REFERENCES `tb_mcq` (`id`) ON DELETE CASCADE)',\n  code: 'ER_NO_REFERENCED_ROW_2',\n  errno: 1452,\n  sqlMessage: 'Cannot add or update a child row: a foreign key constraint fails (`u160357475_davidacademy`.`tb_explanation`, CONSTRAINT `tb_explanation_ibfk_1` FOREIGN KEY (`questionId`) REFERENCES `tb_mcq` (`id`) ON DELETE CASCADE)',\n  sqlState: '23000',\n  index: 0,\n  sql: '\\n' +\n    '    INSERT INTO tb_explanation (questionId, heading, explanation, isDeleted, createdAt, updatedAt)\\n' +\n    \"    VALUES (3, 'Explanation', 'Epinephrine is the first-line treatment for anaphylaxis due to its rapid action in reversing severe allergic symptoms.', false, NOW(), NOW())\\n\" +\n    '  '\n}","service":"david-academy-api","timestamp":"2025-07-15 14:19:38"}
+{"level":"error","message":"❌ Failed to add question: ER_NO_REFERENCED_ROW_2: Cannot add or update a child row: a foreign key constraint fails (`u160357475_davidacademy`.`tb_explanation`, CONSTRAINT `tb_explanation_ibfk_1` FOREIGN KEY (`questionId`) REFERENCES `tb_mcq` (`id`) ON DELETE CASCADE)","service":"david-academy-api","timestamp":"2025-07-15 14:19:38"}
+{"level":"info","message":"POST /api/exam/question 500 2488ms","meta":{"req":{"headers":{"accept":"*/*","accept-encoding":"gzip, deflate, br","cache-control":"no-cache","connection":"keep-alive","content-length":"1491","content-type":"application/json","host":"localhost:6040","postman-token":"aa894c8d-4a19-449b-ac8a-fa1c463d2941","user-agent":"PostmanRuntime/7.44.1"},"httpVersion":"1.1","method":"POST","originalUrl":"/api/exam/question","query":{},"url":"/api/exam/question"},"res":{"statusCode":500},"responseTime":2488},"service":"david-academy-api","timestamp":"2025-07-15 14:19:38"}
+{"level":"info","message":"🔄 MySQL keep-alive ping successful","service":"david-academy-api","timestamp":"2025-07-15 14:23:26"}
+{"level":"info","message":"📥 Received request to add new question","service":"david-academy-api","timestamp":"2025-07-15 14:24:56"}
+{"level":"info","message":"✅ insertDropdownQuestion: Inserted question ID=4","service":"david-academy-api","timestamp":"2025-07-15 14:24:57"}
+{"level":"info","message":"✅ Added dropdown question with ID: 4","service":"david-academy-api","timestamp":"2025-07-15 14:24:57"}
+{"level":"info","message":"📄 insertTab: Tab \"Triage Note\" added for question ID=4","service":"david-academy-api","timestamp":"2025-07-15 14:24:57"}
+{"level":"info","message":"📄 Inserted tab \"Triage Note\" for question 4","service":"david-academy-api","timestamp":"2025-07-15 14:24:57"}
+{"level":"info","message":"📄 insertTab: Tab \"Vital Signs\" added for question ID=4","service":"david-academy-api","timestamp":"2025-07-15 14:24:57"}
+{"level":"info","message":"📄 Inserted tab \"Vital Signs\" for question 4","service":"david-academy-api","timestamp":"2025-07-15 14:24:57"}
+{"level":"info","message":"🔽 insertDropdownField: Added value \"asthma\" to field \"tachypnea\" (QID=4)","service":"david-academy-api","timestamp":"2025-07-15 14:24:58"}
+{"level":"info","message":"🔽 Dropdown field \"tachypnea\" -> \"asthma\"","service":"david-academy-api","timestamp":"2025-07-15 14:24:58"}
+{"level":"info","message":"🔽 insertDropdownField: Added value \"pneumonia\" to field \"tachypnea\" (QID=4)","service":"david-academy-api","timestamp":"2025-07-15 14:24:58"}
+{"level":"info","message":"🔽 Dropdown field \"tachypnea\" -> \"pneumonia\"","service":"david-academy-api","timestamp":"2025-07-15 14:24:58"}
+{"level":"info","message":"🔽 insertDropdownField: Added value \"hemothorax\" to field \"tachypnea\" (QID=4)","service":"david-academy-api","timestamp":"2025-07-15 14:24:58"}
+{"level":"info","message":"🔽 Dropdown field \"tachypnea\" -> \"hemothorax\"","service":"david-academy-api","timestamp":"2025-07-15 14:24:58"}
+{"level":"info","message":"🔽 insertDropdownField: Added value \"pneumothorax\" to field \"dull percussion\" (QID=4)","service":"david-academy-api","timestamp":"2025-07-15 14:24:58"}
+{"level":"info","message":"🔽 Dropdown field \"dull percussion\" -> \"pneumothorax\"","service":"david-academy-api","timestamp":"2025-07-15 14:24:58"}
+{"level":"info","message":"🔽 insertDropdownField: Added value \"hemothorax\" to field \"dull percussion\" (QID=4)","service":"david-academy-api","timestamp":"2025-07-15 14:24:58"}
+{"level":"info","message":"🔽 Dropdown field \"dull percussion\" -> \"hemothorax\"","service":"david-academy-api","timestamp":"2025-07-15 14:24:58"}
+{"level":"info","message":"🔽 insertDropdownField: Added value \"pleural effusion\" to field \"dull percussion\" (QID=4)","service":"david-academy-api","timestamp":"2025-07-15 14:24:58"}
+{"level":"info","message":"🔽 Dropdown field \"dull percussion\" -> \"pleural effusion\"","service":"david-academy-api","timestamp":"2025-07-15 14:24:58"}
+{"level":"info","message":"✅ insertDropdownAnswer: Correct answer \"asthma\" for field \"tachypnea\" added (QID=4)","service":"david-academy-api","timestamp":"2025-07-15 14:24:59"}
+{"level":"info","message":"✅ Answer for \"tachypnea\": asthma","service":"david-academy-api","timestamp":"2025-07-15 14:24:59"}
+{"level":"info","message":"✅ insertDropdownAnswer: Correct answer \"hemothorax\" for field \"dull percussion\" added (QID=4)","service":"david-academy-api","timestamp":"2025-07-15 14:24:59"}
+{"level":"info","message":"✅ Answer for \"dull percussion\": hemothorax","service":"david-academy-api","timestamp":"2025-07-15 14:24:59"}
+{"level":"error","message":"insertMCQExplanation: Failed to insert explanation: Error: ER_NO_REFERENCED_ROW_2: Cannot add or update a child row: a foreign key constraint fails (`u160357475_davidacademy`.`tb_explanation`, CONSTRAINT `tb_explanation_ibfk_1` FOREIGN KEY (`questionId`) REFERENCES `tb_mcq` (`id`) ON DELETE CASCADE)\n    at Sequence._packetToError (Z:\\lunar\\davidacademyBackend\\Davids_academy_backend\\node_modules\\mysql\\lib\\protocol\\sequences\\Sequence.js:47:14)\n    at Query.ErrorPacket (Z:\\lunar\\davidacademyBackend\\Davids_academy_backend\\node_modules\\mysql\\lib\\protocol\\sequences\\Query.js:79:18)\n    at Protocol._parsePacket (Z:\\lunar\\davidacademyBackend\\Davids_academy_backend\\node_modules\\mysql\\lib\\protocol\\Protocol.js:291:23)\n    at Parser._parsePacket (Z:\\lunar\\davidacademyBackend\\Davids_academy_backend\\node_modules\\mysql\\lib\\protocol\\Parser.js:433:10)\n    at Parser.write (Z:\\lunar\\davidacademyBackend\\Davids_academy_backend\\node_modules\\mysql\\lib\\protocol\\Parser.js:43:10)\n    at Protocol.write (Z:\\lunar\\davidacademyBackend\\Davids_academy_backend\\node_modules\\mysql\\lib\\protocol\\Protocol.js:38:16)\n    at Socket.<anonymous> (Z:\\lunar\\davidacademyBackend\\Davids_academy_backend\\node_modules\\mysql\\lib\\Connection.js:88:28)\n    at Socket.<anonymous> (Z:\\lunar\\davidacademyBackend\\Davids_academy_backend\\node_modules\\mysql\\lib\\Connection.js:526:10)\n    at Socket.emit (node:events:519:28)\n    at addChunk (node:internal/streams/readable:559:12)\n    --------------------\n    at Pool.query (Z:\\lunar\\davidacademyBackend\\Davids_academy_backend\\node_modules\\mysql\\lib\\Pool.js:199:23)\n    at node:internal/util:431:7\n    at new Promise (<anonymous>)\n    at Pool.<anonymous> (node:internal/util:417:12)\n    at Object.insertMcqExplanation (Z:\\lunar\\davidacademyBackend\\Davids_academy_backend\\model\\admin\\examModels.js:155:30)\n    at module.exports.createQuestion (Z:\\lunar\\davidacademyBackend\\Davids_academy_backend\\controller\\admin\\examControllers.js:232:29)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5) {\n  [stack]: 'Error: ER_NO_REFERENCED_ROW_2: Cannot add or update a child row: a foreign key constraint fails (`u160357475_davidacademy`.`tb_explanation`, CONSTRAINT `tb_explanation_ibfk_1` FOREIGN KEY (`questionId`) REFERENCES `tb_mcq` (`id`) ON DELETE CASCADE)\\n' +\n    '    at Sequence._packetToError (Z:\\\\lunar\\\\davidacademyBackend\\\\Davids_academy_backend\\\\node_modules\\\\mysql\\\\lib\\\\protocol\\\\sequences\\\\Sequence.js:47:14)\\n' +\n    '    at Query.ErrorPacket (Z:\\\\lunar\\\\davidacademyBackend\\\\Davids_academy_backend\\\\node_modules\\\\mysql\\\\lib\\\\protocol\\\\sequences\\\\Query.js:79:18)\\n' +\n    '    at Protocol._parsePacket (Z:\\\\lunar\\\\davidacademyBackend\\\\Davids_academy_backend\\\\node_modules\\\\mysql\\\\lib\\\\protocol\\\\Protocol.js:291:23)\\n' +\n    '    at Parser._parsePacket (Z:\\\\lunar\\\\davidacademyBackend\\\\Davids_academy_backend\\\\node_modules\\\\mysql\\\\lib\\\\protocol\\\\Parser.js:433:10)\\n' +\n    '    at Parser.write (Z:\\\\lunar\\\\davidacademyBackend\\\\Davids_academy_backend\\\\node_modules\\\\mysql\\\\lib\\\\protocol\\\\Parser.js:43:10)\\n' +\n    '    at Protocol.write (Z:\\\\lunar\\\\davidacademyBackend\\\\Davids_academy_backend\\\\node_modules\\\\mysql\\\\lib\\\\protocol\\\\Protocol.js:38:16)\\n' +\n    '    at Socket.<anonymous> (Z:\\\\lunar\\\\davidacademyBackend\\\\Davids_academy_backend\\\\node_modules\\\\mysql\\\\lib\\\\Connection.js:88:28)\\n' +\n    '    at Socket.<anonymous> (Z:\\\\lunar\\\\davidacademyBackend\\\\Davids_academy_backend\\\\node_modules\\\\mysql\\\\lib\\\\Connection.js:526:10)\\n' +\n    '    at Socket.emit (node:events:519:28)\\n' +\n    '    at addChunk (node:internal/streams/readable:559:12)\\n' +\n    '    --------------------\\n' +\n    '    at Pool.query (Z:\\\\lunar\\\\davidacademyBackend\\\\Davids_academy_backend\\\\node_modules\\\\mysql\\\\lib\\\\Pool.js:199:23)\\n' +\n    '    at node:internal/util:431:7\\n' +\n    '    at new Promise (<anonymous>)\\n' +\n    '    at Pool.<anonymous> (node:internal/util:417:12)\\n' +\n    '    at Object.insertMcqExplanation (Z:\\\\lunar\\\\davidacademyBackend\\\\Davids_academy_backend\\\\model\\\\admin\\\\examModels.js:155:30)\\n' +\n    '    at module.exports.createQuestion (Z:\\\\lunar\\\\davidacademyBackend\\\\Davids_academy_backend\\\\controller\\\\admin\\\\examControllers.js:232:29)\\n' +\n    '    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)',\n  [message]: 'ER_NO_REFERENCED_ROW_2: Cannot add or update a child row: a foreign key constraint fails (`u160357475_davidacademy`.`tb_explanation`, CONSTRAINT `tb_explanation_ibfk_1` FOREIGN KEY (`questionId`) REFERENCES `tb_mcq` (`id`) ON DELETE CASCADE)',\n  code: 'ER_NO_REFERENCED_ROW_2',\n  errno: 1452,\n  sqlMessage: 'Cannot add or update a child row: a foreign key constraint fails (`u160357475_davidacademy`.`tb_explanation`, CONSTRAINT `tb_explanation_ibfk_1` FOREIGN KEY (`questionId`) REFERENCES `tb_mcq` (`id`) ON DELETE CASCADE)',\n  sqlState: '23000',\n  index: 0,\n  sql: '\\n' +\n    '    INSERT INTO tb_explanation (questionId, heading, explanation, isDeleted, createdAt, updatedAt)\\n' +\n    \"    VALUES (4, 'Explanation', 'Epinephrine is the first-line treatment for anaphylaxis due to its rapid action in reversing severe allergic symptoms.', false, NOW(), NOW())\\n\" +\n    '  '\n}","service":"david-academy-api","timestamp":"2025-07-15 14:24:59"}
+{"level":"error","message":"❌ Failed to add question: ER_NO_REFERENCED_ROW_2: Cannot add or update a child row: a foreign key constraint fails (`u160357475_davidacademy`.`tb_explanation`, CONSTRAINT `tb_explanation_ibfk_1` FOREIGN KEY (`questionId`) REFERENCES `tb_mcq` (`id`) ON DELETE CASCADE)","service":"david-academy-api","timestamp":"2025-07-15 14:24:59"}
+{"level":"info","message":"POST /api/exam/question 500 2845ms","meta":{"req":{"headers":{"accept":"*/*","accept-encoding":"gzip, deflate, br","cache-control":"no-cache","connection":"keep-alive","content-length":"1491","content-type":"application/json","host":"localhost:6040","postman-token":"154fb4a0-b6a1-4f18-aed6-964a24b8fc89","user-agent":"PostmanRuntime/7.44.1"},"httpVersion":"1.1","method":"POST","originalUrl":"/api/exam/question","query":{},"url":"/api/exam/question"},"res":{"statusCode":500},"responseTime":2845},"service":"david-academy-api","timestamp":"2025-07-15 14:24:59"}
+{"level":"info","message":"📥 Received request to add new question","service":"david-academy-api","timestamp":"2025-07-15 14:27:36"}
+{"level":"info","message":"✅ insertDropdownQuestion: Inserted question ID=5","service":"david-academy-api","timestamp":"2025-07-15 14:27:36"}
+{"level":"info","message":"✅ Added dropdown question with ID: 5","service":"david-academy-api","timestamp":"2025-07-15 14:27:36"}
+{"level":"info","message":"📄 insertTab: Tab \"Triage Note\" added for question ID=5","service":"david-academy-api","timestamp":"2025-07-15 14:27:36"}
+{"level":"info","message":"📄 Inserted tab \"Triage Note\" for question 5","service":"david-academy-api","timestamp":"2025-07-15 14:27:36"}
+{"level":"info","message":"📄 insertTab: Tab \"Vital Signs\" added for question ID=5","service":"david-academy-api","timestamp":"2025-07-15 14:27:37"}
+{"level":"info","message":"📄 Inserted tab \"Vital Signs\" for question 5","service":"david-academy-api","timestamp":"2025-07-15 14:27:37"}
+{"level":"info","message":"🔽 insertDropdownField: Added value \"asthma\" to field \"tachypnea\" (QID=5)","service":"david-academy-api","timestamp":"2025-07-15 14:27:37"}
+{"level":"info","message":"🔽 Dropdown field \"tachypnea\" -> \"asthma\"","service":"david-academy-api","timestamp":"2025-07-15 14:27:37"}
+{"level":"info","message":"🔽 insertDropdownField: Added value \"pneumonia\" to field \"tachypnea\" (QID=5)","service":"david-academy-api","timestamp":"2025-07-15 14:27:37"}
+{"level":"info","message":"🔽 Dropdown field \"tachypnea\" -> \"pneumonia\"","service":"david-academy-api","timestamp":"2025-07-15 14:27:37"}
+{"level":"info","message":"🔽 insertDropdownField: Added value \"hemothorax\" to field \"tachypnea\" (QID=5)","service":"david-academy-api","timestamp":"2025-07-15 14:27:37"}
+{"level":"info","message":"🔽 Dropdown field \"tachypnea\" -> \"hemothorax\"","service":"david-academy-api","timestamp":"2025-07-15 14:27:37"}
+{"level":"info","message":"🔽 insertDropdownField: Added value \"pneumothorax\" to field \"dull percussion\" (QID=5)","service":"david-academy-api","timestamp":"2025-07-15 14:27:37"}
+{"level":"info","message":"🔽 Dropdown field \"dull percussion\" -> \"pneumothorax\"","service":"david-academy-api","timestamp":"2025-07-15 14:27:37"}
+{"level":"info","message":"🔽 insertDropdownField: Added value \"hemothorax\" to field \"dull percussion\" (QID=5)","service":"david-academy-api","timestamp":"2025-07-15 14:27:38"}
+{"level":"info","message":"🔽 Dropdown field \"dull percussion\" -> \"hemothorax\"","service":"david-academy-api","timestamp":"2025-07-15 14:27:38"}
+{"level":"info","message":"🔽 insertDropdownField: Added value \"pleural effusion\" to field \"dull percussion\" (QID=5)","service":"david-academy-api","timestamp":"2025-07-15 14:27:38"}
+{"level":"info","message":"🔽 Dropdown field \"dull percussion\" -> \"pleural effusion\"","service":"david-academy-api","timestamp":"2025-07-15 14:27:38"}
+{"level":"info","message":"✅ insertDropdownAnswer: Correct answer \"asthma\" for field \"tachypnea\" added (QID=5)","service":"david-academy-api","timestamp":"2025-07-15 14:27:38"}
+{"level":"info","message":"✅ Answer for \"tachypnea\": asthma","service":"david-academy-api","timestamp":"2025-07-15 14:27:38"}
+{"level":"info","message":"✅ insertDropdownAnswer: Correct answer \"hemothorax\" for field \"dull percussion\" added (QID=5)","service":"david-academy-api","timestamp":"2025-07-15 14:27:38"}
+{"level":"info","message":"✅ Answer for \"dull percussion\": hemothorax","service":"david-academy-api","timestamp":"2025-07-15 14:27:38"}
+{"level":"info","message":"insertMCQExplanation: Inserted explanation for questionId=5","service":"david-academy-api","timestamp":"2025-07-15 14:27:38"}
+{"level":"info","message":"📝 Explanation added for question 5","service":"david-academy-api","timestamp":"2025-07-15 14:27:38"}
+{"level":"info","message":"insertAdditionalInfo: Inserted info for questionId=5","service":"david-academy-api","timestamp":"2025-07-15 14:27:38"}
+{"level":"info","message":"📝 Additional information added for question 5","service":"david-academy-api","timestamp":"2025-07-15 14:27:38"}
+{"level":"info","message":"POST /api/exam/question 201 2227ms","meta":{"req":{"headers":{"accept":"*/*","accept-encoding":"gzip, deflate, br","cache-control":"no-cache","connection":"keep-alive","content-length":"1491","content-type":"application/json","host":"localhost:6040","postman-token":"47bbb0f4-13b3-4719-bdab-ed25e4d15f21","user-agent":"PostmanRuntime/7.44.1"},"httpVersion":"1.1","method":"POST","originalUrl":"/api/exam/question","query":{},"url":"/api/exam/question"},"res":{"statusCode":201},"responseTime":2227},"service":"david-academy-api","timestamp":"2025-07-15 14:27:38"}

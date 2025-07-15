@@ -148,7 +148,7 @@ async function insertMcqOptions(questionId, optionText) {
  */
 async function insertMcqExplanation(questionId, heading, explanation) {
     const sql = `
-    INSERT INTO tb_mcqExplanation (questionId, heading, explanation, isDeleted, createdAt, updatedAt)
+    INSERT INTO tb_explanation (questionId, heading, explanation, isDeleted, createdAt, updatedAt)
     VALUES (?, ?, ?, false, NOW(), NOW())
   `;
     try {
@@ -172,7 +172,7 @@ async function insertMcqExplanation(questionId, heading, explanation) {
  */
 async function insertAdditionalInfo(questionId, info, image = null) {
     const sql = `
-    INSERT INTO tb_mcqAdditionalInfo (questionId, info, image, isDeleted, createdAt, updatedAt)
+    INSERT INTO tb_additionalInfo (questionId, info, image, isDeleted, createdAt, updatedAt)
     VALUES (?, ?, ?, false, NOW(), NOW())
   `;
     try {
@@ -184,6 +184,79 @@ async function insertAdditionalInfo(questionId, info, image = null) {
         throw error;
     }
 }
+/**
+ * Inserts a new dropdown question into `tb_dropdownQuestion`.
+ * @param {string} question - The question text.
+ * @returns {Promise<object>} Result of the INSERT query.
+ */
+async function insertDropdownQuestion(question) {
+    const sql = `INSERT INTO tb_dropdownQuestion (question) VALUES (?)`;
+    try {
+        const result = await query(sql, [question]);
+        logger.info(`✅ insertDropdownQuestion: Inserted question ID=${result.insertId}`);
+        return result;
+    } catch (err) {
+        logger.error(`❌ insertDropdownQuestion: Failed to insert question - ${err.message}`);
+        throw err;
+    }
+}
+
+/**
+ * Inserts a tab for a dropdown question into `tb_DropdownQuestionTabs`.
+ * @param {number} questionId - The question's ID.
+ * @param {string} tabKey - Tab label.
+ * @param {string} tabValue - Tab content.
+ * @returns {Promise<object>} Result of the INSERT query.
+ */
+async function insertTab(questionId, tabKey, tabValue) {
+    const sql = `INSERT INTO tb_DropdownQuestionTabs (questionId, tabKey, tabValue) VALUES (?, ?, ?)`;
+    try {
+        const result = await query(sql, [questionId, tabKey, tabValue]);
+        logger.info(`📄 insertTab: Tab "${tabKey}" added for question ID=${questionId}`);
+        return result;
+    } catch (err) {
+        logger.error(`❌ insertTab: Failed for question ID=${questionId}, tabKey=${tabKey} - ${err.message}`);
+        throw err;
+    }
+}
+
+/**
+ * Inserts dropdown options for a specific field into `tb_dropdowns`.
+ * @param {number} questionId - The related question ID.
+ * @param {string} dropdownField - The dropdown label.
+ * @param {string} dropDownValue - The selectable value.
+ * @returns {Promise<object>} Result of the INSERT query.
+ */
+async function insertDropdownField(questionId, dropdownField, dropDownValue) {
+    const sql = `INSERT INTO tb_dropdowns (questionId, dropdownField, dropDownValue) VALUES (?, ?, ?)`;
+    try {
+        const result = await query(sql, [questionId, dropdownField, dropDownValue]);
+        logger.info(`🔽 insertDropdownField: Added value "${dropDownValue}" to field "${dropdownField}" (QID=${questionId})`);
+        return result;
+    } catch (err) {
+        logger.error(`❌ insertDropdownField: Failed to insert value "${dropDownValue}" - ${err.message}`);
+        throw err;
+    }
+}
+
+/**
+ * Inserts the correct answer for a dropdown into `tb_dropdownAnswer`.
+ * @param {number} questionId - Question ID.
+ * @param {string} dropdownField - The dropdown label.
+ * @param {string} dropdownValue - The correct value.
+ * @returns {Promise<object>} Result of the INSERT query.
+ */
+async function insertDropdownAnswer(questionId, dropdownField, dropdownValue) {
+    const sql = `INSERT INTO tb_dropdownAnswer (questionId, dropdownField, dropdownValue) VALUES (?, ?, ?)`;
+    try {
+        const result = await query(sql, [questionId, dropdownField, dropdownValue]);
+        logger.info(`✅ insertDropdownAnswer: Correct answer "${dropdownValue}" for field "${dropdownField}" added (QID=${questionId})`);
+        return result;
+    } catch (err) {
+        logger.error(`❌ insertDropdownAnswer: Failed for field "${dropdownField}" - ${err.message}`);
+        throw err;
+    }
+}
 module.exports = {
     insertQuestionType,
     updateQuestionType,
@@ -191,5 +264,9 @@ module.exports = {
     insertMcqQuestion,
     insertMcqOptions,
     insertMcqExplanation,
-    insertAdditionalInfo
+    insertAdditionalInfo,
+    insertDropdownQuestion,
+    insertTab,
+    insertDropdownField,
+    insertDropdownAnswer
 };

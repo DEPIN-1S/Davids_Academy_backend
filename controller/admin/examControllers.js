@@ -130,15 +130,6 @@ module.exports.createQuestion = async (req, res) => {
         // }
         const {
             questionType,
-            question,
-            answer,
-            difficulty,
-            subject,
-            lesson,
-            clientNeedArea,
-            clientNeedTopic,
-            exhibit,
-            options,
             explanationHeading,
             explanationText,
             info,
@@ -147,6 +138,16 @@ module.exports.createQuestion = async (req, res) => {
 
         // check for questionType
         if (questionType === 'MCQ') {
+            const { question,
+                answer,
+                difficulty,
+                subject,
+                lesson,
+                clientNeedArea,
+                clientNeedTopic,
+                exhibit,
+                options,
+            } = req.body
             // Insert into tb_mcq
             const mcqResult = await model.insertMcqQuestion({
                 question,
@@ -179,24 +180,80 @@ module.exports.createQuestion = async (req, res) => {
             }
             return res.status(201).json({
                 result: true,
-                message: 'MCQ Question added successfully',
-                questionId,
-                question,
-                answer,
-                difficulty,
-                subject,
-                lesson,
-                clientNeedArea,
-                clientNeedTopic,
-                exhibit,
-                options,
-                explanationHeading,
-                explanationText,
-                info,
-                infoImage
+                message: 'MCQ question added successfully',
+                data: {
+                    questionId,
+                    question,
+                    answer,
+                    difficulty,
+                    subject,
+                    lesson,
+                    clientNeedArea,
+                    clientNeedTopic,
+                    exhibit,
+                    options,
+                    explanationHeading,
+                    explanationText,
+                    info,
+                    infoImage
+                }
             });
         }
+        if (questionType === 'Dropdown') {
+            const {
+                question,
+                tabs,
+                dropdowns,
+                answers
+            } = req.body;
+            // Insert question into tb_dropdownQuestion
+            const questionResult = await model.insertDropdownQuestion(question);
+            const questionId = questionResult.insertId;
+            logger.info(`✅ Added dropdown question with ID: ${questionId}`);
+            // Insert tabs into tb_DropdownQuestionTabs
+            for (const tab of tabs) {
+                await model.insertTab(questionId, tab.tabKey, tab.tabValue);
+                logger.info(`📄 Inserted tab "${tab.tabKey}" for question ${questionId}`);
+            }
+            // Insert dropdown fields into tb_dropdowns
+            for (const dropdown of dropdowns) {
+                for (const value of dropdown.dropDownValue) {
+                    await model.insertDropdownField(questionId, dropdown.dropdownField, value);
+                    logger.info(`🔽 Dropdown field "${dropdown.dropdownField}" -> "${value}"`);
+                }
+            }
+            // Insert correct answers into tb_dropdownAnswer
+            for (const ans of answers) {
+                await model.insertDropdownAnswer(questionId, ans.dropdownField, ans.dropdownValue);
+                logger.info(`✅ Answer for "${ans.dropdownField}": ${ans.dropdownValue}`);
+            }
+            // Insert explanation into tb_mcqExplanation
+            if (explanationText) {
+                await model.insertMcqExplanation(questionId, explanationHeading, explanationText);
+                logger.info(`📝 Explanation added for question ${questionId}`);
+            }
+            if (info) {
+                await model.insertAdditionalInfo(questionId, info, infoImage);
+                logger.info(`📝 Additional information added for question ${questionId}`);
+            }
+            return res.status(201).json({
+                result: true,
+                message: "Dropdown question created successfully",
+                data: {
+                    questionId,
+                    question,
+                    tabs,
+                    dropdowns,
+                    answers
+                }
 
+            });
+        }
+        if (questionType === 'Drag Drop') { }
+        if (questionType === 'Multiple Radio') { }
+        if (questionType === 'Sorting') { }
+        if (questionType === 'Sentence Highlight') { }
+        if (questionType === 'Dropdown and Sort') { }
     } catch (error) {
         logger.error(`❌ Failed to add question: ${error.message}`);
         return res.status(500).json({

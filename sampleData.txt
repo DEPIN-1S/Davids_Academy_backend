@@ -1,0 +1,69 @@
+MCQ questions
+{
+    "questionType": "MCQ",
+    "question": "Which of the following is the primary treatment for anaphylaxis?",
+    "answer": "Epinephrine",
+    "difficulty": "Medium",
+    "subject": 1,
+    "lesson": 3,
+    "clientNeedArea": 2,
+    "clientNeedTopic": 5,
+    "exhibit": "https://example.com/exhibits/anaphylaxis-chart.png",
+    "options": [
+        "Epinephrine",
+        "Diphenhydramine",
+        "Hydrocortisone",
+        "Albuterol"
+    ],
+    "explanationHeading": "Explanation",
+    "explanationText": "Epinephrine is the first-line treatment for anaphylaxis due to its rapid action in reversing severe allergic symptoms.",
+    "info": "Patients with a history of severe allergies should carry an epinephrine auto-injector at all times.",
+    "infoImage": "https://example.com/images/epipen-instruction.png"
+}
+Dropdown question
+{
+    "questionType": "Dropdown",
+    "question": "Match each clinical symptom with the appropriate diagnosis.",
+    "tabs": [
+        {
+            "tabKey": "Triage Note",
+            "tabValue": "The patient presents with chest pain and shortness of breath..."
+        },
+        {
+            "tabKey": "Vital Signs",
+            "tabValue": "BP: 110/70, HR: 98 bpm, SpO2: 92% on room air."
+        }
+    ],
+    "dropdowns": [
+        {
+            "dropdownField": "tachypnea",
+            "dropDownValue": [
+                "asthma",
+                "pneumonia",
+                "hemothorax"
+            ]
+        },
+        {
+            "dropdownField": "dull percussion",
+            "dropDownValue": [
+                "pneumothorax",
+                "hemothorax",
+                "pleural effusion"
+            ]
+        }
+    ],
+    "answers": [
+        {
+            "dropdownField": "tachypnea",
+            "dropdownValue": "asthma"
+        },
+        {
+            "dropdownField": "dull percussion",
+            "dropdownValue": "hemothorax"
+        }
+    ],
+    "explanationHeading": "Explanation",
+    "explanationText": "Epinephrine is the first-line treatment for anaphylaxis due to its rapid action in reversing severe allergic symptoms.",
+    "info": "Patients with a history of severe allergies should carry an epinephrine auto-injector at all times.",
+    "infoImage": "https://example.com/images/epipen-instruction.png"
+}
