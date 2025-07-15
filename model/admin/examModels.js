@@ -189,10 +189,21 @@ async function insertAdditionalInfo(questionId, info, image = null) {
  * @param {string} question - The question text.
  * @returns {Promise<object>} Result of the INSERT query.
  */
-async function insertDropdownQuestion(question) {
-    const sql = `INSERT INTO tb_questions (question) VALUES (?)`;
+
+async function insertDropdownQuestion(question, difficulty, subject, lesson, clientNeedArea, clientNeedTopic) {
+    const sql = `INSERT INTO tb_questions (question, difficulty, subject, lesson, clientNeedArea, clientNeedTopic) 
+                 VALUES (?, ?, ?, ?, ?, ?)`;
+
     try {
-        const result = await query(sql, [question]);
+        const result = await query(sql, [
+            question,
+            difficulty,
+            subject,
+            lesson,
+            clientNeedArea,
+            clientNeedTopic
+        ]);
+
         logger.info(`✅ insertDropdownQuestion: Inserted question ID=${result.insertId}`);
         return result;
     } catch (err) {
@@ -206,10 +217,22 @@ async function insertDropdownQuestion(question) {
   * @param {string} answer - The answer text.
  * @returns {Promise<object>} Result of the INSERT query.
  */
-async function insertSentenceQuestion(question, answer) {
-    const sql = `INSERT INTO tb_questions (question,answer) VALUES (?,?)`;
+
+async function insertSentenceQuestion(question, difficulty, subject, lesson, clientNeedArea, clientNeedTopic, answer) {
+    const sql = `INSERT INTO tb_questions (question, difficulty, subject, lesson, clientNeedArea, clientNeedTopic, answer) 
+                 VALUES (?, ?, ?, ?, ?, ?, ?)`;
+
     try {
-        const result = await query(sql, [question, answer]);
+        const result = await query(sql, [
+            question,
+            difficulty,
+            subject,
+            lesson,
+            clientNeedArea,
+            clientNeedTopic,
+            answer
+        ]);
+
         logger.info(`✅ insertSentenceQuestion: Inserted question ID=${result.insertId}`);
         return result;
     } catch (err) {

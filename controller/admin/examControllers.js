@@ -130,6 +130,11 @@ module.exports.createQuestion = async (req, res) => {
         // }
         const {
             questionType,
+            difficulty,
+            subject,
+            lesson,
+            clientNeedArea,
+            clientNeedTopic,
             explanationHeading,
             explanationText,
             info,
@@ -140,11 +145,6 @@ module.exports.createQuestion = async (req, res) => {
         if (questionType === 'MCQ') {
             const { question,
                 answer,
-                difficulty,
-                subject,
-                lesson,
-                clientNeedArea,
-                clientNeedTopic,
                 exhibit,
                 options,
             } = req.body
@@ -207,7 +207,11 @@ module.exports.createQuestion = async (req, res) => {
                 answers
             } = req.body;
             // Insert question into tb_dropdownQuestion
-            const questionResult = await model.insertDropdownQuestion(question);
+            const questionResult = await model.insertDropdownQuestion(question, difficulty,
+                subject,
+                lesson,
+                clientNeedArea,
+                clientNeedTopic,);
             const questionId = questionResult.insertId;
             logger.info(`✅ Added dropdown question with ID: ${questionId}`);
             // Insert tabs into tb_DropdownQuestionTabs
@@ -245,6 +249,11 @@ module.exports.createQuestion = async (req, res) => {
                     tabs,
                     dropdowns,
                     answers,
+                    difficulty,
+                    subject,
+                    lesson,
+                    clientNeedArea,
+                    clientNeedTopic,
                     explanationHeading,
                     explanationText,
                     info,
@@ -261,7 +270,11 @@ module.exports.createQuestion = async (req, res) => {
                 sortItems
             } = req.body;
             // Insert question into tb_dropdownQuestion
-            const questionResult = await model.insertDropdownQuestion(question);
+            const questionResult = await model.insertDropdownQuestion(question, difficulty,
+                subject,
+                lesson,
+                clientNeedArea,
+                clientNeedTopic);
             const questionId = questionResult.insertId;
             logger.info(`✅ Added dropdown question with ID: ${questionId}`);
             // Insert tabs into tb_DropdownQuestionTabs
@@ -285,6 +298,11 @@ module.exports.createQuestion = async (req, res) => {
                     questionId,
                     question,
                     sortItems,
+                    difficulty,
+                    subject,
+                    lesson,
+                    clientNeedArea,
+                    clientNeedTopic,
                     explanationHeading,
                     explanationText,
                     info,
@@ -300,7 +318,11 @@ module.exports.createQuestion = async (req, res) => {
                 answer
             } = req.body;
             // Insert question into tb_dropdownQuestion
-            const questionResult = await model.insertSentenceQuestion(question, answer);
+            const questionResult = await model.insertSentenceQuestion(question, difficulty,
+                subject,
+                lesson,
+                clientNeedArea,
+                clientNeedTopic, answer);
             const questionId = questionResult.insertId;
             logger.info(`✅ Added dropdown question with ID: ${questionId}`);
             // Insert tabs into tb_DropdownQuestionTabs
@@ -321,6 +343,11 @@ module.exports.createQuestion = async (req, res) => {
                     question,
                     answer,
                     tabs,
+                    difficulty,
+                    subject,
+                    lesson,
+                    clientNeedArea,
+                    clientNeedTopic,
                     explanationHeading,
                     explanationText,
                     info,
