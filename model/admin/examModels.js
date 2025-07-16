@@ -189,14 +189,54 @@ async function insertAdditionalInfo(questionId, info, image = null) {
  * @param {string} question - The question text.
  * @returns {Promise<object>} Result of the INSERT query.
  */
-async function insertDropdownQuestion(question) {
-    const sql = `INSERT INTO tb_questions (question) VALUES (?)`;
+
+async function insertDropdownQuestion(question, difficulty, subject, lesson, clientNeedArea, clientNeedTopic) {
+    const sql = `INSERT INTO tb_questions (question, difficulty, subject, lesson, clientNeedArea, clientNeedTopic) 
+                 VALUES (?, ?, ?, ?, ?, ?)`;
+
     try {
-        const result = await query(sql, [question]);
+        const result = await query(sql, [
+            question,
+            difficulty,
+            subject,
+            lesson,
+            clientNeedArea,
+            clientNeedTopic
+        ]);
+
         logger.info(`✅ insertDropdownQuestion: Inserted question ID=${result.insertId}`);
         return result;
     } catch (err) {
         logger.error(`❌ insertDropdownQuestion: Failed to insert question - ${err.message}`);
+        throw err;
+    }
+}
+/**
+ * Inserts a new dropdown question into `tb_dropdownQuestion`.
+ * @param {string} question - The question text.
+  * @param {string} answer - The answer text.
+ * @returns {Promise<object>} Result of the INSERT query.
+ */
+
+async function insertSentenceQuestion(question, difficulty, subject, lesson, clientNeedArea, clientNeedTopic, answer) {
+    const sql = `INSERT INTO tb_questions (question, difficulty, subject, lesson, clientNeedArea, clientNeedTopic, answer) 
+                 VALUES (?, ?, ?, ?, ?, ?, ?)`;
+
+    try {
+        const result = await query(sql, [
+            question,
+            difficulty,
+            subject,
+            lesson,
+            clientNeedArea,
+            clientNeedTopic,
+            answer
+        ]);
+
+        logger.info(`✅ insertSentenceQuestion: Inserted question ID=${result.insertId}`);
+        return result;
+    } catch (err) {
+        logger.error(`❌ insertSentenceQuestion: Failed to insert question - ${err.message}`);
         throw err;
     }
 }
@@ -215,6 +255,24 @@ async function insertTab(questionId, tabKey, tabValue) {
         return result;
     } catch (err) {
         logger.error(`❌ insertTab: Failed for question ID=${questionId}, tabKey=${tabKey} - ${err.message}`);
+        throw err;
+    }
+}
+/**
+ * Inserts sort item for a sorting question into `tb_sortItems`.
+ * @param {number} questionId - The question's ID.
+ * @param {string} sortItem - Tab label.
+ * @param {string} itemOrder - Tab content.
+ * @returns {Promise<object>} Result of the INSERT query.
+ */
+async function insertSortItems(questionId, sortItem, itemOrder) {
+    const sql = `INSERT INTO tb_sortItems (questionId, sortItem, itemOrder) VALUES (?, ?, ?)`;
+    try {
+        const result = await query(sql, [questionId, sortItem, itemOrder]);
+        logger.info(`📄 insertTab: Tab "${sortItem}" added for question ID=${questionId}`);
+        return result;
+    } catch (err) {
+        logger.error(`❌ insertTab: Failed for question ID=${questionId}, tabKey=${sortItem} - ${err.message}`);
         throw err;
     }
 }
@@ -267,5 +325,7 @@ module.exports = {
     insertDropdownQuestion,
     insertTab,
     insertDropdownField,
-    insertDropdownAnswer
+    insertDropdownAnswer,
+    insertSortItems,
+    insertSentenceQuestion
 };

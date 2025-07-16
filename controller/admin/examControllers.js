@@ -130,6 +130,11 @@ module.exports.createQuestion = async (req, res) => {
         // }
         const {
             questionType,
+            difficulty,
+            subject,
+            lesson,
+            clientNeedArea,
+            clientNeedTopic,
             explanationHeading,
             explanationText,
             info,
@@ -140,11 +145,6 @@ module.exports.createQuestion = async (req, res) => {
         if (questionType === 'MCQ') {
             const { question,
                 answer,
-                difficulty,
-                subject,
-                lesson,
-                clientNeedArea,
-                clientNeedTopic,
                 exhibit,
                 options,
             } = req.body
@@ -207,7 +207,11 @@ module.exports.createQuestion = async (req, res) => {
                 answers
             } = req.body;
             // Insert question into tb_dropdownQuestion
-            const questionResult = await model.insertDropdownQuestion(question);
+            const questionResult = await model.insertDropdownQuestion(question, difficulty,
+                subject,
+                lesson,
+                clientNeedArea,
+                clientNeedTopic,);
             const questionId = questionResult.insertId;
             logger.info(`✅ Added dropdown question with ID: ${questionId}`);
             // Insert tabs into tb_DropdownQuestionTabs
@@ -245,6 +249,11 @@ module.exports.createQuestion = async (req, res) => {
                     tabs,
                     dropdowns,
                     answers,
+                    difficulty,
+                    subject,
+                    lesson,
+                    clientNeedArea,
+                    clientNeedTopic,
                     explanationHeading,
                     explanationText,
                     info,
@@ -255,8 +264,98 @@ module.exports.createQuestion = async (req, res) => {
         }
         if (questionType === 'Drag Drop') { }
         if (questionType === 'Multiple Radio') { }
-        if (questionType === 'Sorting') { }
-        if (questionType === 'Sentence Highlight') { }
+        if (questionType === 'Sorting') {
+            const {
+                question,
+                sortItems
+            } = req.body;
+            // Insert question into tb_dropdownQuestion
+            const questionResult = await model.insertDropdownQuestion(question, difficulty,
+                subject,
+                lesson,
+                clientNeedArea,
+                clientNeedTopic);
+            const questionId = questionResult.insertId;
+            logger.info(`✅ Added dropdown question with ID: ${questionId}`);
+            // Insert tabs into tb_DropdownQuestionTabs
+            for (const item of sortItems) {
+                await model.insertSortItems(questionId, item.sortItem, item.itemOrder);
+                logger.info(`📄 Inserted sort items "${item.sortItem}" for question ${questionId}`);
+            }
+            // Insert explanation into tb_mcqExplanation
+            if (explanationText) {
+                await model.insertMcqExplanation(questionId, explanationHeading, explanationText);
+                logger.info(`📝 Explanation added for question ${questionId}`);
+            }
+            if (info) {
+                await model.insertAdditionalInfo(questionId, info, infoImage);
+                logger.info(`📝 Additional information added for question ${questionId}`);
+            }
+            return res.status(201).json({
+                result: true,
+                message: "Sorting question created successfully",
+                data: {
+                    questionId,
+                    question,
+                    sortItems,
+                    difficulty,
+                    subject,
+                    lesson,
+                    clientNeedArea,
+                    clientNeedTopic,
+                    explanationHeading,
+                    explanationText,
+                    info,
+                    infoImage
+                }
+
+            });
+        }
+        if (questionType === 'Sentence Highlight') {
+            const {
+                question,
+                tabs,
+                answer
+            } = req.body;
+            // Insert question into tb_dropdownQuestion
+            const questionResult = await model.insertSentenceQuestion(question, difficulty,
+                subject,
+                lesson,
+                clientNeedArea,
+                clientNeedTopic, answer);
+            const questionId = questionResult.insertId;
+            logger.info(`✅ Added dropdown question with ID: ${questionId}`);
+            // Insert tabs into tb_DropdownQuestionTabs
+            for (const tab of tabs) {
+                await model.insertTab(questionId, tab.tabKey, tab.tabValue);
+                logger.info(`📄 Inserted tab "${tab.tabKey}" for question ${questionId}`);
+            }
+            // Insert explanation into tb_mcqExplanation
+            await model.insertMcqExplanation(questionId, explanationHeading, explanationText);
+            logger.info(`📝 Explanation added for question ${questionId}`);
+            await model.insertAdditionalInfo(questionId, info, infoImage);
+            logger.info(`📝 Additional information added for question ${questionId}`);
+            return res.status(201).json({
+                result: true,
+                message: "Sentence Highlight question created successfully",
+                data: {
+                    questionId,
+                    question,
+                    answer,
+                    tabs,
+                    difficulty,
+                    subject,
+                    lesson,
+                    clientNeedArea,
+                    clientNeedTopic,
+                    explanationHeading,
+                    explanationText,
+                    info,
+                    infoImage
+                }
+
+            });
+        }
         if (questionType === 'Dropdown and Sort') { }
     } catch (error) {
         logger.error(`❌ Failed to add question: ${error.message}`);

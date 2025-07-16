@@ -24,6 +24,11 @@ Dropdown question
 {
     "questionType": "Dropdown",
     "question": "Match each clinical symptom with the appropriate diagnosis.",
+    "difficulty": "Medium",
+    "subject": 1,
+    "lesson": 3,
+    "clientNeedArea": 2,
+    "clientNeedTopic": 5,
     "tabs": [
         {
             "tabKey": "Triage Note",
@@ -66,4 +71,40 @@ Dropdown question
     "explanationText": "Epinephrine is the first-line treatment for anaphylaxis due to its rapid action in reversing severe allergic symptoms.",
     "info": "Patients with a history of severe allergies should carry an epinephrine auto-injector at all times.",
     "infoImage": "https://example.com/images/epipen-instruction.png"
+}
+Sorting question
+{
+  "questionType": "Sorting",
+  "question": "Arrange the steps in the correct order for performing tracheostomy suctioning.",
+  "difficulty": "Medium",
+  "subject": 1,
+  "lesson": 3,
+  "clientNeedArea": 2,
+  "clientNeedTopic": 5,
+  "sortItems": [
+    {
+      "sortItem": "Turn on the suction device and set appropriate pressure.",
+      "itemOrder": 1
+    },
+    {
+      "sortItem": "Don sterile gloves and prepare catheter.",
+      "itemOrder": 2
+    },
+    {
+      "sortItem": "Insert catheter without applying suction.",
+      "itemOrder": 3
+    },
+    {
+      "sortItem": "Apply suction while withdrawing the catheter slowly.",
+      "itemOrder": 4
+    },
+    {
+      "sortItem": "Reassess client's respiratory status.",
+      "itemOrder": 5
+    }
+  ],
+  "explanationHeading": "Explanation",
+  "explanationText": "Proper tracheostomy suctioning follows a systematic approach to ensure patient safety and effectiveness. The correct sequence maintains sterility, prevents hypoxia, and ensures adequate airway clearance.",
+  "info": "Tracheostomy suctioning should be performed using sterile technique with appropriate pressure settings (80-120 mmHg for adults) to prevent tissue trauma.",
+  "infoImage": "https://example.com/images/tracheostomy-suctioning.png"
 }
