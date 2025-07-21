@@ -44,4 +44,12 @@ route.put('/question/:id', updateQuestion);
  */
 route.patch('/question/:id', deleteQuestion);
 // Export the router to be used in the main app
+
+
+var{ListExamTypes,deleteExamTypes}= require('../controller/admin/questionTypes');
+
+route.get('/list/question-types',ListExamTypes)
+
+route.post('/delete/question-types',deleteExamTypes)
+
 module.exports = route;
