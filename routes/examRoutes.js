@@ -2,6 +2,8 @@
 var express = require('express');
 // Create a new router instance
 var route = express.Router();
+// const uploads = require('../uploads');
+const uploads = require('../utils/multer')
 const { questionTypeValidation } = require('../validations/examValidation');
 // Import controller functions for authentication
 const { createQuestionType, updateQuestionType, deleteQuestionType, createQuestion, updateQuestion, deleteQuestion } = require('../controller/admin/examControllers');
@@ -28,7 +30,7 @@ route.delete('/questionType/:id', questionTypeValidation, deleteQuestionType);
  * @desc    Validate and insert a question into the database
  * @access  Private
  */
-route.post('/question', createQuestion);
+route.post('/question', uploads.fields([{ name: 'infoimage', maxCount: 1 }]), createQuestion);
 /**
  * @route   PUT /question
  * @desc    update question into the database
@@ -42,4 +44,12 @@ route.put('/question/:id', updateQuestion);
  */
 route.patch('/question/:id', deleteQuestion);
 // Export the router to be used in the main app
+
+
+var{ListExamTypes,deleteExamTypes}= require('../controller/admin/questionTypes');
+
+route.get('/list/question-types',ListExamTypes)
+
+route.post('/delete/question-types',deleteExamTypes)
+
 module.exports = route;

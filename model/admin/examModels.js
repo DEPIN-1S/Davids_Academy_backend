@@ -96,10 +96,11 @@ async function insertMcqQuestion(data) {
       question, answer, difficulty, subject, lesson, clientNeedArea,
       clientNeedTopic, exhibit, isDeleted, createdAt, updatedAt
     )
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, false, NOW(), NOW())
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?,?, false, NOW(), NOW())
   `;
     const values = [
         data.question,
+        data.question_type_id,
         data.answer,
         data.difficulty,
         data.subject,
@@ -190,13 +191,14 @@ async function insertAdditionalInfo(questionId, info, image = null) {
  * @returns {Promise<object>} Result of the INSERT query.
  */
 
-async function insertDropdownQuestion(question, difficulty, subject, lesson, clientNeedArea, clientNeedTopic) {
-    const sql = `INSERT INTO tb_questions (question, difficulty, subject, lesson, clientNeedArea, clientNeedTopic) 
-                 VALUES (?, ?, ?, ?, ?, ?)`;
+async function insertDropdownQuestion(question,question_type_id, difficulty, subject, lesson, clientNeedArea, clientNeedTopic) {
+    const sql = `INSERT INTO tb_questions (question,question_type_id, difficulty, subject, lesson, clientNeedArea, clientNeedTopic) 
+                 VALUES (?, ?, ?, ?, ?, ?,?)`;
 
     try {
         const result = await query(sql, [
             question,
+            question_type_id,
             difficulty,
             subject,
             lesson,
@@ -218,13 +220,14 @@ async function insertDropdownQuestion(question, difficulty, subject, lesson, cli
  * @returns {Promise<object>} Result of the INSERT query.
  */
 
-async function insertSentenceQuestion(question, difficulty, subject, lesson, clientNeedArea, clientNeedTopic, answer) {
-    const sql = `INSERT INTO tb_questions (question, difficulty, subject, lesson, clientNeedArea, clientNeedTopic, answer) 
-                 VALUES (?, ?, ?, ?, ?, ?, ?)`;
+async function insertSentenceQuestion(question,question_type_id, difficulty, subject, lesson, clientNeedArea, clientNeedTopic, answer) {
+    const sql = `INSERT INTO tb_questions (question,question_type_id, difficulty, subject, lesson, clientNeedArea, clientNeedTopic, answer) 
+                 VALUES (?, ?, ?, ?, ?, ?, ?,?)`;
 
     try {
         const result = await query(sql, [
             question,
+            question_type_id,
             difficulty,
             subject,
             lesson,
@@ -314,6 +317,171 @@ async function insertDropdownAnswer(questionId, dropdownField, dropdownValue) {
         throw err;
     }
 }
+
+// ---------------------------------fill in the blanks------------------------//
+
+async function insertFillTheBlanksQuestion(question, question_type_id, answer, difficulty, subject, lesson, clientNeedArea, clientNeedTopic) {
+    const sql = `INSERT INTO tb_questions (question,question_type_id,answer, difficulty, subject, lesson, clientNeedArea, clientNeedTopic) 
+                 VALUES (?, ?, ?, ?, ?, ?,?,?)`;
+
+    try {
+        const result = await query(sql, [
+            question,
+            question_type_id,
+            answer,
+            difficulty,
+            subject,
+            lesson,
+            clientNeedArea,
+            clientNeedTopic
+        ]);
+
+        logger.info(`✅ insertFillTheBlanksQuestion: Inserted question ID=${result.insertId}`);
+        return result;
+    } catch (err) {
+        logger.error(`❌ insertFillTheBlanksQuestion: Failed to insert question - ${err.message}`);
+        throw err;
+    }
+}
+async function insertFillBlankQuestionContent(questionId, question_text, fill_blanks_answer, blank_or_not) {
+    const sql = `INSERT INTO tb_fillTheBlanks (question_id,question_text,answers,blankOrNot) VALUES (?,?,?,?)`;
+    try {
+        const result = await query(sql, [questionId, question_text, fill_blanks_answer, blank_or_not]);
+        logger.info(`insert FillTheBlanks Question content: Inserted question text for questionId=${questionId}`);
+        return result;
+    } catch (error) {
+        logger.error('FillTheBlanks Question content: Failed to insert question text for questionId=%d: %o', questionId, error);
+        throw error;
+    }
+}
+
+async function insertFillBlankQuestionOptionsHeading(questionId, option_heading) {
+    const sql = `INSERT INTO DragAndDrop_Headings (question_id,headings) VALUES (?,?)`;
+    try {
+        const result = await query(sql, [questionId, option_heading]);
+        logger.info(`insert FillTheBlanks Options DragAndDrop_Headings: Inserted question drag and option heading for questionId=${questionId}`);
+        return result;
+    } catch (error) {
+        logger.error('FillTheBlanks Question option DragAndDrop_Headings: Failed to insert question drag and option heading for questionId=%d: %o', questionId, error);
+        throw error;
+    }
+}
+
+
+async function insertFillBlankQuestionOptionsHeadingValues(questionId, heading_id, option_value) {
+    const sql = `INSERT INTO DragAndDrop_Headings_Options (question_id,headings_id,options_value) VALUES (?,?,?)`;
+    try {
+        const result = await query(sql, [questionId, heading_id, option_value]);
+        logger.info(`insert FillTheBlanks DragAndDrop_Headings_Options: Inserted question DragAndDrop_Headings_Options for questionId=${questionId}`);
+        return result;
+    } catch (error) {
+        logger.error('FillTheBlanks Question DragAndDrop_Headings_Options: Failed to insert question DragAndDrop_Headings_Options for questionId=%d: %o', questionId, error);
+        throw error;
+    }
+}
+
+
+
+// ---------------------------------Multiple Radio------------------------//
+
+async function insertMultipleRadioQuestion(question, question_type_id, difficulty, subject, lesson, clientNeedArea, clientNeedTopic) {
+    const sql = `INSERT INTO tb_questions (question,question_type_id, difficulty, subject, lesson, clientNeedArea, clientNeedTopic) 
+                 VALUES (?, ?, ?, ?, ?, ?, ?)`;
+
+    try {
+        const result = await query(sql, [
+            question,
+            question_type_id,
+            difficulty,
+            subject,
+            lesson,
+            clientNeedArea,
+            clientNeedTopic
+        ]);
+
+        logger.info(`✅ insertMultipleRadioQuestion: Inserted question ID=${result.insertId}`);
+        return result;
+    } catch (err) {
+        logger.error(`❌ insertMultipleRadioQuestion: Failed to insert question - ${err.message}`);
+        throw err;
+    }
+}
+async function insertMultipleRadioQuestionContent(questionId, question_text, question_answer) {
+    const sql = `INSERT INTO tb_MultipleRadio (question_id,client_findings,answer) VALUES (?,?,?)`;
+    try {
+        const result = await query(sql, [questionId, question_text, question_answer]);
+        logger.info(`insert MultipleRadio Question content: Inserted question text for questionId=${questionId}`);
+        return result;
+    } catch (error) {
+        logger.error('MultipleRadio Question content: Failed to insert question text for questionId=%d: %o', questionId, error);
+        throw error;
+    }
+}
+
+async function insertMultipleRadioOptions(questionId, option_value) {
+    const sql = `INSERT INTO tb_MultipleRadio_RadioOptions (question_id,options) VALUES (?,?)`;
+    try {
+        const result = await query(sql, [questionId, option_value]);
+        logger.info(`insert MultipleRadio radio Options: Inserted question option for questionId=${questionId}`);
+        return result;
+    } catch (error) {
+        logger.error('MultipleRadio radio option: Failed to insert question option for questionId=%d: %o', questionId, error);
+        throw error;
+    }
+}
+
+
+//--------------------------- Drag and Drop ------------------------------------------
+
+
+async function insertDragDropQuestion(question,question_type_id, drag_drop_content, difficulty, subject, lesson, clientNeedArea, clientNeedTopic) {
+    const sql = `INSERT INTO tb_questions (question,question_type_id,drag_drop_content, difficulty, subject, lesson, clientNeedArea, clientNeedTopic) 
+                 VALUES (?, ?, ?, ?, ?, ?, ?,?)`;
+
+    try {
+        const result = await query(sql, [
+            question,
+            question_type_id,
+            drag_drop_content,
+            difficulty,
+            subject,
+            lesson,
+            clientNeedArea,
+            clientNeedTopic
+        ]);
+
+        logger.info(`✅ insertMultipleRadioQuestion: Inserted question ID=${result.insertId}`);
+        return result;
+    } catch (err) {
+        logger.error(`❌ insertMultipleRadioQuestion: Failed to insert question - ${err.message}`);
+        throw err;
+    }
+}
+async function insertDragDropOptionsHeading(questionId, option_heading, question_answer) {
+    const sql = `INSERT INTO DragAndDrop_Headings (question_id,headings,drag_drop_answer) VALUES (?,?,?)`;
+    try {
+        const result = await query(sql, [questionId, option_heading, question_answer]);
+        logger.info(`insert DragAndDrop_Headings and answer: Inserted DragAndDrop_Headings and answer for questionId=${questionId}`);
+        return result;
+    } catch (error) {
+        logger.error('DragAndDrop_Headings and answer: Failed to insert DragAndDrop_Headings and answer for questionId=%d: %o', questionId, error);
+        throw error;
+    }
+}
+
+async function insertDragDropOptionsHeadingValues(questionId,heading_id, option_value) {
+    const sql = `INSERT INTO DragAndDrop_Headings_Options (question_id,headings_id,options_value) VALUES (?,?,?)`;
+    try {
+        const result = await query(sql, [questionId,heading_id, option_value]);
+        logger.info(`insert DragAndDrop_Headings_Options: Inserted DragAndDrop_Headings_Options for questionId=${questionId}`);
+        return result;
+    } catch (error) {
+        logger.error('DragAndDrop_Headings_Options: Failed to insert DragAndDrop_Headings_Options for questionId=%d: %o', questionId, error);
+        throw error;
+    }
+}
+
+
 module.exports = {
     insertQuestionType,
     updateQuestionType,
@@ -327,5 +495,15 @@ module.exports = {
     insertDropdownField,
     insertDropdownAnswer,
     insertSortItems,
-    insertSentenceQuestion
+    insertSentenceQuestion,
+    insertFillBlankQuestionContent,
+    insertFillTheBlanksQuestion,
+    insertFillBlankQuestionOptionsHeading,
+    insertFillBlankQuestionOptionsHeadingValues,
+    insertMultipleRadioQuestionContent,
+    insertMultipleRadioQuestion,
+    insertMultipleRadioOptions,
+    insertDragDropQuestion,
+    insertDragDropOptionsHeading,
+    insertDragDropOptionsHeadingValues
 };
