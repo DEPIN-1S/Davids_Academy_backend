@@ -1,6 +1,7 @@
 MCQ questions
 {
     "questionType": "MCQ",
+     "question_type_id":13,
     "question": "Which of the following is the primary treatment for anaphylaxis?",
     "answer": "Epinephrine",
     "difficulty": "Medium",
@@ -23,6 +24,7 @@ MCQ questions
 Dropdown question
 {
     "questionType": "Dropdown",
+     "question_type_id":13,
     "question": "Match each clinical symptom with the appropriate diagnosis.",
     "difficulty": "Medium",
     "subject": 1,
@@ -75,6 +77,7 @@ Dropdown question
 Sorting question
 {
   "questionType": "Sorting",
+   "question_type_id":13,
   "question": "Arrange the steps in the correct order for performing tracheostomy suctioning.",
   "difficulty": "Medium",
   "subject": 1,
@@ -242,5 +245,6 @@ Sorting question
 admin credentials
 {
   "email":"msambhunarayan@gmail.com", 
-  "password":"sambhu@12345"}
+  "password":"sambhu@12345"
+  }
 
