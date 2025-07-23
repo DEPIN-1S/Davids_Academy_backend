@@ -129,6 +129,7 @@ module.exports.createQuestion = async (req, res) => {
         //     });
         // }
         const {
+            question_type_id,
             questionType,
             difficulty,
             subject,
@@ -138,19 +139,32 @@ module.exports.createQuestion = async (req, res) => {
             explanationHeading,
             explanationText,
             info,
-            infoImage
+
         } = req.body;
 
+        console.log("files: ", req.files);
+
+        console.log("(req.files?.image? :", req.files?.infoimage);
+
+        const infoImageFile = req.files?.infoimage[0]?.filename;
+        console.log("infoImageFile:", infoImageFile);
+
+        const infoImage = infoImageFile ? `/uploads/questions/${infoImageFile}` : null;
+
         // check for questionType
-        if (questionType === 'MCQ') {
+        if (questionType.toLowerCase().trim() === 'mcq') {
             const { question,
                 answer,
                 exhibit,
                 options,
             } = req.body
+
+            let mcqoptions = typeof options === 'string' ? JSON.parse(options) : options;
+
             // Insert into tb_mcq
             const mcqResult = await model.insertMcqQuestion({
                 question,
+                question_type_id,
                 answer,
                 difficulty,
                 subject,
@@ -163,7 +177,7 @@ module.exports.createQuestion = async (req, res) => {
             logger.info('questionId', questionId);
             logger.info(`✅ Inserted MCQ (ID: ${questionId})`);
             // Insert options into tb_mcqOptions
-            for (const option of options) {
+            for (const option of mcqoptions) {
                 await model.insertMcqOptions(questionId, option);
                 logger.info(`🔹 Inserted option for question ${questionId}: ${option}`);
             }
@@ -184,6 +198,7 @@ module.exports.createQuestion = async (req, res) => {
                 data: {
                     questionId,
                     question,
+                    question_type_id,
                     answer,
                     difficulty,
                     subject,
@@ -191,7 +206,7 @@ module.exports.createQuestion = async (req, res) => {
                     clientNeedArea,
                     clientNeedTopic,
                     exhibit,
-                    options,
+                    mcqoptions,
                     explanationHeading,
                     explanationText,
                     info,
@@ -199,15 +214,22 @@ module.exports.createQuestion = async (req, res) => {
                 }
             });
         }
-        if (questionType === 'Dropdown') {
+        if (questionType.toLowerCase().trim() === 'dropdown') {
             const {
                 question,
                 tabs,
                 dropdowns,
                 answers
             } = req.body;
+
+            const qstabs = typeof tabs === 'string' ? JSON.parse(tabs) : tabs;
+
+            const dropdownheading = typeof dropdowns === 'string' ? JSON.parse(dropdowns) : dropdowns;
+
+            const Dropdownanswers = typeof answers === 'string' ? JSON.parse(answers) : answers;
+
             // Insert question into tb_dropdownQuestion
-            const questionResult = await model.insertDropdownQuestion(question, difficulty,
+            const questionResult = await model.insertDropdownQuestion(question, question_type_id, difficulty,
                 subject,
                 lesson,
                 clientNeedArea,
@@ -215,19 +237,19 @@ module.exports.createQuestion = async (req, res) => {
             const questionId = questionResult.insertId;
             logger.info(`✅ Added dropdown question with ID: ${questionId}`);
             // Insert tabs into tb_DropdownQuestionTabs
-            for (const tab of tabs) {
+            for (const tab of qstabs) {
                 await model.insertTab(questionId, tab.tabKey, tab.tabValue);
                 logger.info(`📄 Inserted tab "${tab.tabKey}" for question ${questionId}`);
             }
             // Insert dropdown fields into tb_dropdowns
-            for (const dropdown of dropdowns) {
+            for (const dropdown of dropdownheading) {
                 for (const value of dropdown.dropDownValue) {
                     await model.insertDropdownField(questionId, dropdown.dropdownField, value);
                     logger.info(`🔽 Dropdown field "${dropdown.dropdownField}" -> "${value}"`);
                 }
             }
             // Insert correct answers into tb_dropdownAnswer
-            for (const ans of answers) {
+            for (const ans of Dropdownanswers) {
                 await model.insertDropdownAnswer(questionId, ans.dropdownField, ans.dropdownValue);
                 logger.info(`✅ Answer for "${ans.dropdownField}": ${ans.dropdownValue}`);
             }
@@ -246,9 +268,10 @@ module.exports.createQuestion = async (req, res) => {
                 data: {
                     questionId,
                     question,
-                    tabs,
-                    dropdowns,
-                    answers,
+                    question_type_id,
+                    qstabs,
+                    dropdownheading,
+                    Dropdownanswers,
                     difficulty,
                     subject,
                     lesson,
@@ -262,15 +285,17 @@ module.exports.createQuestion = async (req, res) => {
 
             });
         }
-        if (questionType === 'Drag Drop') { }
-        if (questionType === 'Multiple Radio') { }
-        if (questionType === 'Sorting') {
+        if (questionType.toLowerCase().trim() === 'sorting') {
             const {
                 question,
                 sortItems
             } = req.body;
+
+            const sorteditems = typeof sortItems === 'string' ? JSON.parse(sortItems) : sortItems;
+
+
             // Insert question into tb_dropdownQuestion
-            const questionResult = await model.insertDropdownQuestion(question, difficulty,
+            const questionResult = await model.insertDropdownQuestion(question, question_type_id, difficulty,
                 subject,
                 lesson,
                 clientNeedArea,
@@ -278,7 +303,7 @@ module.exports.createQuestion = async (req, res) => {
             const questionId = questionResult.insertId;
             logger.info(`✅ Added dropdown question with ID: ${questionId}`);
             // Insert tabs into tb_DropdownQuestionTabs
-            for (const item of sortItems) {
+            for (const item of sorteditems) {
                 await model.insertSortItems(questionId, item.sortItem, item.itemOrder);
                 logger.info(`📄 Inserted sort items "${item.sortItem}" for question ${questionId}`);
             }
@@ -297,7 +322,8 @@ module.exports.createQuestion = async (req, res) => {
                 data: {
                     questionId,
                     question,
-                    sortItems,
+                    question_type_id,
+                    sorteditems,
                     difficulty,
                     subject,
                     lesson,
@@ -311,14 +337,18 @@ module.exports.createQuestion = async (req, res) => {
 
             });
         }
-        if (questionType === 'Sentence Highlight') {
+        if (questionType.toLowerCase().trim() === 'sentence highlight') {
             const {
                 question,
                 tabs,
                 answer
             } = req.body;
+
+            const qstabs = typeof tabs === 'string' ? JSON.parse(tabs) : tabs;
+
+            
             // Insert question into tb_dropdownQuestion
-            const questionResult = await model.insertSentenceQuestion(question, difficulty,
+            const questionResult = await model.insertSentenceQuestion(question, question_type_id, difficulty,
                 subject,
                 lesson,
                 clientNeedArea,
@@ -326,7 +356,7 @@ module.exports.createQuestion = async (req, res) => {
             const questionId = questionResult.insertId;
             logger.info(`✅ Added dropdown question with ID: ${questionId}`);
             // Insert tabs into tb_DropdownQuestionTabs
-            for (const tab of tabs) {
+            for (const tab of qstabs) {
                 await model.insertTab(questionId, tab.tabKey, tab.tabValue);
                 logger.info(`📄 Inserted tab "${tab.tabKey}" for question ${questionId}`);
             }
@@ -341,8 +371,9 @@ module.exports.createQuestion = async (req, res) => {
                 data: {
                     questionId,
                     question,
+                    question_type_id,
                     answer,
-                    tabs,
+                    qstabs,
                     difficulty,
                     subject,
                     lesson,
@@ -356,7 +387,214 @@ module.exports.createQuestion = async (req, res) => {
 
             });
         }
-        if (questionType === 'Dropdown and Sort') { }
+
+        if (questionType.toLowerCase().trim() === 'fill in the blanks') {
+            const {
+                question,
+                answer,
+                question_content,
+                options
+            } = req.body;
+
+            console.log("req.body : ", req.body);
+
+            const FTBquestion_content = typeof question_content === 'string' ? JSON.parse(question_content) : question_content;
+            const FTBoptions = typeof options === 'string' ? JSON.parse(options) : options;
+
+            // Insert question into tb_dropdownQuestion
+            const questionResult = await model.insertFillTheBlanksQuestion(question, question_type_id, answer, difficulty,
+                subject,
+                lesson,
+                clientNeedArea,
+                clientNeedTopic);
+            const questionId = questionResult.insertId;
+
+            logger.info(`✅ Added dropdown question with ID: ${questionId}`);
+
+            for (const item of FTBquestion_content) {
+
+                await model.insertFillBlankQuestionContent(questionId, item.question_text, item.fill_blanks_answer, item.blank_or_not);
+
+                logger.info(`📄 Inserted fill in the blanks text "${item.question_text}" with answer ${item.fill_blanks_answer}  for question ${questionId}`);
+            }
+            for (const item of FTBoptions) {
+
+                let heading = await model.insertFillBlankQuestionOptionsHeading(questionId, item.option_heading);
+                logger.info(`📄 Inserted fill in the blanks options heading "${item.option_heading}" for question ${questionId}`);
+                const heading_id = heading.insertId;
+
+                for (const value of item.option_value) {
+                    await model.insertFillBlankQuestionOptionsHeadingValues(questionId, heading_id, value);
+                    logger.info(`🔽 fill in the blanks options heading values "${value}" -> "${value}"`);
+                }
+            }
+
+            if (explanationText) {
+                await model.insertMcqExplanation(questionId, explanationHeading, explanationText);
+                logger.info(`📝 Explanation added for question ${questionId}`);
+            }
+            if (info) {
+                await model.insertAdditionalInfo(questionId, info, infoImage);
+                logger.info(`📝 Additional information added for question ${questionId}`);
+            }
+            return res.status(201).json({
+                result: true,
+                message: "Fill in the Blanks question created successfully",
+                data: {
+                    questionId,
+                    question,
+                    question_type_id,
+                    answer,
+                    FTBquestion_content,
+                    FTBoptions,
+                    difficulty,
+                    subject,
+                    lesson,
+                    clientNeedArea,
+                    clientNeedTopic,
+                    explanationHeading,
+                    explanationText,
+                    info,
+                    infoImage
+                }
+
+            });
+        }
+        if (questionType.toLowerCase().trim() === 'drag drop') {
+
+            const {
+                question,
+                drag_drop_content,
+                tabs,
+                drag_and_drop
+            } = req.body;
+            // Insert question into tb_dropdownQuestion
+            const questionResult = await model.insertDragDropQuestion(question, question_type_id, drag_drop_content, difficulty,
+                subject,
+                lesson,
+                clientNeedArea,
+                clientNeedTopic,);
+            const questionId = questionResult.insertId;
+            logger.info(`✅ Added Drag Drop question with ID: ${questionId}`);
+            // Insert tabs into tb_DropdownQuestionTabs
+            for (const tab of tabs) {
+                await model.insertTab(questionId, tab.tabKey, tab.tabValue);
+                logger.info(`📄 Inserted Drag Drop tab "${tab.tabKey}" for question ${questionId}`);
+            }
+            // Insert dropdown fields into tb_dropdowns
+            for (const item of drag_and_drop) {
+                console.log(drag_and_drop, "options");
+
+                let heading = await model.insertDragDropOptionsHeading(questionId, item.option_heading, item.question_answer);
+                logger.info(`📄 Inserted Drag Drop options heading "${item.option_heading}" and asnser "${item.question_answer}" for question ${questionId}`);
+                const heading_id = heading.insertId;
+
+                for (const value of item.option_value) {
+                    console.log("value :", value);
+                    await model.insertDragDropOptionsHeadingValues(questionId, heading_id, value);
+                    logger.info(`🔽 Drag Drop options heading values "${value}" -> "${value}"`);
+                }
+            }
+
+            // Insert explanation into tb_mcqExplanation
+            if (explanationText) {
+                await model.insertMcqExplanation(questionId, explanationHeading, explanationText);
+                logger.info(`📝 Drag Drop Explanation added for question ${questionId}`);
+            }
+            if (info) {
+                await model.insertAdditionalInfo(questionId, info, infoImage);
+                logger.info(`📝 Drag Drop Additional information added for question ${questionId}`);
+            }
+            return res.status(201).json({
+                result: true,
+                message: "Drag and drop question created successfully",
+                data: {
+                    questionId,
+                    question,
+                    question_type_id,
+                    drag_drop_content,
+                    tabs,
+                    drag_and_drop,
+                    difficulty,
+                    subject,
+                    lesson,
+                    clientNeedArea,
+                    clientNeedTopic,
+                    explanationHeading,
+                    explanationText,
+                    info,
+                    infoImage
+                }
+
+            });
+
+        }
+
+        if (questionType.toLowerCase().trim() === 'multiple radio') {
+
+            const {
+                question,
+                tabs,
+                question_content,
+                radio_options
+            } = req.body;
+            // Insert question into tb_dropdownQuestion
+            const questionResult = await model.insertMultipleRadioQuestion(question, question_type_id, difficulty,
+                subject,
+                lesson,
+                clientNeedArea,
+                clientNeedTopic,);
+            const questionId = questionResult.insertId;
+            logger.info(`✅ Added Multiple Radio question with ID: ${questionId}`);
+            // Insert tabs into tb_DropdownQuestionTabs
+            for (const tab of tabs) {
+                await model.insertTab(questionId, tab.tabKey, tab.tabValue);
+                logger.info(`📄 Multiple Radio Inserted tab "${tab.tabKey}" for question ${questionId}`);
+            }
+            // Insert dropdown fields into tb_dropdowns
+            for (const item of question_content) {
+                await model.insertMultipleRadioQuestionContent(questionId, item.question_text, item.question_answer);
+                logger.info(`🔽 Multiple Radio "${item.question_text}" -> "${item}"`);
+
+            }
+            // Insert correct answers into tb_dropdownAnswer
+            for (const item of radio_options) {
+                await model.insertMultipleRadioOptions(questionId, item.option_value);
+                logger.info(`✅  Multiple Radio option "${item.option_value}" added`);
+            }
+            // Insert explanation into tb_mcqExplanation
+            if (explanationText) {
+                await model.insertMcqExplanation(questionId, explanationHeading, explanationText);
+                logger.info(`📝 Multiple Radio Explanation added for question ${questionId}`);
+            }
+            if (info) {
+                await model.insertAdditionalInfo(questionId, info, infoImage);
+                logger.info(`📝 Multiple Radio Additional information added for question ${questionId}`);
+            }
+            return res.status(201).json({
+                result: true,
+                message: "Multiple Radio question created successfully",
+                data: {
+                    questionId,
+                    question,
+                    question_type_id,
+                    tabs,
+                    question_content,
+                    radio_options,
+                    difficulty,
+                    subject,
+                    lesson,
+                    clientNeedArea,
+                    clientNeedTopic,
+                    explanationHeading,
+                    explanationText,
+                    info,
+                    infoImage
+                }
+
+            });
+
+        }
     } catch (error) {
         logger.error(`❌ Failed to add question: ${error.message}`);
         return res.status(500).json({
