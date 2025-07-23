@@ -108,3 +108,134 @@ Sorting question
   "info": "Tracheostomy suctioning should be performed using sterile technique with appropriate pressure settings (80-120 mmHg for adults) to prevent tissue trauma.",
   "infoImage": "https://example.com/images/tracheostomy-suctioning.png"
 }
+
+//fill in the blanks ---\/
+{
+    "questionType": "Fill in the Blanks",
+    "question": "Arrange the steps in the correct order for performing tracheostomy suctioning.",
+    "question_type_id":13,
+    "answer": " the nurse know the client is at the risk of developing some disease and symptoms if the condition is not managed",
+    "difficulty": "Medium",
+    "subject": 1,
+    "lesson": 3,
+    "clientNeedArea": 2,
+    "clientNeedTopic": 5,
+    "question_content": [
+        {
+            "question_text": "Turn on the suction device and set appropriate pressure.",
+            "fill_blanks_answer": "some disease",
+            "blank_or_not": "true"
+        },
+        {
+            "question_text": "and",
+            "fill_blanks_answer": "symptoms",
+            "blank_or_not": "true"
+        },
+        {
+            "question_text": "if the condition is not managed",
+            "fill_blanks_answer": "",
+            "blank_or_not": "false"
+        }
+    ],
+    "options": [
+        {
+            "option_heading": "Fill in the Blanks Option Heading",
+            "option_value":[ "some disease","fever","Option Heading","symptoms"]
+        }
+    ],
+    "explanationHeading": " Fill in the BlanksExplanation Heading",
+    "explanationText": " Fill in the Blanks Proper tracheostomy suctioning follows a systematic approach to ensure patient safety and effectiveness. The correct sequence maintains sterility, prevents hypoxia, and ensures adequate airway clearance.",
+    "info": "Fill in the Blanks Tracheostomy suctioning should be performed using sterile technique with appropriate pressure settings (80-120 mmHg for adults) to prevent tissue trauma.",
+    "infoImage": "https://example.com/images/tracheostomy-suctioning.png"
+}
+// multiple radio option
+{
+    "questionType": "Multiple Radio",
+    "question_type_id":10,
+    "question": "Arrange the steps in the correct order for performing tracheostomy suctioning.",
+    "difficulty": "Medium",
+    "subject": 1,
+    "lesson": 3,
+    "clientNeedArea": 2,
+    "clientNeedTopic": 5,
+    "tabs": [
+        {
+            "tabKey": "Triage Note",
+            "tabValue": "1840: Client presents with dyspnea and right-sided chest pain that is worse when he takes a deep breath and coughs. Pain rated 7 on a scale of 0 (no pain) to 10 (severe pain). The client arrived with his friends after playing baseball outdoors and was struck by a baseball bat on the right side of his chest. Immediately after he sustained the injury, he reported sharp chest pain. Vital signs: T 99° F (37.2° C) P 94, RR 25, BP 127/76, pulse oximetry reading 89% on room air. He has a medical history of hemophilia A and asthma. On assessment, the client is alert and oriented and anxious. The client has labored breathing using his accessory muscles, and lung sounds are absent in the right-sided bases."
+        }
+    ],
+    "question_content": [
+        {
+            "question_text": "tachypnea",
+            "question_answer": "hemothorax"
+        },
+        {
+            "question_text": "reduced (or absent) breath sounds of the affected side",
+            "question_answer": "asthma exacerbation"
+        },
+        {
+            "question_text": "percussion on the involved side produces a dull sound",
+            "question_answer": "hemothorax"
+        },
+        {
+            "question_text": "chest wall tenderness",
+            "question_answer": "asthma exacerbation"
+        }
+    ],
+    "radio_options": [
+        {
+            "option_value": "hemothorax"
+        },
+        {
+            "option_value": "asthma exacerbation"
+        }
+    ],
+    "explanationHeading": "Multiple Radio Explanation Heading",
+    "explanationText": "Multiple Radio Proper tracheostomy suctioning follows a systematic approach to ensure patient safety and effectiveness. The correct sequence maintains sterility, prevents hypoxia, and ensures adequate airway clearance.",
+    "info": "Multiple Radio Tracheostomy suctioning should be performed using sterile technique with appropriate pressure settings (80-120 mmHg for adults) to prevent tissue trauma.",
+    "infoImage": "https://example.com/images/tracheostomy-suctioning.png"
+}
+
+//---------Drag and Drop -------------
+{
+    "questionType": "Drag Drop",
+    "question": "The following scenario applies to the next 1 items The nurse in the emergency department (ED) is caring for a 78-year-old female client",
+    "drag_drop_content":"Most likely experiencing",
+    "difficulty": "Medium",
+    "subject": 1,
+    "lesson": 3,
+    "clientNeedArea": 2,
+    "clientNeedTopic": 5,
+    "tabs": [
+        {
+            "tabKey": "Triage Note",
+            "tabValue": "1840: Client presents with dyspnea and right-sided chest pain that is worse when he takes a deep breath and coughs. Pain rated 7 on a scale of 0 (no pain) to 10 (severe pain). The client arrived with his friends after playing baseball outdoors and was struck by a baseball bat on the right side of his chest. Immediately after he sustained the injury, he reported sharp chest pain. Vital signs: T 99° F (37.2° C) P 94, RR 25, BP 127/76, pulse oximetry reading 89% on room air. He has a medical history of hemophilia A and asthma. On assessment, the client is alert and oriented and anxious. The client has labored breathing using his accessory muscles, and lung sounds are absent in the right-sided bases."
+        },
+        {
+            "tabKey": "Vital sign",
+            "tabValue": "0800: Upon assessment, the client is visibly anxious and struggling to breathe, with pink frothy sputum noted during coughing.The client is experiencing sudden shortness of breath and chest tightness. Physical examination reveals bilateral crackles in all lung fields, jugular venous distension (JVD), and peripheral cyanosis. An ECG shows sinus tachycardia with no ischemic changes, and a chest X-ray reveals pulmonary vascular congestion. The client reports a history of chronic heart failure."
+        }
+    ],
+    "drag_and_drop": [
+        {
+            "option_heading": "Action to take",
+            "question_answer": "Option 3",
+            "option_value": ["option","option 2","option 3","option 4" ]
+        },
+        {
+            "option_heading": "Parameter to Monitor",
+            "question_answer": "Option 2",
+            "option_value": ["option","option 2","option 3","option 4" ]
+        },
+        {
+            "option_heading": "Action to  another action",
+            "question_answer": "Option 1",
+            "option_value": ["option","option 2","option 3","option 4" ]
+        }
+        
+    ],
+    "explanationHeading": " Fill in the BlanksExplanation Heading",
+    "explanationText": " Fill in the Blanks Proper tracheostomy suctioning follows a systematic approach to ensure patient safety and effectiveness. The correct sequence maintains sterility, prevents hypoxia, and ensures adequate airway clearance.",
+    "info": "Fill in the Blanks Tracheostomy suctioning should be performed using sterile technique with appropriate pressure settings (80-120 mmHg for adults) to prevent tissue trauma.",
+    "infoImage": "https://example.com/images/tracheostomy-suctioning.png"
+}
