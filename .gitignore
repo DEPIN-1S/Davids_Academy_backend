@@ -6,6 +6,5 @@ package-lock.json
 # Ignore log directory
 logs/
 *.log.*
-logs/combined.log
-logs/error.log
+
 
