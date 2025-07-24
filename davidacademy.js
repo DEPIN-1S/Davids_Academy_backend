@@ -42,9 +42,13 @@ app.use(expressWinston.logger({
 // ─── ROUTES ────────────────────────────────────────────────────────────────────
 const loginRoutes = require('./routes/loginRoutes');
 const examRoutes = require('./routes/examRoutes');
+const courseRoutes = require('./routes/courseRoutes');
+
 
 app.use('/davidsacademy', loginRoutes);
 app.use('/davidsacademy/exam', examRoutes);
+app.use('/davidsacademy/course', courseRoutes);
+
 // ─── 404 HANDLER ──────────────────────────────────────────────────────────────
 app.use((req, res) => {
   res.status(404).json({ result: false, message: 'Not Found' });

@@ -20,10 +20,13 @@ MCQ questions
     "info": "Patients with a history of severe allergies should carry an epinephrine auto-injector at all times.",
     "infoImage": "https://example.com/images/epipen-instruction.png"
 }
+
 Dropdown question
+
 {
     "questionType": "Dropdown",
     "question": "Match each clinical symptom with the appropriate diagnosis.",
+    "question_type_id":8,
     "difficulty": "Medium",
     "subject": 1,
     "lesson": 3,
@@ -41,37 +44,48 @@ Dropdown question
     ],
     "dropdowns": [
         {
-            "dropdownField": "tachypnea",
-            "dropDownValue": [
+            "dropdownField": "Based on the client's",
+            "dropdownanswer": "pneumonia",
+            "blank_or_not": true,
+            "dropDowneOption": [
                 "asthma",
                 "pneumonia",
                 "hemothorax"
             ]
         },
         {
-            "dropdownField": "dull percussion",
-            "dropDownValue": [
+            "dropdownField": "And",
+            "dropdownanswer": "hemothorax",
+            "blank_or_not": true,
+            "dropDowneOption": [
                 "pneumothorax",
                 "hemothorax",
                 "pleural effusion"
             ]
-        }
-    ],
-    "answers": [
-        {
-            "dropdownField": "tachypnea",
-            "dropdownValue": "asthma"
         },
         {
-            "dropdownField": "dull percussion",
-            "dropdownValue": "hemothorax"
+            "dropdownField": "this client is at highest risk for",
+            "dropdownanswer": "pleural effusion",
+            "blank_or_not": true,
+            "dropDowneOption": [
+                "pneumothorax",
+                "hemothorax",
+                "pleural effusion"
+            ]
+        },
+        {
+            "dropdownField": "thats it",
+            "blank_or_not": false
+
         }
     ],
-    "explanationHeading": "Explanation",
-    "explanationText": "Epinephrine is the first-line treatment for anaphylaxis due to its rapid action in reversing severe allergic symptoms.",
-    "info": "Patients with a history of severe allergies should carry an epinephrine auto-injector at all times.",
-    "infoImage": "https://example.com/images/epipen-instruction.png"
+
+"explanationHeading": "Explanation",
+"explanationText": "Epinephrine is the first-line treatment for anaphylaxis due to its rapid action in reversing severe allergic symptoms.",
+"info": "Patients with a history of severe allergies should carry an epinephrine auto-injector at all times.",
+"infoImage": "https://example.com/images/epipen-instruction.png"
 }
+
 Sorting question
 {
   "questionType": "Sorting",
