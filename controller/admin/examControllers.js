@@ -129,6 +129,7 @@ module.exports.createQuestion = async (req, res) => {
         //     });
         // }
         const {
+            exam_type,
             question_type_id,
             questionType,
             difficulty,
@@ -144,12 +145,12 @@ module.exports.createQuestion = async (req, res) => {
 
         console.log("files: ", req.files);
 
-        console.log("(req.files?.image? :", req.files?.infoimage);
+        console.log("(req.files?.infoimage? :", req.files?.infoimage);
 
         const infoImageFile = req.files?.infoimage[0]?.filename;
         console.log("infoImageFile:", infoImageFile);
 
-        const infoImage = infoImageFile ? `/uploads/questions/${infoImageFile}` : null;
+        const infoImage = infoImageFile ? `/uploads/infoimages/${infoImageFile}` : null;
 
         // check for questionType
         if (questionType.toLowerCase().trim() === 'mcq') {
@@ -166,6 +167,7 @@ module.exports.createQuestion = async (req, res) => {
                 question,
                 question_type_id,
                 answer,
+                exam_type,
                 difficulty,
                 subject,
                 lesson,
@@ -200,6 +202,7 @@ module.exports.createQuestion = async (req, res) => {
                     question,
                     question_type_id,
                     answer,
+                    exam_type,
                     difficulty,
                     subject,
                     lesson,
@@ -214,6 +217,7 @@ module.exports.createQuestion = async (req, res) => {
                 }
             });
         }
+
         if (questionType.toLowerCase().trim() === 'dropdown') {
             const {
                 question,
@@ -224,35 +228,63 @@ module.exports.createQuestion = async (req, res) => {
 
             const qstabs = typeof tabs === 'string' ? JSON.parse(tabs) : tabs;
 
-            const dropdownheading = typeof dropdowns === 'string' ? JSON.parse(dropdowns) : dropdowns;
+            const dropdowndetails = typeof dropdowns === 'string' ? JSON.parse(dropdowns) : dropdowns;
 
             const Dropdownanswers = typeof answers === 'string' ? JSON.parse(answers) : answers;
 
             // Insert question into tb_dropdownQuestion
-            const questionResult = await model.insertDropdownQuestion(question, question_type_id, difficulty,
+            const questionResult = await model.insertDropdownQuestion(question, question_type_id,exam_type, difficulty,
                 subject,
                 lesson,
                 clientNeedArea,
-                clientNeedTopic,);
+                clientNeedTopic);
+
             const questionId = questionResult.insertId;
+
             logger.info(`✅ Added dropdown question with ID: ${questionId}`);
             // Insert tabs into tb_DropdownQuestionTabs
             for (const tab of qstabs) {
                 await model.insertTab(questionId, tab.tabKey, tab.tabValue);
                 logger.info(`📄 Inserted tab "${tab.tabKey}" for question ${questionId}`);
             }
+
             // Insert dropdown fields into tb_dropdowns
-            for (const dropdown of dropdownheading) {
-                for (const value of dropdown.dropDownValue) {
-                    await model.insertDropdownField(questionId, dropdown.dropdownField, value);
-                    logger.info(`🔽 Dropdown field "${dropdown.dropdownField}" -> "${value}"`);
+            // Insert dropdown fields into tb_dropdowns
+            if (Array.isArray(dropdowndetails)) {
+                for (const dropdown of dropdowndetails) {
+                    let adddropdownheading = await model.insertDropdownHeading(
+                        questionId,
+                        dropdown.dropdownField,
+                        dropdown.dropdownanswer,
+                        dropdown.blank_or_not
+                    );
+
+                    logger.info(
+                        `🔽 Dropdown field question text "${dropdown.dropdownField}" and answer "${dropdown.dropdownanswer}"`
+                    );
+
+                    const headingtextId = adddropdownheading.insertId;
+
+                    if (Array.isArray(dropdown.dropDowneOption)) {
+                        for (const value of dropdown.dropDowneOption) {
+                            await model.insertDropdownHeadingOptions(questionId, headingtextId, value);
+                            logger.info(
+                                `🔽 Dropdown field options question heading "${dropdown.dropdownField}" -> "${value}"`
+                            );
+                        }
+                    } else {
+                        logger.warn(`⚠️ No dropdown options found for "${dropdown.dropdownField}", skipping options.`);
+                    }
                 }
+            } else {
+                logger.error('❌ dropdowndetails is not a valid array or missing from request body');
+                return res.status(400).json({
+                    result: false,
+                    message: 'Invalid or missing "dropdowns" array in request body.',
+                });
             }
-            // Insert correct answers into tb_dropdownAnswer
-            for (const ans of Dropdownanswers) {
-                await model.insertDropdownAnswer(questionId, ans.dropdownField, ans.dropdownValue);
-                logger.info(`✅ Answer for "${ans.dropdownField}": ${ans.dropdownValue}`);
-            }
+
+
             // Insert explanation into tb_mcqExplanation
             if (explanationText) {
                 await model.insertMcqExplanation(questionId, explanationHeading, explanationText);
@@ -269,8 +301,9 @@ module.exports.createQuestion = async (req, res) => {
                     questionId,
                     question,
                     question_type_id,
+                    exam_type,
                     qstabs,
-                    dropdownheading,
+                    dropdowns,
                     Dropdownanswers,
                     difficulty,
                     subject,
@@ -285,6 +318,7 @@ module.exports.createQuestion = async (req, res) => {
 
             });
         }
+
         if (questionType.toLowerCase().trim() === 'sorting') {
             const {
                 question,
@@ -295,7 +329,7 @@ module.exports.createQuestion = async (req, res) => {
 
 
             // Insert question into tb_dropdownQuestion
-            const questionResult = await model.insertDropdownQuestion(question, question_type_id, difficulty,
+            const questionResult = await model.insertDropdownQuestion(question, question_type_id,exam_type, difficulty,
                 subject,
                 lesson,
                 clientNeedArea,
@@ -323,6 +357,7 @@ module.exports.createQuestion = async (req, res) => {
                     questionId,
                     question,
                     question_type_id,
+                    exam_type,
                     sorteditems,
                     difficulty,
                     subject,
@@ -337,6 +372,7 @@ module.exports.createQuestion = async (req, res) => {
 
             });
         }
+
         if (questionType.toLowerCase().trim() === 'sentence highlight') {
             const {
                 question,
@@ -346,9 +382,9 @@ module.exports.createQuestion = async (req, res) => {
 
             const qstabs = typeof tabs === 'string' ? JSON.parse(tabs) : tabs;
 
-            
+
             // Insert question into tb_dropdownQuestion
-            const questionResult = await model.insertSentenceQuestion(question, question_type_id, difficulty,
+            const questionResult = await model.insertSentenceQuestion(question, question_type_id,exam_type, difficulty,
                 subject,
                 lesson,
                 clientNeedArea,
@@ -373,6 +409,7 @@ module.exports.createQuestion = async (req, res) => {
                     question,
                     question_type_id,
                     answer,
+                    exam_type,
                     qstabs,
                     difficulty,
                     subject,
@@ -402,7 +439,7 @@ module.exports.createQuestion = async (req, res) => {
             const FTBoptions = typeof options === 'string' ? JSON.parse(options) : options;
 
             // Insert question into tb_dropdownQuestion
-            const questionResult = await model.insertFillTheBlanksQuestion(question, question_type_id, answer, difficulty,
+            const questionResult = await model.insertFillTheBlanksQuestion(question, question_type_id, answer,exam_type, difficulty,
                 subject,
                 lesson,
                 clientNeedArea,
@@ -445,6 +482,7 @@ module.exports.createQuestion = async (req, res) => {
                     question,
                     question_type_id,
                     answer,
+                    exam_type,
                     FTBquestion_content,
                     FTBoptions,
                     difficulty,
@@ -460,6 +498,7 @@ module.exports.createQuestion = async (req, res) => {
 
             });
         }
+
         if (questionType.toLowerCase().trim() === 'drag drop') {
 
             const {
@@ -469,7 +508,7 @@ module.exports.createQuestion = async (req, res) => {
                 drag_and_drop
             } = req.body;
             // Insert question into tb_dropdownQuestion
-            const questionResult = await model.insertDragDropQuestion(question, question_type_id, drag_drop_content, difficulty,
+            const questionResult = await model.insertDragDropQuestion(question, question_type_id,exam_type, drag_drop_content, difficulty,
                 subject,
                 lesson,
                 clientNeedArea,
@@ -512,6 +551,7 @@ module.exports.createQuestion = async (req, res) => {
                     questionId,
                     question,
                     question_type_id,
+                    exam_type,
                     drag_drop_content,
                     tabs,
                     drag_and_drop,
@@ -539,7 +579,7 @@ module.exports.createQuestion = async (req, res) => {
                 radio_options
             } = req.body;
             // Insert question into tb_dropdownQuestion
-            const questionResult = await model.insertMultipleRadioQuestion(question, question_type_id, difficulty,
+            const questionResult = await model.insertMultipleRadioQuestion(question, question_type_id,exam_type, difficulty,
                 subject,
                 lesson,
                 clientNeedArea,
@@ -578,6 +618,7 @@ module.exports.createQuestion = async (req, res) => {
                     questionId,
                     question,
                     question_type_id,
+                    exam_type,
                     tabs,
                     question_content,
                     radio_options,
@@ -595,6 +636,7 @@ module.exports.createQuestion = async (req, res) => {
             });
 
         }
+
     } catch (error) {
         logger.error(`❌ Failed to add question: ${error.message}`);
         return res.status(500).json({
@@ -621,7 +663,7 @@ module.exports.updateQuestion = async (req, res) => {
                 result: false,
                 message: 'Failed to add questionType in the database',
             });
-        }
+        } 
         logger.info('Successfully inserted questionType: %s', questionType);
         return res.status(200).json({
             result: true,
@@ -670,4 +712,62 @@ module.exports.deleteQuestion = async (req, res) => {
             message: error.message || 'Internal Server Error',
         });
     }
+};
+
+    // logger.info('Attempting to delete questionType: %s', id);
+
+module.exports.getQuestions = async (req, res) => {
+  try {
+    const count = parseInt(req.query.count) || 10;
+    const requestedTypes = req.query.types || []; // Array like ['mcq', 'dropdown']
+
+    // Define all 7 types and corresponding model fetchers
+    const allQuestionTypes = {
+      mcq: model.getMcqQuestions,
+      dropdown: model.getDropdownQuestions,
+      sorting: model.getSortingQuestions,
+      'sentence highlight': model.getSentenceHighlightQuestions,
+      'fill in the blanks': model.getFillBlankQuestions,
+      'drag drop': model.getDragDropQuestions,
+      'multiple radio': model.getMultipleRadioQuestions,
+    };
+
+    // Use requested types or all
+    const selectedTypes = requestedTypes.length > 0
+      ? requestedTypes.map(type => type.toLowerCase())
+      : Object.keys(allQuestionTypes);
+
+    // Calculate how many to fetch from each type
+    const questionsPerType = Math.ceil(count / selectedTypes.length);
+    let allFetchedQuestions = [];
+
+    for (const type of selectedTypes) {
+      const fetchFn = allQuestionTypes[type];
+      if (fetchFn) {
+        const questions = await fetchFn(questionsPerType); // Limit per type
+        allFetchedQuestions = allFetchedQuestions.concat(questions);
+      }
+    }
+
+    // Shuffle to randomize across types
+    const shuffled = allFetchedQuestions.sort(() => 0.5 - Math.random());
+
+    // Return only `count` number of questions
+    const finalQuestions = shuffled.slice(0, count);
+
+    return res.status(200).json({
+      result: true,
+      message: 'Questions fetched successfully',
+      total: finalQuestions.length,
+      data: finalQuestions,
+    });
+
+  } catch (error) {
+    logger.error(`❌ Failed to fetch questions: ${error.message}`);
+    return res.status(500).json({
+      result: false,
+      message: 'Internal Server Error',
+      error: error.message,
+    });
+  }
 };
