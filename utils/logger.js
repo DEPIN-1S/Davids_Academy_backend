@@ -11,13 +11,23 @@ const logger = createLogger({
     ),
     defaultMeta: { service: 'david-academy-api' },
     transports: [
-        new transports.Console(),
+        // ✅ Error logs go to error.log
         new transports.File({ filename: 'logs/error.log', level: 'error' }),
-        new transports.File({ filename: 'logs/combined.log' })
+
+        // ✅ All other logs go to app.log (excluding error, because already logged above)
+        new transports.File({
+            filename: 'logs/app.log',
+            level: 'info',
+            handleExceptions: true,
+            format: format.combine(
+                format((info) => info.level !== 'error' ? info : false)(), // filter out error
+                format.json()
+            )
+        }),
     ],
 });
 
-// If we're not in production then log to the `console` with the colorized simple format.
+// ✅ Add console logger only for non-production environments
 if (process.env.NODE_ENV !== 'production') {
     logger.add(new transports.Console({
         format: format.combine(
