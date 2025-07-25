@@ -93,15 +93,12 @@ async function deleteQuestionType(id) {
 async function insertMcqQuestion(data) {
     const sql = `
     INSERT INTO tb_questions (
-      question, answer, difficulty, subject, lesson, clientNeedArea,
-      clientNeedTopic, exhibit, isDeleted, createdAt, updatedAt
-    )
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?,?, false, NOW(), NOW())
-  `;
+      question,question_type_id, answer,exam_type, difficulty, subject, lesson, clientNeedArea,clientNeedTopic, exhibit) VALUES (?, ?, ?, ?, ?, ?, ?, ?,?,?)`;
     const values = [
         data.question,
         data.question_type_id,
         data.answer,
+        exam_type,
         data.difficulty,
         data.subject,
         data.lesson,
@@ -137,6 +134,7 @@ async function insertMcqOptions(questionId, optionText) {
         throw error;
     }
 }
+
 /**
  * Inserts explanation for an MCQ into tb_mcqExplanation.
  * 
@@ -147,6 +145,7 @@ async function insertMcqOptions(questionId, optionText) {
  * @param {string} explanation - Explanation body.
  * @returns {Promise<object>} Insert result.
  */
+
 async function insertMcqExplanation(questionId, heading, explanation) {
     const sql = `
     INSERT INTO tb_explanation (questionId, heading, explanation, isDeleted, createdAt, updatedAt)
@@ -191,14 +190,15 @@ async function insertAdditionalInfo(questionId, info, image = null) {
  * @returns {Promise<object>} Result of the INSERT query.
  */
 
-async function insertDropdownQuestion(question,question_type_id, difficulty, subject, lesson, clientNeedArea, clientNeedTopic) {
-    const sql = `INSERT INTO tb_questions (question,question_type_id, difficulty, subject, lesson, clientNeedArea, clientNeedTopic) 
-                 VALUES (?, ?, ?, ?, ?, ?,?)`;
+async function insertDropdownQuestion(question,question_type_id,exam_type, difficulty, subject, lesson, clientNeedArea, clientNeedTopic) {
+    const sql = `INSERT INTO tb_questions (question,question_type_id,exam_type, difficulty, subject, lesson, clientNeedArea, clientNeedTopic) 
+                 VALUES (?, ?, ?, ?, ?, ?,?,?)`;
 
     try {
         const result = await query(sql, [
             question,
             question_type_id,
+            exam_type,
             difficulty,
             subject,
             lesson,
@@ -213,6 +213,34 @@ async function insertDropdownQuestion(question,question_type_id, difficulty, sub
         throw err;
     }
 }
+
+
+async function insertDropdownHeading(questionId, dropdownField, dropdownanswer,blank_or_not) {
+    const sql = `INSERT INTO tb_dropdowns (questionId, dropdownField, dropdownanswer,blankOrNot) VALUES (?, ?, ? ,?)`;
+    try {
+        const result = await query(sql, [questionId, dropdownField,dropdownanswer,blank_or_not]);
+        logger.info(`🔽 insertDropdownField: Added dropdown question text "${dropdownField}" and answer "${dropdownanswer}" (QID=${questionId})`);
+        return result;
+    } catch (err) {
+        logger.error(`❌ insertDropdownField: Failed to insert dropdown question text "${dropdownField}" - ${err.message}`);
+        throw err;
+    }
+}
+
+
+
+async function insertDropdownHeadingOptions(questionId, headingtextId, option) {
+    const sql = `INSERT INTO tb_dropdownOptions (questionId, dropdowntext_id, dropdownValue) VALUES (?, ?, ?)`;
+    try {
+        const result = await query(sql, [questionId, headingtextId, option]);
+        logger.info(`✅ insertDropdownOptions of question text id : "${headingtextId}" and options "${option}" added (QID=${questionId})`);
+        return result;
+    } catch (err) {
+        logger.error(`❌ insertDropdownOptions: Failed for question text id "${headingtextId}" - ${err.message}`);
+        throw err;
+    }
+}
+
 /**
  * Inserts a new dropdown question into `tb_dropdownQuestion`.
  * @param {string} question - The question text.
@@ -220,14 +248,15 @@ async function insertDropdownQuestion(question,question_type_id, difficulty, sub
  * @returns {Promise<object>} Result of the INSERT query.
  */
 
-async function insertSentenceQuestion(question,question_type_id, difficulty, subject, lesson, clientNeedArea, clientNeedTopic, answer) {
-    const sql = `INSERT INTO tb_questions (question,question_type_id, difficulty, subject, lesson, clientNeedArea, clientNeedTopic, answer) 
-                 VALUES (?, ?, ?, ?, ?, ?, ?,?)`;
+async function insertSentenceQuestion(question,question_type_id,exam_type, difficulty, subject, lesson, clientNeedArea, clientNeedTopic, answer) {
+    const sql = `INSERT INTO tb_questions (question,question_type_id,exam_type, difficulty, subject, lesson, clientNeedArea, clientNeedTopic, answer) 
+                 VALUES (?, ?, ?, ?, ?, ?, ?,?,?)`;
 
     try {
         const result = await query(sql, [
             question,
             question_type_id,
+            exam_type,
             difficulty,
             subject,
             lesson,
@@ -280,55 +309,19 @@ async function insertSortItems(questionId, sortItem, itemOrder) {
     }
 }
 
-/**
- * Inserts dropdown options for a specific field into `tb_dropdowns`.
- * @param {number} questionId - The related question ID.
- * @param {string} dropdownField - The dropdown label.
- * @param {string} dropDownValue - The selectable value.
- * @returns {Promise<object>} Result of the INSERT query.
- */
-async function insertDropdownField(questionId, dropdownField, dropDownValue) {
-    const sql = `INSERT INTO tb_dropdowns (questionId, dropdownField, dropDownValue) VALUES (?, ?, ?)`;
-    try {
-        const result = await query(sql, [questionId, dropdownField, dropDownValue]);
-        logger.info(`🔽 insertDropdownField: Added value "${dropDownValue}" to field "${dropdownField}" (QID=${questionId})`);
-        return result;
-    } catch (err) {
-        logger.error(`❌ insertDropdownField: Failed to insert value "${dropDownValue}" - ${err.message}`);
-        throw err;
-    }
-}
-
-/**
- * Inserts the correct answer for a dropdown into `tb_dropdownAnswer`.
- * @param {number} questionId - Question ID.
- * @param {string} dropdownField - The dropdown label.
- * @param {string} dropdownValue - The correct value.
- * @returns {Promise<object>} Result of the INSERT query.
- */
-async function insertDropdownAnswer(questionId, dropdownField, dropdownValue) {
-    const sql = `INSERT INTO tb_dropdownAnswer (questionId, dropdownField, dropdownValue) VALUES (?, ?, ?)`;
-    try {
-        const result = await query(sql, [questionId, dropdownField, dropdownValue]);
-        logger.info(`✅ insertDropdownAnswer: Correct answer "${dropdownValue}" for field "${dropdownField}" added (QID=${questionId})`);
-        return result;
-    } catch (err) {
-        logger.error(`❌ insertDropdownAnswer: Failed for field "${dropdownField}" - ${err.message}`);
-        throw err;
-    }
-}
 
 // ---------------------------------fill in the blanks------------------------//
 
-async function insertFillTheBlanksQuestion(question, question_type_id, answer, difficulty, subject, lesson, clientNeedArea, clientNeedTopic) {
-    const sql = `INSERT INTO tb_questions (question,question_type_id,answer, difficulty, subject, lesson, clientNeedArea, clientNeedTopic) 
-                 VALUES (?, ?, ?, ?, ?, ?,?,?)`;
+async function insertFillTheBlanksQuestion(question, question_type_id, answer,exam_type, difficulty, subject, lesson, clientNeedArea, clientNeedTopic) {
+    const sql = `INSERT INTO tb_questions (question,question_type_id,answer,exam_type, difficulty, subject, lesson, clientNeedArea, clientNeedTopic) 
+                 VALUES (?, ?, ?, ?, ?, ?,?,?,?)`;
 
     try {
         const result = await query(sql, [
             question,
             question_type_id,
             answer,
+            exam_type,
             difficulty,
             subject,
             lesson,
@@ -384,14 +377,15 @@ async function insertFillBlankQuestionOptionsHeadingValues(questionId, heading_i
 
 // ---------------------------------Multiple Radio------------------------//
 
-async function insertMultipleRadioQuestion(question, question_type_id, difficulty, subject, lesson, clientNeedArea, clientNeedTopic) {
-    const sql = `INSERT INTO tb_questions (question,question_type_id, difficulty, subject, lesson, clientNeedArea, clientNeedTopic) 
-                 VALUES (?, ?, ?, ?, ?, ?, ?)`;
+async function insertMultipleRadioQuestion(question, question_type_id,exam_type, difficulty, subject, lesson, clientNeedArea, clientNeedTopic) {
+    const sql = `INSERT INTO tb_questions (question,question_type_id,exam_type, difficulty, subject, lesson, clientNeedArea, clientNeedTopic) 
+                 VALUES (?, ?, ?, ?, ?, ?, ?,?)`;
 
     try {
         const result = await query(sql, [
             question,
             question_type_id,
+            exam_type,
             difficulty,
             subject,
             lesson,
@@ -434,14 +428,15 @@ async function insertMultipleRadioOptions(questionId, option_value) {
 //--------------------------- Drag and Drop ------------------------------------------
 
 
-async function insertDragDropQuestion(question,question_type_id, drag_drop_content, difficulty, subject, lesson, clientNeedArea, clientNeedTopic) {
-    const sql = `INSERT INTO tb_questions (question,question_type_id,drag_drop_content, difficulty, subject, lesson, clientNeedArea, clientNeedTopic) 
-                 VALUES (?, ?, ?, ?, ?, ?, ?,?)`;
+async function insertDragDropQuestion(question,question_type_id,exam_type, drag_drop_content, difficulty, subject, lesson, clientNeedArea, clientNeedTopic) {
+    const sql = `INSERT INTO tb_questions (question,question_type_id,exam_type,drag_drop_content, difficulty, subject, lesson, clientNeedArea, clientNeedTopic) 
+                 VALUES (?, ?, ?, ?, ?, ?, ?,?,?)`;
 
     try {
         const result = await query(sql, [
             question,
             question_type_id,
+            exam_type,
             drag_drop_content,
             difficulty,
             subject,
@@ -492,8 +487,8 @@ module.exports = {
     insertAdditionalInfo,
     insertDropdownQuestion,
     insertTab,
-    insertDropdownField,
-    insertDropdownAnswer,
+    insertDropdownHeading,
+    insertDropdownHeadingOptions,
     insertSortItems,
     insertSentenceQuestion,
     insertFillBlankQuestionContent,
