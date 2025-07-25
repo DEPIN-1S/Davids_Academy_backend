@@ -98,7 +98,7 @@ async function insertMcqQuestion(data) {
         data.question,
         data.question_type_id,
         data.answer,
-        exam_type,
+        data.exam_type,
         data.difficulty,
         data.subject,
         data.lesson,
@@ -190,7 +190,7 @@ async function insertAdditionalInfo(questionId, info, image = null) {
  * @returns {Promise<object>} Result of the INSERT query.
  */
 
-async function insertDropdownQuestion(question,question_type_id,exam_type, difficulty, subject, lesson, clientNeedArea, clientNeedTopic) {
+async function insertDropdownQuestion(question, question_type_id, exam_type, difficulty, subject, lesson, clientNeedArea, clientNeedTopic) {
     const sql = `INSERT INTO tb_questions (question,question_type_id,exam_type, difficulty, subject, lesson, clientNeedArea, clientNeedTopic) 
                  VALUES (?, ?, ?, ?, ?, ?,?,?)`;
 
@@ -215,10 +215,10 @@ async function insertDropdownQuestion(question,question_type_id,exam_type, diffi
 }
 
 
-async function insertDropdownHeading(questionId, dropdownField, dropdownanswer,blank_or_not) {
+async function insertDropdownHeading(questionId, dropdownField, dropdownanswer, blank_or_not) {
     const sql = `INSERT INTO tb_dropdowns (questionId, dropdownField, dropdownanswer,blankOrNot) VALUES (?, ?, ? ,?)`;
     try {
-        const result = await query(sql, [questionId, dropdownField,dropdownanswer,blank_or_not]);
+        const result = await query(sql, [questionId, dropdownField, dropdownanswer, blank_or_not]);
         logger.info(`🔽 insertDropdownField: Added dropdown question text "${dropdownField}" and answer "${dropdownanswer}" (QID=${questionId})`);
         return result;
     } catch (err) {
@@ -248,7 +248,7 @@ async function insertDropdownHeadingOptions(questionId, headingtextId, option) {
  * @returns {Promise<object>} Result of the INSERT query.
  */
 
-async function insertSentenceQuestion(question,question_type_id,exam_type, difficulty, subject, lesson, clientNeedArea, clientNeedTopic, answer) {
+async function insertSentenceQuestion(question, question_type_id, exam_type, difficulty, subject, lesson, clientNeedArea, clientNeedTopic, answer) {
     const sql = `INSERT INTO tb_questions (question,question_type_id,exam_type, difficulty, subject, lesson, clientNeedArea, clientNeedTopic, answer) 
                  VALUES (?, ?, ?, ?, ?, ?, ?,?,?)`;
 
@@ -312,7 +312,7 @@ async function insertSortItems(questionId, sortItem, itemOrder) {
 
 // ---------------------------------fill in the blanks------------------------//
 
-async function insertFillTheBlanksQuestion(question, question_type_id, answer,exam_type, difficulty, subject, lesson, clientNeedArea, clientNeedTopic) {
+async function insertFillTheBlanksQuestion(question, question_type_id, answer, exam_type, difficulty, subject, lesson, clientNeedArea, clientNeedTopic) {
     const sql = `INSERT INTO tb_questions (question,question_type_id,answer,exam_type, difficulty, subject, lesson, clientNeedArea, clientNeedTopic) 
                  VALUES (?, ?, ?, ?, ?, ?,?,?,?)`;
 
@@ -377,7 +377,7 @@ async function insertFillBlankQuestionOptionsHeadingValues(questionId, heading_i
 
 // ---------------------------------Multiple Radio------------------------//
 
-async function insertMultipleRadioQuestion(question, question_type_id,exam_type, difficulty, subject, lesson, clientNeedArea, clientNeedTopic) {
+async function insertMultipleRadioQuestion(question, question_type_id, exam_type, difficulty, subject, lesson, clientNeedArea, clientNeedTopic) {
     const sql = `INSERT INTO tb_questions (question,question_type_id,exam_type, difficulty, subject, lesson, clientNeedArea, clientNeedTopic) 
                  VALUES (?, ?, ?, ?, ?, ?, ?,?)`;
 
@@ -428,7 +428,7 @@ async function insertMultipleRadioOptions(questionId, option_value) {
 //--------------------------- Drag and Drop ------------------------------------------
 
 
-async function insertDragDropQuestion(question,question_type_id,exam_type, drag_drop_content, difficulty, subject, lesson, clientNeedArea, clientNeedTopic) {
+async function insertDragDropQuestion(question, question_type_id, exam_type, drag_drop_content, difficulty, subject, lesson, clientNeedArea, clientNeedTopic) {
     const sql = `INSERT INTO tb_questions (question,question_type_id,exam_type,drag_drop_content, difficulty, subject, lesson, clientNeedArea, clientNeedTopic) 
                  VALUES (?, ?, ?, ?, ?, ?, ?,?,?)`;
 
@@ -464,10 +464,10 @@ async function insertDragDropOptionsHeading(questionId, option_heading, question
     }
 }
 
-async function insertDragDropOptionsHeadingValues(questionId,heading_id, option_value) {
+async function insertDragDropOptionsHeadingValues(questionId, heading_id, option_value) {
     const sql = `INSERT INTO DragAndDrop_Headings_Options (question_id,headings_id,options_value) VALUES (?,?,?)`;
     try {
-        const result = await query(sql, [questionId,heading_id, option_value]);
+        const result = await query(sql, [questionId, heading_id, option_value]);
         logger.info(`insert DragAndDrop_Headings_Options: Inserted DragAndDrop_Headings_Options for questionId=${questionId}`);
         return result;
     } catch (error) {
