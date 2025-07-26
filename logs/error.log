@@ -1,0 +1,6 @@
+{"level":"error","message":"❌ Failed to add question: exam_type is not defined","service":"david-academy-api","timestamp":"2025-07-25 13:20:28"}
+{"level":"error","message":"❌ Failed to add question: exam_type is not defined","service":"david-academy-api","timestamp":"2025-07-25 13:20:30"}
+{"level":"error","message":"❌ Failed to add question: exam_type is not defined","service":"david-academy-api","timestamp":"2025-07-25 13:20:32"}
+{"level":"error","message":"❌ Failed to add question: exam_type is not defined","service":"david-academy-api","timestamp":"2025-07-25 13:20:36"}
+{"level":"error","message":"❌ Failed to add question: Cannot access 'exam_type' before initialization","service":"david-academy-api","timestamp":"2025-07-25 13:24:04"}
+{"level":"error","message":"❌ Failed to add question: exam_type is not defined","service":"david-academy-api","timestamp":"2025-07-25 13:24:43"}
