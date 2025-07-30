@@ -1,6 +1,7 @@
 MCQ questions
 {
     "questionType": "MCQ",
+     "question_type_id":13,
     "question": "Which of the following is the primary treatment for anaphylaxis?",
     "answer": "Epinephrine",
     "difficulty": "Medium",
@@ -25,6 +26,7 @@ Dropdown question
 
 {
     "questionType": "Dropdown",
+     "question_type_id":13,
     "question": "Match each clinical symptom with the appropriate diagnosis.",
     "question_type_id":8,
     "difficulty": "Medium",
@@ -89,6 +91,7 @@ Sorting question
 
 {
   "questionType": "Sorting",
+   "question_type_id":13,
   "question": "Arrange the steps in the correct order for performing tracheostomy suctioning.",
   "difficulty": "Medium",
   "subject": 1,
@@ -253,3 +256,9 @@ Sorting question
     "info": "Fill in the Blanks Tracheostomy suctioning should be performed using sterile technique with appropriate pressure settings (80-120 mmHg for adults) to prevent tissue trauma.",
     "infoImage": "https://example.com/images/tracheostomy-suctioning.png"
 }
+admin credentials
+{
+  "email":"msambhunarayan@gmail.com", 
+  "password":"sambhu@12345"
+  }
+
