@@ -79,7 +79,6 @@ Dropdown question
 
         }
     ],
-
 "explanationHeading": "Explanation",
 "explanationText": "Epinephrine is the first-line treatment for anaphylaxis due to its rapid action in reversing severe allergic symptoms.",
 "info": "Patients with a history of severe allergies should carry an epinephrine auto-injector at all times.",
@@ -87,6 +86,7 @@ Dropdown question
 }
 
 Sorting question
+
 {
   "questionType": "Sorting",
   "question": "Arrange the steps in the correct order for performing tracheostomy suctioning.",
