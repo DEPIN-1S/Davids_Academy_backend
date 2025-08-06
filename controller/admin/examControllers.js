@@ -750,6 +750,7 @@ module.exports.getQuestions = async (req, res) => {
             let DropdownQuestions = await model.getDropdownQuestions();
             return await Promise.all(
                 DropdownQuestions.map(async (el) => {
+                    
                     let questionId = el.id;
                     let dropdownTexts = await model.Getdropdownquestiontext(questionId);
                     el.dropdownquestiontext = await Promise.all(
