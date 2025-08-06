@@ -98,7 +98,7 @@ async function insertMcqQuestion(data) {
         data.question,
         data.question_type_id,
         data.answer,
-        exam_type,
+        data.exam_type,
         data.difficulty,
         data.subject,
         data.lesson,
@@ -190,7 +190,7 @@ async function insertAdditionalInfo(questionId, info, image = null) {
  * @returns {Promise<object>} Result of the INSERT query.
  */
 
-async function insertDropdownQuestion(question,question_type_id,exam_type, difficulty, subject, lesson, clientNeedArea, clientNeedTopic) {
+async function insertDropdownQuestion(question, question_type_id, exam_type, difficulty, subject, lesson, clientNeedArea, clientNeedTopic) {
     const sql = `INSERT INTO tb_questions (question,question_type_id,exam_type, difficulty, subject, lesson, clientNeedArea, clientNeedTopic) 
                  VALUES (?, ?, ?, ?, ?, ?,?,?)`;
 
@@ -215,10 +215,10 @@ async function insertDropdownQuestion(question,question_type_id,exam_type, diffi
 }
 
 
-async function insertDropdownHeading(questionId, dropdownField, dropdownanswer,blank_or_not) {
+async function insertDropdownHeading(questionId, dropdownField, dropdownanswer, blank_or_not) {
     const sql = `INSERT INTO tb_dropdowns (questionId, dropdownField, dropdownanswer,blankOrNot) VALUES (?, ?, ? ,?)`;
     try {
-        const result = await query(sql, [questionId, dropdownField,dropdownanswer,blank_or_not]);
+        const result = await query(sql, [questionId, dropdownField, dropdownanswer, blank_or_not]);
         logger.info(`🔽 insertDropdownField: Added dropdown question text "${dropdownField}" and answer "${dropdownanswer}" (QID=${questionId})`);
         return result;
     } catch (err) {
@@ -248,7 +248,7 @@ async function insertDropdownHeadingOptions(questionId, headingtextId, option) {
  * @returns {Promise<object>} Result of the INSERT query.
  */
 
-async function insertSentenceQuestion(question,question_type_id,exam_type, difficulty, subject, lesson, clientNeedArea, clientNeedTopic, answer) {
+async function insertSentenceQuestion(question, question_type_id, exam_type, difficulty, subject, lesson, clientNeedArea, clientNeedTopic, answer) {
     const sql = `INSERT INTO tb_questions (question,question_type_id,exam_type, difficulty, subject, lesson, clientNeedArea, clientNeedTopic, answer) 
                  VALUES (?, ?, ?, ?, ?, ?, ?,?,?)`;
 
@@ -272,6 +272,20 @@ async function insertSentenceQuestion(question,question_type_id,exam_type, diffi
         throw err;
     }
 }
+
+async function insertSinsertHighlightOptionsortItems(questionId, option) {
+    const sql = `INSERT INTO tb_sentanceHighlight (questionId, options) VALUES (?, ?)`;
+    try {
+        const result = await query(sql, [questionId, option]);
+        logger.info(`✅ [insertHighlightOption] Successfully inserted highlight option for questionId = ${questionId}`);
+        return result;
+    } catch (err) {
+        logger.error(`❌ [insertHighlightOption] Failed to insert highlight option for questionId = ${questionId} - ${err.message}`);
+        throw err;
+    }
+}
+
+
 /**
  * Inserts a tab for a dropdown question into `tb_DropdownQuestionTabs`.
  * @param {number} questionId - The question's ID.
@@ -312,7 +326,7 @@ async function insertSortItems(questionId, sortItem, itemOrder) {
 
 // ---------------------------------fill in the blanks------------------------//
 
-async function insertFillTheBlanksQuestion(question, question_type_id, answer,exam_type, difficulty, subject, lesson, clientNeedArea, clientNeedTopic) {
+async function insertFillTheBlanksQuestion(question, question_type_id, answer, exam_type, difficulty, subject, lesson, clientNeedArea, clientNeedTopic) {
     const sql = `INSERT INTO tb_questions (question,question_type_id,answer,exam_type, difficulty, subject, lesson, clientNeedArea, clientNeedTopic) 
                  VALUES (?, ?, ?, ?, ?, ?,?,?,?)`;
 
@@ -377,7 +391,7 @@ async function insertFillBlankQuestionOptionsHeadingValues(questionId, heading_i
 
 // ---------------------------------Multiple Radio------------------------//
 
-async function insertMultipleRadioQuestion(question, question_type_id,exam_type, difficulty, subject, lesson, clientNeedArea, clientNeedTopic) {
+async function insertMultipleRadioQuestion(question, question_type_id, exam_type, difficulty, subject, lesson, clientNeedArea, clientNeedTopic) {
     const sql = `INSERT INTO tb_questions (question,question_type_id,exam_type, difficulty, subject, lesson, clientNeedArea, clientNeedTopic) 
                  VALUES (?, ?, ?, ?, ?, ?, ?,?)`;
 
@@ -428,7 +442,7 @@ async function insertMultipleRadioOptions(questionId, option_value) {
 //--------------------------- Drag and Drop ------------------------------------------
 
 
-async function insertDragDropQuestion(question,question_type_id,exam_type, drag_drop_content, difficulty, subject, lesson, clientNeedArea, clientNeedTopic) {
+async function insertDragDropQuestion(question, question_type_id, exam_type, drag_drop_content, difficulty, subject, lesson, clientNeedArea, clientNeedTopic) {
     const sql = `INSERT INTO tb_questions (question,question_type_id,exam_type,drag_drop_content, difficulty, subject, lesson, clientNeedArea, clientNeedTopic) 
                  VALUES (?, ?, ?, ?, ?, ?, ?,?,?)`;
 
@@ -464,10 +478,10 @@ async function insertDragDropOptionsHeading(questionId, option_heading, question
     }
 }
 
-async function insertDragDropOptionsHeadingValues(questionId,heading_id, option_value) {
+async function insertDragDropOptionsHeadingValues(questionId, heading_id, option_value) {
     const sql = `INSERT INTO DragAndDrop_Headings_Options (question_id,headings_id,options_value) VALUES (?,?,?)`;
     try {
-        const result = await query(sql, [questionId,heading_id, option_value]);
+        const result = await query(sql, [questionId, heading_id, option_value]);
         logger.info(`insert DragAndDrop_Headings_Options: Inserted DragAndDrop_Headings_Options for questionId=${questionId}`);
         return result;
     } catch (error) {
@@ -494,7 +508,7 @@ async function Gettabs(questionId) {
 
 
 async function getAdditionalInfo(questionId) {
-    const sql = `SELECT * FROM tb_additionalInfo WHERE questionId = ?`; 
+    const sql = `SELECT * FROM tb_additionalInfo WHERE questionId = ?`;
     try {
         const result = await query(sql, [questionId]);
         logger.info(`✅ [getAdditionalInfo] Successfully retrieved additional info for questionId = ${questionId}`);
@@ -507,9 +521,9 @@ async function getAdditionalInfo(questionId) {
 
 
 async function Getexplantion(questionId) {
-    const sql = `SELECT * FROM tb_explanation WHERE questionId =?`; 
+    const sql = `SELECT * FROM tb_explanation WHERE questionId =?`;
     try {
-        const result = await query(sql,[questionId]);
+        const result = await query(sql, [questionId]);
         logger.info('✅ [getSentenceHighlightQuestions] Successfully retrieved sentence highlight questions ');
         return result;
     } catch (err) {
@@ -523,7 +537,7 @@ async function Getexplantion(questionId) {
 async function getMcqQuestions(qs_id) {
     const sql = `SELECT * FROM tb_questions WHERE question_type_id = 7`;
     try {
-        const result = await query(sql,[qs_id]);
+        const result = await query(sql, [qs_id]);
         logger.info('✅ [getMcqQuestions] Successfully retrieved MCQ questions of type ID 7');
         return result;
     } catch (err) {
@@ -588,7 +602,7 @@ async function Getdropdownoption(dropdowntext_id) {
 // get sorting questions
 
 async function getSortingQuestions() {
-    const sql = `SELECT * FROM tb_questions WHERE question_type_id = 11`; 
+    const sql = `SELECT * FROM tb_questions WHERE question_type_id = 11`;
     try {
         const result = await query(sql);
         logger.info('✅ [getSortingQuestions] Successfully retrieved sorting questions (question_type_id = 11)');
@@ -601,7 +615,7 @@ async function getSortingQuestions() {
 
 
 async function Getsortingoption(questionId) {
-    const sql = `SELECT id, questionId, sortItem FROM tb_sortItems WHERE questionId = ?`; 
+    const sql = `SELECT id, questionId, sortItem FROM tb_sortItems WHERE questionId = ?`;
     try {
         const result = await query(sql, [questionId]);
         logger.info(`✅ [Getsortingoption] Successfully retrieved sorting options for questionId = ${questionId}`);
@@ -626,10 +640,35 @@ async function getFillInTheBlanksQuestions() {
     }
 }
 
+async function GetFilltheblankstext(questionId) {
+    const sql = `SELECT id, question_id, question_text FROM tb_fillTheBlanks WHERE question_id = ?`;
+    try {
+        const result = await query(sql, [questionId]);
+        logger.info(`✅ [GetFilltheblankstext] Successfully retrieved fill-the-blanks text for question_id = ${questionId}`);
+        return result;
+    } catch (err) {
+        logger.error(`[GetFilltheblankstext] ❌ Failed to retrieve fill-the-blanks text for question_id = ${questionId} - ${err.message}`);
+        throw err;
+    }
+}
+
+async function GetFilltheblankstextOptions(questionId) {
+    const sql = `SELECT * FROM tb_fillTheBlanks_options WHERE question_id = ?`;
+    try {
+        const result = await query(sql, [questionId]);
+        logger.info(`✅ [GetFilltheblankstextOptions] Successfully retrieved fill-the-blanks options for question_id = ${questionId}`);
+        return result;
+    } catch (err) {
+        logger.error(`[GetFilltheblankstextOptions] ❌ Failed to retrieve fill-the-blanks options for question_id = ${questionId} - ${err.message}`);
+        throw err;
+    }
+}
+
+
 // get drag and drop question
 
 async function getDragDropQuestions() {
-    const sql = `SELECT * FROM tb_questions WHERE question_type_id = 9`; 
+    const sql = `SELECT * FROM tb_questions WHERE question_type_id = 9`;
     try {
         const result = await query(sql);
         logger.info('✅ [getDragDropQuestions] Successfully retrieved drag-and-drop questions (question_type_id = 5)');
@@ -640,6 +679,30 @@ async function getDragDropQuestions() {
     }
 }
 
+
+async function GetDragDropQuestionsheading(questionId) {
+    const sql = `SELECT * FROM DragAndDrop_Headings WHERE question_id = ?`;
+    try {
+        const result = await query(sql, [questionId]);
+        logger.info('✅ [getDragDropQuestions] Successfully retrieved drag-and-drop questions (question_type_id = 5)');
+        return result;
+    } catch (err) {
+        logger.error(`[getDragDropQuestions] ❌ Failed to retrieve drag-and-drop questions - ${err.message}`);
+        throw err;
+    }
+}
+
+async function GetDragDropoption(headings_id) {
+    const sql = `SELECT * FROM DragAndDrop_Headings_Options WHERE headings_id = ?`;
+    try {
+        const result = await query(sql, [headings_id]);
+        logger.info('✅ [getDragDropQuestions] Successfully retrieved drag-and-drop questions (question_type_id = 5)');
+        return result;
+    } catch (err) {
+        logger.error(`[getDragDropQuestions] ❌ Failed to retrieve drag-and-drop questions - ${err.message}`);
+        throw err;
+    }
+}
 
 // get multiple radio button question
 
@@ -655,11 +718,34 @@ async function getMultipleRadioQuestions() {
     }
 }
 
+async function GetMultipleRadioQuestionsClientfindings(questionId) {
+    const sql = `SELECT * FROM tb_MultipleRadio WHERE question_id =?`; // Confirm this is the correct ID for multiple radio
+    try {
+        const result = await query(sql,[questionId]);
+        logger.info('✅ [getMultipleRadioQuestions] Successfully retrieved multiple-radio questions (question_type_id = 5)');
+        return result;
+    } catch (err) {
+        logger.error(`[getMultipleRadioQuestions] ❌ Failed to retrieve multiple-radio questions - ${err.message}`);
+        throw err;
+    }
+}
+
+async function GetMultipleRadioQuestionsRadioOption(questionId) {
+    const sql = `SELECT * FROM tb_MultipleRadio WHERE question_id = ?`; // Confirm this is the correct ID for multiple radio
+    try {
+        const result = await query(sql,[questionId]);
+        logger.info('✅ [getMultipleRadioQuestions] Successfully retrieved multiple-radio questions (question_type_id = 5)');
+        return result;
+    } catch (err) {
+        logger.error(`[getMultipleRadioQuestions] ❌ Failed to retrieve multiple-radio questions - ${err.message}`);
+        throw err;
+    }
+}
 
 //get sentance highlight questions
 
 async function getSentenceHighlightQuestions() {
-    const sql = `SELECT * FROM tb_questions WHERE question_type_id = 12`; 
+    const sql = `SELECT * FROM tb_questions WHERE question_type_id = 12`;
     try {
         const result = await query(sql);
         logger.info('✅ [getSentenceHighlightQuestions] Successfully retrieved sentence highlight questions (question_type_id = 5)');
@@ -691,6 +777,7 @@ module.exports = {
     insertDropdownHeadingOptions,
     insertSortItems,
     insertSentenceQuestion,
+    insertSinsertHighlightOptionsortItems,
     insertFillBlankQuestionContent,
     insertFillTheBlanksQuestion,
     insertFillBlankQuestionOptionsHeading,
@@ -701,17 +788,31 @@ module.exports = {
     insertDragDropQuestion,
     insertDragDropOptionsHeading,
     insertDragDropOptionsHeadingValues,
+
     getMcqQuestions,
     Getmcqoption,
+
     getDropdownQuestions,
     Getdropdownquestiontext,
     Getdropdownoption,
+
     getFillInTheBlanksQuestions,
+    GetFilltheblankstext,
+    GetFilltheblankstextOptions,
+
     getDragDropQuestions,
+    GetDragDropQuestionsheading,
+    GetDragDropoption,
+
     getMultipleRadioQuestions,
+    GetMultipleRadioQuestionsClientfindings,
+    GetMultipleRadioQuestionsRadioOption,
+
     getSortingQuestions,
     Getsortingoption,
+
     getSentenceHighlightQuestions,
+
     Gettabs,
     getAdditionalInfo,
     Getexplantion,

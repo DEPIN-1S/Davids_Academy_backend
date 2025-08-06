@@ -377,14 +377,15 @@ module.exports.createQuestion = async (req, res) => {
             const {
                 question,
                 tabs,
-                answer
+                answer,
+                highlightoptions
             } = req.body;
 
             const qstabs = typeof tabs === 'string' ? JSON.parse(tabs) : tabs;
 
 
             // Insert question into tb_dropdownQuestion
-            const questionResult = await model.insertSentenceQuestion(question, question_type_id, exam_type, difficulty,
+            const questionResult = await model.insertSentenceQuestion(question, question_type_id,answer, exam_type, difficulty,
                 subject,
                 lesson,
                 clientNeedArea,
@@ -392,6 +393,12 @@ module.exports.createQuestion = async (req, res) => {
             const questionId = questionResult.insertId;
             logger.info(`✅ Added dropdown question with ID: ${questionId}`);
             // Insert tabs into tb_DropdownQuestionTabs
+
+            for (const option of highlightoptions) {
+                await model.insertHighlightOptions(questionId, option);
+                logger.info(`🔹 Inserted option for question ${questionId}: ${option}`);
+            }
+
             for (const tab of qstabs) {
                 await model.insertTab(questionId, tab.tabKey, tab.tabValue);
                 logger.info(`📄 Inserted tab "${tab.tabKey}" for question ${questionId}`);
@@ -719,166 +726,150 @@ module.exports.deleteQuestion = async (req, res) => {
 module.exports.getQuestions = async (req, res) => {
     try {
         const count = parseInt(req.query.count) || 10;
-        const requestedTypes = req.query.types || []; // Array like ['mcq', 'dropdown']
+        const requestedTypesRaw = req.query.types || [];
+        const requestedTypes = Array.isArray(requestedTypesRaw)
+            ? requestedTypesRaw
+            : [requestedTypesRaw];
 
-        let McqQuestions = await model.getMcqQuestions()
-        let DropdownQuestions = await model.getDropdownQuestions()
-        let FillInTheBlanksQuestions = await model.getFillInTheBlanksQuestions()
-        let getDragDropQuestions = await model.getDragDropQuestions()
-        let getMultipleRadioQuestions = await model.getMultipleRadioQuestions()
-        let SortingQuestions = await model.getSortingQuestions()
-        let SentenceHighlightQuestions = await model.getSentenceHighlightQuestions()
+        // ✅ FETCH FUNCTIONS
 
-        //mcq question
-        let getMcqQuestions = await Promise.all(
-            McqQuestions.map(async (el) => {
-                let questionId = el.id
-                let getmcqoption = await model.Getmcqoption(questionId)
-                let getAdditionalInfo = await model.getAdditionalInfo(questionId)
-                let Getexplantion = await model.Getexplantion(questionId)
-
-                el.mcqoptions = getmcqoption
-                el.AdditionalInfo = getAdditionalInfo
-                el.explantion = Getexplantion
-
-                return el
-            })
-        )
-
-        //dropdown question
-
-        let getDropdownQuestions = await Promise.all(
-            DropdownQuestions.map(async (el) => {
-                let questionId = el.id;
-
-                // Get dropdown question text
-                let getdropdownquestiontext = await model.Getdropdownquestiontext(questionId);
-
-                // For each dropdown text, fetch its options
-                let dropdownTextsWithOptions = await Promise.all(
-                    getdropdownquestiontext.map(async (item) => {
-                        let dropdowntext_id = item.dropdowntext_id;
-                        let getdropdownoption = await model.Getdropdownoption(dropdowntext_id);
-                        item.dropdownoption = getdropdownoption;
-                        return item;
-                    })
-                );
-
-                // Fetch other related data
-                let Gettabs = await model.Gettabs(questionId);
-                let getAdditionalInfo = await model.getAdditionalInfo(questionId);
-                let Getexplantion = await model.Getexplantion(questionId);
-
-                // Add all collected info to `el`
-                el.dropdownquestiontext = dropdownTextsWithOptions;
-                el.tabsInfo = Gettabs;
-                el.AdditionalInfo = getAdditionalInfo;
-                el.explantion = Getexplantion;
-
-                return el;
-            })
-        );
-
-        // sorting question
-        let getSortingQuestions = await Promise.all(
-            SortingQuestions.map(async (el) => {
-                let questionId = el.id
-                let getsortingoption = await model.Getsortingoption(questionId)
-                let getAdditionalInfo = await model.getAdditionalInfo(questionId)
-                let Getexplantion = await model.Getexplantion(questionId)
-
-                el.sortingoptions = getsortingoption
-                el.AdditionalInfo = getAdditionalInfo
-                el.explantion = Getexplantion
-
-
-                return el
-            })
-        )
-
-        // sentance high light
-
-        //  let getSentenceHighlightQuestions = await Promise.all(
-        //     SentenceHighlightQuestions.map(async (el) => {
-        //         let questionId = el.id
-        //         let getsortingoption = await model.Getsortingoption(questionId)
-        //         let getAdditionalInfo = await model.getAdditionalInfo(questionId)
-        //         let Getexplantion = await model.Getexplantion(questionId)
-
-        //         el.sortingoptions = getsortingoption
-        //         el.AdditionalInfo = getAdditionalInfo
-        //         el.explantion = Getexplantion
-
-
-        //         return el
-        //     })
-        // )
-
-        // fill in the blanks
-        let getFillInTheBlanksQuestions = await Promise.all(
-            FillInTheBlanksQuestions.map(async (el) => {
-                let questionId = el.id;
-
-                // Get dropdown question text
-                let getFilltheblankstext = await model.GetFilltheblankstext(questionId);
-
-                // For each dropdown text, fetch its options
-                let FilltheblanksWithOptions = await Promise.all(
-                    getFilltheblankstext.map(async (item) => {
-                        let text_id = item.headings_id;
-                        let getFilltheblanksOptions = await model.GetFilltheblankstextOptions(text_id);
-                        item.FilltheblanksOptions = getFilltheblanksOptions;
-                        return item;
-                    })
-                );
-
-                // Fetch other related data
-                let getAdditionalInfo = await model.getAdditionalInfo(questionId);
-                let Getexplantion = await model.Getexplantion(questionId);
-
-                // Add all collected info to `el`
-                el.filltheblanksoptions = FilltheblanksWithOptions;
-                el.AdditionalInfo = getAdditionalInfo;
-                el.explantion = Getexplantion;
-
-                return el;
-            })
-        );
-
-
-
-        // Define all 7 types and corresponding model fetchers
-        const allQuestionTypes = {
-            mcq: getMcqQuestions,
-            dropdown: getDropdownQuestions,
-            sorting: getSortingQuestions,
-            sentenc_highlight: getSentenceHighlightQuestions,
-            fill_in_the_blanks: getFillInTheBlanksQuestions,
-            drag_drop: getDragDropQuestions,
-            multiple_radio: getMultipleRadioQuestions,
+        const fetchMcqQuestions = async () => {
+            let McqQuestions = await model.getMcqQuestions();
+            return await Promise.all(
+                McqQuestions.map(async (el) => {
+                    let questionId = el.id;
+                    el.mcqoptions = await model.Getmcqoption(questionId);
+                    el.AdditionalInfo = await model.getAdditionalInfo(questionId);
+                    el.explantion = await model.Getexplantion(questionId);
+                    return el;
+                })
+            );
         };
 
-        // Use requested types or all
+        const fetchDropdownQuestions = async () => {
+            let DropdownQuestions = await model.getDropdownQuestions();
+            return await Promise.all(
+                DropdownQuestions.map(async (el) => {
+                    let questionId = el.id;
+                    let dropdownTexts = await model.Getdropdownquestiontext(questionId);
+                    el.dropdownquestiontext = await Promise.all(
+                        dropdownTexts.map(async (item) => {
+                            item.dropdownoption = await model.Getdropdownoption(item.dropdowntext_id);
+                            return item;
+                        })
+                    );
+                    el.tabsInfo = await model.Gettabs(questionId);
+                    el.AdditionalInfo = await model.getAdditionalInfo(questionId);
+                    el.explantion = await model.Getexplantion(questionId);
+                    return el;
+                })
+            );
+        };
+
+        const fetchSortingQuestions = async () => {
+            let SortingQuestions = await model.getSortingQuestions();
+            return await Promise.all(
+                SortingQuestions.map(async (el) => {
+                    let questionId = el.id;
+                    el.sortingoptions = await model.Getsortingoption(questionId);
+                    el.AdditionalInfo = await model.getAdditionalInfo(questionId);
+                    el.explantion = await model.Getexplantion(questionId);
+                    return el;
+                })
+            );
+        };
+
+        const fetchSentenceHighlightQuestions = async () => {
+            let SentenceHighlightQuestions = await model.getSentenceHighlightQuestions();
+            return await Promise.all(
+                SentenceHighlightQuestions.map(async (el) => {
+                    let questionId = el.id;
+                    el.sortingoptions = await model.Getsortingoption(questionId);
+                    el.tabsInfo = await model.Gettabs(questionId);
+                    el.AdditionalInfo = await model.getAdditionalInfo(questionId);
+                    el.explantion = await model.Getexplantion(questionId);
+                    return el;
+                })
+            );
+        };
+
+        const fetchFillInTheBlanksQuestions = async () => {
+            let FillInTheBlanksQuestions = await model.getFillInTheBlanksQuestions();
+            return await Promise.all(
+                FillInTheBlanksQuestions.map(async (el) => {
+                    let questionId = el.id;
+                    el.filltheblankstext = await model.GetFilltheblankstext(questionId);
+                    el.filltheblanksoptions = await model.GetFilltheblankstextOptions(questionId);
+                    el.AdditionalInfo = await model.getAdditionalInfo(questionId);
+                    el.explantion = await model.Getexplantion(questionId);
+                    return el;
+                })
+            );
+        };
+
+        const fetchDragDropQuestions = async () => {
+            let DragDropQuestions = await model.getDragDropQuestions();
+            return await Promise.all(
+                DragDropQuestions.map(async (el) => {
+                    let questionId = el.id;
+                    let headings = await model.GetDragDropQuestionsheading(questionId);
+                    el.dropdownquestiontext = await Promise.all(
+                        headings.map(async (item) => {
+                            item.dragdropoption = await model.GetDragDropoption(item.headings_id);
+                            return item;
+                        })
+                    );
+                    el.tabsInfo = await model.Gettabs(questionId);
+                    el.AdditionalInfo = await model.getAdditionalInfo(questionId);
+                    el.explantion = await model.Getexplantion(questionId);
+                    return el;
+                })
+            );
+        };
+
+        const fetchMultipleRadioQuestions = async () => {
+            let MultipleRadioQuestions = await model.getMultipleRadioQuestions();
+            return await Promise.all(
+                MultipleRadioQuestions.map(async (el) => {
+                    let questionId = el.id;
+                    el.clientfindings = await model.GetMultipleRadioQuestionsClientfindings(questionId);
+                    el.RadioOption = await model.GetMultipleRadioQuestionsRadioOption(questionId);
+                    el.tabsInfo = await model.Gettabs(questionId);
+                    el.AdditionalInfo = await model.getAdditionalInfo(questionId);
+                    el.explantion = await model.Getexplantion(questionId);
+                    return el;
+                })
+            );
+        };
+
+        // ✅ MAP TYPES TO FUNCTIONS
+        const allQuestionTypes = {
+            mcq: fetchMcqQuestions,
+            dropdown: fetchDropdownQuestions,
+            sorting: fetchSortingQuestions,
+            sentenc_highlight: fetchSentenceHighlightQuestions,
+            fill_in_the_blanks: fetchFillInTheBlanksQuestions,
+            drag_drop: fetchDragDropQuestions,
+            multiple_radio: fetchMultipleRadioQuestions,
+        };
+
         const selectedTypes = requestedTypes.length > 0
-            ? requestedTypes.map(type => type.toLowerCase())
+            ? requestedTypes.map(type => type.toLowerCase()).filter(type => allQuestionTypes[type])
             : Object.keys(allQuestionTypes);
 
-        // Calculate how many to fetch from each type
         const questionsPerType = Math.ceil(count / selectedTypes.length);
         let allFetchedQuestions = [];
 
         for (const type of selectedTypes) {
             const fetchFn = allQuestionTypes[type];
             if (fetchFn) {
-                const questions = await fetchFn(questionsPerType); // Limit per type
-                allFetchedQuestions = allFetchedQuestions.concat(questions);
+                const questions = await fetchFn();
+                allFetchedQuestions = allFetchedQuestions.concat(questions.slice(0, questionsPerType));
             }
         }
 
-        // Shuffle to randomize across types
+        // ✅ SHUFFLE RESULTS
         const shuffled = allFetchedQuestions.sort(() => 0.5 - Math.random());
-
-        // Return only `count` number of questions
         const finalQuestions = shuffled.slice(0, count);
 
         return res.status(200).json({
@@ -897,3 +888,4 @@ module.exports.getQuestions = async (req, res) => {
         });
     }
 };
+
