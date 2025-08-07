@@ -43,11 +43,15 @@ app.use(expressWinston.logger({
 const loginRoutes = require('./routes/loginRoutes');
 const examRoutes = require('./routes/examRoutes');
 const courseRoutes = require('./routes/courseRoutes');
+const studentRoutes = require('./routes/studentRoute');
+
 
 
 app.use('/davidsacademy', loginRoutes);
 app.use('/davidsacademy/exam', examRoutes);
 app.use('/davidsacademy/course', courseRoutes);
+app.use('/davidsacademy/student', studentRoutes);
+
 
 // ─── 404 HANDLER ──────────────────────────────────────────────────────────────
 app.use((req, res) => {
