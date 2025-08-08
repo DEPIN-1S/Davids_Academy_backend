@@ -4,7 +4,7 @@ var { verifyToken, verifyRole } = require('../middleware/verifyAuth')
 
 const { ListContacts, UpdateStatus } = require('../controller/contactus');
 route.post('/list/contact-us', verifyToken, verifyRole(["admin"]), ListContacts)
-route.post('/contact-us/mark-done', verifyToken, verifyRole(["admin"]), UpdateStatus)
+route.post('/contact-us/update-status', verifyToken, verifyRole(["admin"]), UpdateStatus)
 
 const { CreateStudent, ListAllStudents, UpdateStudentStatus, EditStudent } = require('../controller/admin/student')
 route.post('/student/create', verifyToken, verifyRole(["admin"]), CreateStudent)
