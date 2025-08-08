@@ -52,7 +52,7 @@ app.use('/davidsacademy', loginRoutes);
 app.use('/davidsacademy/exam', examRoutes);
 app.use('/davidsacademy/course', courseRoutes);
 app.use('/davidsacademy/student', studentRoutes);
-app.use('/davidsacademy/admin', studentRoutes);
+app.use('/davidsacademy/admin', adminRoute);
 
 
 // ─── 404 HANDLER ──────────────────────────────────────────────────────────────

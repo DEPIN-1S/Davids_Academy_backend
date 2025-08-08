@@ -1,5 +1,5 @@
-const express = require('express')
-const route = express.Router()
+var express = require('express')
+var route = express.Router()
 var { verifyToken, verifyRole } = require('../middleware/verifyAuth')
 
 const { ListContacts, UpdateStatus } = require('../controller/contactus');
@@ -12,4 +12,4 @@ route.post('/student/edit', verifyToken, verifyRole(["admin"]), EditStudent)
 route.post('/student/list', verifyToken, verifyRole(["admin"]), ListAllStudents)
 route.post('/student/update-status', verifyToken, verifyRole(["admin"]), UpdateStudentStatus)
 
-module.exports = route;
+module.exports = route
