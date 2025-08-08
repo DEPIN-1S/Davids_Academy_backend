@@ -21,7 +21,7 @@ const app = express();
 
 //var server = https.createServer(options, app);
 
- var server = http.createServer(app);
+var server = http.createServer(app);
 
 
 // ─── MIDDLEWARE ────────────────────────────────────────────────────────────────
@@ -44,6 +44,7 @@ const loginRoutes = require('./routes/loginRoutes');
 const examRoutes = require('./routes/examRoutes');
 const courseRoutes = require('./routes/courseRoutes');
 const studentRoutes = require('./routes/studentRoute');
+const adminRoute = require('./routes/adminRoute');
 
 
 
@@ -51,6 +52,7 @@ app.use('/davidsacademy', loginRoutes);
 app.use('/davidsacademy/exam', examRoutes);
 app.use('/davidsacademy/course', courseRoutes);
 app.use('/davidsacademy/student', studentRoutes);
+app.use('/davidsacademy/admin', adminRoute);
 
 
 // ─── 404 HANDLER ──────────────────────────────────────────────────────────────
