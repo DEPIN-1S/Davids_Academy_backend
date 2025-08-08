@@ -15,8 +15,6 @@ module.exports.CreateCourse = async (req, res) => {
         //         message: "Access Denied, try with an authorized account"
         //     });
         // }
-
-
         let { course_name, sub_title, descrption, desc_points } = req.body;
 
         if (!course_name || !sub_title || !descrption || !desc_points) {
@@ -152,8 +150,8 @@ module.exports.UpdateCourse = async (req, res) => {
         }
 
         let courseImage = '';
-        console.log("files :",req.files?.courseimage?.[0],req.files?.courseimage);
-        
+        console.log("files :", req.files?.courseimage?.[0], req.files?.courseimage);
+
         if (req.files?.courseimage?.[0]) {
             const courseImageFile = req.files.courseimage[0].filename;
             courseImage = `/uploads/courses/${courseImageFile}`;
@@ -186,7 +184,7 @@ module.exports.UpdateCourse = async (req, res) => {
                 logger.info("Update condition built", { condition });
                 const EditCourse = await model.ChangeCourseInfo(condition, cs_id);
 
-                if (EditCourse.affectedRows>0) {
+                if (EditCourse.affectedRows > 0) {
                     logger.info("Course updated successfully", { cs_id });
                     return res.send({
                         result: true,
