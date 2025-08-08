@@ -97,14 +97,14 @@ module.exports.ForgotPassword = async (req, res) => {
             return res.send({ result: false, message: 'Email is required' });
         }
 
-        const user = await model.CheckEmail(email);
+        const user = await model.checkEmail(email);
         if (user.length === 0) {
             logger.warn(`ForgotPassword failed: Email not found - ${email}`);
             return res.send({ result: false, message: 'Email not found' });
         }
 
         const otp = GenerateOtp();
-        await model.UpdateToken(email, otp); // Update OTP in DB
+        await model.updateToken(email, otp); // Update OTP in DB
 
         await transporter.sendMail({
             from: "Dr LifeBoat <nocontact@drlifeboat.com>",

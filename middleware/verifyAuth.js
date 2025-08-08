@@ -25,4 +25,35 @@ const verifyToken = (req, res, next) => {
     }
 };
 
-module.exports = { verifyToken };
+
+const verifyRole = (allowedRoles = []) => {
+    return async (req, res, next) => {
+        try {
+            const role = req.user?.role;
+
+            if (!role) {
+                return res.status(401).json({
+                    result: false,
+                    message: "Role not found in token"
+                });
+            }
+
+            if (!allowedRoles.includes(role)) {
+                return res.status(403).json({
+                    result: false,
+                    message: "Access denied. Insufficient permissions."
+                });
+            }
+
+            next(); // ✅ Role is allowed, move to the next middleware/controller
+        } catch (err) {
+            logger.error('Role verification error', { error: err.message });
+            return res.status(500).json({
+                result: false,
+                message: 'Internal server error'
+            });
+        }
+    };
+}
+
+module.exports = { verifyToken, verifyRole };
