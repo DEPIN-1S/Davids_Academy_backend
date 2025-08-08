@@ -59,18 +59,18 @@ module.exports.VerifyOtp = async (req, res) => {
             return res.send({ result: false, message: 'Email and OTP are required' });
         }
 
-        const user = await model.CheckEmail(email);
+        const user = await model.checkEmail(email);
         if (user.length === 0) {
             logger.warn(`VerifyOtp failed: email not found - ${email}`);
             return res.send({ result: false, message: 'Email not found' });
         }
 
         if (otp == user[0]?.token) {
-            await model.UpdateToken(email);
+            await model.updateToken(email);
 
             if (password) {
                 const hashed = await HashPassword(password);
-                await model.UpdatePassword(email, hashed);
+                await model.updatePassword(email, hashed);
                 logger.info(`Password reset for user: ${email}`);
                 return res.send({ result: true, message: 'Password reset successful' });
             }

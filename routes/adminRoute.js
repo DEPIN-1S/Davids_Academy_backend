@@ -1,6 +1,13 @@
-const express = require('express')
-const route = express.Router()
+var express = require('express')
+var route = express.Router()
 var { verifyToken, verifyRole } = require('../middleware/verifyAuth')
+
+
+const { CreateUser, VerifyOtp, ForgotPassword, Login } = require('../controller/admin/login')
+route.post('/user/create', CreateUser)
+route.post('/user/verify-otp', VerifyOtp)
+route.post('/user/forgot-password', ForgotPassword)
+route.post('/user/login', Login)
 
 const { ListContacts, UpdateStatus } = require('../controller/contactus');
 route.post('/list/contact-us', verifyToken, verifyRole(["admin"]), ListContacts)
@@ -12,4 +19,4 @@ route.post('/student/edit', verifyToken, verifyRole(["admin"]), EditStudent)
 route.post('/student/list', verifyToken, verifyRole(["admin"]), ListAllStudents)
 route.post('/student/update-status', verifyToken, verifyRole(["admin"]), UpdateStudentStatus)
 
-module.exports = route;
+module.exports = route
