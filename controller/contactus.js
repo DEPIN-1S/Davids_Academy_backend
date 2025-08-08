@@ -4,10 +4,10 @@ var nodemailer = require("nodemailer");
 module.exports.ContactUs = async (req, res) => {
     try {
         var { name, email, phone, course_interested, message } = req.body;
-        if (!name || !email || !phone || !subject) {
+        if (!name || !email || !phone || !course_interested) {
             return res.send({
                 result: false,
-                message: "insufficient parameters",
+                message: "Name, email, phone and course interested are required",
             });
         }
         if (message) {
