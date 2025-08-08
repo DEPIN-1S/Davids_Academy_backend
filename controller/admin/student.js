@@ -66,71 +66,67 @@ module.exports.EditStudent = async (req, res) => {
                 message: "Student not found."
             })
         }
-        let condition = ``
-        if (fullname) {
-            if (condition === ``) {
-                condition += ` set firstname = '${fullname}'`
-            } else {
-                condition += ` and set firstname = '${fullname}'`
-            }
-        }
-
-        if (email) {
-            const trimmedEmail = email.toLowerCase().trim()
-            const cond = ` WHERE email = '${trimmedEmail}' and id <> '${student_id}'`
-            let checkEmail = await model.CheckEmail(cond)
+        // Check for duplicate email
+        let trimmedEmail = email?.toLowerCase().trim();
+        if (trimmedEmail) {
+            const cond = `WHERE email = ${trimmedEmail} AND id <> ${student_id}`;
+            const checkEmail = await model.CheckEmail(cond);
             if (checkEmail.length > 0) {
-                logger.error('Email already registered in db: %s', cond);
+                logger.error('Email already registered: %s', trimmedEmail);
                 return res.send({
                     result: false,
                     message: "Email already registered."
-                })
+                });
             }
-            if (condition === ``) {
-                condition += ` set email = '${trimmedEmail}'`
-            } else {
-                condition += ` and set email = '${trimmedEmail}'`
-            }
+        }
+
+        // Dynamically build update fields
+        const fields = [];
+        const values = [];
+
+        if (fullname) {
+            fields.push('firstname = ?');
+            values.push(fullname);
+        }
+
+        if (trimmedEmail) {
+            fields.push('email = ?');
+            values.push(trimmedEmail);
         }
 
         if (phone) {
-            if (condition === ``) {
-                condition += ` set mobile = '${phone}'`
-            } else {
-                condition += ` and set mobile = '${phone}'`
-            }
+            fields.push('mobile = ?');
+            values.push(phone);
         }
 
         if (target_exam) {
-            if (condition === ``) {
-                condition += ` set target_exam = '${target_exam}'`
-            } else {
-                condition += ` and set target_exam = '${target_exam}'`
-            }
+            fields.push('target_exam = ?');
+            values.push(target_exam);
         }
 
         if (class_type) {
-            if (condition === ``) {
-                condition += ` set class_type = '${class_type}'`
-            } else {
-                condition += ` and set class_type = '${class_type}'`
+            fields.push('class_type = ?');
+            values.push(class_type);
+        }
+        // Finalize query
+        const setClause = fields.join(', ');
+        values.push(student_id); // for WHERE clause
+
+        if (condition != ``) {
+            const updateStudent = await model.EditStudent(condition)
+            if (updateStudent.affectedRows === 0) {
+                logger.error(`Failed to update student: ${email}`);
+                return res.send({
+                    result: false,
+                    message: "Failed to update student"
+                })
             }
         }
-
-        const updateStudent = await model.EditStudent(condition)
-        if (updateStudent.affectedRows > 0) {
-            logger.info(`Student updated successfully: ${email}`);
-            return res.send({
-                result: true,
-                message: "Student updated successfully"
-            })
-        } else {
-            logger.error(`Failed to update student: ${email}`);
-            return res.send({
-                result: false,
-                message: "Failed to update student"
-            })
-        }
+        logger.info(`Student updated successfully: ${email}`);
+        return res.send({
+            result: true,
+            message: "Student updated successfully"
+        })
     } catch (error) {
         return res.send({
             result: false,
