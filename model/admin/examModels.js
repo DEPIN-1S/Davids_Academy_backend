@@ -721,7 +721,7 @@ async function getMultipleRadioQuestions() {
 async function GetMultipleRadioQuestionsClientfindings(questionId) {
     const sql = `SELECT * FROM tb_MultipleRadio WHERE question_id =?`; // Confirm this is the correct ID for multiple radio
     try {
-        const result = await query(sql,[questionId]);
+        const result = await query(sql, [questionId]);
         logger.info('✅ [getMultipleRadioQuestions] Successfully retrieved multiple-radio questions (question_type_id = 5)');
         return result;
     } catch (err) {
@@ -733,7 +733,7 @@ async function GetMultipleRadioQuestionsClientfindings(questionId) {
 async function GetMultipleRadioQuestionsRadioOption(questionId) {
     const sql = `SELECT * FROM tb_MultipleRadio WHERE question_id = ?`; // Confirm this is the correct ID for multiple radio
     try {
-        const result = await query(sql,[questionId]);
+        const result = await query(sql, [questionId]);
         logger.info('✅ [getMultipleRadioQuestions] Successfully retrieved multiple-radio questions (question_type_id = 5)');
         return result;
     } catch (err) {
@@ -756,6 +756,33 @@ async function getSentenceHighlightQuestions() {
     }
 }
 
+// tb_tests
+async function insertTest({ testdate, testType }) {
+    const sql = `
+      INSERT INTO tb_tests (testdate, testType)
+      VALUES (?, ?)`;
+    const values = [testdate, testType];
+    const result = await query(sql, values);
+    return result;
+}
+
+// tb_testQuestions
+async function insertTestQuestion({ testId, questionId }) {
+    const sql = `
+      INSERT INTO tb_testQuestions (testId, questionId)
+      VALUES (?, ?)`;
+    const values = [testId, questionId];
+    const result = await query(sql, values);
+    return result;
+}
+async function updateTest({ id, testdate, testType }) {
+    const sql = `UPDATE tb_tests SET testdate=?, testType=? WHERE id=?`;
+    return query(sql, [testdate, testType, id]);
+}
+async function deleteTestQuestionsByTestId(testId) {
+    const sql = `DELETE FROM tb_testQuestions WHERE testId=?`;
+    return query(sql, [testId]);
+}
 
 
 
@@ -816,5 +843,9 @@ module.exports = {
     Gettabs,
     getAdditionalInfo,
     Getexplantion,
+    insertTest,
+    insertTestQuestion,
+    updateTest,
+    deleteTestQuestionsByTestId
 };
 

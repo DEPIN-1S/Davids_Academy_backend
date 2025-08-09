@@ -385,7 +385,7 @@ module.exports.createQuestion = async (req, res) => {
 
 
             // Insert question into tb_dropdownQuestion
-            const questionResult = await model.insertSentenceQuestion(question, question_type_id,answer, exam_type, difficulty,
+            const questionResult = await model.insertSentenceQuestion(question, question_type_id, answer, exam_type, difficulty,
                 subject,
                 lesson,
                 clientNeedArea,
@@ -750,7 +750,7 @@ module.exports.getQuestions = async (req, res) => {
             let DropdownQuestions = await model.getDropdownQuestions();
             return await Promise.all(
                 DropdownQuestions.map(async (el) => {
-                    
+
                     let questionId = el.id;
                     let dropdownTexts = await model.Getdropdownquestiontext(questionId);
                     el.dropdownquestiontext = await Promise.all(
@@ -889,4 +889,98 @@ module.exports.getQuestions = async (req, res) => {
         });
     }
 };
+/**
+ * PATCH /api/exam/tests
+ * Body: {
+  "testdate": "2025-08-10",
+  "testType": "final",
+  "questionIds": [12, 18, 35]
+}
+ */
+module.exports.createTest = async (req, res) => {
+    try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(422).json({
+                result: false,
+                errors: errors.array().map(e => e.msg)
+            });
+        }
+        const {
+            testdate,
+            testType,
+            questionIds // Array of question id numbers
+        } = req.body;
 
+        // 1. Insert the test
+        const testResult = await model.insertTest({
+            testdate,
+            testType,
+        });
+        const testId = testResult.insertId;
+
+        // 2. Insert into tb_testQuestions for each questionId
+        if (Array.isArray(questionIds)) {
+            for (const questionId of questionIds) {
+                await model.insertTestQuestion({
+                    testId,
+                    questionId,
+                });
+            }
+        }
+
+        return res.status(201).json({
+            result: true,
+            message: 'Test created successfully',
+            testId,
+        });
+    } catch (error) {
+        logger.error(`❌ Failed to create test: ${error.message}`);
+        return res.status(500).json({
+            result: false,
+            message: 'Internal Server Error',
+            error: error.message,
+        });
+    }
+};
+module.exports.updateTest = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const {
+            testdate,
+            testType,
+            questionIds
+        } = req.body;
+
+        await model.updateTest({ id, testdate, testType });
+
+        // Remove all old question links for this test
+        await model.deleteTestQuestionsByTestId(id);
+
+        // Insert the new links
+        if (Array.isArray(questionIds)) {
+            for (const questionId of questionIds) {
+                await model.insertTestQuestion({ testId: id, questionId });
+            }
+        }
+
+        return res.json({ result: true, message: 'Test updated successfully' });
+    } catch (error) {
+        logger.error(`❌ Failed to update test: ${error.message}`);
+        return res.status(500).json({ result: false, message: 'Internal Server Error', error: error.message });
+    }
+};
+module.exports.deleteTest = async (req, res) => {
+    try {
+        const { id } = req.params;
+        // Delete links first
+        await model.deleteTestQuestionsByTestId(id);
+        // Delete the test
+        await model.deleteTest(id);
+
+        return res.json({ result: true, message: 'Test deleted successfully' });
+    } catch (error) {
+        logger.error(`❌ Failed to delete test: ${error.message}`);
+        return res.status(500).json({ result: false, message: 'Internal Server Error', error: error.message });
+    }
+};
