@@ -33,7 +33,7 @@ module.exports.InsertStudent = async (fullname, email, phone, password, target_e
 module.exports.EditStudent = async (setClause, values) => {
     try {
         const sql = `UPDATE tb_students SET ${setClause} WHERE id = ?`;
-        logger.info('[Usermodel] Updating student in db', setClause,values);
+        logger.info('[Usermodel] Updating student in db', setClause, values);
         const data = await query(sql.values);
         return data;
     } catch (error) {
@@ -51,6 +51,19 @@ module.exports.ListAllStudents = async (whereClause = "", params = []) => {
         return data;
     } catch (error) {
         logger.error('[Usermodel] Error in listing student', { error: error.message });
+        throw error;
+    }
+}
+
+
+module.exports.CountAllStudents = async (whereClause = "", params = []) => {
+    try {
+        const sql = `SELECT  COUNT(*) AS total from tb_users ${whereClause} `;
+        logger.info('[Usermodel] Counting students from db', { whereClause, params });
+        const data = await query(sql, params);
+        return data;
+    } catch (error) {
+        logger.error('[Usermodel] Error in counting student', { error: error.message });
         throw error;
     }
 }

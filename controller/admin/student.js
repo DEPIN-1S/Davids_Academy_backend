@@ -112,8 +112,8 @@ module.exports.EditStudent = async (req, res) => {
         const setClause = fields.join(', ');
         values.push(student_id); // for WHERE clause
 
-        if (condition != ``) {
-            const updateStudent = await model.EditStudent(condition)
+        if (fields.length > 0) {
+            const updateStudent = await model.EditStudent(setClause, values)
             if (updateStudent.affectedRows === 0) {
                 logger.error(`Failed to update student: ${email}`);
                 return res.send({
@@ -138,56 +138,85 @@ module.exports.EditStudent = async (req, res) => {
 
 module.exports.ListAllStudents = async (req, res) => {
     try {
-        const { searchQuery, type, page = 1, limit = 10 } = req.body || {};
+        const {
+            searchQuery = '',
+            type,
+            page = 1,
+            limit = 10
+        } = req.body || {};
 
-        if (!type || !["all", "active", "inactive"].includes(type)) {
+        // Validate `type`
+        const allowedTypes = ["all", "active", "inactive"];
+        if (!type || !allowedTypes.includes(type)) {
             return res.send({
                 result: false,
-                message: "Type is required and must be one of [ 'all' , 'active' , 'inactive' ]"
+                message: "Type is required and must be one of [ 'all', 'active', 'inactive' ]"
             });
         }
 
         let conditions = [];
         let params = [];
 
-        // Search condition
-        if (searchQuery) {
+        // Search filter
+        if (searchQuery.trim()) {
             conditions.push(`(email LIKE ? OR id LIKE ? OR mobile LIKE ?)`);
-            const term = `%${searchQuery}%`;
+            const term = `%${searchQuery.trim()}%`;
             params.push(term, term, term);
         }
 
-        // Status condition
+        // Status filter
         if (type !== "all") {
             conditions.push(`status = ?`);
-            params.push(type); // either "active" or "inactive"
+            params.push(type);
         }
+
+        // Role filter (only students)
         conditions.push(`role = ?`);
         params.push("student");
-        // Pagination calculation
-        const offset = (page - 1) * limit;
-        params.push(parseInt(limit), parseInt(offset));
 
-        let whereClause = "";
-        if (conditions.length > 0) {
-            whereClause = "WHERE " + conditions.join(" AND ");
-        }
+        // WHERE clause
+        const whereClause = conditions.length > 0 ? `WHERE ${conditions.join(" AND ")}` : "";
 
+        // Clone params for count query (without limit/offset)
+        const countParams = [...params];
+
+        // Pagination setup
+        const parsedLimit = parseInt(limit);
+        const parsedPage = parseInt(page);
+        const offset = (parsedPage - 1) * parsedLimit;
+
+        // Add limit & offset
+        params.push(parsedLimit, offset);
+
+        // Fetch paginated students and total count
         const studentList = await model.ListAllStudents(whereClause, params);
-        logger.info(`Students listed successfully: ${whereClause, params}`);
+        const countResult = await model.CountAllStudents(whereClause, countParams);
+        const totalCount = countResult?.[0]?.total || 0;
+
+        logger.info(`Students listed successfully: where=${whereClause}, params=${JSON.stringify(params)}`);
+
         return res.send({
             result: true,
             message: "Students listed successfully",
-            data: studentList
-        })
+            data: studentList,
+            pagination: {
+                total: totalCount,
+                page: parsedPage,
+                limit: parsedLimit,
+                totalPages: Math.ceil(totalCount / parsedLimit)
+            }
+        });
 
     } catch (error) {
+        logger.error(`Error listing students: ${error.message}`);
         return res.send({
             result: false,
-            message: error.message
-        })
+            message: "Failed to list students",
+            error: error.message
+        });
     }
-}
+};
+
 
 
 module.exports.UpdateStudentStatus = async (req, res) => {

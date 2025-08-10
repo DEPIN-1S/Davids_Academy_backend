@@ -11,5 +11,8 @@ route.post('/note/edit', verifyToken, EditNote)
 route.post('/note/list', verifyToken, ListNotes)
 route.post('/note/delete', verifyToken, DeleteNote)
 
+const { ListAllRecordings } = require('../controller/student/recordings')
+route.post('/recodings/list', verifyToken, ListAllRecordings)
+
 
 module.exports = route;
