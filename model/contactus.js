@@ -1,9 +1,10 @@
 var db = require("../config/db");
 var util = require("util")
 const query = util.promisify(db.query).bind(db);
+const logger = require('../utils/logger'); 
 
 module.exports.AddcContactDetailsquery = async (name, email, phone, course_interested, message) => {
-    var Query = `insert into tb_contact_us (cu_name,cu_email,cu_phone,cu_course_interested,cu_message) values (?,?,?,?,?)`;
+    var Query = `insert into tb_contact_us (cu_name,cu_email,cu_mobile,cu_course_interested,cu_message) values (?,?,?,?,?)`;
     var data = await query(Query, [name, email, phone, course_interested, message])
     return data;
 }
