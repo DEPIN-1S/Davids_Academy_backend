@@ -783,8 +783,18 @@ async function deleteTestQuestionsByTestId(testId) {
     const sql = `DELETE FROM tb_testQuestions WHERE testId=?`;
     return query(sql, [testId]);
 }
+async function deleteTest(id) {
+    const sql = `DELETE FROM tb_tests WHERE id=?`;
+    return query(sql, [id]);
+}
 
 
+// CREATE: insert a new marklist record
+async function insertMarklist({ studentId, testId, testStatus, mark }) {
+    const sql = `INSERT INTO tb_marklist (studentId, testId, testStatus, mark) VALUES (?, ?, ?,?)`;
+    const result = await query(sql, [studentId, testId, testStatus, mark]);
+    return result;
+}
 
 
 
@@ -846,6 +856,8 @@ module.exports = {
     insertTest,
     insertTestQuestion,
     updateTest,
-    deleteTestQuestionsByTestId
+    deleteTestQuestionsByTestId,
+    deleteTest,
+    insertMarklist
 };
 

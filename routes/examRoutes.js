@@ -4,7 +4,7 @@ var express = require('express');
 var route = express.Router();
 // const uploads = require('../uploads');
 const uploads = require('../utils/multer')
-const { questionTypeValidation, insertTestValidation } = require('../validations/examValidation');
+const { questionTypeValidation, insertTestValidation, marklistCreateValidation } = require('../validations/examValidation');
 // Import controller functions for authentication
 
 const { getQuestions,
@@ -17,7 +17,7 @@ const { getQuestions,
     createTest,
     getTest,
     updateTest,
-    deleteTest } = require('../controller/admin/examControllers');
+    deleteTest, createMarklist } = require('../controller/admin/examControllers');
 /**
  * @route   POST /questionType
  * @desc    Validate and insert a new exam type into the database
@@ -75,6 +75,7 @@ route.post('/tests', insertTestValidation, createTest);
 // Edit
 route.put('/tests/:id', updateTest);
 // Delete
-// route.delete('/tests/:id', deleteTest);
-
+route.delete('/tests/:id', deleteTest);
+// Create
+route.post('/marklist', marklistCreateValidation, createMarklist);
 module.exports = route;

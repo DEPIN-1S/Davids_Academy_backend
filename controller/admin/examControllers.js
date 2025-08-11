@@ -984,3 +984,54 @@ module.exports.deleteTest = async (req, res) => {
         return res.status(500).json({ result: false, message: 'Internal Server Error', error: error.message });
     }
 };
+// Create new marklist
+module.exports.createMarklist = async (req, res) => {
+    // Log the incoming request body for traceability
+    logger.info(' Received request to create new marklist', { body: req.body });
+
+    try {
+        // Destructure required fields
+        const { studentId, testId, testStatus, mark } = req.body;
+
+        // Validate presence (optional, if you haven't validated upstream)
+        if (!studentId || !testId || !testStatus) {
+            logger.warn(' Missing required marklist fields', { studentId, testId, testStatus, mark });
+            return res.status(400).json({ result: false, message: 'Missing required fields.' });
+        }
+
+        // Call model to insert marklist record
+        logger.info(' Inserting marklist record', { studentId, testId, testStatus, mark });
+        const result = await model.insertMarklist({ studentId, testId, testStatus, mark });
+
+        // Log the insert result
+        logger.info('Marklist created successfully', { insertedId: result.insertId });
+
+        // Respond with success status and the new record ID
+        res.status(201).json({ result: true, message: 'Marklist created', id: result.insertId });
+    } catch (error) {
+        // Log error details for debugging
+        logger.error(` Error creating marklist: ${error.message}`, { error });
+
+        // Respond with error status
+        res.status(500).json({ result: false, message: error.message });
+    }
+};
+exports.updateMarklistByStudentId = async (req, res) => {
+    try {
+        const { studentId } = req.params;
+        const { testId, testStatus, mark } = req.body;
+
+        // Optional: log
+        logger.info(`🔄 Updating marklist for studentId=${studentId}`, req.body);
+
+        const result = await marklistModel.updateMarklistByStudentId(studentId, { testId, testStatus, mark });
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ result: false, message: 'No marklist found for this studentId.' });
+        }
+        res.json({ result: true, message: 'Marklist updated', affectedRows: result.affectedRows });
+    } catch (error) {
+        logger.error(`❌ Failed to update marklist for studentId=${studentId}: ${error.message}`);
+        res.status(500).json({ result: false, message: error.message });
+    }
+};
