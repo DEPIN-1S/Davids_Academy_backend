@@ -385,7 +385,7 @@ module.exports.createQuestion = async (req, res) => {
 
 
             // Insert question into tb_dropdownQuestion
-            const questionResult = await model.insertSentenceQuestion(question, question_type_id,answer, exam_type, difficulty,
+            const questionResult = await model.insertSentenceQuestion(question, question_type_id, answer, exam_type, difficulty,
                 subject,
                 lesson,
                 clientNeedArea,
@@ -750,7 +750,7 @@ module.exports.getQuestions = async (req, res) => {
             let DropdownQuestions = await model.getDropdownQuestions();
             return await Promise.all(
                 DropdownQuestions.map(async (el) => {
-                    
+
                     let questionId = el.id;
                     let dropdownTexts = await model.Getdropdownquestiontext(questionId);
                     el.dropdownquestiontext = await Promise.all(
@@ -889,4 +889,149 @@ module.exports.getQuestions = async (req, res) => {
         });
     }
 };
+/**
+ * PATCH /api/exam/tests
+ * Body: {
+  "testdate": "2025-08-10",
+  "testType": "final",
+  "questionIds": [12, 18, 35]
+}
+ */
+module.exports.createTest = async (req, res) => {
+    try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(422).json({
+                result: false,
+                errors: errors.array().map(e => e.msg)
+            });
+        }
+        const {
+            testdate,
+            testType,
+            questionIds // Array of question id numbers
+        } = req.body;
 
+        // 1. Insert the test
+        const testResult = await model.insertTest({
+            testdate,
+            testType,
+        });
+        const testId = testResult.insertId;
+
+        // 2. Insert into tb_testQuestions for each questionId
+        if (Array.isArray(questionIds)) {
+            for (const questionId of questionIds) {
+                await model.insertTestQuestion({
+                    testId,
+                    questionId,
+                });
+            }
+        }
+
+        return res.status(201).json({
+            result: true,
+            message: 'Test created successfully',
+            testId,
+        });
+    } catch (error) {
+        logger.error(`❌ Failed to create test: ${error.message}`);
+        return res.status(500).json({
+            result: false,
+            message: 'Internal Server Error',
+            error: error.message,
+        });
+    }
+};
+module.exports.updateTest = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const {
+            testdate,
+            testType,
+            questionIds
+        } = req.body;
+
+        await model.updateTest({ id, testdate, testType });
+
+        // Remove all old question links for this test
+        await model.deleteTestQuestionsByTestId(id);
+
+        // Insert the new links
+        if (Array.isArray(questionIds)) {
+            for (const questionId of questionIds) {
+                await model.insertTestQuestion({ testId: id, questionId });
+            }
+        }
+
+        return res.json({ result: true, message: 'Test updated successfully' });
+    } catch (error) {
+        logger.error(`❌ Failed to update test: ${error.message}`);
+        return res.status(500).json({ result: false, message: 'Internal Server Error', error: error.message });
+    }
+};
+module.exports.deleteTest = async (req, res) => {
+    try {
+        const { id } = req.params;
+        // Delete links first
+        await model.deleteTestQuestionsByTestId(id);
+        // Delete the test
+        await model.deleteTest(id);
+
+        return res.json({ result: true, message: 'Test deleted successfully' });
+    } catch (error) {
+        logger.error(`❌ Failed to delete test: ${error.message}`);
+        return res.status(500).json({ result: false, message: 'Internal Server Error', error: error.message });
+    }
+};
+// Create new marklist
+module.exports.createMarklist = async (req, res) => {
+    // Log the incoming request body for traceability
+    logger.info(' Received request to create new marklist', { body: req.body });
+
+    try {
+        // Destructure required fields
+        const { studentId, testId, testStatus, mark } = req.body;
+
+        // Validate presence (optional, if you haven't validated upstream)
+        if (!studentId || !testId || !testStatus) {
+            logger.warn(' Missing required marklist fields', { studentId, testId, testStatus, mark });
+            return res.status(400).json({ result: false, message: 'Missing required fields.' });
+        }
+
+        // Call model to insert marklist record
+        logger.info(' Inserting marklist record', { studentId, testId, testStatus, mark });
+        const result = await model.insertMarklist({ studentId, testId, testStatus, mark });
+
+        // Log the insert result
+        logger.info('Marklist created successfully', { insertedId: result.insertId });
+
+        // Respond with success status and the new record ID
+        res.status(201).json({ result: true, message: 'Marklist created', id: result.insertId });
+    } catch (error) {
+        // Log error details for debugging
+        logger.error(` Error creating marklist: ${error.message}`, { error });
+
+        // Respond with error status
+        res.status(500).json({ result: false, message: error.message });
+    }
+};
+exports.updateMarklistByStudentId = async (req, res) => {
+    try {
+        const { studentId } = req.params;
+        const { testId, testStatus, mark } = req.body;
+
+        // Optional: log
+        logger.info(`🔄 Updating marklist for studentId=${studentId}`, req.body);
+
+        const result = await marklistModel.updateMarklistByStudentId(studentId, { testId, testStatus, mark });
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ result: false, message: 'No marklist found for this studentId.' });
+        }
+        res.json({ result: true, message: 'Marklist updated', affectedRows: result.affectedRows });
+    } catch (error) {
+        logger.error(`❌ Failed to update marklist for studentId=${studentId}: ${error.message}`);
+        res.status(500).json({ result: false, message: error.message });
+    }
+};

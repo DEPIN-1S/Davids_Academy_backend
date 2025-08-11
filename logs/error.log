@@ -1,0 +1,4 @@
+{"level":"error","message":"MySQL connection error: ","service":"david-academy-api","timestamp":"2025-08-09 10:08:36"}
+{"level":"error","message":"❌ Failed to delete test: model.deleteTest is not a function","service":"david-academy-api","timestamp":"2025-08-09 11:51:53"}
+{"level":"error","message":"MySQL connection error: ","service":"david-academy-api","timestamp":"2025-08-09 11:53:32"}
+{"level":"error","message":"MySQL connection error: ","service":"david-academy-api","timestamp":"2025-08-09 13:17:10"}

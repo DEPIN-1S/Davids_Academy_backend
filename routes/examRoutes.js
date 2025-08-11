@@ -4,10 +4,20 @@ var express = require('express');
 var route = express.Router();
 // const uploads = require('../uploads');
 const uploads = require('../utils/multer')
-const { questionTypeValidation } = require('../validations/examValidation');
+const { questionTypeValidation, insertTestValidation, marklistCreateValidation } = require('../validations/examValidation');
 // Import controller functions for authentication
 
-const { getQuestions,createQuestionType, updateQuestionType, deleteQuestionType, createQuestion, updateQuestion, deleteQuestion } = require('../controller/admin/examControllers');
+const { getQuestions,
+    createQuestionType,
+    updateQuestionType,
+    deleteQuestionType,
+    createQuestion,
+    updateQuestion,
+    deleteQuestion,
+    createTest,
+    getTest,
+    updateTest,
+    deleteTest, createMarklist } = require('../controller/admin/examControllers');
 /**
  * @route   POST /questionType
  * @desc    Validate and insert a new exam type into the database
@@ -46,17 +56,26 @@ route.put('/question/:id', updateQuestion);
 route.patch('/question/:id', deleteQuestion);
 
 //exam question list route
-route.post('/list/questions',getQuestions)
+route.post('/list/questions', getQuestions)
 
 
-var{ListExamTypes,deleteExamTypes,AddExamTypes,UpdateExamTypes}= require('../controller/admin/questionTypes');
+var { ListExamTypes, deleteExamTypes, AddExamTypes, UpdateExamTypes } = require('../controller/admin/questionTypes');
 
-route.post('/add/question-types',AddExamTypes)
+route.post('/add/question-types', AddExamTypes)
 
-route.get('/list/question-types',ListExamTypes)
+route.get('/list/question-types', ListExamTypes)
 
-route.get('/edit/question-types',UpdateExamTypes)
+route.get('/edit/question-types', UpdateExamTypes)
 
-route.post('/delete/question-types',deleteExamTypes)
-
+route.post('/delete/question-types', deleteExamTypes)
+// Create
+route.post('/tests', insertTestValidation, createTest);
+// // Read
+// route.get('/tests/:id', getTest);
+// Edit
+route.put('/tests/:id', updateTest);
+// Delete
+route.delete('/tests/:id', deleteTest);
+// Create
+route.post('/marklist', marklistCreateValidation, createMarklist);
 module.exports = route;
