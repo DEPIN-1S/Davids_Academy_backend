@@ -328,3 +328,68 @@ module.exports.GetMultipleRadioQuestionsRadioOption = async (questionId) => {
         throw err;
     }
 }
+
+
+module.exports.CheckQuestionAlreadySubmitted = async (user_id, question_id, test_id) => {
+    const sql = `SELECT * FROM tb_submittedQuestions WHERE sq_user_id=? and sq_test_id=? and sq_question_id=?`; // Confirm this is the correct ID for multiple radio
+    try {
+        const result = await query(sql, [user_id, test_id, question_id]);
+        logger.info(`✅ [CheckQuestionAlreadySubmitted] Check question already submitted -user : ${user_id} question : ${question_id} test : ${test_id}`);
+        return result;
+    } catch (err) {
+        logger.error(`[CheckQuestionAlreadySubmitted] ❌ Failed to Check question already submitted - ${err.message}`);
+        throw err;
+    }
+}
+
+
+module.exports.SubmitQuestionData = async (user_id, question_id, test_id, is_correct, mark) => {
+    const sql = `INSERT into tb_submittedQuestions ( sq_user_id, sq_test_id, sq_question_id,sq_is_correct,sq_mark) values(?,?,?,?,?)`; // Confirm this is the correct ID for multiple radio
+    try {
+        const result = await query(sql, [user_id, test_id, question_id, is_correct, mark]);
+        logger.info(`✅ [SubmitQuestionData] Submitting the question data -user : ${user_id} question : ${question_id} test : ${test_id}`);
+        return result;
+    } catch (err) {
+        logger.error(`[SubmitQuestionData] ❌ Failed to submit question data - ${err.message}`);
+        throw err;
+    }
+}
+
+
+module.exports.CheckTestAlreadySubmitted = async (user_id, test_id) => {
+    const sql = `SELECT * from tb_submittedTest where st_user_id=? and st_test_id=?`;
+    try {
+        const result = await query(sql, [user_id, test_id]);
+        logger.info(`✅ [CheckTestAlreadySubmitted] Check test already submitted or not -user : ${user_id} test : ${test_id}`);
+        return result;
+    } catch (err) {
+        logger.error(`[CheckTestAlreadySubmitted] ❌ Failed to Check test already submitted or not - ${err.message}`);
+        throw err;
+    }
+}
+
+
+module.exports.SubmitTestData = async (user_id, test_id, total_score) => {
+    const sql = `INSERT into tb_submittedtest ( st_user_id, st_test_id,st_score ) values(?,?,?)`;
+    try {
+        const result = await query(sql, [user_id, test_id, total_score]);
+        logger.info(`✅ [SubmitTestData] Submitting the test data -user : ${user_id} score : ${total_score} test : ${test_id}`);
+        return result;
+    } catch (err) {
+        logger.error(`[SubmitTestData] ❌ Failed to submit test data - ${err.message}`);
+        throw err;
+    }
+}
+
+
+module.exports.GetSubmittedAnswer = async (user_id, test_id) => {
+    const sql = `SELECT * from tb_submittedQuestions where sq_user_id=? and sq_test_id=?`;
+    try {
+        const result = await query(sql, [user_id, test_id]);
+        logger.info(`✅ [GetSubmittedAnswer] List submitted question data -user : ${user_id} test : ${test_id}`);
+        return result;
+    } catch (err) {
+        logger.error(`[GetSubmittedAnswer] ❌ Failed to list submitted question data - ${err.message}`);
+        throw err;
+    }
+}
