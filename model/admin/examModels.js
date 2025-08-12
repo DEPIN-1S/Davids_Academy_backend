@@ -608,6 +608,19 @@ async function Getsortingoption(questionId) {
     }
 }
 
+
+async function GetSentenceHighlightOptions(questionId) {
+    const sql = `SELECT * from tb_sentanceHighlight WHERE questionId = ?`;
+    try {
+        const result = await query(sql, [questionId]);
+        logger.info(`✅ [GetSentenceHighlightOptions] Successfully retrieved sentence high light options for questionId = ${questionId}`);
+        return result;
+    } catch (err) {
+        logger.error(`[GetSentenceHighlightOptions] ❌ Failed to retrieve sentence high light options for questionId = ${questionId} - ${err.message}`);
+        throw err;
+    }
+}
+
 // get fill in the blanks question
 
 async function getFillInTheBlanksQuestions(condition) {
@@ -797,6 +810,7 @@ module.exports = {
     insertSortItems,
     insertSentenceQuestion,
     insertHighlightOptionsortItems,
+    GetSentenceHighlightOptions,
     insertFillBlankQuestionContent,
     insertFillTheBlanksQuestion,
     insertFillBlankQuestionOptionsHeading,

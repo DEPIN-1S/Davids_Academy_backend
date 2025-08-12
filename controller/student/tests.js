@@ -166,13 +166,13 @@ module.exports.GetQuestionData = async (req, res) => {
         }
 
         if (questionData[0]?.question_type.toLowerCase() === "sentence highlight") {
-            const sortingoptions = await model.Getsortingoption(questionId);
+            const highlightOptions = await model.GetHighlightOptions(questionId);
             const tabsInfo = await model.Gettabs(questionId);
             const additionalInfo = await model.getAdditionalInfo(questionId);
             const explanation = await model.Getexplantion(questionId);
             fullQuestionData = {
                 ...questionData[0],
-                sortingoptions,
+                highlightOptions,
                 tabsInfo,
                 additionalInfo,
                 explanation
