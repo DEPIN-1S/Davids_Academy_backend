@@ -200,6 +200,19 @@ module.exports.Gettabs = async (questionId) => {
 }
 
 
+module.exports.GetHighlightOptions = async (questionId) => {
+    const sql = `SELECT * FROM tb_sentanceHighlight WHERE questionId = ?`;
+    try {
+        const result = await query(sql, [questionId]);
+        logger.info(`✅ [GetHighlightOptions] Successfully retrieved sentence highligh options for questionId = ${questionId}`);
+        return result;
+    } catch (err) {
+        logger.error(`[GetHighlightOptions] ❌ Failed to retrieve sentence highligh options for questionId = ${questionId} - ${err.message}`);
+        throw err;
+    }
+}
+
+
 module.exports.getAdditionalInfo = async (questionId) => {
     const sql = `SELECT * FROM tb_additionalInfo WHERE questionId = ?`;
     try {
@@ -217,10 +230,10 @@ module.exports.Getexplantion = async (questionId) => {
     const sql = `SELECT * FROM tb_explanation WHERE questionId =?`;
     try {
         const result = await query(sql, [questionId]);
-        logger.info('✅ [getSentenceHighlightQuestions] Successfully retrieved sentence highlight questions ');
+        logger.info('✅ [Getexplantion] Successfully retrieved sentence highlight questions ');
         return result;
     } catch (err) {
-        logger.error(`[getSentenceHighlightQuestions] ❌ Failed to retrieve sentence highlight questions - ${err.message}`);
+        logger.error(`[Getexplantion] ❌ Failed to retrieve sentence highlight questions - ${err.message}`);
         throw err;
     }
 }

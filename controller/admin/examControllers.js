@@ -740,7 +740,7 @@ module.exports.getQuestions = async (req, res) => {
             return await Promise.all(
                 SentenceHighlightQuestions.map(async (el) => {
                     let questionId = el.id;
-                    el.sortingoptions = await model.Getsortingoption(questionId);
+                    el.highlightoptions = await model.GetSentenceHighlightOptions(questionId);
                     el.tabsInfo = await model.Gettabs(questionId);
                     el.AdditionalInfo = await model.getAdditionalInfo(questionId);
                     el.explantion = await model.Getexplantion(questionId);
