@@ -19,7 +19,7 @@ module.exports.CheckEmail = async (condition) => {
 
 module.exports.InsertStudent = async (fullname, email, phone, password, target_exam, class_type) => {
     try {
-        const sql = `INSERT into tb_users (firstname,email,mobile,password,target_exam,class_type,role)`;
+        const sql = `INSERT into tb_users (firstname,email,mobile,password,target_exam,class_type,role) values(?,?,?,?,?,?,?)`;
         logger.info('[Usermodel] Inserting student in db', { fullname, email, phone, password, target_exam, class_type });
         const data = await query(sql, [fullname, email, phone, password, target_exam, class_type, "student"]);
         return data;
