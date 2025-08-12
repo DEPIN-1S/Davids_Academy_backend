@@ -14,10 +14,12 @@ route.post('/note/delete', verifyToken, DeleteNote)
 const { ListAllRecordings } = require('../controller/student/recordings')
 route.post('/recodings/list', verifyToken, ListAllRecordings)
 
-const { ListAllTests, ListTestQuestions, GetQuestionData } = require('../controller/student/tests')
+const { ListAllTests, ListTestQuestions, GetQuestionData, SubmitQuestions, SubmitTest } = require('../controller/student/tests')
 route.get('/test/list', verifyToken, ListAllTests)
 route.post('/test/questions', verifyToken, ListTestQuestions)
 route.post('/test/question/data', verifyToken, GetQuestionData)
+route.post('/test/question/submit', verifyToken, SubmitQuestions)
+route.post('/test/submit', verifyToken, SubmitTest)
 
 
 module.exports = route;

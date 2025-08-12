@@ -241,3 +241,137 @@ module.exports.GetQuestionData = async (req, res) => {
         })
     }
 }
+
+
+module.exports.SubmitQuestions = async (req, res) => {
+    try {
+        const { user_id } = req?.user
+        const { test_id, questionId, is_correct, mark } = req.body
+        if (!test_id || !questionId || !is_correct || !mark) {
+            logger.warn("Test id, question id, is correct and mark are required")
+            return res.send({
+                result: false,
+                message: "Test id, question id, is correct and mark are required"
+            })
+        }
+        const studentData = await model.GetStudentData(user_id)
+        if (studentData.length == 0) {
+            logger.error("Student not found.Please login again", user_id)
+            return res.send({
+                result: false,
+                message: "Student not found.Please login again"
+            })
+        }
+        const courseId = studentData[0]?.target_exam
+        const checkTest = await model.CheckTest(test_id, courseId)
+        if (checkTest.length === 0) {
+            logger.error("Test data not found", test_id, courseId)
+            return res.send({
+                result: false,
+                message: "Test data not found"
+            })
+        }
+        const checkQuestionInTest = await model.CheckQuestionInTest(test_id, questionId)
+        if (checkQuestionInTest.length === 0) {
+            logger.error("Question not available in this test", test_id, questionId)
+            return res.send({
+                result: false,
+                message: "Question not available in this test"
+            })
+        }
+        const checkQuestion = await model.CheckQuestion(questionId)
+        if (checkQuestion.length === 0) {
+            logger.error("Question not found. Invalid question id", questionId)
+            return res.send({
+                result: false,
+                message: "Question not found. Invalid question id"
+            })
+        }
+        // Validation for already submitted question  **** UNCOMMENT TO USE VALIDATION ****
+        // const checkAlreadySubmitted = await model.CheckQuestionAlreadySubmitted(user_id, question_id, test_id)
+        // if (checkAlreadySubmitted.length > 0) {
+        // logger.error("This question already submitted for this test", questionId)
+        //     return res.send({
+        //         result: false,
+        //         message: "This question already submitted for this test"
+        //     })
+        // }
+        const submitData = await model.SubmitQuestionData(user_id, questionId, test_id, is_correct, mark)
+        if (submitData.affectedRows > 0) {
+            return res.send({
+                result: true,
+                message: "Question data submitted successfully"
+            })
+        } else {
+            return res.send({
+                result: false,
+                message: "Failed to submit data"
+            })
+        }
+    } catch (error) {
+        return res.send({
+            result: false,
+            message: error.message
+        })
+    }
+}
+
+
+module.exports.SubmitTest = async (req, res) => {
+    try {
+        const { user_id } = req?.user
+        const { test_id } = req.body
+        if (!test_id) {
+            logger.warn("Test id, question id, is correct and mark are required")
+            return res.send({
+                result: false,
+                message: "Test id, question id, is correct and mark are required"
+            })
+        }
+        const studentData = await model.GetStudentData(user_id)
+        if (studentData.length == 0) {
+            logger.error("Student not found.Please login again", user_id)
+            return res.send({
+                result: false,
+                message: "Student not found.Please login again"
+            })
+        }
+        const courseId = studentData[0]?.target_exam
+        const checkTest = await model.CheckTest(test_id, courseId)
+        if (checkTest.length === 0) {
+            logger.error("Test data not found", test_id, courseId)
+            return res.send({
+                result: false,
+                message: "Test data not found"
+            })
+        }
+        // Validation to check the test already submitted or not **** UNCOMMENT TO USE VALIDATION ****
+        // const checkAlreadySubmitted = await model.CheckTestAlreadySubmitted(user_id, test_id)
+        // if (checkAlreadySubmitted.length > 0) {
+        //     logger.error("Test already submitted", test_id, courseId)
+        //     return res.send({
+        //         result: false,
+        //         message: "Test already submitted"
+        //     })
+        // }
+        const submittedAnswers = await model.GetSubmittedAnswer(user_id, test_id)
+        const totalMark = submittedAnswers.reduce((sum, item) => sum + item.sq_mark, 0)
+        const submitTest = await model.SubmitTestData(user_id, test_id, totalMark)
+        if (submitTest.affectedRows > 0) {
+            return res.send({
+                result: true,
+                message: "Test submitted successfully"
+            })
+        } else {
+            return res.send({
+                result: false,
+                message: "Failed to submit test"
+            })
+        }
+    } catch (error) {
+        return res.send({
+            result: false,
+            message: error.message
+        })
+    }
+}
