@@ -20,6 +20,11 @@ module.exports.insertTestValidation = [
         .notEmpty().withMessage('Test type is required')
         .isLength({ max: 100 }).withMessage('Test type must be at most 100 characters'),
 
+    body('courseId')
+        .trim()
+        .notEmpty().withMessage('Course id is required')
+        .isNumeric().withMessage('Course id must be the id of the course'),
+
     body('questionIds')
         .isArray({ min: 1 }).withMessage('questionIds must be a non-empty array'),
 
