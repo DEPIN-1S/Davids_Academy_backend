@@ -84,8 +84,8 @@ module.exports.CheckStudent = async (student_id) => {
 
 module.exports.UpdateStatus = async (student_id, status) => {
     try {
-        const sql = `UPDATE tb_users (status=?) where id=?`;
-        logger.info('[Usermodel] Update student status with id ', { student_id, status });
+        const sql = `UPDATE tb_users set status=? where id=?`;
+        logger.info(`[Usermodel] Updating student status`, { student_id, new_status: status });
         const data = await query(sql, [status, student_id]);
         return data;
     } catch (error) {

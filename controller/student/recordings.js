@@ -10,7 +10,6 @@ module.exports.ListAllRecordings = async (req, res) => {
             page = 1,
             limit = 10,
             courseId,
-            subjectId
         } = req.body || {};
 
         let conditions = [];
@@ -29,11 +28,6 @@ module.exports.ListAllRecordings = async (req, res) => {
             params.push(courseId);
         }
 
-        // Subject filter
-        if (subjectId) {
-            conditions.push(`r_subject = ?`);
-            params.push(subjectId);
-        }
 
         const whereClause = conditions.length ? `WHERE ${conditions.join(' AND ')}` : '';
 
