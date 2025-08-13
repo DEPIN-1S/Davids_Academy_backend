@@ -19,4 +19,7 @@ route.post('/record/edit', verifyToken, verifyRole(["admin"]), upload.fields([{ 
 route.post('/record/list', verifyToken, verifyRole(["admin"]), ListAllRecordings)
 route.post('/record/delete', verifyToken, verifyRole(["admin"]), DeleteRecordings)
 
+const { GetDashboard } = require('../controller/admin/dashboard')
+route.get('/dashboard', verifyToken, verifyRole(["admin"]), GetDashboard)
+
 module.exports = route
