@@ -11,9 +11,13 @@ module.exports.questionTypeValidation = [
         .withMessage('ExamType must be at most 100 characters'),
 ];
 module.exports.insertTestValidation = [
-    body('testdate')
-        .notEmpty().withMessage('Test date is required')
-        .isISO8601().withMessage('Test date must be a valid date (YYYY-MM-DD)'),
+    body('fromDate')
+        .notEmpty().withMessage('From date is required')
+        .isISO8601().withMessage('From date must be a valid date (YYYY-MM-DD)'),
+
+    body('toDate')
+        .notEmpty().withMessage('To date is required')
+        .isISO8601().withMessage('To date must be a valid date (YYYY-MM-DD)'),
 
     body('testType')
         .trim()

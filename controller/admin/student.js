@@ -257,3 +257,67 @@ module.exports.UpdateStudentStatus = async (req, res) => {
         })
     }
 }
+
+
+module.exports.ListStudentSubmittedTest = async (req, res) => {
+    try {
+        let { student_id } = req.body || {}
+        if (!student_id) {
+            return res.send({
+                result: false,
+                message: "student id is required"
+            })
+        }
+        let checkStudent = await model.CheckStudent(student_id)
+        if (checkStudent.length === 0) {
+            logger.error('Student not found in db: %s', student_id);
+            return res.send({
+                result: false,
+                message: "Student not found."
+            })
+        }
+        const submittedTest = await model.ListSubmittedTest(student_id)
+        return res.send({
+            result: true,
+            message: "Data retrieved successfully",
+            data: submittedTest
+        })
+    } catch (error) {
+        return res.send({
+            result: false,
+            message: error.message
+        })
+    }
+}
+
+
+module.exports.ListSubmittedQuestion = async (req, res) => {
+    try {
+        let { student_id, test_id } = req.body || {}
+        if (!student_id || !test_id) {
+            return res.send({
+                result: false,
+                message: "student id and test id are required"
+            })
+        }
+        let checkStudent = await model.CheckStudent(student_id)
+        if (checkStudent.length === 0) {
+            logger.error('Student not found in db: %s', student_id);
+            return res.send({
+                result: false,
+                message: "Student not found."
+            })
+        }
+        const submittedQuestion = await model.ListSubmittedQuestions(student_id, test_id)
+        return res.send({
+            result: true,
+            message: "Data retrieved successfully",
+            data: submittedQuestion
+        })
+    } catch (error) {
+        return res.send({
+            result: false,
+            message: error.message
+        })
+    }
+}

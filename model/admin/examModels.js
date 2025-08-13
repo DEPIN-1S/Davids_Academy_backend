@@ -752,11 +752,11 @@ async function getSentenceHighlightQuestions(condition) {
 }
 
 // tb_tests
-async function insertTest({ testdate, testType, courseId }) {
+async function insertTest({ fromDate, toDate, testType, courseId }) {
     const sql = `
-      INSERT INTO tb_tests (testdate, testType,courseId)
-      VALUES (?, ?,?)`;
-    const values = [testdate, testType, courseId];
+      INSERT INTO tb_tests (fromDate,toDate, testType,courseId)
+      VALUES (?, ?,?,?)`;
+    const values = [fromDate, toDate, testType, courseId];
     const result = await query(sql, values);
     return result;
 }
@@ -770,9 +770,9 @@ async function insertTestQuestion({ testId, questionId }) {
     const result = await query(sql, values);
     return result;
 }
-async function updateTest({ id, testdate, testType, courseId }) {
-    const sql = `UPDATE tb_tests SET testdate=?, testType=?, courseId=? WHERE id=?`;
-    return query(sql, [testdate, testType,courseId, id]);
+async function updateTest({ id, fromDate,toDate, testType, courseId }) {
+    const sql = `UPDATE tb_tests SET fromDate=?, toDate=?, testType=?, courseId=? WHERE id=?`;
+    return query(sql, [fromDate,toDate, testType, courseId, id]);
 }
 async function deleteTestQuestionsByTestId(testId) {
     const sql = `DELETE FROM tb_testQuestions WHERE testId=?`;

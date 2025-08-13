@@ -95,4 +95,29 @@ module.exports.UpdateStatus = async (student_id, status) => {
 }
 
 
+module.exports.ListSubmittedTest = async (student_id) => {
+    try {
+        const sql = `SELECT * from tb_submittedTest where st_user_id=?`;
+        logger.info(`[ListSubmittedTest] Listing student submitted test from db`, { student_id });
+        const data = await query(sql, [student_id]);
+        return data;
+    } catch (error) {
+        logger.error('[ListSubmittedTest] Error in list student submitted test', { error: error.message });
+        throw error;
+    }
+}
+
+module.exports.ListSubmittedQuestions = async (student_id, test_id) => {
+    try {
+        const sql = `SELECT * from tb_submittedQuestions where st_user_id=? and st_test_id=?`;
+        logger.info(`[ListSubmittedTest] Listing student submitted questions from db`, { student_id });
+        const data = await query(sql, [student_id, test_id]);
+        return data;
+    } catch (error) {
+        logger.error('[ListSubmittedTest] Error in list student submitted questions', { error: error.message });
+        throw error;
+    }
+}
+
+
 

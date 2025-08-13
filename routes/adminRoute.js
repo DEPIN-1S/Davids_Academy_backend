@@ -7,11 +7,13 @@ const { ListContacts, UpdateStatus } = require('../controller/contactus');
 route.post('/list/contact-us', verifyToken, verifyRole(["admin"]), ListContacts)
 route.post('/contact-us/update-status', verifyToken, verifyRole(["admin"]), UpdateStatus)
 
-const { CreateStudent, ListAllStudents, UpdateStudentStatus, EditStudent } = require('../controller/admin/student')
+const { CreateStudent, ListAllStudents, UpdateStudentStatus, EditStudent, ListStudentSubmittedTest, ListSubmittedQuestion } = require('../controller/admin/student')
 route.post('/student/create', verifyToken, verifyRole(["admin"]), CreateStudent)
 route.post('/student/edit', verifyToken, verifyRole(["admin"]), EditStudent)
 route.post('/student/list', verifyToken, verifyRole(["admin"]), ListAllStudents)
 route.post('/student/update-status', verifyToken, verifyRole(["admin"]), UpdateStudentStatus)
+route.post('/student/test', verifyToken, verifyRole(["admin"]), ListStudentSubmittedTest)
+route.post('/student/test/questions', verifyToken, verifyRole(["admin"]), ListSubmittedQuestion)
 
 const { InsertRecord, ListAllRecordings, EditRecordings, DeleteRecordings } = require('../controller/admin/records')
 route.post('/record/create', verifyToken, verifyRole(["admin"]), upload.fields([{ name: 'recordimage', maxCount: 1 }]), InsertRecord)

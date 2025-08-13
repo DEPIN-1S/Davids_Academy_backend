@@ -361,7 +361,7 @@ module.exports.createQuestion = async (req, res) => {
             // Insert question into tb_dropdownQuestion
             const questionResult = await model.insertSentenceQuestion(question, question_type_id, answer, exam_type, difficulty,
                 courseId,
-                 answer);
+                answer);
             const questionId = questionResult.insertId;
             logger.info(`✅ Added dropdown question with ID: ${questionId}`);
             // Insert tabs into tb_DropdownQuestionTabs
@@ -416,7 +416,7 @@ module.exports.createQuestion = async (req, res) => {
             // Insert question into tb_dropdownQuestion
             const questionResult = await model.insertFillTheBlanksQuestion(question, question_type_id, answer, exam_type, difficulty,
                 courseId,
-                );
+            );
             const questionId = questionResult.insertId;
 
             logger.info(`✅ Added dropdown question with ID: ${questionId}`);
@@ -478,7 +478,7 @@ module.exports.createQuestion = async (req, res) => {
             } = req.body;
             // Insert question into tb_dropdownQuestion
             const questionResult = await model.insertDragDropQuestion(question, question_type_id, exam_type, drag_drop_content, difficulty, courseId,
-                );
+            );
             const questionId = questionResult.insertId;
             logger.info(`✅ Added Drag Drop question with ID: ${questionId}`);
             // Insert tabs into tb_DropdownQuestionTabs
@@ -543,7 +543,7 @@ module.exports.createQuestion = async (req, res) => {
             // Insert question into tb_dropdownQuestion
             const questionResult = await model.insertMultipleRadioQuestion(question, question_type_id, exam_type, difficulty,
                 courseId,
-                );
+            );
             const questionId = questionResult.insertId;
             logger.info(`✅ Added Multiple Radio question with ID: ${questionId}`);
             // Insert tabs into tb_DropdownQuestionTabs
@@ -862,14 +862,16 @@ module.exports.createTest = async (req, res) => {
             });
         }
         const {
-            testdate,
+            fromDate,
+            toDate,
             testType,
             courseId,
             questionIds // Array of question id numbers
         } = req.body;
         // 1. Insert the test
         const testResult = await model.insertTest({
-            testdate,
+            fromDate,
+            toDate,
             testType,
             courseId
         });
@@ -903,13 +905,14 @@ module.exports.updateTest = async (req, res) => {
     try {
         const { id } = req.params;
         const {
-            testdate,
+            fromDate,
+            toDate,
             testType,
             courseId,
             questionIds
         } = req.body;
 
-        await model.updateTest({ id, testdate, testType, courseId });
+        await model.updateTest({ id, fromDate, toDate, testType, courseId });
 
         // Remove all old question links for this test
         await model.deleteTestQuestionsByTestId(id);
