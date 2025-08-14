@@ -2,3 +2,5 @@
 {"level":"error","message":"❌ Failed to delete test: model.deleteTest is not a function","service":"david-academy-api","timestamp":"2025-08-09 11:51:53"}
 {"level":"error","message":"MySQL connection error: ","service":"david-academy-api","timestamp":"2025-08-09 11:53:32"}
 {"level":"error","message":"MySQL connection error: ","service":"david-academy-api","timestamp":"2025-08-09 13:17:10"}
+{"error":"ER_PARSE_ERROR: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '? OFFSET ?' at line 1","level":"error","message":"[Recordingsmodel] Error in listing recordings","service":"david-academy-api","timestamp":"2025-08-14 11:49:50"}
+{"level":"error","message":"Error listing recordings: ER_PARSE_ERROR: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '? OFFSET ?' at line 1","service":"david-academy-api","timestamp":"2025-08-14 11:49:50"}
