@@ -361,7 +361,7 @@ module.exports.createQuestion = async (req, res) => {
             // Insert question into tb_dropdownQuestion
             const questionResult = await model.insertSentenceQuestion(question, question_type_id, answer, exam_type, difficulty,
                 courseId,
-                 answer);
+                answer);
             const questionId = questionResult.insertId;
             logger.info(`✅ Added dropdown question with ID: ${questionId}`);
             // Insert tabs into tb_DropdownQuestionTabs
@@ -416,7 +416,7 @@ module.exports.createQuestion = async (req, res) => {
             // Insert question into tb_dropdownQuestion
             const questionResult = await model.insertFillTheBlanksQuestion(question, question_type_id, answer, exam_type, difficulty,
                 courseId,
-                );
+            );
             const questionId = questionResult.insertId;
 
             logger.info(`✅ Added dropdown question with ID: ${questionId}`);
@@ -478,7 +478,7 @@ module.exports.createQuestion = async (req, res) => {
             } = req.body;
             // Insert question into tb_dropdownQuestion
             const questionResult = await model.insertDragDropQuestion(question, question_type_id, exam_type, drag_drop_content, difficulty, courseId,
-                );
+            );
             const questionId = questionResult.insertId;
             logger.info(`✅ Added Drag Drop question with ID: ${questionId}`);
             // Insert tabs into tb_DropdownQuestionTabs
@@ -543,7 +543,7 @@ module.exports.createQuestion = async (req, res) => {
             // Insert question into tb_dropdownQuestion
             const questionResult = await model.insertMultipleRadioQuestion(question, question_type_id, exam_type, difficulty,
                 courseId,
-                );
+            );
             const questionId = questionResult.insertId;
             logger.info(`✅ Added Multiple Radio question with ID: ${questionId}`);
             // Insert tabs into tb_DropdownQuestionTabs
@@ -837,6 +837,24 @@ module.exports.getQuestions = async (req, res) => {
 
     } catch (error) {
         logger.error(`❌ Failed to fetch questions: ${error.message}`);
+        return res.status(500).json({
+            result: false,
+            message: 'Internal Server Error',
+            error: error.message,
+        });
+    }
+};
+module.exports.listMockTestQuestions = async (req, res) => {
+    try {
+        const questions = await model.listMockTestQuestions();
+        return res.status(200).json({
+            result: true,
+            message: 'Mock Test questions retrieved successfully',
+            count: questions.length,
+            list: questions,
+        });
+    } catch (error) {
+        logger.error(`❌ Failed to retrieve mock test questions: ${error.message}`);
         return res.status(500).json({
             result: false,
             message: 'Internal Server Error',
