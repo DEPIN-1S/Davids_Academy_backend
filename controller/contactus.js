@@ -1,5 +1,6 @@
 var model = require('../model/contactus')
 var nodemailer = require("nodemailer");
+const logger = require('../utils/logger'); 
 
 module.exports.ContactUs = async (req, res) => {
     try {

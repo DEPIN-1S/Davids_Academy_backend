@@ -19,7 +19,7 @@ module.exports.CheckEmail = async (condition) => {
 
 module.exports.InsertStudent = async (fullname, email, phone, password, target_exam, class_type) => {
     try {
-        const sql = `INSERT into tb_users (firstname,email,mobile,password,target_exam,class_type,role)`;
+        const sql = `INSERT into tb_users (firstname,email,mobile,password,target_exam,class_type,role) values(?,?,?,?,?,?,?)`;
         logger.info('[Usermodel] Inserting student in db', { fullname, email, phone, password, target_exam, class_type });
         const data = await query(sql, [fullname, email, phone, password, target_exam, class_type, "student"]);
         return data;
@@ -30,11 +30,11 @@ module.exports.InsertStudent = async (fullname, email, phone, password, target_e
 }
 
 
-module.exports.EditStudent = async (condition) => {
+module.exports.EditStudent = async (setClause, values) => {
     try {
-        const sql = `UPDATE tb_users ${condition} `;
-        logger.info('[Usermodel] Updating student in db', condition);
-        const data = await query(sql);
+        const sql = `UPDATE tb_students SET ${setClause} WHERE id = ?`;
+        logger.info('[Usermodel] Updating student in db', setClause, values);
+        const data = await query(sql.values);
         return data;
     } catch (error) {
         logger.error('[Usermodel] Error updating student', { error: error.message });
@@ -56,11 +56,24 @@ module.exports.ListAllStudents = async (whereClause = "", params = []) => {
 }
 
 
+module.exports.CountAllStudents = async (whereClause = "", params = []) => {
+    try {
+        const sql = `SELECT  COUNT(*) AS total from tb_users ${whereClause} `;
+        logger.info('[Usermodel] Counting students from db', { whereClause, params });
+        const data = await query(sql, params);
+        return data;
+    } catch (error) {
+        logger.error('[Usermodel] Error in counting student', { error: error.message });
+        throw error;
+    }
+}
+
+
 module.exports.CheckStudent = async (student_id) => {
     try {
         const sql = `SELECT * from tb_users where id=? and role=?`;
         logger.info('[Usermodel] Check student with id ', { student_id });
-        const data = await query(sql, [student_id,"student"]);
+        const data = await query(sql, [student_id, "student"]);
         return data;
     } catch (error) {
         logger.error('[Usermodel] Error in check student ', { error: error.message });
@@ -71,8 +84,8 @@ module.exports.CheckStudent = async (student_id) => {
 
 module.exports.UpdateStatus = async (student_id, status) => {
     try {
-        const sql = `UPDATE tb_users (status=?) where id=?`;
-        logger.info('[Usermodel] Update student status with id ', { student_id, status });
+        const sql = `UPDATE tb_users set status=? where id=?`;
+        logger.info(`[Usermodel] Updating student status`, { student_id, new_status: status });
         const data = await query(sql, [status, student_id]);
         return data;
     } catch (error) {
