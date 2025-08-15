@@ -337,18 +337,12 @@ module.exports.createQuestion = async (req, res) => {
                 answer,
                 highlightoptions
             } = req.body;
-
             const qstabs = typeof tabs === 'string' ? JSON.parse(tabs) : tabs;
-
-
             // Insert question into tb_dropdownQuestion
-            const questionResult = await model.insertSentenceQuestion(question, question_type_id, answer, exam_type, difficulty,
-                courseId,
-                answer);
+            const questionResult = await model.insertSentenceQuestion(question, question_type_id, answer, exam_type, difficulty, courseId, answer);
             const questionId = questionResult.insertId;
             logger.info(`✅ Added dropdown question with ID: ${questionId}`);
             // Insert tabs into tb_DropdownQuestionTabs
-
             for (const option of highlightoptions) {
                 await model.insertHighlightOptionsortItems(questionId, option);
                 logger.info(`🔹 Inserted option for question ${questionId}: ${option}`);
@@ -388,48 +382,83 @@ module.exports.createQuestion = async (req, res) => {
                 question,
                 answer,
                 question_content,
-                options
+                options,      // this comes as a JSON string in form-data
+                explanationHeading,
+                explanationText,
+                info,
+                infoImage,
+                question_type_id,
+                exam_type,
+                difficulty,
+                courseId
             } = req.body;
 
-            console.log("req.body : ", req.body);
+            // Parse options string safely into array
+            let FTBoptions = [];
+            try {
+                FTBoptions = options ? JSON.parse(options) : [];
+            } catch (error) {
+                console.error('Failed to parse options JSON:', error);
+                FTBoptions = [];
+            }
 
-            const FTBquestion_content = typeof question_content === 'string' ? JSON.parse(question_content) : question_content;
-            const FTBoptions = typeof options === 'string' ? JSON.parse(options) : options;
+            // Similarly parse question_content if needed
+            let FTBquestion_content = [];
+            try {
+                FTBquestion_content = question_content ? JSON.parse(question_content) : [];
+            } catch (error) {
+                console.error('Failed to parse question_content JSON:', error);
+                FTBquestion_content = [];
+            }
 
-            // Insert question into tb_dropdownQuestion
-            const questionResult = await model.insertFillTheBlanksQuestion(question, question_type_id, answer, exam_type, difficulty,
-                courseId,
+            const questionResult = await model.insertFillTheBlanksQuestion(
+                question,
+                question_type_id,
+                answer,
+                exam_type,
+                difficulty,
+                courseId
             );
             const questionId = questionResult.insertId;
-
             logger.info(`✅ Added dropdown question with ID: ${questionId}`);
 
+            // Insert question content
             for (const item of FTBquestion_content) {
-
-                await model.insertFillBlankQuestionContent(questionId, item.question_text, item.fill_blanks_answer, item.blank_or_not);
-
-                logger.info(`📄 Inserted fill in the blanks text "${item.question_text}" with answer ${item.fill_blanks_answer}  for question ${questionId}`);
+                await model.insertFillBlankQuestionContent(
+                    questionId,
+                    item.question_text,
+                    item.fill_blanks_answer,
+                    item.blank_or_not
+                );
+                logger.info(`📄 Inserted fill in the blanks text "${item.question_text}" for question ${questionId}`);
             }
+
+            // Insert options and their values
             for (const item of FTBoptions) {
+                if (!item || !Array.isArray(item.option_value)) {
+                    logger.warn(`Skipping invalid options item: ${JSON.stringify(item)}`);
+                    continue;
+                }
 
                 let heading = await model.insertFillBlankQuestionOptionsHeading(questionId, item.option_heading);
-                logger.info(`📄 Inserted fill in the blanks options heading "${item.option_heading}" for question ${questionId}`);
-                const heading_id = heading.insertId;
+                logger.info(`📄 Inserted option heading "${item.option_heading}" for question ${questionId}`);
 
                 for (const value of item.option_value) {
-                    await model.insertFillBlankQuestionOptionsHeadingValues(questionId, heading_id, value);
-                    logger.info(`🔽 fill in the blanks options heading values "${value}" -> "${value}"`);
+                    await model.insertFillBlankQuestionOptionsHeadingValues(questionId, heading.insertId, value);
+                    logger.info(`🔽 Inserted option value "${value}"`);
                 }
             }
 
+            // Explanation and additional info insertion here...
             if (explanationText) {
                 await model.insertMcqExplanation(questionId, explanationHeading, explanationText);
                 logger.info(`📝 Explanation added for question ${questionId}`);
             }
             if (info) {
                 await model.insertAdditionalInfo(questionId, info, infoImage);
-                logger.info(`📝 Additional information added for question ${questionId}`);
+                logger.info(`📝 Additional info added for question ${questionId}`);
             }
+
             return res.status(201).json({
                 result: true,
                 message: "Fill in the Blanks question created successfully",
@@ -447,7 +476,6 @@ module.exports.createQuestion = async (req, res) => {
                     info,
                     infoImage
                 }
-
             });
         }
 
@@ -456,35 +484,71 @@ module.exports.createQuestion = async (req, res) => {
             const {
                 question,
                 drag_drop_content,
-                tabs,
-                drag_and_drop
+                explanationHeading,
+                explanationText,
+                info,
+                infoImage,
+                question_type_id,
+                exam_type,
+                difficulty,
+                courseId
             } = req.body;
+
+            // Parse tabs JSON string or use empty array if not present or invalid
+            let tabs = [];
+            try {
+                tabs = typeof req.body.tabs === 'string' ? JSON.parse(req.body.tabs) : req.body.tabs || [];
+            } catch (error) {
+                console.error('Failed to parse tabs:', error);
+                tabs = [];
+            }
+
+            // Parse drag_and_drop JSON string or use empty array if not present or invalid
+            let drag_and_drop = [];
+            try {
+                drag_and_drop = typeof req.body.drag_and_drop === 'string' ? JSON.parse(req.body.drag_and_drop) : req.body.drag_and_drop || [];
+            } catch (error) {
+                console.error('Failed to parse drag_and_drop:', error);
+                drag_and_drop = [];
+            }
+
             // Insert question into tb_dropdownQuestion
-            const questionResult = await model.insertDragDropQuestion(question, question_type_id, exam_type, drag_drop_content, difficulty, courseId,
+            const questionResult = await model.insertDragDropQuestion(
+                question,
+                question_type_id,
+                exam_type,
+                drag_drop_content,
+                difficulty,
+                courseId
             );
             const questionId = questionResult.insertId;
             logger.info(`✅ Added Drag Drop question with ID: ${questionId}`);
+
             // Insert tabs into tb_DropdownQuestionTabs
             for (const tab of tabs) {
                 await model.insertTab(questionId, tab.tabKey, tab.tabValue);
                 logger.info(`📄 Inserted Drag Drop tab "${tab.tabKey}" for question ${questionId}`);
             }
-            // Insert dropdown fields into tb_dropdowns
-            for (const item of drag_and_drop) {
-                console.log(drag_and_drop, "options");
 
-                let heading = await model.insertDragDropOptionsHeading(questionId, item.option_heading, item.question_answer);
-                logger.info(`📄 Inserted Drag Drop options heading "${item.option_heading}" and asnser "${item.question_answer}" for question ${questionId}`);
+            // Insert drag and drop options
+            for (const item of drag_and_drop) {
+                logger.info(`Processing drag_and_drop item`, item);
+
+                const heading = await model.insertDragDropOptionsHeading(
+                    questionId,
+                    item.option_heading,
+                    item.question_answer
+                );
+                logger.info(`📄 Inserted Drag Drop options heading "${item.option_heading}" and answer "${item.question_answer}" for question ${questionId}`);
                 const heading_id = heading.insertId;
 
                 for (const value of item.option_value) {
-                    console.log("value :", value);
                     await model.insertDragDropOptionsHeadingValues(questionId, heading_id, value);
-                    logger.info(`🔽 Drag Drop options heading values "${value}" -> "${value}"`);
+                    logger.info(`🔽 Drag Drop options heading values "${value}" saved`);
                 }
             }
 
-            // Insert explanation into tb_mcqExplanation
+            // Explanations and additional info
             if (explanationText) {
                 await model.insertMcqExplanation(questionId, explanationHeading, explanationText);
                 logger.info(`📝 Drag Drop Explanation added for question ${questionId}`);
@@ -493,6 +557,7 @@ module.exports.createQuestion = async (req, res) => {
                 await model.insertAdditionalInfo(questionId, info, infoImage);
                 logger.info(`📝 Drag Drop Additional information added for question ${questionId}`);
             }
+
             return res.status(201).json({
                 result: true,
                 message: "Drag and drop question created successfully",
@@ -510,10 +575,9 @@ module.exports.createQuestion = async (req, res) => {
                     info,
                     infoImage
                 }
-
             });
-
         }
+
 
         if (questionType.toLowerCase().trim() === 'multiple radio') {
             const {
