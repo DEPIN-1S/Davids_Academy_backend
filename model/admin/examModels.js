@@ -380,9 +380,7 @@ async function insertFillBlankQuestionOptionsHeadingValues(questionId, heading_i
 // ---------------------------------Multiple Radio------------------------//
 
 async function insertMultipleRadioQuestion(question, question_type_id, exam_type, difficulty, courseId) {
-    const sql = `INSERT INTO tb_questions (question,question_type_id,exam_type, difficulty,courseId) 
-                 VALUES (?, ?, ?, ?, ?, ?)`;
-
+    const sql = `INSERT INTO tb_questions (question, question_type_id, exam_type, difficulty, courseId) VALUES (?, ?, ?, ?, ?)`;
     try {
         const result = await query(sql, [
             question,
@@ -783,13 +781,41 @@ async function listMockTestQuestions() {
     }
 }
 // tb_tests
-async function insertTest({ testdate, testType, courseId }) {
-    const sql = `
-      INSERT INTO tb_tests (testdate, testType,courseId)
-      VALUES (?, ?,?)`;
-    const values = [testdate, testType, courseId];
-    const result = await query(sql, values);
-    return result;
+// Insert a new test into tb_tests
+// Params:
+//   fromDate - start date of the test
+//   toDate   - end date of the test
+//   testTitle - title/type of the test
+//   courseId - associated course ID
+//
+// Returns: Result of the insert operation (e.g. insertId, affectedRows)
+async function insertTest({ fromDate, toDate, testTitle, courseId }) {
+    try {
+        // Prepare SQL statement to insert a test row
+        const sql = `
+            INSERT INTO tb_tests (fromDate, toDate, testTitle, courseId)
+            VALUES (?, ?, ?, ?)
+        `;
+
+        // Parameters for the query, in correct order
+        const values = [fromDate, toDate, testTitle, courseId];
+
+        // Execute the query
+        const result = await query(sql, values);
+
+        // Log successful insert with details
+        logger.info(
+            `✅ Test created: testTitle=${testTitle}, fromDate=${fromDate}, toDate=${toDate}, courseId=${courseId}, insertId=${result.insertId}`
+        );
+
+        return result; // May include insertId, affectedRows, etc.
+    } catch (error) {
+        // Log error to tracking system with formatted details
+        logger.error(
+            `❌ Failed to insert test: ${error.message} | Params: fromDate=${fromDate}, toDate=${toDate}, testTitle=${testTitle}, courseId=${courseId}`
+        );
+        throw error;
+    }
 }
 
 // tb_testQuestions
@@ -801,9 +827,9 @@ async function insertTestQuestion({ testId, questionId }) {
     const result = await query(sql, values);
     return result;
 }
-async function updateTest({ id, testdate, testType, courseId }) {
-    const sql = `UPDATE tb_tests SET testdate=?, testType=?, courseId=? WHERE id=?`;
-    return query(sql, [testdate, testType, courseId, id]);
+async function updateTest({ id, testdate, testTitle, courseId }) {
+    const sql = `UPDATE tb_tests SET testdate=?, testTitle=?, courseId=? WHERE id=?`;
+    return query(sql, [testdate, testTitle, courseId, id]);
 }
 async function deleteTestQuestionsByTestId(testId) {
     const sql = `DELETE FROM tb_testQuestions WHERE testId=?`;

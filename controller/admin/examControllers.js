@@ -120,14 +120,6 @@ module.exports.deleteQuestionType = async (req, res) => {
 module.exports.createQuestion = async (req, res) => {
     logger.info('📥 Received request to add new question');
     try {
-        // const errors = validationResult(req);
-        // if (!errors.isEmpty()) {
-        //     logger.warn('⚠️ Validation failed for question submission');
-        //     return res.status(400).json({
-        //         result: false,
-        //         errors: errors.array().map((err) => err.msg),
-        //     });
-        // }
         const {
             exam_type,
             question_type_id,
@@ -137,18 +129,9 @@ module.exports.createQuestion = async (req, res) => {
             explanationHeading,
             explanationText,
             info,
-
         } = req.body;
-
-        console.log("files: ", req.files);
-
-        console.log("(req.files?.infoimage? :", req.files?.infoimage);
-
         const infoImageFile = req.files?.infoimage[0]?.filename;
-        console.log("infoImageFile:", infoImageFile);
-
         const infoImage = infoImageFile ? `/uploads/infoimages/${infoImageFile}` : null;
-
         // check for questionType
         if (questionType.toLowerCase().trim() === 'mcq') {
             const { question,
@@ -533,44 +516,86 @@ module.exports.createQuestion = async (req, res) => {
         }
 
         if (questionType.toLowerCase().trim() === 'multiple radio') {
-
             const {
                 question,
-                tabs,
-                question_content,
-                radio_options
-            } = req.body;
-            // Insert question into tb_dropdownQuestion
-            const questionResult = await model.insertMultipleRadioQuestion(question, question_type_id, exam_type, difficulty,
+                question_type_id,
+                exam_type,
+                difficulty,
                 courseId,
+                explanationHeading,
+                explanationText,
+                info,
+                infoImage
+            } = req.body;
+
+            // Parse JSON string fields safely
+            let tabs = [];
+            try {
+                tabs = typeof req.body.tabs === 'string' ? JSON.parse(req.body.tabs) : req.body.tabs || [];
+            } catch (error) {
+                console.error('Failed to parse tabs:', error);
+                tabs = [];
+            }
+
+            let question_content = [];
+            try {
+                question_content = typeof req.body.question_content === 'string' ? JSON.parse(req.body.question_content) : req.body.question_content || [];
+            } catch (error) {
+                console.error('Failed to parse question_content:', error);
+                question_content = [];
+            }
+
+            let radio_options = [];
+            try {
+                radio_options = typeof req.body.radio_options === 'string' ? JSON.parse(req.body.radio_options) : req.body.radio_options || [];
+            } catch (error) {
+                console.error('Failed to parse radio_options:', error);
+                radio_options = [];
+            }
+
+            console.log('Parsed tabs:', tabs);
+
+            // Insert question into tb_dropdownQuestion
+            const questionResult = await model.insertMultipleRadioQuestion(
+                question,
+                question_type_id,
+                exam_type,
+                difficulty,
+                courseId
             );
             const questionId = questionResult.insertId;
             logger.info(`✅ Added Multiple Radio question with ID: ${questionId}`);
+
             // Insert tabs into tb_DropdownQuestionTabs
             for (const tab of tabs) {
                 await model.insertTab(questionId, tab.tabKey, tab.tabValue);
                 logger.info(`📄 Multiple Radio Inserted tab "${tab.tabKey}" for question ${questionId}`);
             }
+
             // Insert dropdown fields into tb_dropdowns
             for (const item of question_content) {
                 await model.insertMultipleRadioQuestionContent(questionId, item.question_text, item.question_answer);
-                logger.info(`🔽 Multiple Radio "${item.question_text}" -> "${item}"`);
-
+                logger.info(`🔽 Multiple Radio "${item.question_text}" -> "${item.question_answer}"`);
             }
+
             // Insert correct answers into tb_dropdownAnswer
             for (const item of radio_options) {
                 await model.insertMultipleRadioOptions(questionId, item.option_value);
-                logger.info(`✅  Multiple Radio option "${item.option_value}" added`);
+                logger.info(`✅ Multiple Radio option "${item.option_value}" added`);
             }
+
             // Insert explanation into tb_mcqExplanation
             if (explanationText) {
                 await model.insertMcqExplanation(questionId, explanationHeading, explanationText);
                 logger.info(`📝 Multiple Radio Explanation added for question ${questionId}`);
             }
+
+            // Insert additional info
             if (info) {
                 await model.insertAdditionalInfo(questionId, info, infoImage);
                 logger.info(`📝 Multiple Radio Additional information added for question ${questionId}`);
             }
+
             return res.status(201).json({
                 result: true,
                 message: "Multiple Radio question created successfully",
@@ -588,11 +613,8 @@ module.exports.createQuestion = async (req, res) => {
                     info,
                     infoImage
                 }
-
             });
-
         }
-
     } catch (error) {
         logger.error(`❌ Failed to add question: ${error.message}`);
         return res.status(500).json({
@@ -866,7 +888,7 @@ module.exports.listMockTestQuestions = async (req, res) => {
  * PATCH /api/exam/tests
  * Body: {
   "testdate": "2025-08-10",
-  "testType": "final",
+  "testTitle": "final",
   "questionIds": [12, 18, 35]
 }
  */
@@ -880,15 +902,17 @@ module.exports.createTest = async (req, res) => {
             });
         }
         const {
-            testdate,
-            testType,
+            fromDate,
+            toDate,
+            testTitle,
             courseId,
             questionIds // Array of question id numbers
         } = req.body;
         // 1. Insert the test
         const testResult = await model.insertTest({
-            testdate,
-            testType,
+            fromDate,
+            toDate,
+            testTitle,
             courseId
         });
         const testId = testResult.insertId;
@@ -922,12 +946,12 @@ module.exports.updateTest = async (req, res) => {
         const { id } = req.params;
         const {
             testdate,
-            testType,
+            testTitle,
             courseId,
             questionIds
         } = req.body;
 
-        await model.updateTest({ id, testdate, testType, courseId });
+        await model.updateTest({ id, testdate, testTitle, courseId });
 
         // Remove all old question links for this test
         await model.deleteTestQuestionsByTestId(id);
