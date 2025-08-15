@@ -149,6 +149,7 @@ module.exports.Login = async (req, res) => {
             email: user[0]?.email,
             mobile: user[0]?.mobile,
             role: user[0]?.role,
+
         });
         const refreshToken = generateRefreshToken({  // Consider renaming to GenerateJWT
             user_id: user[0]?.id,
@@ -168,6 +169,7 @@ module.exports.Login = async (req, res) => {
                 email: user[0]?.email,
                 mobile: user[0]?.mobile,
                 role: user[0]?.role,
+                courseId: user[0]?.target_exam,
                 tokenType: 'Bearer',
                 accessToken: accessToken,
                 refreshToken: refreshToken

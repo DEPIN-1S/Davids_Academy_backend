@@ -844,6 +844,24 @@ module.exports.getQuestions = async (req, res) => {
         });
     }
 };
+module.exports.listMockTestQuestions = async (req, res) => {
+    try {
+        const questions = await model.listMockTestQuestions();
+        return res.status(200).json({
+            result: true,
+            message: 'Mock Test questions retrieved successfully',
+            count: questions.length,
+            list: questions,
+        });
+    } catch (error) {
+        logger.error(`❌ Failed to retrieve mock test questions: ${error.message}`);
+        return res.status(500).json({
+            result: false,
+            message: 'Internal Server Error',
+            error: error.message,
+        });
+    }
+};
 /**
  * PATCH /api/exam/tests
  * Body: {
