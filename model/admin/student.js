@@ -17,17 +17,19 @@ module.exports.CheckEmail = async (condition) => {
 }
 
 
-module.exports.InsertStudent = async (fullname, email, phone, password, target_exam, class_type) => {
+module.exports.InsertStudent = async (fullname, email, phone, password, target_exam) => {
+    console.log('Test', fullname, email, phone, password, target_exam);
     try {
-        const sql = `INSERT into tb_users (firstname,email,mobile,password,target_exam,class_type,role) values(?,?,?,?,?,?,?)`;
-        logger.info('[Usermodel] Inserting student in db', { fullname, email, phone, password, target_exam, class_type });
-        const data = await query(sql, [fullname, email, phone, password, target_exam, class_type, "student"]);
+        const sql = `INSERT INTO tb_users (firstname,email,mobile,password,target_exam,role) VALUES (?,?,?,?,?,?)`;
+        logger.info('[Usermodel] Inserting student in db', { fullname, email, phone, password, target_exam });
+        const data = await query(sql, [fullname, email, phone, password, target_exam, "student"]);
         return data;
     } catch (error) {
         logger.error('[Usermodel] Error inserting student', { error: error.message });
         throw error;
     }
-}
+};
+
 
 
 module.exports.EditStudent = async (setClause, values) => {
