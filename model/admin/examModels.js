@@ -750,7 +750,38 @@ async function getSentenceHighlightQuestions(condition) {
         throw err;
     }
 }
+/**
+ * Fetch all questions from tb_questions table
+ * where exam_type is 'Mock Test' and not deleted
+ *
+ * @returns {Promise<Array>} List of questions
+ */
+async function listMockTestQuestions() {
+    try {
+        // Prepare SQL – selecting all columns from tb_questions
+        // Filtering by exam_type = 'Mock Test' and isDeleted false/null
+        const sql = `
+            SELECT id,question
+            FROM tb_questions
+            WHERE exam_type = 'Mock Test'
+              AND (isDeleted IS NULL OR isDeleted = 0)
+        `;
 
+        // Execute SQL query
+        const rows = await query(sql);
+
+        // Log the successful query and count of results
+        logger.info(`✅ Retrieved ${rows.length} Mock Test questions from database`);
+
+        return rows;
+    } catch (error) {
+        // Log the error for debugging/troubleshooting
+        logger.error(`❌ Error in listMockTestQuestions: ${error.message}`);
+
+        // Re-throw to let the controller handle the response
+        throw error;
+    }
+}
 // tb_tests
 async function insertTest({ testdate, testType, courseId }) {
     const sql = `
@@ -772,7 +803,7 @@ async function insertTestQuestion({ testId, questionId }) {
 }
 async function updateTest({ id, testdate, testType, courseId }) {
     const sql = `UPDATE tb_tests SET testdate=?, testType=?, courseId=? WHERE id=?`;
-    return query(sql, [testdate, testType,courseId, id]);
+    return query(sql, [testdate, testType, courseId, id]);
 }
 async function deleteTestQuestionsByTestId(testId) {
     const sql = `DELETE FROM tb_testQuestions WHERE testId=?`;
@@ -849,6 +880,7 @@ module.exports = {
     Gettabs,
     getAdditionalInfo,
     Getexplantion,
+    listMockTestQuestions,
     insertTest,
     insertTestQuestion,
     updateTest,

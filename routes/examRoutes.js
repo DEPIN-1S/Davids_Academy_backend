@@ -14,6 +14,7 @@ const { getQuestions,
     createQuestion,
     updateQuestion,
     deleteQuestion,
+    listMockTestQuestions,
     createTest,
     getTest,
     updateTest,
@@ -68,6 +69,10 @@ route.get('/list/question-types', ListExamTypes)
 route.get('/edit/question-types', UpdateExamTypes)
 
 route.post('/delete/question-types', deleteExamTypes)
+route.get(
+    '/list/questions/mocktest',
+    listMockTestQuestions
+);
 // Create
 route.post('/tests', insertTestValidation, createTest);
 // // Read
