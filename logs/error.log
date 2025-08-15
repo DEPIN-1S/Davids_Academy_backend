@@ -10,3 +10,6 @@
 {"level":"error","message":"MySQL connection error: ","service":"david-academy-api","timestamp":"2025-08-15 10:44:48"}
 {"level":"error","message":"MySQL connection error: ","service":"david-academy-api","timestamp":"2025-08-15 10:48:08"}
 {"level":"error","message":"MySQL connection error: ","service":"david-academy-api","timestamp":"2025-08-15 10:52:29"}
+{"error":"","level":"error","message":"[CourseModel] Error listing courses","service":"david-academy-api","timestamp":"2025-08-15 11:44:26"}
+{"error":"","level":"error","message":"Error in ListCourses","service":"david-academy-api","timestamp":"2025-08-15 11:44:26"}
+{"level":"error","message":"MySQL connection error: ","service":"david-academy-api","timestamp":"2025-08-15 11:56:52"}
