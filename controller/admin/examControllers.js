@@ -120,14 +120,6 @@ module.exports.deleteQuestionType = async (req, res) => {
 module.exports.createQuestion = async (req, res) => {
     logger.info('📥 Received request to add new question');
     try {
-        // const errors = validationResult(req);
-        // if (!errors.isEmpty()) {
-        //     logger.warn('⚠️ Validation failed for question submission');
-        //     return res.status(400).json({
-        //         result: false,
-        //         errors: errors.array().map((err) => err.msg),
-        //     });
-        // }
         const {
             exam_type,
             question_type_id,
@@ -540,6 +532,7 @@ module.exports.createQuestion = async (req, res) => {
                 question_content,
                 radio_options
             } = req.body;
+            console.log('tabs', tabs);
             // Insert question into tb_dropdownQuestion
             const questionResult = await model.insertMultipleRadioQuestion(question, question_type_id, exam_type, difficulty,
                 courseId,
