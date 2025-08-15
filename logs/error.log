@@ -35,3 +35,7 @@
 {"level":"error","message":"❌ Failed to add question: ER_BAD_NULL_ERROR: Column 'tabKey' cannot be null","service":"david-academy-api","timestamp":"2025-08-15 20:20:35"}
 {"level":"error","message":"❌ insertTab: Failed for question ID=175, tabKey=undefined - ER_BAD_NULL_ERROR: Column 'tabKey' cannot be null","service":"david-academy-api","timestamp":"2025-08-15 20:21:26"}
 {"level":"error","message":"❌ Failed to add question: ER_BAD_NULL_ERROR: Column 'tabKey' cannot be null","service":"david-academy-api","timestamp":"2025-08-15 20:21:26"}
+{"level":"error","message":"❌ insertTab: Failed for question ID=177, tabKey=undefined - ER_BAD_NULL_ERROR: Column 'tabKey' cannot be null","service":"david-academy-api","timestamp":"2025-08-15 21:43:15"}
+{"level":"error","message":"❌ Failed to add question: ER_BAD_NULL_ERROR: Column 'tabKey' cannot be null","service":"david-academy-api","timestamp":"2025-08-15 21:43:15"}
+{"level":"error","message":"❌ insertTab: Failed for question ID=178, tabKey=undefined - ER_BAD_NULL_ERROR: Column 'tabKey' cannot be null","service":"david-academy-api","timestamp":"2025-08-15 22:59:57"}
+{"level":"error","message":"❌ Failed to add question: ER_BAD_NULL_ERROR: Column 'tabKey' cannot be null","service":"david-academy-api","timestamp":"2025-08-15 22:59:57"}
