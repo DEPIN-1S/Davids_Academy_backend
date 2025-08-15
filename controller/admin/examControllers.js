@@ -339,9 +339,7 @@ module.exports.createQuestion = async (req, res) => {
             } = req.body;
             const qstabs = typeof tabs === 'string' ? JSON.parse(tabs) : tabs;
             // Insert question into tb_dropdownQuestion
-            const questionResult = await model.insertSentenceQuestion(question, question_type_id, answer, exam_type, difficulty,
-                courseId,
-                answer);
+            const questionResult = await model.insertSentenceQuestion(question, question_type_id, answer, exam_type, difficulty, courseId, answer);
             const questionId = questionResult.insertId;
             logger.info(`✅ Added dropdown question with ID: ${questionId}`);
             // Insert tabs into tb_DropdownQuestionTabs
@@ -384,45 +382,83 @@ module.exports.createQuestion = async (req, res) => {
                 question,
                 answer,
                 question_content,
-                options
+                options,      // this comes as a JSON string in form-data
+                explanationHeading,
+                explanationText,
+                info,
+                infoImage,
+                question_type_id,
+                exam_type,
+                difficulty,
+                courseId
             } = req.body;
-            const FTBquestion_content = typeof question_content === 'string' ? JSON.parse(question_content) : question_content;
-            const FTBoptions = typeof options === 'string' ? JSON.parse(options) : options;
 
-            // Insert question into tb_dropdownQuestion
-            const questionResult = await model.insertFillTheBlanksQuestion(question, question_type_id, answer, exam_type, difficulty,
-                courseId,
+            // Parse options string safely into array
+            let FTBoptions = [];
+            try {
+                FTBoptions = options ? JSON.parse(options) : [];
+            } catch (error) {
+                console.error('Failed to parse options JSON:', error);
+                FTBoptions = [];
+            }
+
+            // Similarly parse question_content if needed
+            let FTBquestion_content = [];
+            try {
+                FTBquestion_content = question_content ? JSON.parse(question_content) : [];
+            } catch (error) {
+                console.error('Failed to parse question_content JSON:', error);
+                FTBquestion_content = [];
+            }
+
+            const questionResult = await model.insertFillTheBlanksQuestion(
+                question,
+                question_type_id,
+                answer,
+                exam_type,
+                difficulty,
+                courseId
             );
             const questionId = questionResult.insertId;
-
             logger.info(`✅ Added dropdown question with ID: ${questionId}`);
 
+            // Insert question content
             for (const item of FTBquestion_content) {
-
-                await model.insertFillBlankQuestionContent(questionId, item.question_text, item.fill_blanks_answer, item.blank_or_not);
-
-                logger.info(`📄 Inserted fill in the blanks text "${item.question_text}" with answer ${item.fill_blanks_answer}  for question ${questionId}`);
+                await model.insertFillBlankQuestionContent(
+                    questionId,
+                    item.question_text,
+                    item.fill_blanks_answer,
+                    item.blank_or_not
+                );
+                logger.info(`📄 Inserted fill in the blanks text "${item.question_text}" for question ${questionId}`);
             }
+
+            // Insert options and their values
             for (const item of FTBoptions) {
+                if (!item || !Array.isArray(item.option_value)) {
+                    logger.warn(`Skipping invalid options item: ${JSON.stringify(item)}`);
+                    continue;
+                }
 
                 let heading = await model.insertFillBlankQuestionOptionsHeading(questionId, item.option_heading);
-                logger.info(`📄 Inserted fill in the blanks options heading "${item.option_heading}" for question ${questionId}`);
-                const heading_id = heading.insertId;
+                logger.info(`📄 Inserted option heading "${item.option_heading}" for question ${questionId}`);
 
                 for (const value of item.option_value) {
-                    await model.insertFillBlankQuestionOptionsHeadingValues(questionId, heading_id, value);
-                    logger.info(`🔽 fill in the blanks options heading values "${value}" -> "${value}"`);
+                    await model.insertFillBlankQuestionOptionsHeadingValues(questionId, heading.insertId, value);
+                    logger.info(`🔽 Inserted option value "${value}"`);
                 }
             }
 
+            // Explanation and additional info insertion here...
             if (explanationText) {
                 await model.insertMcqExplanation(questionId, explanationHeading, explanationText);
                 logger.info(`📝 Explanation added for question ${questionId}`);
             }
             if (info) {
                 await model.insertAdditionalInfo(questionId, info, infoImage);
-                logger.info(`📝 Additional information added for question ${questionId}`);
+                logger.info(`📝 Additional info added for question ${questionId}`);
             }
+
             return res.status(201).json({
                 result: true,
                 message: "Fill in the Blanks question created successfully",
@@ -440,7 +476,6 @@ module.exports.createQuestion = async (req, res) => {
                     info,
                     infoImage
                 }
-
             });
         }
 
