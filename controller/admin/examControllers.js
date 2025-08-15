@@ -866,7 +866,7 @@ module.exports.listMockTestQuestions = async (req, res) => {
  * PATCH /api/exam/tests
  * Body: {
   "testdate": "2025-08-10",
-  "testType": "final",
+  "testTitle": "final",
   "questionIds": [12, 18, 35]
 }
  */
@@ -880,15 +880,17 @@ module.exports.createTest = async (req, res) => {
             });
         }
         const {
-            testdate,
-            testType,
+            fromDate,
+            toDate,
+            testTitle,
             courseId,
             questionIds // Array of question id numbers
         } = req.body;
         // 1. Insert the test
         const testResult = await model.insertTest({
-            testdate,
-            testType,
+            fromDate,
+            toDate,
+            testTitle,
             courseId
         });
         const testId = testResult.insertId;
@@ -922,12 +924,12 @@ module.exports.updateTest = async (req, res) => {
         const { id } = req.params;
         const {
             testdate,
-            testType,
+            testTitle,
             courseId,
             questionIds
         } = req.body;
 
-        await model.updateTest({ id, testdate, testType, courseId });
+        await model.updateTest({ id, testdate, testTitle, courseId });
 
         // Remove all old question links for this test
         await model.deleteTestQuestionsByTestId(id);
