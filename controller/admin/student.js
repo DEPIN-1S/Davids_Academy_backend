@@ -5,7 +5,7 @@ const { HashPassword } = require('../../utils/bcrypt')
 
 module.exports.CreateStudent = async (req, res) => {
     try {
-        const { fullname, email, phone, password, target_exam, class_type } = req.body || {}
+        const { fullname, email, phone, password, target_exam } = req.body || {}
         if (!fullname || !email || !phone || !password || !target_exam) {
             return res.send({
                 result: false,
@@ -22,8 +22,9 @@ module.exports.CreateStudent = async (req, res) => {
                 message: "Email already registered."
             })
         }
-        const hashedPassword = HashPassword(password)
-        const insertStudent = await model.InsertStudent(fullname, trimmedEmail, phone, hashedPassword, target_exam, class_type)
+        const hashedPassword = await HashPassword(password)
+        console.log('hashedPassword', hashedPassword);
+        const insertStudent = await model.InsertStudent(fullname, trimmedEmail, phone, hashedPassword, target_exam)
         if (insertStudent.affectedRows > 0) {
             logger.info(`Student created successfully: ${email}`);
             return res.send({
