@@ -5,10 +5,6 @@
         "question": "Which of the following is the primary treatment for anaphylaxis?",
         "answer": "Epinephrine",
         "difficulty": "Medium",
-        "subject": 1,
-        "lesson": 3,
-        "clientNeedArea": 2,
-        "clientNeedTopic": 5,
         "exhibit": "https://example.com/exhibits/anaphylaxis-chart.png",
         "options": [
             "Epinephrine",
