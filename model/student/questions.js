@@ -5,13 +5,13 @@ const logger = require('../../utils/logger');
 
 
 module.exports.ListQuestionIds = async (courseId) => {
-    const sql = `SELECT id from tb_questions WHERE courseId = ?`;
+    const sql = `SELECT id from tb_questions WHERE courseId = ? and exam_type=?`;
     try {
-        const result = await query(sql, [courseId]);
-        logger.info(`✅ [GetFilltheblankstext] Successfully retrieved list of question ids based on course id = ${courseId}`);
+        const result = await query(sql, [courseId,'q-bank']);
+        logger.info(`✅ [ListQuestionIds] Successfully retrieved list of question ids based on course id = ${courseId} and exam_type = 'q-bank'`);
         return result;
     } catch (err) {
-        logger.error(`[GetFilltheblankstext] ❌ Failed to retrieve list of question ids based on course id = ${courseId} ${err.message}`);
+        logger.error(`[ListQuestionIds] ❌ Failed to retrieve list of question ids based on course id = ${courseId} ${err.message}`);
         throw err;
     }
 }

@@ -130,6 +130,7 @@ module.exports.createQuestion = async (req, res) => {
             explanationText,
             info,
         } = req.body;
+        exam_type = exam_type.toLowerCase().trim();
         const infoImageFile = req.files?.infoimage[0]?.filename;
         const infoImage = infoImageFile ? `/uploads/infoimages/${infoImageFile}` : null;
         // check for questionType
