@@ -120,7 +120,7 @@ module.exports.deleteQuestionType = async (req, res) => {
 module.exports.createQuestion = async (req, res) => {
     logger.info('📥 Received request to add new question');
     try {
-        const {
+        let {
             exam_type,
             question_type_id,
             questionType,
@@ -130,7 +130,8 @@ module.exports.createQuestion = async (req, res) => {
             explanationText,
             info,
         } = req.body;
-        exam_type = exam_type.toLowerCase().trim();
+        exam_type = exam_type?.toLowerCase()?.trim();
+        console.log('exam_type', exam_type);
         const infoImageFile = req.files?.infoimage[0]?.filename;
         const infoImage = infoImageFile ? `/uploads/infoimages/${infoImageFile}` : null;
         // check for questionType
