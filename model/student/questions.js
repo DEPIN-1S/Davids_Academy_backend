@@ -4,25 +4,17 @@ const query = util.promisify(db.query).bind(db);
 const logger = require('../../utils/logger');
 
 
-module.exports.ListAllTests = async (courseId) => {
+module.exports.ListQuestionIds = async (courseId) => {
+    const sql = `SELECT id from tb_questions WHERE courseId = ? and exam_type=?`;
     try {
-        const sql = `
-            SELECT * 
-            FROM tb_tests 
-            WHERE courseId = ?
-            AND DATE(fromDate) <= CURDATE()
-            AND DATE(toDate) >= CURDATE()
-        `;
-        logger.info('[Testsmodel] Listing tests in db', courseId);
-        const data = await query(sql, [courseId]);
-        return data;
-    } catch (error) {
-        logger.error('[Testsmodel] Error in listing tests', { error: error.message });
-        throw error;
+        const result = await query(sql, [courseId,'q-bank']);
+        logger.info(`✅ [ListQuestionIds] Successfully retrieved list of question ids based on course id = ${courseId} and exam_type = 'q-bank'`);
+        return result;
+    } catch (err) {
+        logger.error(`[ListQuestionIds] ❌ Failed to retrieve list of question ids based on course id = ${courseId} ${err.message}`);
+        throw err;
     }
 }
-
-
 
 module.exports.GetStudentData = async (studentId) => {
     try {
@@ -35,46 +27,6 @@ module.exports.GetStudentData = async (studentId) => {
         throw error;
     }
 }
-
-
-module.exports.CheckTest = async (test_id, courseId) => {
-    try {
-        const sql = `SELECT * from tb_tests where id=? and courseId=?`;
-        logger.info('[Usermodel] Check data of test in db', test_id, courseId);
-        const data = await query(sql, [test_id, courseId]);
-        return data;
-    } catch (error) {
-        logger.error('[Usermodel] Error in check data of test', { error: error.message });
-        throw error;
-    }
-}
-
-
-module.exports.ListTestQuestions = async (test_id) => {
-    try {
-        const sql = `SELECT * from tb_testQuestions where testId=? `;
-        logger.info('[Usermodel] List questions of test in db', test_id);
-        const data = await query(sql, [test_id]);
-        return data;
-    } catch (error) {
-        logger.error('[Usermodel] Error in list questions of test', { error: error.message });
-        throw error;
-    }
-}
-
-
-module.exports.CheckQuestionInTest = async (test_id, questionId) => {
-    try {
-        const sql = `SELECT * from tb_testQuestions where testId=? and questionId=?`;
-        logger.info('[Usermodel] Check questions present in test in db', test_id, questionId);
-        const data = await query(sql, [test_id, questionId]);
-        return data;
-    } catch (error) {
-        logger.error('[Usermodel] Error in check questions present in test', { error: error.message });
-        throw error;
-    }
-}
-
 
 module.exports.CheckQuestion = async (questionId) => {
     try {
@@ -332,71 +284,6 @@ module.exports.GetMultipleRadioQuestionsRadioOption = async (questionId) => {
         return result;
     } catch (err) {
         logger.error(`[getMultipleRadioQuestions] ❌ Failed to retrieve multiple-radio questions - ${err.message}`);
-        throw err;
-    }
-}
-
-
-module.exports.CheckQuestionAlreadySubmitted = async (user_id, question_id, test_id) => {
-    const sql = `SELECT * FROM tb_submittedQuestions WHERE sq_user_id=? and sq_test_id=? and sq_question_id=?`; // Confirm this is the correct ID for multiple radio
-    try {
-        const result = await query(sql, [user_id, test_id, question_id]);
-        logger.info(`✅ [CheckQuestionAlreadySubmitted] Check question already submitted -user : ${user_id} question : ${question_id} test : ${test_id}`);
-        return result;
-    } catch (err) {
-        logger.error(`[CheckQuestionAlreadySubmitted] ❌ Failed to Check question already submitted - ${err.message}`);
-        throw err;
-    }
-}
-
-
-module.exports.SubmitQuestionData = async (user_id, question_id, test_id, is_correct, mark) => {
-    const sql = `INSERT into tb_submittedQuestions ( sq_user_id, sq_test_id, sq_question_id,sq_is_correct,sq_mark) values(?,?,?,?,?)`; // Confirm this is the correct ID for multiple radio
-    try {
-        const result = await query(sql, [user_id, test_id, question_id, is_correct, mark]);
-        logger.info(`✅ [SubmitQuestionData] Submitting the question data -user : ${user_id} question : ${question_id} test : ${test_id}`);
-        return result;
-    } catch (err) {
-        logger.error(`[SubmitQuestionData] ❌ Failed to submit question data - ${err.message}`);
-        throw err;
-    }
-}
-
-
-module.exports.CheckTestAlreadySubmitted = async (user_id, test_id) => {
-    const sql = `SELECT * from tb_submittedTest where st_user_id=? and st_test_id=?`;
-    try {
-        const result = await query(sql, [user_id, test_id]);
-        logger.info(`✅ [CheckTestAlreadySubmitted] Check test already submitted or not -user : ${user_id} test : ${test_id}`);
-        return result;
-    } catch (err) {
-        logger.error(`[CheckTestAlreadySubmitted] ❌ Failed to Check test already submitted or not - ${err.message}`);
-        throw err;
-    }
-}
-
-
-module.exports.SubmitTestData = async (user_id, test_id, total_score) => {
-    const sql = `INSERT into tb_submittedtest ( st_user_id, st_test_id,st_score ) values(?,?,?)`;
-    try {
-        const result = await query(sql, [user_id, test_id, total_score]);
-        logger.info(`✅ [SubmitTestData] Submitting the test data -user : ${user_id} score : ${total_score} test : ${test_id}`);
-        return result;
-    } catch (err) {
-        logger.error(`[SubmitTestData] ❌ Failed to submit test data - ${err.message}`);
-        throw err;
-    }
-}
-
-
-module.exports.GetSubmittedAnswer = async (user_id, test_id) => {
-    const sql = `SELECT * from tb_submittedQuestions where sq_user_id=? and sq_test_id=?`;
-    try {
-        const result = await query(sql, [user_id, test_id]);
-        logger.info(`✅ [GetSubmittedAnswer] List submitted question data -user : ${user_id} test : ${test_id}`);
-        return result;
-    } catch (err) {
-        logger.error(`[GetSubmittedAnswer] ❌ Failed to list submitted question data - ${err.message}`);
         throw err;
     }
 }

@@ -21,5 +21,13 @@ route.post('/test/question/data', verifyToken, GetQuestionData)
 route.post('/test/question/submit', verifyToken, SubmitQuestions)
 route.post('/test/submit', verifyToken, SubmitTest)
 
+const { ListQuestionsFromQBank, GetQuestionDataFromQBank } = require('../controller/student/questions')
+route.get('/questions/list', verifyToken, ListQuestionsFromQBank)
+route.post('/questions/data', verifyToken, GetQuestionDataFromQBank)
+
+const { ListSubmittedTest, ListTestResult } = require('../controller/student/result')
+route.get('/result/list', verifyToken, ListSubmittedTest)
+route.post('/result/data', verifyToken, ListTestResult)
+
 
 module.exports = route;

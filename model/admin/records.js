@@ -6,7 +6,7 @@ const logger = require('../../utils/logger');
 
 module.exports.InsertRecordings = async (title, thumbnail, course, duration, tutor_name, video_url) => {
     try {
-        const sql = `INSERT into tb_recordings (r_title,r_thumbnail,r_course,r_duration,r_tutor_name,r_video_url)`;
+        const sql = `INSERT into tb_recordings (r_title,r_thumbnail,r_course,r_duration,r_tutor_name,r_video_url) values(?,?,?,?,?,?)`;
         logger.info('[Recordingsmodel] Inserting recordings in db', { title, thumbnail, course, duration, tutor_name, video_url });
         const data = await query(sql, [title, thumbnail, course, duration, tutor_name, video_url]);
         return data;
@@ -45,7 +45,7 @@ module.exports.EditRecordings = async (setClause, values) => {
 module.exports.ListRecordings = async (whereClause = "", params = []) => {
     try {
         const sql = `SELECT * from tb_recordings ${whereClause} LIMIT ? OFFSET ?`;
-        logger.info('[Recordingsmodel] Listing recordings in db', whereClause = "", params = []);
+        logger.info('[Recordingsmodel] Listing recordings in db', { whereClause, params });
         const data = await query(sql, params);
         return data;
     } catch (error) {
@@ -58,7 +58,7 @@ module.exports.ListRecordings = async (whereClause = "", params = []) => {
 module.exports.CountRecordings = async (whereClause = "", params = []) => {
     try {
         const sql = `SELECT COUNT(*) AS total FROM tb_recordings ${whereClause}`;
-        logger.info('[Recordingsmodel] Counting recordings in db', whereClause = "", params = []);
+        logger.info('[Recordingsmodel] Counting recordings in db', { whereClause, params });
         const data = await query(sql, params);
         return data;
     } catch (error) {

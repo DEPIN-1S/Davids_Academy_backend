@@ -130,6 +130,7 @@ module.exports.createQuestion = async (req, res) => {
             explanationText,
             info,
         } = req.body;
+        exam_type = exam_type.toLowerCase().trim();
         const infoImageFile = req.files?.infoimage[0]?.filename;
         const infoImage = infoImageFile ? `/uploads/infoimages/${infoImageFile}` : null;
         // check for questionType
@@ -1009,13 +1010,14 @@ module.exports.updateTest = async (req, res) => {
     try {
         const { id } = req.params;
         const {
-            testdate,
+            fromDate,
+            toDate,
             testTitle,
             courseId,
             questionIds
         } = req.body;
 
-        await model.updateTest({ id, testdate, testTitle, courseId });
+        await model.updateTest({ id, fromDate, toDate, testTitle, courseId });
 
         // Remove all old question links for this test
         await model.deleteTestQuestionsByTestId(id);

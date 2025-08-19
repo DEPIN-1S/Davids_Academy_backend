@@ -7,10 +7,12 @@ const pool = mysql.createPool({
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_DATABASE,
+    port: process.env.DB_PORT || 3306,
 });
 // Initial test connection
 pool.getConnection((err, connection) => {
     if (err) {
+        console.error('MySQL connection error:', err);
         logger.error(`MySQL connection error: ${err.message}`);
         process.exit(1);
     }
