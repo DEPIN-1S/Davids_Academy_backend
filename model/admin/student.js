@@ -47,7 +47,7 @@ module.exports.EditStudent = async (setClause, values) => {
 
 module.exports.ListAllStudents = async (whereClause = "", params = []) => {
     try {
-        const sql = `SELECT * from tb_users ${whereClause} LIMIT ? OFFSET ?`;
+        const sql = `SELECT u.*,c.cs_name FROM tb_users u INNER JOIN courses c ON c.cs_id = u.target_exam ${whereClause} LIMIT ? OFFSET ?`;
         logger.info('[Usermodel] Listing students from db', { whereClause, params });
         const data = await query(sql, params);
         return data;
@@ -55,7 +55,7 @@ module.exports.ListAllStudents = async (whereClause = "", params = []) => {
         logger.error('[Usermodel] Error in listing student', { error: error.message });
         throw error;
     }
-}
+};
 
 
 module.exports.CountAllStudents = async (whereClause = "", params = []) => {
