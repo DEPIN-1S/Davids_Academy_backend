@@ -1,7 +1,7 @@
 const model = require('../../model/admin/loginModels');
 const { HashPassword, ComparePassword } = require('../../utils/bcrypt');
 const { GenerateOtp } = require('../../utils/generateOtp');
-const { transporter } = require('../../utils/mailer');
+const { transporter, buildOtpTemplate, buildResetOtpTemplate } = require('../../utils/mailer');
 const { generateAccessToken, generateRefreshToken } = require('../../utils/token');
 const logger = require('../../utils/logger');
 
@@ -137,6 +137,13 @@ module.exports.Login = async (req, res) => {
             return res.send({ result: false, message: 'User not found' });
         }
 
+        if (user[0]?.status === "inactive") {
+            return res.send({
+                result: false,
+                message: "You are blocked by the admin. Please connect with the admin for further information"
+            })
+        }
+
         const isMatch = await ComparePassword(password, user[0]?.password);
         if (!isMatch) {
             logger.warn(`Login failed: incorrect password - ${email}`);
@@ -149,6 +156,7 @@ module.exports.Login = async (req, res) => {
             email: user[0]?.email,
             mobile: user[0]?.mobile,
             role: user[0]?.role,
+            status: user[0]?.status
 
         });
         const refreshToken = generateRefreshToken({  // Consider renaming to GenerateJWT
@@ -157,6 +165,7 @@ module.exports.Login = async (req, res) => {
             email: user[0]?.email,
             mobile: user[0]?.mobile,
             role: user[0]?.role,
+            status: user[0]?.status
         });
 
         logger.info(`User logged in: ${email}`);

@@ -827,9 +827,9 @@ async function insertTestQuestion({ testId, questionId }) {
     const result = await query(sql, values);
     return result;
 }
-async function updateTest({ id, testdate, testTitle, courseId }) {
-    const sql = `UPDATE tb_tests SET testdate=?, testTitle=?, courseId=? WHERE id=?`;
-    return query(sql, [testdate, testTitle, courseId, id]);
+async function updateTest({ id, fromDate,toDate, testTitle, courseId }) {
+    const sql = `UPDATE tb_tests SET fromDate=?, toDate=?, testTitle=?, courseId=? WHERE id=?`;
+    return query(sql, [fromDate,toDate, testTitle, courseId, id]);
 }
 async function deleteTestQuestionsByTestId(testId) {
     const sql = `DELETE FROM tb_testQuestions WHERE testId=?`;
