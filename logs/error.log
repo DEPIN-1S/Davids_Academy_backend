@@ -82,3 +82,5 @@
 {"level":"error","message":"Error listing students: ER_BAD_FIELD_ERROR: Unknown column 'c.course' in 'SELECT'","service":"david-academy-api","timestamp":"2025-08-20 16:04:18"}
 {"error":"ER_BAD_FIELD_ERROR: Unknown column 'c.course_name' in 'SELECT'","level":"error","message":"[Usermodel] Error in listing student","service":"david-academy-api","timestamp":"2025-08-20 16:04:39"}
 {"level":"error","message":"Error listing students: ER_BAD_FIELD_ERROR: Unknown column 'c.course_name' in 'SELECT'","service":"david-academy-api","timestamp":"2025-08-20 16:04:39"}
+{"level":"error","message":"❌ Failed to retrieve mock test questions: Cannot read properties of undefined (reading 'toLowerCase')","service":"david-academy-api","timestamp":"2025-08-26 15:13:05"}
+{"level":"error","message":"❌ Failed to retrieve mock test questions: Cannot read properties of undefined (reading 'toLowerCase')","service":"david-academy-api","timestamp":"2025-08-26 15:15:51"}
