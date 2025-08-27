@@ -18,7 +18,7 @@ module.exports.InsertRecordings = async (title, thumbnail, course, duration, tut
 
 module.exports.CheckRecording = async (recording_id) => {
     try {
-        const sql = `SELECT * from tb_recordings where r_id=?)`;
+        const sql = `SELECT * from tb_recordings where r_id=?`;
         logger.info('[Recordingsmodel] Checking recordings in db', { recording_id });
         const data = await query(sql, [recording_id]);
         return data;
