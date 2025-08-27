@@ -1036,6 +1036,41 @@ module.exports.createTest = async (req, res) => {
         });
     }
 };
+// list test paginated
+module.exports.listTestsPaginated = async (req, res) => {
+    try {
+        let page = parseInt(req.params.page, 10) || 1;
+        let limit = parseInt(req.query.limit, 10) || 10;
+        if (isNaN(page) || page < 1) page = 1;
+        if (isNaN(limit) || limit < 1) limit = 10;
+        // Get total count for pagination metadata
+        const totalCount = await model.countTests();
+        // Calculate offset
+        const offset = (page - 1) * limit;
+
+        // Get paginated tests
+        const tests = await model.listTestsPaginated(limit, offset);
+        return res.status(200).json({
+            result: true,
+            message: 'Tests retrieved successfully',
+            count: tests.length,
+            totalCount: totalCount,
+            page: page,
+            totalPages: Math.ceil(totalCount / limit),
+            list: tests
+        });
+    } catch (error) {
+        logger.error(`❌ Failed to retrieve tests: ${error.message}`);
+        return res.status(500).json({
+            result: false,
+            message: 'Internal Server Error',
+            error: error.message,
+        });
+    }
+};
+
+
+
 module.exports.updateTest = async (req, res) => {
     try {
         const { id } = req.params;

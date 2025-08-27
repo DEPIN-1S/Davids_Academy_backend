@@ -4,6 +4,7 @@ var express = require('express');
 var route = express.Router();
 // const uploads = require('../uploads');
 const uploads = require('../utils/multer')
+var { verifyToken, verifyRole } = require('../middleware/verifyAuth')
 const { questionTypeValidation, insertTestValidation, marklistCreateValidation } = require('../validations/examValidation');
 // Import controller functions for authentication
 
@@ -17,6 +18,7 @@ const { getQuestions,
     listQuestions,
     createTest,
     getTest,
+    listTestsPaginated,
     updateTest,
     deleteTest, createMarklist } = require('../controller/admin/examControllers');
 /**
@@ -75,6 +77,8 @@ route.get(
 );
 // Create
 route.post('/tests', insertTestValidation, createTest);
+// list test get method
+route.get('/list/test/:page', listTestsPaginated);
 // // Read
 // route.get('/tests/:id', getTest);
 // Edit
