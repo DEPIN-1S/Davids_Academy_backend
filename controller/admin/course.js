@@ -139,7 +139,7 @@ module.exports.DeleteCourses = async (req, res) => {
 module.exports.UpdateCourse = async (req, res) => {
     try {
 
-        let { cs_id, cs_name, cs_sub_title, cs_description, cs_desc_points } = req.body;
+        let { cs_id, cs_name, cs_sub_title, cs_description, cs_desc_points, cs_duration } = req.body;
 
         if (!cs_id) {
             logger.warn("Course ID is missing in request");
@@ -178,6 +178,9 @@ module.exports.UpdateCourse = async (req, res) => {
             }
             if (courseImage) {
                 condition += condition === '' ? `set cs_image='${courseImage}'` : `, cs_image='${courseImage}'`;
+            }
+            if (cs_duration) {
+                condition += condition === '' ? `set cs_duration='${cs_duration}'` : `, cs_duration='${cs_duration}'`;
             }
 
             if (condition !== '') {
