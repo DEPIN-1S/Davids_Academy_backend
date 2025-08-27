@@ -758,7 +758,7 @@ async function getSentenceHighlightQuestions(condition) {
 async function listQuestionsPaginated(exam_type, limit, offset) {
     try {
         const sql = `
-            SELECT id, question, difficulty
+            SELECT id,exam_type, question, difficulty
             FROM tb_questions
             WHERE exam_type = ?
               AND (isDeleted IS NULL OR isDeleted = 0)
