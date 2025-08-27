@@ -15,10 +15,10 @@ module.exports.CreateCourse = async (req, res) => {
         //         message: "Access Denied, try with an authorized account"
         //     });
         // }
-        let { course_name, sub_title, descrption, desc_points } = req.body;
+        let { course_name, sub_title, descrption, desc_points, cs_duration } = req.body;
 
-        if (!course_name || !sub_title || !descrption || !desc_points) {
-            logger.warn("Missing required course fields", { course_name, sub_title, descrption, desc_points });
+        if (!course_name || !sub_title || !descrption || !desc_points || !cs_duration) {
+            logger.warn("Missing required course fields", { course_name, sub_title, descrption, desc_points, cs_duration });
             return res.send({
                 result: false,
                 message: "All fields are required"
@@ -29,7 +29,7 @@ module.exports.CreateCourse = async (req, res) => {
         const courseImage = courseImageFile ? `/uploads/courses/${courseImageFile}` : null;
         logger.info("Processed course image", { courseImage });
 
-        let addcourse = await model.createCourse(course_name, sub_title, descrption, desc_points, courseImage);
+        let addcourse = await model.createCourse(course_name, sub_title, descrption, desc_points, courseImage, cs_duration);
 
         if (addcourse.affectedRows > 0) {
             logger.info("Course added successfully", { course_name });
