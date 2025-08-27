@@ -1,6 +1,6 @@
 var model = require('../model/contactus')
 var nodemailer = require("nodemailer");
-const logger = require('../utils/logger'); 
+const logger = require('../utils/logger');
 
 module.exports.ContactUs = async (req, res) => {
     try {
@@ -149,7 +149,7 @@ module.exports.ContactUs = async (req, res) => {
                 <p><strong>Name:</strong> ${name}</p>
                 <p><strong>Email:</strong> ${email}</p>
                 <p><strong>Phone Number:</strong> ${phone}</p>
-                <p><strong>Subject:</strong> ${subject}</p>
+                <p><strong>Subject:</strong> ${course_interested}</p>
                 <p><strong>Message:</strong></p>
                 <p>${usermessage}</p>
             </div>
