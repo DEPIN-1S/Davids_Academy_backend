@@ -15,11 +15,11 @@ module.exports.getUserData = async (user_id, role) => {
     }
 };
 
-module.exports.createCourse = async (course_name, sub_title, descrption, desc_points, courseImage) => {
+module.exports.createCourse = async (course_name, sub_title, descrption, desc_points, courseImage, cs_duration) => {
     try {
-        const sql = `INSERT INTO courses (cs_name, cs_sub_title, cs_description, cs_desc_points, cs_image) VALUES (?, ?, ?, ?, ?)`;
+        const sql = `INSERT INTO courses (cs_name, cs_sub_title, cs_description, cs_desc_points, cs_image,cs_duration) VALUES (?, ?, ?, ?, ?,?)`;
         logger.info('[CourseModel] Creating course', { course_name });
-        const data = await query(sql, [course_name, sub_title, descrption, desc_points, courseImage]);
+        const data = await query(sql, [course_name, sub_title, descrption, desc_points, courseImage, cs_duration]);
         return data;
     } catch (error) {
         logger.error('[CourseModel] Error creating course', { course_name, error: error.message });

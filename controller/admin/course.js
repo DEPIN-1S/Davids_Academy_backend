@@ -15,10 +15,10 @@ module.exports.CreateCourse = async (req, res) => {
         //         message: "Access Denied, try with an authorized account"
         //     });
         // }
-        let { course_name, sub_title, descrption, desc_points } = req.body;
+        let { course_name, sub_title, descrption, desc_points, cs_duration } = req.body;
 
-        if (!course_name || !sub_title || !descrption || !desc_points) {
-            logger.warn("Missing required course fields", { course_name, sub_title, descrption, desc_points });
+        if (!course_name || !sub_title || !descrption || !desc_points || !cs_duration) {
+            logger.warn("Missing required course fields", { course_name, sub_title, descrption, desc_points, cs_duration });
             return res.send({
                 result: false,
                 message: "All fields are required"
@@ -29,7 +29,7 @@ module.exports.CreateCourse = async (req, res) => {
         const courseImage = courseImageFile ? `/uploads/courses/${courseImageFile}` : null;
         logger.info("Processed course image", { courseImage });
 
-        let addcourse = await model.createCourse(course_name, sub_title, descrption, desc_points, courseImage);
+        let addcourse = await model.createCourse(course_name, sub_title, descrption, desc_points, courseImage, cs_duration);
 
         if (addcourse.affectedRows > 0) {
             logger.info("Course added successfully", { course_name });
@@ -139,7 +139,7 @@ module.exports.DeleteCourses = async (req, res) => {
 module.exports.UpdateCourse = async (req, res) => {
     try {
 
-        let { cs_id, cs_name, cs_sub_title, cs_description, cs_desc_points } = req.body;
+        let { cs_id, cs_name, cs_sub_title, cs_description, cs_desc_points, cs_duration } = req.body;
 
         if (!cs_id) {
             logger.warn("Course ID is missing in request");
@@ -178,6 +178,9 @@ module.exports.UpdateCourse = async (req, res) => {
             }
             if (courseImage) {
                 condition += condition === '' ? `set cs_image='${courseImage}'` : `, cs_image='${courseImage}'`;
+            }
+            if (cs_duration) {
+                condition += condition === '' ? `set cs_duration='${cs_duration}'` : `, cs_duration='${cs_duration}'`;
             }
 
             if (condition !== '') {
