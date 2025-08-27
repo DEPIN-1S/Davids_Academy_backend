@@ -840,6 +840,25 @@ async function insertTestQuestion({ testId, questionId }) {
     const result = await query(sql, values);
     return result;
 }
+// model.listTestsPaginated
+async function listTestsPaginated(pageSize, offset) {
+    const sql = `
+        SELECT id, fromDate, toDate, testTitle, courseId
+        FROM tb_tests
+        ORDER BY createdAt DESC
+        LIMIT ? OFFSET ?`;
+    const values = [pageSize, offset];
+    const result = await query(sql, values);
+    return result; // returning full result, adjust if needed depending on query()
+}
+async function countTests() {
+    const sql = 'SELECT COUNT(*) as total FROM tb_tests';
+    const result = await query(sql);
+    // Assuming result is array of rows, return count from first row:
+    return Array.isArray(result) && result.length > 0 ? result[0].total : 0;
+}
+
+
 async function updateTest({ id, fromDate, toDate, testTitle, courseId }) {
     const sql = `UPDATE tb_tests SET fromDate=?, toDate=?, testTitle=?, courseId=? WHERE id=?`;
     return query(sql, [fromDate, toDate, testTitle, courseId, id]);
@@ -923,6 +942,8 @@ module.exports = {
     countQuestions,
     insertTest,
     insertTestQuestion,
+    listTestsPaginated,
+    countTests,
     updateTest,
     deleteTestQuestionsByTestId,
     deleteTest,
