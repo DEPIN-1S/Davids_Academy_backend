@@ -754,32 +754,45 @@ async function getSentenceHighlightQuestions(condition) {
  *
  * @returns {Promise<Array>} List of questions
  */
-async function listMockTestQuestions() {
+// Model method to get paginated questions
+async function listQuestionsPaginated(exam_type, limit, offset) {
     try {
-        // Prepare SQL – selecting all columns from tb_questions
-        // Filtering by exam_type = 'Mock Test' and isDeleted false/null
         const sql = `
-            SELECT id,question
+            SELECT id, question, difficulty
             FROM tb_questions
-            WHERE exam_type = 'Mock Test'
+            WHERE exam_type = ?
               AND (isDeleted IS NULL OR isDeleted = 0)
+            LIMIT ?
+            OFFSET ?
         `;
 
-        // Execute SQL query
-        const rows = await query(sql);
-
-        // Log the successful query and count of results
-        logger.info(`✅ Retrieved ${rows.length} Mock Test questions from database`);
-
+        const rows = await query(sql, [exam_type, limit, offset]);
+        logger.info(`✅ Retrieved ${rows.length} Mock Test questions from database with pagination`);
         return rows;
     } catch (error) {
-        // Log the error for debugging/troubleshooting
-        logger.error(`❌ Error in listMockTestQuestions: ${error.message}`);
-
-        // Re-throw to let the controller handle the response
+        logger.error(`❌ Error in listQuestionsPaginated: ${error.message}`);
         throw error;
     }
 }
+
+// Model method to count total questions matching criteria
+async function countQuestions(exam_type) {
+    try {
+        const sql = `
+            SELECT COUNT(*) as count
+            FROM tb_questions
+            WHERE exam_type = ?
+              AND (isDeleted IS NULL OR isDeleted = 0)
+        `;
+
+        const rows = await query(sql, [exam_type]);
+        return rows[0].count;
+    } catch (error) {
+        logger.error(`❌ Error in countQuestions: ${error.message}`);
+        throw error;
+    }
+}
+
 // tb_tests
 // Insert a new test into tb_tests
 // Params:
@@ -827,9 +840,9 @@ async function insertTestQuestion({ testId, questionId }) {
     const result = await query(sql, values);
     return result;
 }
-async function updateTest({ id, fromDate,toDate, testTitle, courseId }) {
+async function updateTest({ id, fromDate, toDate, testTitle, courseId }) {
     const sql = `UPDATE tb_tests SET fromDate=?, toDate=?, testTitle=?, courseId=? WHERE id=?`;
-    return query(sql, [fromDate,toDate, testTitle, courseId, id]);
+    return query(sql, [fromDate, toDate, testTitle, courseId, id]);
 }
 async function deleteTestQuestionsByTestId(testId) {
     const sql = `DELETE FROM tb_testQuestions WHERE testId=?`;
@@ -906,7 +919,8 @@ module.exports = {
     Gettabs,
     getAdditionalInfo,
     Getexplantion,
-    listMockTestQuestions,
+    listQuestionsPaginated,
+    countQuestions,
     insertTest,
     insertTestQuestion,
     updateTest,

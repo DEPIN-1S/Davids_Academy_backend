@@ -931,13 +931,41 @@ module.exports.getQuestions = async (req, res) => {
         });
     }
 };
-module.exports.listMockTestQuestions = async (req, res) => {
+// Controller method with pagination support
+module.exports.listQuestions = async (req, res) => {
     try {
-        const questions = await model.listMockTestQuestions();
+        let { exam_type } = req.query;
+        let { page = 1, limit = 10 } = req.params;
+
+        page = parseInt(page);
+        limit = parseInt(limit);
+
+        if (!exam_type) {
+            return res.status(400).json({
+                result: false,
+                message: 'exam_type parameter is required',
+            });
+        }
+        if (isNaN(page) || page < 1) page = 1;
+        if (isNaN(limit) || limit < 1) limit = 10;
+
+        exam_type = exam_type.toLowerCase();
+
+        // Get total count of matching questions for pagination metadata
+        const totalCount = await model.countQuestions(exam_type);
+
+        // Calculate the offset for the query
+        const offset = (page - 1) * limit;
+
+        const questions = await model.listQuestionsPaginated(exam_type, limit, offset);
+
         return res.status(200).json({
             result: true,
-            message: 'Mock Test questions retrieved successfully',
+            message: 'Questions retrieved successfully',
             count: questions.length,
+            totalCount: totalCount,
+            page: page,
+            totalPages: Math.ceil(totalCount / limit),
             list: questions,
         });
     } catch (error) {
@@ -949,6 +977,7 @@ module.exports.listMockTestQuestions = async (req, res) => {
         });
     }
 };
+
 /**
  * PATCH /api/exam/tests
  * Body: {
