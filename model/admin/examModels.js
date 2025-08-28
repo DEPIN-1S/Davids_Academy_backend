@@ -82,6 +82,13 @@ async function deleteQuestionType(id) {
         throw err;
     }
 }
+async function deleteQuestionById(id) {
+    const sql = 'DELETE FROM tb_questions WHERE id = ?';
+    const values = [id];
+    const result = await query(sql, values);
+    return result;  // result contains affectedRows etc.
+}
+
 /**
  * Inserts a new MCQ question into the tb_mcq table.
  * 
@@ -888,6 +895,7 @@ module.exports = {
     insertQuestionType,
     updateQuestionType,
     deleteQuestionType,
+    deleteQuestionById,
     insertMcqQuestion,
     insertMcqOptions,
     insertMcqExplanation,

@@ -15,6 +15,7 @@ const { getQuestions,
     createQuestion,
     updateQuestion,
     deleteQuestion,
+    deleteQuestionById,
     listQuestions,
     createTest,
     getTest,
@@ -74,6 +75,11 @@ route.post('/delete/question-types', deleteExamTypes)
 route.get(
     '/list/questions/:page',
     listQuestions
+);
+// delete question
+route.delete(
+    '/questions/:id',
+    deleteQuestionById
 );
 // Create
 route.post('/tests', insertTestValidation, createTest);

@@ -756,7 +756,35 @@ module.exports.deleteQuestion = async (req, res) => {
         });
     }
 };
+module.exports.deleteQuestionById = async (req, res) => {
+    const { id } = req.params;
+    logger.info('Attempting to delete questionType: %s', id);
+    try {
+        // 2. Insert into DB
+        const result = await model.deleteQuestionById(id);
+        if (result.affectedRows === 0) {
+            logger.error('No rows affected deleting question: %s', id);
+            return res.status(500).json({
+                result: false,
+                message: 'Failed to delete question in the database',
+            });
+        }
+        logger.info('Successfully inserted question: %s', id);
+        return res.status(200).json({
+            result: true,
+            message: 'Question type deleted successfully',
+            data: result
+        });
 
+    } catch (error) {
+        // 3. Log unexpected errors
+        logger.error('deleteQuestion error: %o', error);
+        return res.status(500).json({
+            result: false,
+            message: error.message || 'Internal Server Error',
+        });
+    }
+};
 // logger.info('Attempting to delete questionType: %s', id);
 
 module.exports.getQuestions = async (req, res) => {
