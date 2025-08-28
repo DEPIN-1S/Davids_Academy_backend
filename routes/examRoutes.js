@@ -17,6 +17,7 @@ const { getQuestions,
     deleteQuestion,
     deleteQuestionById,
     listQuestions,
+    listMockTestQuestions,
     createTest,
     getTest,
     listTestsPaginated,
@@ -70,11 +71,17 @@ route.post('/add/question-types', AddExamTypes)
 route.get('/list/question-types', ListExamTypes)
 
 route.get('/edit/question-types', UpdateExamTypes)
-
+// delete question type
 route.post('/delete/question-types', deleteExamTypes)
+// get all questions 
 route.get(
     '/list/questions/:page',
     listQuestions
+);
+// get mock test questions
+route.get(
+    '/list/mock-test-questions',
+    listMockTestQuestions
 );
 // delete question
 route.delete(

@@ -781,7 +781,24 @@ async function listQuestionsPaginated(exam_type, limit, offset) {
         throw error;
     }
 }
+// list all questions
+async function listMockTestQuestions() {
+    try {
+        const sql = `
+            SELECT  id,question
+            FROM tb_questions
+            WHERE exam_type = 'mock test'
+              AND (isDeleted IS NULL OR isDeleted = 0) ORDER BY id DESC
+        `;
 
+        const rows = await query(sql);
+        logger.info(`✅ Retrieved ${rows.length} Mock Test questions from database`);
+        return rows;
+    } catch (error) {
+        logger.error(`❌ Error in listQuestionsPaginated: ${error.message}`);
+        throw error;
+    }
+}
 // Model method to count total questions matching criteria
 async function countQuestions(exam_type) {
     try {
@@ -947,6 +964,7 @@ module.exports = {
     getAdditionalInfo,
     Getexplantion,
     listQuestionsPaginated,
+    listMockTestQuestions,
     countQuestions,
     insertTest,
     insertTestQuestion,

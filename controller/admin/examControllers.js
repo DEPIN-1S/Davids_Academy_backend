@@ -962,9 +962,8 @@ module.exports.getQuestions = async (req, res) => {
 // Controller method with pagination support
 module.exports.listQuestions = async (req, res) => {
     try {
-        let { exam_type } = req.query;
-        let { page = 1, limit = 10 } = req.params;
-
+        let { exam_type, limit = 10 } = req.query;
+        let { page = 1, } = req.params;
         page = parseInt(page);
         limit = parseInt(limit);
 
@@ -997,6 +996,24 @@ module.exports.listQuestions = async (req, res) => {
             list: questions,
         });
     } catch (error) {
+        logger.error(`❌ Failed to retrieve  questions: ${error.message}`);
+        return res.status(500).json({
+            result: false,
+            message: 'Internal Server Error',
+            error: error.message,
+        });
+    }
+};
+// list mock test questions
+module.exports.listMockTestQuestions = async (req, res) => {
+    try {
+        const questions = await model.listMockTestQuestions();
+        return res.status(200).json({
+            result: true,
+            message: 'Questions retrieved successfully',
+            list: questions,
+        });
+    } catch (error) {
         logger.error(`❌ Failed to retrieve mock test questions: ${error.message}`);
         return res.status(500).json({
             result: false,
@@ -1005,7 +1022,6 @@ module.exports.listQuestions = async (req, res) => {
         });
     }
 };
-
 /**
  * PATCH /api/exam/tests
  * Body: {
