@@ -768,7 +768,7 @@ async function listQuestionsPaginated(exam_type, limit, offset) {
             SELECT id,exam_type, question, difficulty
             FROM tb_questions
             WHERE exam_type = ?
-              AND (isDeleted IS NULL OR isDeleted = 0)
+              AND (isDeleted IS NULL OR isDeleted = 0) ORDER BY id DESC
             LIMIT ?
             OFFSET ?
         `;
