@@ -1112,9 +1112,6 @@ module.exports.listTestsPaginated = async (req, res) => {
         });
     }
 };
-
-
-
 module.exports.updateTest = async (req, res) => {
     try {
         const { id } = req.params;

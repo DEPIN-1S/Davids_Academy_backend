@@ -56,7 +56,6 @@ async function updateQuestionType(questionType, id) {
         throw err;
     }
 }
-
 /**
  * Updates an existing exam type in the tb_exam_type table.
  *
@@ -215,7 +214,11 @@ async function insertDropdownQuestion(question, question_type_id, exam_type, dif
     }
 }
 
-
+/**
+ * Inserts a new dropdown headings into `tb_dropdowns`.
+ * @param {string} question - The question text.
+ * @returns {Promise<object>} Result of the INSERT query.
+ */
 async function insertDropdownHeading(questionId, dropdownField, dropdownanswer, blank_or_not) {
     const sql = `INSERT INTO tb_dropdowns (questionId, dropdownField, dropdownanswer,blankOrNot) VALUES (?, ?, ? ,?)`;
     try {
@@ -227,8 +230,6 @@ async function insertDropdownHeading(questionId, dropdownField, dropdownanswer, 
         throw err;
     }
 }
-
-
 
 async function insertDropdownHeadingOptions(questionId, headingtextId, option) {
     const sql = `INSERT INTO tb_dropdownOptions (questionId, dropdowntext_id, dropdownValue) VALUES (?, ?, ?)`;
@@ -765,10 +766,11 @@ async function getSentenceHighlightQuestions(condition) {
 async function listQuestionsPaginated(exam_type, limit, offset) {
     try {
         const sql = `
-            SELECT id,exam_type, question, difficulty
-            FROM tb_questions
-            WHERE exam_type = ?
-              AND (isDeleted IS NULL OR isDeleted = 0) ORDER BY id DESC
+            SELECT q.id,q.exam_type, q.question, q.difficulty,c.cs_name,t.type as questionType
+            FROM tb_questions q INNER JOIN courses c ON c.cs_id=q.courseId
+            INNER JOIN  tb_questionType t ON q.question_type_id=t.id
+            WHERE q.exam_type = ?
+              AND (q.isDeleted IS NULL OR q.isDeleted = 0) ORDER BY q.id DESC
             LIMIT ?
             OFFSET ?
         `;
