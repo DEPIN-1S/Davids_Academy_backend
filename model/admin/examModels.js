@@ -56,7 +56,6 @@ async function updateQuestionType(questionType, id) {
         throw err;
     }
 }
-
 /**
  * Updates an existing exam type in the tb_exam_type table.
  *
@@ -82,6 +81,13 @@ async function deleteQuestionType(id) {
         throw err;
     }
 }
+async function deleteQuestionById(id) {
+    const sql = 'DELETE FROM tb_questions WHERE id = ?';
+    const values = [id];
+    const result = await query(sql, values);
+    return result;  // result contains affectedRows etc.
+}
+
 /**
  * Inserts a new MCQ question into the tb_mcq table.
  * 
@@ -208,7 +214,11 @@ async function insertDropdownQuestion(question, question_type_id, exam_type, dif
     }
 }
 
-
+/**
+ * Inserts a new dropdown headings into `tb_dropdowns`.
+ * @param {string} question - The question text.
+ * @returns {Promise<object>} Result of the INSERT query.
+ */
 async function insertDropdownHeading(questionId, dropdownField, dropdownanswer, blank_or_not) {
     const sql = `INSERT INTO tb_dropdowns (questionId, dropdownField, dropdownanswer,blankOrNot) VALUES (?, ?, ? ,?)`;
     try {
@@ -220,8 +230,6 @@ async function insertDropdownHeading(questionId, dropdownField, dropdownanswer, 
         throw err;
     }
 }
-
-
 
 async function insertDropdownHeadingOptions(questionId, headingtextId, option) {
     const sql = `INSERT INTO tb_dropdownOptions (questionId, dropdowntext_id, dropdownValue) VALUES (?, ?, ?)`;
@@ -758,10 +766,11 @@ async function getSentenceHighlightQuestions(condition) {
 async function listQuestionsPaginated(exam_type, limit, offset) {
     try {
         const sql = `
-            SELECT id, question, difficulty
-            FROM tb_questions
-            WHERE exam_type = ?
-              AND (isDeleted IS NULL OR isDeleted = 0)
+            SELECT q.id,q.exam_type, q.question, q.difficulty,c.cs_name,t.type as questionType
+            FROM tb_questions q INNER JOIN courses c ON c.cs_id=q.courseId
+            INNER JOIN  tb_questionType t ON q.question_type_id=t.id
+            WHERE q.exam_type = ?
+              AND (q.isDeleted IS NULL OR q.isDeleted = 0) ORDER BY q.id DESC
             LIMIT ?
             OFFSET ?
         `;
@@ -774,7 +783,24 @@ async function listQuestionsPaginated(exam_type, limit, offset) {
         throw error;
     }
 }
+// list all questions
+async function listMockTestQuestions(courseId) {
+    try {
+        const sql = `
+            SELECT  id,question
+            FROM tb_questions
+            WHERE exam_type = 'mock test' AND courseId=?
+              AND (isDeleted IS NULL OR isDeleted = 0) ORDER BY id DESC
+        `;
 
+        const rows = await query(sql, [courseId]);
+        logger.info(`✅ Retrieved ${rows.length} Mock Test questions from database`);
+        return rows;
+    } catch (error) {
+        logger.error(`❌ Error in listQuestionsPaginated: ${error.message}`);
+        throw error;
+    }
+}
 // Model method to count total questions matching criteria
 async function countQuestions(exam_type) {
     try {
@@ -843,9 +869,9 @@ async function insertTestQuestion({ testId, questionId }) {
 // model.listTestsPaginated
 async function listTestsPaginated(pageSize, offset) {
     const sql = `
-        SELECT id, fromDate, toDate, testTitle, courseId
-        FROM tb_tests
-        ORDER BY createdAt DESC
+        SELECT t.id, t.fromDate, t.toDate, t.testTitle, t.courseId,c.cs_name
+        FROM tb_tests t INNER JOIN courses c ON t.courseId=c.cs_id
+        ORDER BY t.createdAt DESC
         LIMIT ? OFFSET ?`;
     const values = [pageSize, offset];
     const result = await query(sql, values);
@@ -888,6 +914,7 @@ module.exports = {
     insertQuestionType,
     updateQuestionType,
     deleteQuestionType,
+    deleteQuestionById,
     insertMcqQuestion,
     insertMcqOptions,
     insertMcqExplanation,
@@ -939,6 +966,7 @@ module.exports = {
     getAdditionalInfo,
     Getexplantion,
     listQuestionsPaginated,
+    listMockTestQuestions,
     countQuestions,
     insertTest,
     insertTestQuestion,

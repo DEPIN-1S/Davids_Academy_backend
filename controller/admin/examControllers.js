@@ -757,7 +757,35 @@ module.exports.deleteQuestion = async (req, res) => {
         });
     }
 };
+module.exports.deleteQuestionById = async (req, res) => {
+    const { id } = req.params;
+    logger.info('Attempting to delete questionType: %s', id);
+    try {
+        // 2. Insert into DB
+        const result = await model.deleteQuestionById(id);
+        if (result.affectedRows === 0) {
+            logger.error('No rows affected deleting question: %s', id);
+            return res.status(500).json({
+                result: false,
+                message: 'Failed to delete question in the database',
+            });
+        }
+        logger.info('Successfully inserted question: %s', id);
+        return res.status(200).json({
+            result: true,
+            message: 'Question type deleted successfully',
+            data: result
+        });
 
+    } catch (error) {
+        // 3. Log unexpected errors
+        logger.error('deleteQuestion error: %o', error);
+        return res.status(500).json({
+            result: false,
+            message: error.message || 'Internal Server Error',
+        });
+    }
+};
 // logger.info('Attempting to delete questionType: %s', id);
 
 module.exports.getQuestions = async (req, res) => {
@@ -935,9 +963,8 @@ module.exports.getQuestions = async (req, res) => {
 // Controller method with pagination support
 module.exports.listQuestions = async (req, res) => {
     try {
-        let { exam_type } = req.query;
-        let { page = 1, limit = 10 } = req.params;
-
+        let { exam_type, limit = 10 } = req.query;
+        let { page = 1, } = req.params;
         page = parseInt(page);
         limit = parseInt(limit);
 
@@ -970,6 +997,25 @@ module.exports.listQuestions = async (req, res) => {
             list: questions,
         });
     } catch (error) {
+        logger.error(`❌ Failed to retrieve  questions: ${error.message}`);
+        return res.status(500).json({
+            result: false,
+            message: 'Internal Server Error',
+            error: error.message,
+        });
+    }
+};
+// list mock test questions
+module.exports.listMockTestQuestions = async (req, res) => {
+    try {
+        const { courseId } = req.query
+        const questions = await model.listMockTestQuestions(courseId);
+        return res.status(200).json({
+            result: true,
+            message: 'Questions retrieved successfully',
+            list: questions,
+        });
+    } catch (error) {
         logger.error(`❌ Failed to retrieve mock test questions: ${error.message}`);
         return res.status(500).json({
             result: false,
@@ -978,7 +1024,6 @@ module.exports.listQuestions = async (req, res) => {
         });
     }
 };
-
 /**
  * PATCH /api/exam/tests
  * Body: {
@@ -1068,9 +1113,6 @@ module.exports.listTestsPaginated = async (req, res) => {
         });
     }
 };
-
-
-
 module.exports.updateTest = async (req, res) => {
     try {
         const { id } = req.params;
