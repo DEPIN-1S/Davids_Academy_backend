@@ -782,16 +782,16 @@ async function listQuestionsPaginated(exam_type, limit, offset) {
     }
 }
 // list all questions
-async function listMockTestQuestions() {
+async function listMockTestQuestions(courseId) {
     try {
         const sql = `
             SELECT  id,question
             FROM tb_questions
-            WHERE exam_type = 'mock test'
+            WHERE exam_type = 'mock test' AND courseId=?
               AND (isDeleted IS NULL OR isDeleted = 0) ORDER BY id DESC
         `;
 
-        const rows = await query(sql);
+        const rows = await query(sql, [courseId]);
         logger.info(`✅ Retrieved ${rows.length} Mock Test questions from database`);
         return rows;
     } catch (error) {

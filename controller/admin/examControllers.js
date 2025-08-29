@@ -1007,7 +1007,8 @@ module.exports.listQuestions = async (req, res) => {
 // list mock test questions
 module.exports.listMockTestQuestions = async (req, res) => {
     try {
-        const questions = await model.listMockTestQuestions();
+        const { courseId } = req.query
+        const questions = await model.listMockTestQuestions(courseId);
         return res.status(200).json({
             result: true,
             message: 'Questions retrieved successfully',
