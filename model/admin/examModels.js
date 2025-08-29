@@ -869,9 +869,9 @@ async function insertTestQuestion({ testId, questionId }) {
 // model.listTestsPaginated
 async function listTestsPaginated(pageSize, offset) {
     const sql = `
-        SELECT id, fromDate, toDate, testTitle, courseId
-        FROM tb_tests
-        ORDER BY createdAt DESC
+        SELECT t.id, t.fromDate, t.toDate, t.testTitle, t.courseId,c.cs_name
+        FROM tb_tests t INNER JOIN courses c ON t.courseId=c.cs_id
+        ORDER BY t.createdAt DESC
         LIMIT ? OFFSET ?`;
     const values = [pageSize, offset];
     const result = await query(sql, values);
