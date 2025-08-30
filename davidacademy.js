@@ -1,6 +1,5 @@
 // app.js
 require('dotenv').config({ encoding: 'latin1' });
-
 const fs = require('fs');
 const http = require('http');
 const https = require('https');
@@ -8,7 +7,7 @@ const express = require('express');
 const cors = require('cors');
 const expressWinston = require('express-winston');
 const logger = require('./utils/logger');
-
+const path = require('path');
 const app = express();
 
 // ─── HTTPS/HTTP SETUP ──────────────────────────────────────────────────────────
@@ -34,7 +33,7 @@ app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
-
+app.use(express.static(path.join(__dirname, 'public')));
 // ─── REQUEST LOGGING ───────────────────────────────────────────────────────────
 app.use(expressWinston.logger({
   winstonInstance: logger,

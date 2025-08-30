@@ -1123,7 +1123,7 @@ module.exports.updateTest = async (req, res) => {
             questionIds
         } = req.body;
 
-        await model.updateTest({ id, fromDate, toDate, testTitle, courseId });
+        await model.updateTest(id, fromDate, toDate, testTitle, courseId);
 
         // Remove all old question links for this test
         await model.deleteTestQuestionsByTestId(id);
