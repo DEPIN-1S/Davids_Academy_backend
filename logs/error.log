@@ -115,3 +115,8 @@
 {"level":"error","message":"❌ Failed to retrieve  questions: ER_NON_UNIQ_ERROR: Column 'isDeleted' in WHERE is ambiguous","service":"david-academy-api","timestamp":"2025-08-29 12:34:54"}
 {"level":"error","message":"❌ Failed to retrieve tests: ER_NO_SUCH_TABLE: Table 'u160357475_davidacademy.tb_testst' doesn't exist","service":"david-academy-api","timestamp":"2025-08-29 13:51:35"}
 {"level":"error","message":"❌ Failed to retrieve tests: ER_BAD_FIELD_ERROR: Unknown column 't.id' in 'SELECT'","service":"david-academy-api","timestamp":"2025-08-29 13:52:35"}
+{"level":"error","message":"❌ Error in listQuestionsPaginated: ER_PARSE_ERROR: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'FROM tb_questions\n            WHERE exam_type = 'mock test' AND courseId='12'...' at line 2","service":"david-academy-api","timestamp":"2025-08-30 14:27:09"}
+{"level":"error","message":"❌ Failed to retrieve mock test questions: ER_PARSE_ERROR: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'FROM tb_questions\n            WHERE exam_type = 'mock test' AND courseId='12'...' at line 2","service":"david-academy-api","timestamp":"2025-08-30 14:27:09"}
+{"level":"error","message":"MySQL connection error: ","service":"david-academy-api","timestamp":"2025-08-30 14:27:17"}
+{"level":"error","message":"MySQL connection error: ","service":"david-academy-api","timestamp":"2025-08-30 14:30:05"}
+{"level":"error","message":"MySQL connection error: ","service":"david-academy-api","timestamp":"2025-08-30 14:30:07"}

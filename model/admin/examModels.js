@@ -787,10 +787,10 @@ async function listQuestionsPaginated(exam_type, limit, offset) {
 async function listMockTestQuestions(courseId) {
     try {
         const sql = `
-            SELECT  id,question
-            FROM tb_questions
-            WHERE exam_type = 'mock test' AND courseId=?
-              AND (isDeleted IS NULL OR isDeleted = 0) ORDER BY id DESC
+            SELECT  q.id,q.question,q.difficulty,t.type as questionType
+            FROM tb_questions q INNER JOIN tb_questionType t ON q.question_type_id=t.id
+            WHERE q.exam_type = 'mock test' AND q.courseId=?
+              AND (q.isDeleted IS NULL OR q.isDeleted = 0) ORDER BY q.id DESC
         `;
 
         const rows = await query(sql, [courseId]);
