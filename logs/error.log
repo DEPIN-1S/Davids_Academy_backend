@@ -118,3 +118,5 @@
 {"level":"error","message":"MySQL connection error: ","service":"david-academy-api","timestamp":"2025-08-30 14:27:17"}
 {"level":"error","message":"MySQL connection error: ","service":"david-academy-api","timestamp":"2025-08-30 14:30:05"}
 {"level":"error","message":"MySQL connection error: ","service":"david-academy-api","timestamp":"2025-08-30 14:30:07"}
+{"error":"ER_PARSE_ERROR: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '? OFFSET ?' at line 1","level":"error","message":"[Recordingsmodel] Error in listing recordings","service":"david-academy-api","timestamp":"2025-09-01 16:19:13"}
+{"level":"error","message":"Error listing recordings: ER_PARSE_ERROR: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '? OFFSET ?' at line 1","service":"david-academy-api","timestamp":"2025-09-01 16:19:13"}
