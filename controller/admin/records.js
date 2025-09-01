@@ -13,7 +13,7 @@ module.exports.InsertRecord = async (req, res) => {
             });
         }
         const thumbnailFile = req.files?.recordimage?.[0]?.filename;
-        const thumbnailImage = thumbnailFile ? `/uploads/courses/${thumbnailFile}` : null;
+        const thumbnailImage = thumbnailFile ? `/uploads/records/${thumbnailFile}` : null;
         logger.info("Processed course image", { thumbnailImage });
 
         const recordInsert = await model.InsertRecordings(title, thumbnailImage, course, duration, tutor_name, video_url)

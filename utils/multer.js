@@ -7,17 +7,17 @@ const fs = require('fs');
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     // Example: dynamic folder based on fieldname or req.body.type
-    let folder = 'uploads/default';
-// console.log("multer file:",file);
+    let folder = 'public/uploads/default';
+    // console.log("multer file:",file);
 
     if (file.fieldname === 'infoimage') {
-      folder = 'uploads/infoimages';
+      folder = 'public/uploads/infoimages';
     } else if (file.fieldname === 'courseimage') {
-      folder = 'uploads/courses';
+      folder = 'public/uploads/courses';
     } else if (file.fieldname === 'shopimage') {
-      folder = 'uploads/shops';
-    }else if(file.fieldname==='recordimage'){
-      folder='uploads/records'
+      folder = 'public/uploads/shops';
+    } else if (file.fieldname === 'recordimage') {
+      folder = 'public/uploads/records'
     }
 
     // Ensure folder exists
