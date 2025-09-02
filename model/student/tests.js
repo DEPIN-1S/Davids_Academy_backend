@@ -247,7 +247,7 @@ module.exports.Getexplantion = async (questionId) => {
 
 
 module.exports.Getsortingoption = async (questionId) => {
-    const sql = `SELECT id, questionId, sortItem FROM tb_sortItems WHERE questionId = ?`;
+    const sql = `SELECT id, questionId, sortItem,itemOrder FROM tb_sortItems WHERE questionId = ?`;
     try {
         const result = await query(sql, [questionId]);
         logger.info(`✅ [Getsortingoption] Successfully retrieved sorting options for questionId = ${questionId}`);
