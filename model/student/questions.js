@@ -7,7 +7,7 @@ const logger = require('../../utils/logger');
 module.exports.ListQuestionIds = async (courseId) => {
     const sql = `SELECT id from tb_questions WHERE courseId = ? and exam_type=?`;
     try {
-        const result = await query(sql, [courseId,'q-bank']);
+        const result = await query(sql, [courseId, 'q-bank']);
         logger.info(`✅ [ListQuestionIds] Successfully retrieved list of question ids based on course id = ${courseId} and exam_type = 'q-bank'`);
         return result;
     } catch (err) {
@@ -199,7 +199,7 @@ module.exports.Getexplantion = async (questionId) => {
 
 
 module.exports.Getsortingoption = async (questionId) => {
-    const sql = `SELECT id, questionId, sortItem FROM tb_sortItems WHERE questionId = ?`;
+    const sql = `SELECT id, questionId, sortItem,itemOrder FROM tb_sortItems WHERE questionId = ?`;
     try {
         const result = await query(sql, [questionId]);
         logger.info(`✅ [Getsortingoption] Successfully retrieved sorting options for questionId = ${questionId}`);
