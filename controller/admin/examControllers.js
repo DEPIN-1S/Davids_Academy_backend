@@ -129,6 +129,7 @@ module.exports.createQuestion = async (req, res) => {
             explanationHeading,
             explanationText,
             info,
+            marks
         } = req.body;
         exam_type = exam_type.toLowerCase().trim();
         const infoImageFile = req.files?.infoimage[0]?.filename;
@@ -152,6 +153,7 @@ module.exports.createQuestion = async (req, res) => {
                 exam_type,
                 difficulty,
                 exhibit,
+                marks
             });
             const questionId = mcqResult.insertId;
             logger.info('questionId', questionId);
