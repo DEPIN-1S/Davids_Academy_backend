@@ -49,10 +49,10 @@ module.exports.CreateStudent = async (req, res) => {
         })
     }
 }
-
+// update students
 module.exports.EditStudent = async (req, res) => {
     try {
-        const { student_id, fullname, email, phone, target_exam, class_type } = req.body || {}
+        const { student_id, fullname, email, phone, target_exam } = req.body || {}
         if (!student_id) {
             return res.send({
                 result: false,
@@ -67,20 +67,9 @@ module.exports.EditStudent = async (req, res) => {
                 message: "Student not found."
             })
         }
+
         // Check for duplicate email
         let trimmedEmail = email?.toLowerCase().trim();
-        if (trimmedEmail) {
-            const cond = `WHERE email = ${trimmedEmail} AND id <> ${student_id}`;
-            const checkEmail = await model.CheckEmail(cond);
-            if (checkEmail.length > 0) {
-                logger.error('Email already registered: %s', trimmedEmail);
-                return res.send({
-                    result: false,
-                    message: "Email already registered."
-                });
-            }
-        }
-
         // Dynamically build update fields
         const fields = [];
         const values = [];
@@ -105,14 +94,11 @@ module.exports.EditStudent = async (req, res) => {
             values.push(target_exam);
         }
 
-        if (class_type) {
-            fields.push('class_type = ?');
-            values.push(class_type);
-        }
         // Finalize query
         const setClause = fields.join(', ');
         values.push(student_id); // for WHERE clause
 
+        // Only run update if there are fields
         if (fields.length > 0) {
             const updateStudent = await model.EditStudent(setClause, values)
             if (updateStudent.affectedRows === 0) {
@@ -135,8 +121,7 @@ module.exports.EditStudent = async (req, res) => {
         })
     }
 }
-
-
+// list all students
 module.exports.ListAllStudents = async (req, res) => {
     try {
         const {
