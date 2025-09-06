@@ -253,7 +253,7 @@ module.exports.GetDragDropQuestionsheading = async (questionId) => {
 module.exports.GetDragDropoption = async (questionId) => {
     const sql = `SELECT * FROM DragAndDrop_Headings_Options WHERE headings_id = ?`;
     try {
-        const result = await query(sql, [headings_id]);
+        const result = await query(sql, [questionId]);
         logger.info('✅ [getDragDropQuestions] Successfully retrieved drag-and-drop questions (question_type_id = 5)');
         return result;
     } catch (err) {
