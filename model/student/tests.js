@@ -298,7 +298,7 @@ module.exports.GetDragDropQuestionsheading = async (questionId) => {
 }
 
 
-module.exports.GetDragDropoption = async (questionId) => {
+module.exports.GetDragDropoption = async (headings_id) => {
     const sql = `SELECT * FROM DragAndDrop_Headings_Options WHERE headings_id = ?`;
     try {
         const result = await query(sql, [headings_id]);

@@ -60,7 +60,7 @@ module.exports.GetQuestionDataFromQBank = async (req, res) => {
         }
         const questionData = await model.GetQuestionData(questionId)
         let fullQuestionData = null
-        if (questionData[0]?.question_type.toLowerCase() === "mcq") {
+        if (questionData[0]?.question_type?.toLowerCase() === "mcq") {
             const mcqoptions = await model.Getmcqoption(questionId);
             const additionalInfo = await model.GetAdditionalInfo(questionId);
             const explanation = await model.Getexplantion(questionId)
@@ -71,7 +71,7 @@ module.exports.GetQuestionDataFromQBank = async (req, res) => {
                 explanation
             };
         }
-        if (questionData[0]?.question_type.toLowerCase() === "dropdown") {
+        if (questionData[0]?.question_type?.toLowerCase() === "dropdown") {
             let dropdownTexts = await model.Getdropdownquestiontext(questionId);
             let dropdownquestiontext = await Promise.all(
                 dropdownTexts.map(async (item) => {
@@ -92,7 +92,7 @@ module.exports.GetQuestionDataFromQBank = async (req, res) => {
             };
         }
 
-        if (questionData[0]?.question_type.toLowerCase() === "sorting") {
+        if (questionData[0]?.question_type?.toLowerCase() === "sorting") {
             const sortingoptions = await model.Getsortingoption(questionId);
             const additionalInfo = await model.getAdditionalInfo(questionId);
             const explanation = await model.Getexplantion(questionId);
@@ -104,7 +104,7 @@ module.exports.GetQuestionDataFromQBank = async (req, res) => {
             };
         }
 
-        if (questionData[0]?.question_type.toLowerCase() === "sentence highlight") {
+        if (questionData[0]?.question_type?.toLowerCase() === "sentence highlight") {
             const highlightOptions = await model.GetHighlightOptions(questionId);
             const tabsInfo = await model.Gettabs(questionId);
             const additionalInfo = await model.getAdditionalInfo(questionId);
@@ -118,7 +118,7 @@ module.exports.GetQuestionDataFromQBank = async (req, res) => {
             };
         }
 
-        if (questionData[0]?.question_type.toLowerCase() === "fill in the blanks") {
+        if (questionData[0]?.question_type?.toLowerCase() === "fill in the blanks") {
             const filltheblankstext = await model.GetFilltheblankstext(questionId);
             const filltheblanksoptions = await model.GetFilltheblankstextOptions(questionId);
             const additionalInfo = await model.getAdditionalInfo(questionId);
@@ -132,7 +132,7 @@ module.exports.GetQuestionDataFromQBank = async (req, res) => {
             };
         };
 
-        if (questionData[0]?.question_type.toLowerCase() === "drag drop") {
+        if (questionData[0]?.question_type?.toLowerCase() === "drag drop") {
             const headings = await model.GetDragDropQuestionsheading(questionId);
             const dropdownquestiontext = await Promise.all(
                 headings.map(async (item) => {
@@ -152,7 +152,7 @@ module.exports.GetQuestionDataFromQBank = async (req, res) => {
                 explanation
             };
         };
-        if (questionData[0]?.question_type.toLowerCase() === "multiple radio") {
+        if (questionData[0]?.question_type?.toLowerCase() === "multiple radio") {
             const clientfindings = await model.GetMultipleRadioQuestionsClientfindings(questionId);
             const radioOption = await model.GetMultipleRadioQuestionsRadioOption(questionId);
             const tabsInfo = await model.Gettabs(questionId);
