@@ -46,7 +46,7 @@ route.delete('/questionType/:id', questionTypeValidation, deleteQuestionType);
  * @desc    Validate and insert a question into the database
  * @access  Private
  */
-route.post('/question', uploads.fields([{ name: 'infoimage', maxCount: 1 }]), createQuestion);
+route.post('/question', uploads.fields([{ name: 'infoimage', maxCount: 1 }, { name: 'exhibit', maxCount: 1 }]), createQuestion);
 /**
  * @route   PUT /question
  * @desc    update question into the database

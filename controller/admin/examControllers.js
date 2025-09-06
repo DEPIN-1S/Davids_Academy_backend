@@ -131,15 +131,17 @@ module.exports.createQuestion = async (req, res) => {
             info,
             marks
         } = req.body;
+
         exam_type = exam_type?.toLowerCase()?.trim();
-        console.log('exam_type', exam_type);
-        const infoImageFile = req.files?.infoimage[0]?.filename;
+        // For optional uploaded files
+        const infoImageFile = req.files?.infoimage?.[0]?.filename || null;
         const infoImage = infoImageFile ? `/uploads/infoimages/${infoImageFile}` : null;
+        const exhibitFile = req.files?.exhibit?.[0]?.filename || null;
+        const exhibit = exhibitFile ? `/uploads/exhibit/${exhibitFile}` : null;
         // check for questionType
         if (questionType.toLowerCase().trim() === 'mcq') {
             const { question,
                 answer,
-                exhibit,
                 options,
             } = req.body
 
@@ -190,7 +192,8 @@ module.exports.createQuestion = async (req, res) => {
                     explanationHeading,
                     explanationText,
                     info,
-                    infoImage
+                    infoImage,
+                    marks
                 }
             });
         }
