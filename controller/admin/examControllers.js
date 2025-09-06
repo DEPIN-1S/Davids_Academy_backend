@@ -131,13 +131,12 @@ module.exports.createQuestion = async (req, res) => {
             info,
             marks
         } = req.body;
-
         exam_type = exam_type?.toLowerCase()?.trim();
         // For optional uploaded files
-        const infoImageFile = req.files?.infoimage?.[0]?.filename || null;
-        const infoImage = infoImageFile ? `/uploads/infoimages/${infoImageFile}` : null;
-        const exhibitFile = req.files?.exhibit?.[0]?.filename || null;
-        const exhibit = exhibitFile ? `/uploads/exhibit/${exhibitFile}` : null;
+        let infoImageFile = req.files?.infoimage?.[0]?.filename || null;
+        let infoImage = infoImageFile ? `/uploads/infoimages/${infoImageFile}` : null;
+        let exhibitFile = req.files?.exhibit?.[0]?.filename || null;
+        let exhibit = exhibitFile ? `/uploads/exhibit/${exhibitFile}` : null;
         // check for questionType
         if (questionType.toLowerCase().trim() === 'mcq') {
             const { question,
@@ -293,7 +292,6 @@ module.exports.createQuestion = async (req, res) => {
         }
         // insert sorting question
         if (questionType.toLowerCase().trim() === 'sorting') {
-            console.log('entering loop');
             const {
                 question,
                 sortItems,
@@ -394,7 +392,6 @@ module.exports.createQuestion = async (req, res) => {
                 explanationHeading,
                 explanationText,
                 info,
-                infoImage,
                 question_type_id,
                 exam_type,
                 difficulty,
@@ -495,11 +492,11 @@ module.exports.createQuestion = async (req, res) => {
                 explanationHeading,
                 explanationText,
                 info,
-                infoImage,
                 question_type_id,
                 exam_type,
                 difficulty,
-                courseId
+                courseId,
+                marks
             } = req.body;
 
             // Parse tabs JSON string or use empty array if not present or invalid
@@ -527,7 +524,8 @@ module.exports.createQuestion = async (req, res) => {
                 exam_type,
                 drag_drop_content,
                 difficulty,
-                courseId
+                courseId,
+                marks
             );
             const questionId = questionResult.insertId;
             logger.info(`✅ Added Drag Drop question with ID: ${questionId}`);
@@ -572,6 +570,7 @@ module.exports.createQuestion = async (req, res) => {
                 data: {
                     questionId,
                     question,
+                    marks,
                     question_type_id,
                     exam_type,
                     drag_drop_content,
