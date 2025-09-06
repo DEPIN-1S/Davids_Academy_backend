@@ -1,0 +1,9 @@
+{"level":"error","message":"MySQL connection error: ","service":"david-academy-api","timestamp":"2025-09-06 18:35:37"}
+{"level":"error","message":"❌ insertSentenceQuestion: Failed to insert question - ER_WRONG_VALUE_COUNT_ON_ROW: Column count doesn't match value count at row 1","service":"david-academy-api","timestamp":"2025-09-06 18:36:58"}
+{"level":"error","message":"❌ Failed to add question: ER_WRONG_VALUE_COUNT_ON_ROW: Column count doesn't match value count at row 1","service":"david-academy-api","timestamp":"2025-09-06 18:36:58"}
+{"level":"error","message":"❌ insertSentenceQuestion: Failed to insert question - ER_WRONG_VALUE_COUNT_ON_ROW: Column count doesn't match value count at row 1","service":"david-academy-api","timestamp":"2025-09-06 18:37:41"}
+{"level":"error","message":"❌ Failed to add question: ER_WRONG_VALUE_COUNT_ON_ROW: Column count doesn't match value count at row 1","service":"david-academy-api","timestamp":"2025-09-06 18:37:41"}
+{"level":"error","message":"❌ insertSentenceQuestion: Failed to insert question - ER_WRONG_VALUE_COUNT_ON_ROW: Column count doesn't match value count at row 1","service":"david-academy-api","timestamp":"2025-09-06 18:37:44"}
+{"level":"error","message":"❌ Failed to add question: ER_WRONG_VALUE_COUNT_ON_ROW: Column count doesn't match value count at row 1","service":"david-academy-api","timestamp":"2025-09-06 18:37:44"}
+{"level":"error","message":"❌ insertSentenceQuestion: Failed to insert question - ER_BAD_NULL_ERROR: Column 'marks' cannot be null","service":"david-academy-api","timestamp":"2025-09-06 18:38:12"}
+{"level":"error","message":"❌ Failed to add question: ER_BAD_NULL_ERROR: Column 'marks' cannot be null","service":"david-academy-api","timestamp":"2025-09-06 18:38:12"}

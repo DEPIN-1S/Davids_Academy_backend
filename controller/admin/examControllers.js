@@ -341,11 +341,12 @@ module.exports.createQuestion = async (req, res) => {
                 question,
                 tabs,
                 answer,
-                highlightoptions
+                highlightoptions,
+                marks
             } = req.body;
             const qstabs = typeof tabs === 'string' ? JSON.parse(tabs) : tabs;
             // Insert question into tb_dropdownQuestion
-            const questionResult = await model.insertSentenceQuestion(question, question_type_id, answer, exam_type, difficulty, courseId, answer);
+            const questionResult = await model.insertSentenceQuestion(question, question_type_id, exam_type, difficulty, courseId, answer, marks);
             const questionId = questionResult.insertId;
             logger.info(`✅ Added dropdown question with ID: ${questionId}`);
             // Insert tabs into tb_DropdownQuestionTabs
