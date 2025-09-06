@@ -34,9 +34,10 @@ module.exports.InsertStudent = async (fullname, email, phone, password, target_e
 
 module.exports.EditStudent = async (setClause, values) => {
     try {
-        const sql = `UPDATE tb_students SET ${setClause} WHERE id = ?`;
+        const sql = `UPDATE tb_users SET ${setClause} WHERE id = ?`;
+        console.log('sql', sql);
         logger.info('[Usermodel] Updating student in db', setClause, values);
-        const data = await query(sql.values);
+        const data = await query(sql, values);
         return data;
     } catch (error) {
         logger.error('[Usermodel] Error updating student', { error: error.message });
