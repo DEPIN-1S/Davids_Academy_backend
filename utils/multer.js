@@ -12,6 +12,8 @@ const storage = multer.diskStorage({
 
     if (file.fieldname === 'infoimage') {
       folder = 'public/uploads/infoimages';
+    } else if (file.fieldname === 'exhibit') {
+      folder = 'public/uploads/exhibit'
     } else if (file.fieldname === 'courseimage') {
       folder = 'public/uploads/courses';
     } else if (file.fieldname === 'shopimage') {
