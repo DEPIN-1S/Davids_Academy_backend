@@ -892,10 +892,17 @@ async function countTests() {
 }
 
 
-async function updateTest({ id, fromDate, toDate, testTitle, courseId }) {
-    const sql = `UPDATE tb_tests SET fromDate=?, toDate=?, testTitle=?, courseId=? WHERE id=?`;
-    return query(sql, [fromDate, toDate, testTitle, courseId, id]);
+async function updateTest(fromDate, toDate, testTitle, courseId, id) {
+    try {
+        const sql = `UPDATE tb_tests SET fromDate=?, toDate=?, testTitle=?, courseId=? WHERE id=?`;
+        const result = await query(sql, [fromDate, toDate, testTitle, courseId, id]);
+        return result;
+    } catch (error) {
+        console.error('Error updating test:', error);
+        throw error;
+    }
 }
+
 async function deleteTestQuestionsByTestId(testId) {
     const sql = `DELETE FROM tb_testQuestions WHERE testId=?`;
     return query(sql, [testId]);

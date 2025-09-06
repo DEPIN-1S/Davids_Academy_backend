@@ -1128,19 +1128,15 @@ module.exports.updateTest = async (req, res) => {
             courseId,
             questionIds
         } = req.body;
-
-        await model.updateTest(id, fromDate, toDate, testTitle, courseId);
-
+        await model.updateTest(fromDate, toDate, testTitle, courseId, id);
         // Remove all old question links for this test
         await model.deleteTestQuestionsByTestId(id);
-
         // Insert the new links
         if (Array.isArray(questionIds)) {
             for (const questionId of questionIds) {
                 await model.insertTestQuestion({ testId: id, questionId });
             }
         }
-
         return res.json({ result: true, message: 'Test updated successfully' });
     } catch (error) {
         logger.error(`❌ Failed to update test: ${error.message}`);

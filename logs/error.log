@@ -1,0 +1,3 @@
+{"level":"error","message":"❌ Failed to update test: Cannot destructure property 'fromDate' of 'undefined' as it is undefined.","service":"david-academy-api","timestamp":"2025-09-06 20:43:56"}
+{"level":"error","message":"❌ Failed to update test: Cannot destructure property 'fromDate' of 'undefined' as it is undefined.","service":"david-academy-api","timestamp":"2025-09-06 20:44:52"}
+{"level":"error","message":"MySQL connection error: ","service":"david-academy-api","timestamp":"2025-09-06 20:50:59"}
