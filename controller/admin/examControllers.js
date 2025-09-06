@@ -197,13 +197,14 @@ module.exports.createQuestion = async (req, res) => {
                 }
             });
         }
-
+        // insert dropdown question
         if (questionType.toLowerCase().trim() === 'dropdown') {
             const {
                 question,
                 tabs,
                 dropdowns,
-                answers
+                answers,
+                marks
             } = req.body;
 
             const qstabs = typeof tabs === 'string' ? JSON.parse(tabs) : tabs;
@@ -213,7 +214,7 @@ module.exports.createQuestion = async (req, res) => {
             const Dropdownanswers = typeof answers === 'string' ? JSON.parse(answers) : answers;
 
             // Insert question into tb_dropdownQuestion
-            const questionResult = await model.insertDropdownQuestion(question, question_type_id, exam_type, difficulty, courseId);
+            const questionResult = await model.insertDropdownQuestion(question, question_type_id, exam_type, difficulty, courseId, marks);
 
             const questionId = questionResult.insertId;
 
@@ -290,18 +291,17 @@ module.exports.createQuestion = async (req, res) => {
 
             });
         }
-
+        // insert sorting question
         if (questionType.toLowerCase().trim() === 'sorting') {
+            console.log('entering loop');
             const {
                 question,
-                sortItems
+                sortItems,
+                marks
             } = req.body;
-
             const sorteditems = typeof sortItems === 'string' ? JSON.parse(sortItems) : sortItems;
-
-
             // Insert question into tb_dropdownQuestion
-            const questionResult = await model.insertDropdownQuestion(question, question_type_id, exam_type, difficulty, courseId);
+            const questionResult = await model.insertDropdownQuestion(question, question_type_id, exam_type, difficulty, courseId, marks);
             const questionId = questionResult.insertId;
             logger.info(`✅ Added dropdown question with ID: ${questionId}`);
             // Insert tabs into tb_DropdownQuestionTabs
@@ -324,6 +324,7 @@ module.exports.createQuestion = async (req, res) => {
                 data: {
                     questionId,
                     question,
+                    marks,
                     question_type_id,
                     exam_type,
                     sorteditems,
@@ -336,7 +337,7 @@ module.exports.createQuestion = async (req, res) => {
 
             });
         }
-
+        // insert sentence highlight
         if (questionType.toLowerCase().trim() === 'sentence highlight') {
             const {
                 question,
@@ -383,7 +384,7 @@ module.exports.createQuestion = async (req, res) => {
 
             });
         }
-
+        // insert fill in the blanks
         if (questionType.toLowerCase().trim() === 'fill in the blanks') {
             const {
                 question,
@@ -485,7 +486,7 @@ module.exports.createQuestion = async (req, res) => {
                 }
             });
         }
-
+        // insert drag drop question
         if (questionType.toLowerCase().trim() === 'drag drop') {
 
             const {
@@ -584,8 +585,7 @@ module.exports.createQuestion = async (req, res) => {
                 }
             });
         }
-
-
+        // insert multiple radio question
         if (questionType.toLowerCase().trim() === 'multiple radio') {
             const {
                 question,
@@ -596,7 +596,8 @@ module.exports.createQuestion = async (req, res) => {
                 explanationHeading,
                 explanationText,
                 info,
-                infoImage
+                marks
+
             } = req.body;
 
             // Parse JSON string fields safely
@@ -624,15 +625,14 @@ module.exports.createQuestion = async (req, res) => {
                 radio_options = [];
             }
 
-            console.log('Parsed tabs:', tabs);
-
             // Insert question into tb_dropdownQuestion
             const questionResult = await model.insertMultipleRadioQuestion(
                 question,
                 question_type_id,
                 exam_type,
                 difficulty,
-                courseId
+                courseId,
+                marks
             );
             const questionId = questionResult.insertId;
             logger.info(`✅ Added Multiple Radio question with ID: ${questionId}`);

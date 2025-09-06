@@ -196,7 +196,7 @@ async function insertAdditionalInfo(questionId, info, image = null) {
 
 async function insertDropdownQuestion(question, question_type_id, exam_type, difficulty, courseId, marks) {
     const sql = `INSERT INTO tb_questions (question,question_type_id,exam_type, difficulty,courseId,marks) 
-                 VALUES (?, ?, ?, ?, ?,?)`;
+                 VALUES (?, ?, ?, ?, ?, ?)`;
 
     try {
         const result = await query(sql, [
