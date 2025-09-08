@@ -341,7 +341,7 @@ module.exports.createQuestion = async (req, res) => {
         }
         // insert sentence highlight
         if (questionType.toLowerCase().trim() === 'sentence highlight') {
-            const {
+            let {
                 question,
                 tabs,
                 answer,
@@ -349,6 +349,7 @@ module.exports.createQuestion = async (req, res) => {
                 marks
             } = req.body;
             const qstabs = typeof tabs === 'string' ? JSON.parse(tabs) : tabs;
+            highlightoptions = typeof highlightoptions === 'string' ? JSON.parse(highlightoptions) : highlightoptions;
             // Insert question into tb_dropdownQuestion
             const questionResult = await model.insertSentenceQuestion(question, question_type_id, exam_type, difficulty, courseId, answer, marks);
             const questionId = questionResult.insertId;
@@ -378,6 +379,7 @@ module.exports.createQuestion = async (req, res) => {
                     answer,
                     exam_type,
                     qstabs,
+                    highlightoptions,
                     difficulty,
                     explanationHeading,
                     explanationText,
