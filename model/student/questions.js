@@ -222,7 +222,7 @@ module.exports.Getsortingoption = async (questionId) => {
 
 
 module.exports.GetFilltheblankstext = async (questionId) => {
-    const sql = `SELECT id, question_id, question_text FROM tb_fillTheBlanks WHERE question_id = ?`;
+    const sql = `SELECT id, question_id, question_text,answers,blankOrNot FROM tb_fillTheBlanks WHERE question_id = ?`;
     try {
         const result = await query(sql, [questionId]);
         logger.info(`✅ [GetFilltheblankstext] Successfully retrieved fill-the-blanks text for question_id = ${questionId}`);
@@ -232,10 +232,21 @@ module.exports.GetFilltheblankstext = async (questionId) => {
         throw err;
     }
 }
-
-
+// fetch fill in the blanks heading
+module.exports.GetFilltheblanksHeading = async (questionId) => {
+    const sql = `SELECT headings FROM DragAndDrop_Headings WHERE question_id = ?`;
+    try {
+        const result = await query(sql, [questionId]);
+        logger.info(`✅ [GetFilltheblankstextOptions] Successfully retrieved fill-the-blanks options for question_id = ${questionId}`);
+        return result;
+    } catch (err) {
+        logger.error(`[GetFilltheblankstextOptions] ❌ Failed to retrieve fill-the-blanks options for question_id = ${questionId} - ${err.message}`);
+        throw err;
+    }
+}
+// fetch fill in the blanks options 
 module.exports.GetFilltheblankstextOptions = async (questionId) => {
-    const sql = `SELECT * FROM tb_fillTheBlanks_options WHERE question_id = ?`;
+    const sql = `SELECT * FROM DragAndDrop_Headings_Options WHERE question_id = ?`;
     try {
         const result = await query(sql, [questionId]);
         logger.info(`✅ [GetFilltheblankstextOptions] Successfully retrieved fill-the-blanks options for question_id = ${questionId}`);

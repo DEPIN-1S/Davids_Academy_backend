@@ -122,12 +122,14 @@ module.exports.GetQuestionDataFromQBank = async (req, res) => {
         if (questionData[0]?.question_type?.toLowerCase() === "fill in the blanks") {
             const filltheblankstext = await model.GetFilltheblankstext(questionId);
             const filltheblanksoptions = await model.GetFilltheblankstextOptions(questionId);
+            const filltheblanksHeading = await model.GetFilltheblanksHeading(questionId);
+            let heading = filltheblanksHeading[0].headings;
             const additionalInfo = await model.getAdditionalInfo(questionId);
             const explanation = await model.Getexplantion(questionId);
             fullQuestionData = {
                 ...questionData[0],
-                filltheblankstext,
-                filltheblanksoptions,
+                FTBquestion_content: filltheblankstext,
+                FTBoptions: { heading: heading, options: filltheblanksoptions },
                 additionalInfo,
                 explanation
             };
