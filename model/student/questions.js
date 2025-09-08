@@ -132,7 +132,7 @@ module.exports.Getexplantion = async (questionId) => {
 
 module.exports.Getdropdownquestiontext = async (questionId) => {
     try {
-        const sql = `SELECT id, questionId, dropdownField, blankOrNot, createdAt, updatedAt FROM tb_dropdowns WHERE questionId = ?`;
+        const sql = `SELECT id, questionId, dropdownField, blankOrNot FROM tb_dropdowns WHERE questionId = ?`;
         const data = await query(sql, [questionId]);
         logger.info(`✅ [Getdropdownquestiontext] Successfully retrieved dropdown-type questions for questionId = ${questionId}`);
         return data;
