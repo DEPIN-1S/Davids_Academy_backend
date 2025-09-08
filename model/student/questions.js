@@ -170,7 +170,7 @@ module.exports.Gettabs = async (questionId) => {
 
 
 module.exports.GetHighlightOptions = async (questionId) => {
-    const sql = `SELECT * FROM tb_sentanceHighlight WHERE questionId = ?`;
+    const sql = `SELECT id,questionId,options FROM tb_sentanceHighlight WHERE questionId = ?`;
     try {
         const result = await query(sql, [questionId]);
         logger.info(`✅ [GetHighlightOptions] Successfully retrieved sentence highligh options for questionId = ${questionId}`);
