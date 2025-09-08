@@ -377,7 +377,7 @@ module.exports.CheckTestAlreadySubmitted = async (user_id, test_id) => {
 
 
 module.exports.SubmitTestData = async (user_id, test_id, total_score) => {
-    const sql = `INSERT into tb_submittedtest ( st_user_id, st_test_id,st_score ) values(?,?,?)`;
+    const sql = `INSERT into tb_submittedTest ( st_user_id, st_test_id,st_score ) values(?,?,?)`;
     try {
         const result = await query(sql, [user_id, test_id, total_score]);
         logger.info(`✅ [SubmitTestData] Submitting the test data -user : ${user_id} score : ${total_score} test : ${test_id}`);
