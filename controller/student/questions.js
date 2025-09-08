@@ -148,9 +148,8 @@ module.exports.GetQuestionDataFromQBank = async (req, res) => {
             const explanation = await model.Getexplantion(questionId);
             fullQuestionData = {
                 ...questionData[0],
-                headings,
-                dropdownquestiontext,
                 tabsInfo,
+                branches: headings,
                 additionalInfo,
                 explanation
             };
