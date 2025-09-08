@@ -92,7 +92,17 @@ module.exports.Getmcqoption = async (questionId) => {
         throw error;
     }
 }
-
+module.exports.GetmcqAnswers = async (questionId) => {
+    try {
+        const sql = `SELECT * from tb_mcqAnswers where questionId=?`;
+        logger.info('[MCQOptionsmodel] Retriveing answers from tb_mcqAnswers table in db', questionId);
+        const data = await query(sql, [questionId]);
+        return data;
+    } catch (error) {
+        logger.error('[MCQAnswersmodel] Error in retriveing options from mcq options table in db', { error: error.message });
+        throw error;
+    }
+}
 
 module.exports.GetAdditionalInfo = async (questionId) => {
     try {

@@ -145,7 +145,7 @@ module.exports.createQuestion = async (req, res) => {
             } = req.body
 
             let mcqoptions = typeof options === 'string' ? JSON.parse(options) : options;
-
+            let mcqAnswer = typeof answer === 'string' ? JSON.parse(answer) : answer;
             // Insert into tb_mcq
             const mcqResult = await model.insertMcqQuestion({
                 question,
@@ -157,8 +157,8 @@ module.exports.createQuestion = async (req, res) => {
                 marks
             });
             const questionId = mcqResult.insertId;
-            for (const ans of answer) {
-                const mcqAnswer = await model.insertMcqAnswer(questionId, ans);
+            for (const ans of mcqAnswer) {
+                const mcqAnswerResult = await model.insertMcqAnswer(questionId, ans);
             }
 
 

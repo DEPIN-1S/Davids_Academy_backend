@@ -123,11 +123,13 @@ module.exports.GetQuestionData = async (req, res) => {
         let fullQuestionData = null
         if (questionData[0]?.question_type.toLowerCase() === "mcq") {
             const mcqoptions = await model.Getmcqoption(questionId);
+            const mcqAnswers = await model.GetmcqAnswers(questionId);
             const additionalInfo = await model.GetAdditionalInfo(questionId);
             const explanation = await model.Getexplantion(questionId)
             fullQuestionData = {
                 ...questionData[0],
                 mcqoptions,
+                mcqAnswers,
                 additionalInfo,
                 explanation
             };
@@ -242,7 +244,7 @@ module.exports.GetQuestionData = async (req, res) => {
     }
 }
 
-
+// submit question method
 module.exports.SubmitQuestions = async (req, res) => {
     try {
         const { user_id } = req?.user
@@ -316,7 +318,7 @@ module.exports.SubmitQuestions = async (req, res) => {
     }
 }
 
-
+// submit test method
 module.exports.SubmitTest = async (req, res) => {
     try {
         const { user_id } = req?.user
