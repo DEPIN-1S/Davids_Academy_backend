@@ -100,7 +100,7 @@ module.exports.UpdateStatus = async (student_id, status) => {
 
 module.exports.ListSubmittedTest = async (student_id) => {
     try {
-        const sql = `SELECT * from tb_submittedTest where st_user_id=?`;
+        const sql = `SELECT s.*,t.testTitle,t.fromDate,t.toDate from tb_submittedTest s INNER JOIN tb_tests t ON t.id=s.st_test_id where st_user_id=?`;
         logger.info(`[ListSubmittedTest] Listing student submitted test from db`, { student_id });
         const data = await query(sql, [student_id]);
         return data;
