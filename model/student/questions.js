@@ -298,7 +298,7 @@ module.exports.GetMultipleRadioQuestionsClientfindings = async (questionId) => {
 
 
 module.exports.GetMultipleRadioQuestionsRadioOption = async (questionId) => {
-    const sql = `SELECT * FROM tb_MultipleRadio WHERE question_id = ?`; // Confirm this is the correct ID for multiple radio
+    const sql = `SELECT * FROM tb_MultipleRadio_RadioOptions WHERE question_id = ?`; // Confirm this is the correct ID for multiple radio
     try {
         const result = await query(sql, [questionId]);
         logger.info('✅ [getMultipleRadioQuestions] Successfully retrieved multiple-radio questions (question_type_id = 5)');

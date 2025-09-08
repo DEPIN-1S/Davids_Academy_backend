@@ -162,7 +162,7 @@ module.exports.GetQuestionDataFromQBank = async (req, res) => {
             const explanation = await model.Getexplantion(questionId);
             fullQuestionData = {
                 ...questionData[0],
-                clientfindings,
+                questionContent: clientfindings,
                 radioOption,
                 tabsInfo,
                 additionalInfo,
