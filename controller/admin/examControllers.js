@@ -396,9 +396,8 @@ module.exports.createQuestion = async (req, res) => {
                 question_type_id,
                 exam_type,
                 difficulty,
-                courseId
+                courseId,
             } = req.body;
-
             // Parse options string safely into array
             let FTBoptions = [];
             try {
@@ -423,7 +422,8 @@ module.exports.createQuestion = async (req, res) => {
                 answer,
                 exam_type,
                 difficulty,
-                courseId
+                courseId,
+                marks
             );
             const questionId = questionResult.insertId;
             logger.info(`✅ Added dropdown question with ID: ${questionId}`);

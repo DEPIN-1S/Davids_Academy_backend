@@ -125,10 +125,6 @@ Sorting question
     "question_type_id":13,
     "answer": " the nurse know the client is at the risk of developing some disease and symptoms if the condition is not managed",
     "difficulty": "Medium",
-    "subject": 1,
-    "lesson": 3,
-    "clientNeedArea": 2,
-    "clientNeedTopic": 5,
     "question_content": [
         {
             "question_text": "Turn on the suction device and set appropriate pressure.",

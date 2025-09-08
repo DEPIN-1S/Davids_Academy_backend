@@ -331,8 +331,8 @@ async function insertSortItems(questionId, sortItem, itemOrder) {
 
 async function insertFillTheBlanksQuestion(question, question_type_id, answer, exam_type, difficulty, courseId, marks) {
     const sql = `INSERT INTO tb_questions (question,question_type_id,answer,exam_type, difficulty,courseId,marks) 
-                //  VALUES (?,?, ?, ?, ?, ?, ?)`;
-
+VALUES (?, ?, ?, ?, ?, ?, ?)
+`;
     try {
         const result = await query(sql, [
             question,
