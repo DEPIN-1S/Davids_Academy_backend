@@ -246,7 +246,9 @@ Sorting question
 }
 admin credentials
 {
-  "email":"msambhunarayan@gmail.com", 
-  "password":"sambhu@12345"
-  }
-
+  "email":"anoopjosecj@gmail.com", 
+  "password":"An00pj0se"}
+  student credentials
+  {
+  "email":"jithinpm@gmail.com", 
+  "password":"jithinpm"}
