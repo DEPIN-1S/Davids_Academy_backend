@@ -18,8 +18,6 @@ MCQ questions
     "info": "Vitamin D can be obtained from sunlight exposure, food sources, and supplements.",
     "infoimage": "https://example.com/images/vitamin-d-sources.png"
 }
-
-
 Dropdown question
 {
     "courseId": 12,
@@ -80,10 +78,7 @@ Dropdown question
 "info": "Patients with a history of severe allergies should carry an epinephrine auto-injector at all times.",
 "infoimage": "https://example.com/images/epipen-instruction.png"
 }
-
-
 Sorting question
-
 {
   "questionType": "Sorting",
    "question_type_id":13,
@@ -117,7 +112,6 @@ Sorting question
   "info": "Tracheostomy suctioning should be performed using sterile technique with appropriate pressure settings (80-120 mmHg for adults) to prevent tissue trauma.",
   "infoimage": "https://example.com/images/tracheostomy-suctioning.png"
 }
-
 //fill in the blanks ---\/
 {
     "questionType": "Fill in the Blanks",
@@ -200,7 +194,6 @@ Sorting question
     "info": "Multiple Radio Tracheostomy suctioning should be performed using sterile technique with appropriate pressure settings (80-120 mmHg for adults) to prevent tissue trauma.",
     "infoimage": "https://example.com/images/tracheostomy-suctioning.png"
 }
-
 //---------Drag and Drop -------------
 {
     "questionType": "Drag Drop",
@@ -247,8 +240,10 @@ Sorting question
 admin credentials
 {
   "email":"anoopjosecj@gmail.com", 
-  "password":"An00pj0se"}
+  "password":"An00pj0se"
+  }
   student credentials
   {
   "email":"jithinpm@gmail.com", 
-  "password":"jithinpm"}
+  "password":"jithinpm"
+  }

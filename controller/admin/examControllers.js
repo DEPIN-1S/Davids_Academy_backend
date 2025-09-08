@@ -151,13 +151,17 @@ module.exports.createQuestion = async (req, res) => {
                 question,
                 question_type_id,
                 courseId,
-                answer,
                 exam_type,
                 difficulty,
                 exhibit,
                 marks
             });
             const questionId = mcqResult.insertId;
+            for (const ans of answer) {
+                const mcqAnswer = await model.insertMcqAnswer(questionId, ans);
+            }
+
+
             logger.info('questionId', questionId);
             logger.info(`✅ Inserted MCQ (ID: ${questionId})`);
             // Insert options into tb_mcqOptions
