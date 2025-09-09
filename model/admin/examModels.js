@@ -99,12 +99,11 @@ async function deleteQuestionById(id) {
 async function insertMcqQuestion(data) {
     const sql = `
     INSERT INTO tb_questions (
-      question,question_type_id,courseId, answer,exam_type, difficulty,exhibit,marks) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+      question,question_type_id,courseId,exam_type, difficulty,exhibit,marks) VALUES (?, ?, ?, ?, ?, ?, ?)`;
     const values = [
         data.question,
         data.question_type_id,
         data.courseId,
-        data.answer,
         data.exam_type,
         data.difficulty,
         data.exhibit || null,
@@ -138,7 +137,20 @@ async function insertMcqOptions(questionId, optionText) {
         throw error;
     }
 }
-
+// Insert MCQ answer 
+async function insertMcqAnswer(questionId, answer) {
+    const answerSql = `
+        INSERT INTO tb_mcqAnswers (questionId, mcqAnswer)
+        VALUES (?, ?)`;
+    try {
+        const result = await query(answerSql, [questionId, answer]);
+        logger.info(`insertMcqAnswer: Inserted answer for question ID ${questionId}`);
+        return result;
+    } catch (error) {
+        logger.error('insertMcqAnswer: Failed to insert answer: %o', error);
+        throw error;
+    }
+}
 /**
  * Inserts explanation for an MCQ into tb_mcqExplanation.
  * 
@@ -930,6 +942,7 @@ module.exports = {
     deleteQuestionType,
     deleteQuestionById,
     insertMcqQuestion,
+    insertMcqAnswer,
     insertMcqOptions,
     insertMcqExplanation,
     insertAdditionalInfo,

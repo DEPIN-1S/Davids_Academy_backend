@@ -62,11 +62,13 @@ module.exports.GetQuestionDataFromQBank = async (req, res) => {
         let fullQuestionData = null
         if (questionData[0]?.question_type?.toLowerCase() === "mcq") {
             const mcqoptions = await model.Getmcqoption(questionId);
+            const mcqAnswers = await model.GetmcqAnswers(questionId);
             const additionalInfo = await model.GetAdditionalInfo(questionId);
             const explanation = await model.Getexplantion(questionId)
             fullQuestionData = {
                 ...questionData[0],
                 mcqoptions,
+                mcqAnswers,
                 additionalInfo,
                 explanation
             };
@@ -84,9 +86,8 @@ module.exports.GetQuestionDataFromQBank = async (req, res) => {
             let explanation = await model.Getexplantion(questionId);
             fullQuestionData = {
                 ...questionData[0],
-                dropdownTexts,
-                dropdownquestiontext,
                 tabsInfo,
+                dropdowns: dropdownTexts,
                 additionalInfo,
                 explanation
             };
@@ -121,12 +122,14 @@ module.exports.GetQuestionDataFromQBank = async (req, res) => {
         if (questionData[0]?.question_type?.toLowerCase() === "fill in the blanks") {
             const filltheblankstext = await model.GetFilltheblankstext(questionId);
             const filltheblanksoptions = await model.GetFilltheblankstextOptions(questionId);
+            const filltheblanksHeading = await model.GetFilltheblanksHeading(questionId);
+            let heading = filltheblanksHeading[0].headings;
             const additionalInfo = await model.getAdditionalInfo(questionId);
             const explanation = await model.Getexplantion(questionId);
             fullQuestionData = {
                 ...questionData[0],
-                filltheblankstext,
-                filltheblanksoptions,
+                FTBquestion_content: filltheblankstext,
+                FTBoptions: { heading: heading, options: filltheblanksoptions },
                 additionalInfo,
                 explanation
             };
@@ -145,9 +148,8 @@ module.exports.GetQuestionDataFromQBank = async (req, res) => {
             const explanation = await model.Getexplantion(questionId);
             fullQuestionData = {
                 ...questionData[0],
-                headings,
-                dropdownquestiontext,
                 tabsInfo,
+                branches: headings,
                 additionalInfo,
                 explanation
             };
@@ -160,7 +162,7 @@ module.exports.GetQuestionDataFromQBank = async (req, res) => {
             const explanation = await model.Getexplantion(questionId);
             fullQuestionData = {
                 ...questionData[0],
-                clientfindings,
+                questionContent: clientfindings,
                 radioOption,
                 tabsInfo,
                 additionalInfo,

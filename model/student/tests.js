@@ -128,7 +128,7 @@ module.exports.GetMcqQuestion = async (questionId) => {
     }
 }
 
-
+// get mcq options
 module.exports.Getmcqoption = async (questionId) => {
     try {
         const sql = `SELECT * from tb_mcqOptions where questionId=?`;
@@ -141,7 +141,18 @@ module.exports.Getmcqoption = async (questionId) => {
     }
 }
 
-
+// get mcq answers 
+module.exports.GetmcqAnswers = async (questionId) => {
+    try {
+        const sql = `SELECT * from tb_mcqAnswers where questionId=?`;
+        logger.info('[MCQOptionsmodel] Retriveing answers from tb_mcqAnswers table in db', questionId);
+        const data = await query(sql, [questionId]);
+        return data;
+    } catch (error) {
+        logger.error('[MCQAnswersmodel] Error in retriveing options from mcq options table in db', { error: error.message });
+        throw error;
+    }
+}
 module.exports.GetAdditionalInfo = async (questionId) => {
     try {
         const sql = `SELECT * from tb_additionalInfo where questionId=?`;

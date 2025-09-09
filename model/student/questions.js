@@ -92,7 +92,17 @@ module.exports.Getmcqoption = async (questionId) => {
         throw error;
     }
 }
-
+module.exports.GetmcqAnswers = async (questionId) => {
+    try {
+        const sql = `SELECT * from tb_mcqAnswers where questionId=?`;
+        logger.info('[MCQOptionsmodel] Retriveing answers from tb_mcqAnswers table in db', questionId);
+        const data = await query(sql, [questionId]);
+        return data;
+    } catch (error) {
+        logger.error('[MCQAnswersmodel] Error in retriveing options from mcq options table in db', { error: error.message });
+        throw error;
+    }
+}
 
 module.exports.GetAdditionalInfo = async (questionId) => {
     try {
@@ -122,7 +132,7 @@ module.exports.Getexplantion = async (questionId) => {
 
 module.exports.Getdropdownquestiontext = async (questionId) => {
     try {
-        const sql = `SELECT id, questionId, dropdownField, blankOrNot, createdAt, updatedAt FROM tb_dropdowns WHERE questionId = ?`;
+        const sql = `SELECT id, questionId, dropdownField, blankOrNot FROM tb_dropdowns WHERE questionId = ?`;
         const data = await query(sql, [questionId]);
         logger.info(`✅ [Getdropdownquestiontext] Successfully retrieved dropdown-type questions for questionId = ${questionId}`);
         return data;
@@ -160,7 +170,7 @@ module.exports.Gettabs = async (questionId) => {
 
 
 module.exports.GetHighlightOptions = async (questionId) => {
-    const sql = `SELECT * FROM tb_sentanceHighlight WHERE questionId = ?`;
+    const sql = `SELECT id,questionId,options FROM tb_sentanceHighlight WHERE questionId = ?`;
     try {
         const result = await query(sql, [questionId]);
         logger.info(`✅ [GetHighlightOptions] Successfully retrieved sentence highligh options for questionId = ${questionId}`);
@@ -212,7 +222,7 @@ module.exports.Getsortingoption = async (questionId) => {
 
 
 module.exports.GetFilltheblankstext = async (questionId) => {
-    const sql = `SELECT id, question_id, question_text FROM tb_fillTheBlanks WHERE question_id = ?`;
+    const sql = `SELECT id, question_id, question_text,answers,blankOrNot FROM tb_fillTheBlanks WHERE question_id = ?`;
     try {
         const result = await query(sql, [questionId]);
         logger.info(`✅ [GetFilltheblankstext] Successfully retrieved fill-the-blanks text for question_id = ${questionId}`);
@@ -222,10 +232,21 @@ module.exports.GetFilltheblankstext = async (questionId) => {
         throw err;
     }
 }
-
-
+// fetch fill in the blanks heading
+module.exports.GetFilltheblanksHeading = async (questionId) => {
+    const sql = `SELECT headings FROM DragAndDrop_Headings WHERE question_id = ?`;
+    try {
+        const result = await query(sql, [questionId]);
+        logger.info(`✅ [GetFilltheblankstextOptions] Successfully retrieved fill-the-blanks options for question_id = ${questionId}`);
+        return result;
+    } catch (err) {
+        logger.error(`[GetFilltheblankstextOptions] ❌ Failed to retrieve fill-the-blanks options for question_id = ${questionId} - ${err.message}`);
+        throw err;
+    }
+}
+// fetch fill in the blanks options 
 module.exports.GetFilltheblankstextOptions = async (questionId) => {
-    const sql = `SELECT * FROM tb_fillTheBlanks_options WHERE question_id = ?`;
+    const sql = `SELECT * FROM DragAndDrop_Headings_Options WHERE question_id = ?`;
     try {
         const result = await query(sql, [questionId]);
         logger.info(`✅ [GetFilltheblankstextOptions] Successfully retrieved fill-the-blanks options for question_id = ${questionId}`);
@@ -277,7 +298,7 @@ module.exports.GetMultipleRadioQuestionsClientfindings = async (questionId) => {
 
 
 module.exports.GetMultipleRadioQuestionsRadioOption = async (questionId) => {
-    const sql = `SELECT * FROM tb_MultipleRadio WHERE question_id = ?`; // Confirm this is the correct ID for multiple radio
+    const sql = `SELECT * FROM tb_MultipleRadio_RadioOptions WHERE question_id = ?`; // Confirm this is the correct ID for multiple radio
     try {
         const result = await query(sql, [questionId]);
         logger.info('✅ [getMultipleRadioQuestions] Successfully retrieved multiple-radio questions (question_type_id = 5)');
