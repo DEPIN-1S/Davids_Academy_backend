@@ -735,6 +735,23 @@ module.exports.updateQuestion = async (req, res) => {
         });
     }
 };
+module.exports.getSampleQuestionnaireQuestionIds = async (req, res) => {
+    try {
+        const data = await model.fetchSampleQuestionnaireIds();
+        return res.status(200).json({
+            result: true,
+            message: 'questionIds retrieved successfully',
+            data: data,
+        });
+    } catch (error) {
+        logger.error(`❌ Failed to retrieve  questions: ${error.message}`);
+        return res.status(500).json({
+            result: false,
+            message: 'Internal Server Error',
+            error: error.message,
+        });
+    }
+};
 /**
  * PATCH /api/exam/question
  * Body: { id: int }
