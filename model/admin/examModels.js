@@ -829,20 +829,14 @@ async function fetchSampleQuestionnaireIds() {
 //   courseId - associated course ID
 //
 // Returns: Result of the insert operation (e.g. insertId, affectedRows)
-async function insertTest({ fromDate, toDate, testTitle, courseId }) {
+async function insertTest({ fromDate, toDate, testTitle, courseId, totalQuestions }) {
     try {
         // Prepare SQL statement to insert a test row
-        const sql = `
-            INSERT INTO tb_tests (fromDate, toDate, testTitle, courseId)
-            VALUES (?, ?, ?, ?)
-        `;
-
+        const sql = `INSERT INTO tb_tests (fromDate, toDate, testTitle, courseId,totalQuestions) VALUES (?, ?, ?, ?, ?)`;
         // Parameters for the query, in correct order
-        const values = [fromDate, toDate, testTitle, courseId];
-
+        const values = [fromDate, toDate, testTitle, courseId, totalQuestions];
         // Execute the query
         const result = await query(sql, values);
-
         // Log successful insert with details
         logger.info(
             `✅ Test created: testTitle=${testTitle}, fromDate=${fromDate}, toDate=${toDate}, courseId=${courseId}, insertId=${result.insertId}`
@@ -886,10 +880,10 @@ async function countTests() {
 }
 
 
-async function updateTest(fromDate, toDate, testTitle, courseId, id) {
+async function updateTest(fromDate, toDate, testTitle, courseId, totalQuestions, id) {
     try {
-        const sql = `UPDATE tb_tests SET fromDate=?, toDate=?, testTitle=?, courseId=? WHERE id=?`;
-        const result = await query(sql, [fromDate, toDate, testTitle, courseId, id]);
+        const sql = `UPDATE tb_tests SET fromDate=?, toDate=?, testTitle=?, courseId=?,totalQuestions=? WHERE id=?`;
+        const result = await query(sql, [fromDate, toDate, testTitle, courseId, totalQuestions, id]);
         return result;
     } catch (error) {
         console.error('Error updating test:', error);

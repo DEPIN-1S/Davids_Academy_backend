@@ -1076,15 +1076,16 @@ module.exports.createTest = async (req, res) => {
             courseId,
             questionIds // Array of question id numbers
         } = req.body;
+        let totalQuestions = questionIds.length;
         // 1. Insert the test
         const testResult = await model.insertTest({
             fromDate,
             toDate,
             testTitle,
-            courseId
+            courseId,
+            totalQuestions
         });
         const testId = testResult.insertId;
-
         // 2. Insert into tb_testQuestions for each questionId
         if (Array.isArray(questionIds)) {
             for (const questionId of questionIds) {
@@ -1094,11 +1095,17 @@ module.exports.createTest = async (req, res) => {
                 });
             }
         }
-
         return res.status(201).json({
             result: true,
             message: 'Test created successfully',
-            testId,
+            data: {
+                id: testId,
+                fromDate,
+                toDate,
+                testTitle,
+                courseId,
+                totalQuestions
+            },
         });
     } catch (error) {
         logger.error(`❌ Failed to create test: ${error.message}`);
@@ -1141,6 +1148,7 @@ module.exports.listTestsPaginated = async (req, res) => {
         });
     }
 };
+// update  mock test 
 module.exports.updateTest = async (req, res) => {
     try {
         const { id } = req.params;
@@ -1151,7 +1159,8 @@ module.exports.updateTest = async (req, res) => {
             courseId,
             questionIds
         } = req.body;
-        await model.updateTest(fromDate, toDate, testTitle, courseId, id);
+        let totalQuestions = questionIds.length;
+        await model.updateTest(fromDate, toDate, testTitle, courseId, totalQuestions, id);
         // Remove all old question links for this test
         await model.deleteTestQuestionsByTestId(id);
         // Insert the new links
@@ -1160,12 +1169,23 @@ module.exports.updateTest = async (req, res) => {
                 await model.insertTestQuestion({ testId: id, questionId });
             }
         }
-        return res.json({ result: true, message: 'Test updated successfully' });
+        return res.json({
+            result: true, message: 'Test updated successfully',
+            data: {
+                id,
+                fromDate,
+                toDate,
+                testTitle,
+                courseId,
+                questionIds, totalQuestions
+            }
+        });
     } catch (error) {
         logger.error(`❌ Failed to update test: ${error.message}`);
         return res.status(500).json({ result: false, message: 'Internal Server Error', error: error.message });
     }
 };
+// delete mock test
 module.exports.deleteTest = async (req, res) => {
     try {
         const { id } = req.params;
