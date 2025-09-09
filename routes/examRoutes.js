@@ -53,7 +53,7 @@ route.post('/question', verifyToken, uploads.fields([{ name: 'infoimage', maxCou
  * @desc    Validate and insert a question into the database
  * @access  Private
  */
-route.get('/sample-questionnaire', verifyToken, getSampleQuestionnaireQuestionIds);
+route.get('/sample-questionnaire', getSampleQuestionnaireQuestionIds);
 /**
  * @route   PUT /question
  * @desc    update question into the database
