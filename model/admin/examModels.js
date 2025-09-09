@@ -299,8 +299,6 @@ async function insertHighlightOptionsortItems(questionId, option) {
         throw err;
     }
 }
-
-
 /**
  * Inserts a tab for a dropdown question into `tb_DropdownQuestionTabs`.
  * @param {number} questionId - The question's ID.
@@ -337,8 +335,6 @@ async function insertSortItems(questionId, sortItem, itemOrder) {
         throw err;
     }
 }
-
-
 // ---------------------------------fill in the blanks------------------------//
 
 async function insertFillTheBlanksQuestion(question, question_type_id, answer, exam_type, difficulty, courseId, marks) {
@@ -386,7 +382,6 @@ async function insertFillBlankQuestionOptionsHeading(questionId, option_heading)
         throw error;
     }
 }
-
 
 async function insertFillBlankQuestionOptionsHeadingValues(questionId, heading_id, option_value) {
     const sql = `INSERT INTO DragAndDrop_Headings_Options (question_id,headings_id,options_value) VALUES (?,?,?)`;
@@ -591,8 +586,6 @@ async function Getdropdownquestiontext(questionId) {
         throw err;
     }
 }
-
-
 async function Getdropdownoption(dropdowntext_id) {
     const sql = `SELECT * FROM tb_dropdownOptions WHERE dropdowntext_id = ?`;
     try {
@@ -604,10 +597,7 @@ async function Getdropdownoption(dropdowntext_id) {
         throw err;
     }
 }
-
-
 // get sorting questions
-
 async function getSortingQuestions(condition) {
     const sql = `SELECT * FROM tb_questions WHERE question_type_id = 11 ${condition}`;
     try {
@@ -619,8 +609,6 @@ async function getSortingQuestions(condition) {
         throw err;
     }
 }
-
-
 async function Getsortingoption(questionId) {
     const sql = `SELECT id, questionId, sortItem,itemOrder FROM tb_sortItems WHERE questionId = ?`;
     try {
@@ -632,8 +620,6 @@ async function Getsortingoption(questionId) {
         throw err;
     }
 }
-
-
 async function GetSentenceHighlightOptions(questionId) {
     const sql = `SELECT * from tb_sentanceHighlight WHERE questionId = ?`;
     try {
@@ -645,9 +631,7 @@ async function GetSentenceHighlightOptions(questionId) {
         throw err;
     }
 }
-
 // get fill in the blanks question
-
 async function getFillInTheBlanksQuestions(condition) {
     const sql = `SELECT * FROM tb_questions WHERE question_type_id = 13 ${condition}`; // Change 5 to the correct ID if different
     try {
@@ -659,7 +643,6 @@ async function getFillInTheBlanksQuestions(condition) {
         throw err;
     }
 }
-
 async function GetFilltheblankstext(questionId) {
     const sql = `SELECT id, question_id, question_text FROM tb_fillTheBlanks WHERE question_id = ?`;
     try {
@@ -671,7 +654,6 @@ async function GetFilltheblankstext(questionId) {
         throw err;
     }
 }
-
 async function GetFilltheblankstextOptions(questionId) {
     const sql = `SELECT * FROM tb_fillTheBlanks_options WHERE question_id = ?`;
     try {
@@ -683,10 +665,7 @@ async function GetFilltheblankstextOptions(questionId) {
         throw err;
     }
 }
-
-
 // get drag and drop question
-
 async function getDragDropQuestions(condition) {
     const sql = `SELECT * FROM tb_questions WHERE question_type_id = 9 ${condition}`;
     try {
@@ -698,8 +677,6 @@ async function getDragDropQuestions(condition) {
         throw err;
     }
 }
-
-
 async function GetDragDropQuestionsheading(questionId) {
     const sql = `SELECT * FROM DragAndDrop_Headings WHERE question_id = ?`;
     try {
@@ -711,7 +688,6 @@ async function GetDragDropQuestionsheading(questionId) {
         throw err;
     }
 }
-
 async function GetDragDropoption(headings_id) {
     const sql = `SELECT * FROM DragAndDrop_Headings_Options WHERE headings_id = ?`;
     try {
@@ -723,9 +699,7 @@ async function GetDragDropoption(headings_id) {
         throw err;
     }
 }
-
 // get multiple radio button question
-
 async function getMultipleRadioQuestions(condition) {
     const sql = `SELECT * FROM tb_questions WHERE question_type_id = 10 ${condition}`; // Confirm this is the correct ID for multiple radio
     try {
@@ -737,7 +711,6 @@ async function getMultipleRadioQuestions(condition) {
         throw err;
     }
 }
-
 async function GetMultipleRadioQuestionsClientfindings(questionId) {
     const sql = `SELECT * FROM tb_MultipleRadio WHERE question_id =?`; // Confirm this is the correct ID for multiple radio
     try {
@@ -749,7 +722,6 @@ async function GetMultipleRadioQuestionsClientfindings(questionId) {
         throw err;
     }
 }
-
 async function GetMultipleRadioQuestionsRadioOption(questionId) {
     const sql = `SELECT * FROM tb_MultipleRadio WHERE question_id = ?`; // Confirm this is the correct ID for multiple radio
     try {
@@ -761,9 +733,7 @@ async function GetMultipleRadioQuestionsRadioOption(questionId) {
         throw err;
     }
 }
-
 //get sentance highlight questions
-
 async function getSentenceHighlightQuestions(condition) {
     const sql = `SELECT * FROM tb_questions WHERE question_type_id = 12 ${condition}`;
     try {
@@ -835,6 +805,18 @@ async function countQuestions(exam_type) {
     } catch (error) {
         logger.error(`❌ Error in countQuestions: ${error.message}`);
         throw error;
+    }
+}
+// get question ids for sample questionnaire
+async function fetchSampleQuestionnaireIds() {
+    const sql = `SELECT id FROM tb_questions ORDER BY RAND() LIMIT 10;`;
+    try {
+        const result = await query(sql);
+        logger.info('✅ [fetchSampleQuestionnaireIds] Successfully retrieved sample questionnaire question IDs');
+        return result;
+    } catch (err) {
+        logger.error(`[fetchSampleQuestionnaireIds] ❌ Failed to retrieve sample questionnaire question IDs - ${err.message}`);
+        throw err;
     }
 }
 
@@ -964,7 +946,7 @@ module.exports = {
     insertDragDropQuestion,
     insertDragDropOptionsHeading,
     insertDragDropOptionsHeadingValues,
-
+    fetchSampleQuestionnaireIds,
     getMcqQuestions,
     Getmcqoption,
 

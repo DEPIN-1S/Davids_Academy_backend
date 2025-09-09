@@ -14,6 +14,7 @@ const { getQuestions,
     deleteQuestionType,
     createQuestion,
     updateQuestion,
+    getSampleQuestionnaireQuestionIds,
     deleteQuestion,
     deleteQuestionById,
     listQuestions,
@@ -28,76 +29,82 @@ const { getQuestions,
  * @desc    Validate and insert a new exam type into the database
  * @access  Private
  */
-route.post('/questionType', questionTypeValidation, createQuestionType);
+route.post('/questionType', verifyToken, questionTypeValidation, createQuestionType);
 /**
  * @route   PATCH /questionType
  * @desc   update exam type from the database
  * @access  Public
  */
-route.patch('/questionType/:id', questionTypeValidation, updateQuestionType);
+route.patch('/questionType/:id', verifyToken, questionTypeValidation, updateQuestionType);
 /**
  * @route   PATCH /questionType
  * @desc    Delete  exam type from the database
  * @access  Public
  */
-route.delete('/questionType/:id', questionTypeValidation, deleteQuestionType);
+route.delete('/questionType/:id', verifyToken, questionTypeValidation, deleteQuestionType);
 /**
  * @route   POST /question
  * @desc    Validate and insert a question into the database
  * @access  Private
  */
-route.post('/question', uploads.fields([{ name: 'infoimage', maxCount: 1 }, { name: 'exhibit', maxCount: 1 }]), createQuestion);
+route.post('/question', verifyToken, uploads.fields([{ name: 'infoimage', maxCount: 1 }, { name: 'exhibit', maxCount: 1 }]), createQuestion);
+/**
+ * @route   POST /question
+ * @desc    Validate and insert a question into the database
+ * @access  Private
+ */
+route.get('/sample-questionnaire', getSampleQuestionnaireQuestionIds);
 /**
  * @route   PUT /question
  * @desc    update question into the database
  * @access  Private
  */
-route.put('/question/:id', updateQuestion);
+route.put('/question/:id', verifyToken, updateQuestion);
 /**
  * @route   PUT /question
  * @desc    update question into the database
  * @access  Private
  */
-route.patch('/question/:id', deleteQuestion);
+route.patch('/question/:id', verifyToken, deleteQuestion);
 
 //exam question list route
-route.post('/list/questions', getQuestions)
+route.post('/list/questions', verifyToken, getQuestions)
 
 
 var { ListExamTypes, deleteExamTypes, AddExamTypes, UpdateExamTypes } = require('../controller/admin/questionTypes');
 
-route.post('/add/question-types', AddExamTypes)
+route.post('/add/question-types', verifyToken, AddExamTypes)
 
-route.get('/list/question-types', ListExamTypes)
+route.get('/list/question-types', verifyToken, ListExamTypes)
 
-route.get('/edit/question-types', UpdateExamTypes)
+route.get('/edit/question-types', verifyToken, UpdateExamTypes)
 // delete question type
-route.post('/delete/question-types', deleteExamTypes)
+route.post('/delete/question-types', verifyToken, deleteExamTypes)
 // get all questions 
 route.get(
-    '/list/questions/:page',
+    '/list/questions/:page', verifyToken,
     listQuestions
 );
 // get mock test questions
 route.get(
-    '/list/mock-test-questions',
+    '/list/mock-test-questions', verifyToken,
     listMockTestQuestions
 );
 // delete question
 route.delete(
-    '/questions/:id',
+    '/questions/:id', verifyToken,
     deleteQuestionById
 );
 // Create
-route.post('/tests', insertTestValidation, createTest);
+route.post('/tests', verifyToken, insertTestValidation, createTest);
 // list test get method
-route.get('/list/test/:page', listTestsPaginated);
+route.get('/list/test/:page', verifyToken, listTestsPaginated);
 // // Read
 // route.get('/tests/:id', getTest);
 // Edit
-route.put('/tests/:id', updateTest);
+route.put('/tests/:id', verifyToken, updateTest);
 // Delete
-route.delete('/tests/:id', deleteTest);
+route.delete('/tests/:id', verifyToken, deleteTest);
 // Create
-route.post('/marklist', marklistCreateValidation, createMarklist);
+route.post('/marklist', verifyToken, marklistCreateValidation, createMarklist);
 module.exports = route;
