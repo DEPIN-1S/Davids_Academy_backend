@@ -49,8 +49,8 @@ route.delete('/questionType/:id', verifyToken, questionTypeValidation, deleteQue
  */
 route.post('/question', verifyToken, uploads.fields([{ name: 'infoimage', maxCount: 1 }, { name: 'exhibit', maxCount: 1 }]), createQuestion);
 /**
- * @route   POST /question
- * @desc    Validate and insert a question into the database
+ * @route   GET /sample-questionnaire
+ * @desc    Get questionIds for sample questionnaire
  * @access  Private
  */
 route.get('/sample-questionnaire', getSampleQuestionnaireQuestionIds);
