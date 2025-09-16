@@ -183,10 +183,10 @@ module.exports.Getdropdownquestiontext = async (questionId) => {
     try {
         const sql = `SELECT id, questionId, dropdownField, blankOrNot, createdAt, updatedAt FROM tb_dropdowns WHERE questionId = ?`;
         const data = await query(sql, [questionId]);
-        logger.info(`✅ [Getdropdownquestiontext] Successfully retrieved dropdown-type questions for questionId = ${questionId}`);
+        logger.info(` [Getdropdownquestiontext] Successfully retrieved dropdown-type questions for questionId = ${questionId}`);
         return data;
     } catch (error) {
-        logger.error(`[Getdropdownquestiontext] ❌ Failed to retrieve dropdown-type questions for questionId = ${questionId} - ${err.message}`);
+        logger.error(`[Getdropdownquestiontext]  Failed to retrieve dropdown-type questions for questionId = ${questionId} - ${err.message}`);
         throw error;
     }
 }
@@ -196,10 +196,10 @@ module.exports.Getdropdownoption = async (dropdowntext_id) => {
     const sql = `SELECT * FROM tb_dropdownOptions WHERE dropdowntext_id = ?`;
     try {
         const result = await query(sql, [dropdowntext_id]);
-        logger.info(`✅ [Getdropdownoption] Successfully retrieved dropdown options for dropdowntext_id = ${dropdowntext_id}`);
+        logger.info(` [Getdropdownoption] Successfully retrieved dropdown options for dropdowntext_id = ${dropdowntext_id}`);
         return result;
     } catch (err) {
-        logger.error(`[Getdropdownoption] ❌ Failed to retrieve dropdown options for dropdowntext_id = ${dropdowntext_id} - ${err.message}`);
+        logger.error(`[Getdropdownoption]  Failed to retrieve dropdown options for dropdowntext_id = ${dropdowntext_id} - ${err.message}`);
         throw err;
     }
 }
@@ -209,10 +209,10 @@ module.exports.Gettabs = async (questionId) => {
     const sql = `SELECT * FROM tb_questionTabs WHERE questionId = ?`;
     try {
         const result = await query(sql, [questionId]);
-        logger.info(`✅ [Gettabs] Successfully retrieved tabs for questionId = ${questionId}`);
+        logger.info(` [Gettabs] Successfully retrieved tabs for questionId = ${questionId}`);
         return result;
     } catch (err) {
-        logger.error(`[Gettabs] ❌ Failed to retrieve tabs for questionId = ${questionId} - ${err.message}`);
+        logger.error(`[Gettabs]  Failed to retrieve tabs for questionId = ${questionId} - ${err.message}`);
         throw err;
     }
 }
@@ -222,10 +222,10 @@ module.exports.GetHighlightOptions = async (questionId) => {
     const sql = `SELECT * FROM tb_sentanceHighlight WHERE questionId = ?`;
     try {
         const result = await query(sql, [questionId]);
-        logger.info(`✅ [GetHighlightOptions] Successfully retrieved sentence highligh options for questionId = ${questionId}`);
+        logger.info(` [GetHighlightOptions] Successfully retrieved sentence highligh options for questionId = ${questionId}`);
         return result;
     } catch (err) {
-        logger.error(`[GetHighlightOptions] ❌ Failed to retrieve sentence highligh options for questionId = ${questionId} - ${err.message}`);
+        logger.error(`[GetHighlightOptions]  Failed to retrieve sentence highligh options for questionId = ${questionId} - ${err.message}`);
         throw err;
     }
 }
@@ -235,10 +235,10 @@ module.exports.getAdditionalInfo = async (questionId) => {
     const sql = `SELECT * FROM tb_additionalInfo WHERE questionId = ?`;
     try {
         const result = await query(sql, [questionId]);
-        logger.info(`✅ [getAdditionalInfo] Successfully retrieved additional info for questionId = ${questionId}`);
+        logger.info(` [getAdditionalInfo] Successfully retrieved additional info for questionId = ${questionId}`);
         return result;
     } catch (err) {
-        logger.error(`[getAdditionalInfo] ❌ Failed to retrieve additional info for questionId = ${questionId} - ${err.message}`);
+        logger.error(`[getAdditionalInfo]  Failed to retrieve additional info for questionId = ${questionId} - ${err.message}`);
         throw err;
     }
 }
@@ -248,10 +248,10 @@ module.exports.Getexplantion = async (questionId) => {
     const sql = `SELECT * FROM tb_explanation WHERE questionId =?`;
     try {
         const result = await query(sql, [questionId]);
-        logger.info('✅ [Getexplantion] Successfully retrieved sentence highlight questions ');
+        logger.info(' [Getexplantion] Successfully retrieved sentence highlight questions ');
         return result;
     } catch (err) {
-        logger.error(`[Getexplantion] ❌ Failed to retrieve sentence highlight questions - ${err.message}`);
+        logger.error(`[Getexplantion]  Failed to retrieve sentence highlight questions - ${err.message}`);
         throw err;
     }
 }
@@ -261,10 +261,10 @@ module.exports.Getsortingoption = async (questionId) => {
     const sql = `SELECT id, questionId, sortItem,itemOrder FROM tb_sortItems WHERE questionId = ?`;
     try {
         const result = await query(sql, [questionId]);
-        logger.info(`✅ [Getsortingoption] Successfully retrieved sorting options for questionId = ${questionId}`);
+        logger.info(` [Getsortingoption] Successfully retrieved sorting options for questionId = ${questionId}`);
         return result;
     } catch (err) {
-        logger.error(`[Getsortingoption] ❌ Failed to retrieve sorting options for questionId = ${questionId} - ${err.message}`);
+        logger.error(`[Getsortingoption]  Failed to retrieve sorting options for questionId = ${questionId} - ${err.message}`);
         throw err;
     }
 }
@@ -274,10 +274,10 @@ module.exports.GetFilltheblankstext = async (questionId) => {
     const sql = `SELECT id, question_id, question_text FROM tb_fillTheBlanks WHERE question_id = ?`;
     try {
         const result = await query(sql, [questionId]);
-        logger.info(`✅ [GetFilltheblankstext] Successfully retrieved fill-the-blanks text for question_id = ${questionId}`);
+        logger.info(` [GetFilltheblankstext] Successfully retrieved fill-the-blanks text for question_id = ${questionId}`);
         return result;
     } catch (err) {
-        logger.error(`[GetFilltheblankstext] ❌ Failed to retrieve fill-the-blanks text for question_id = ${questionId} - ${err.message}`);
+        logger.error(`[GetFilltheblankstext]  Failed to retrieve fill-the-blanks text for question_id = ${questionId} - ${err.message}`);
         throw err;
     }
 }
@@ -287,10 +287,10 @@ module.exports.GetFilltheblankstextOptions = async (questionId) => {
     const sql = `SELECT * FROM tb_fillTheBlanks_options WHERE question_id = ?`;
     try {
         const result = await query(sql, [questionId]);
-        logger.info(`✅ [GetFilltheblankstextOptions] Successfully retrieved fill-the-blanks options for question_id = ${questionId}`);
+        logger.info(` [GetFilltheblankstextOptions] Successfully retrieved fill-the-blanks options for question_id = ${questionId}`);
         return result;
     } catch (err) {
-        logger.error(`[GetFilltheblankstextOptions] ❌ Failed to retrieve fill-the-blanks options for question_id = ${questionId} - ${err.message}`);
+        logger.error(`[GetFilltheblankstextOptions]  Failed to retrieve fill-the-blanks options for question_id = ${questionId} - ${err.message}`);
         throw err;
     }
 }
@@ -300,10 +300,10 @@ module.exports.GetDragDropQuestionsheading = async (questionId) => {
     const sql = `SELECT * FROM DragAndDrop_Headings WHERE question_id = ?`;
     try {
         const result = await query(sql, [questionId]);
-        logger.info('✅ [getDragDropQuestions] Successfully retrieved drag-and-drop questions (question_type_id = 5)');
+        logger.info(' [getDragDropQuestions] Successfully retrieved drag-and-drop questions (question_type_id = 5)');
         return result;
     } catch (err) {
-        logger.error(`[getDragDropQuestions] ❌ Failed to retrieve drag-and-drop questions - ${err.message}`);
+        logger.error(`[getDragDropQuestions]  Failed to retrieve drag-and-drop questions - ${err.message}`);
         throw err;
     }
 }
@@ -313,10 +313,10 @@ module.exports.GetDragDropoption = async (headings_id) => {
     const sql = `SELECT * FROM DragAndDrop_Headings_Options WHERE headings_id = ?`;
     try {
         const result = await query(sql, [headings_id]);
-        logger.info('✅ [getDragDropQuestions] Successfully retrieved drag-and-drop questions (question_type_id = 5)');
+        logger.info(' [getDragDropQuestions] Successfully retrieved drag-and-drop questions (question_type_id = 5)');
         return result;
     } catch (err) {
-        logger.error(`[getDragDropQuestions] ❌ Failed to retrieve drag-and-drop questions - ${err.message}`);
+        logger.error(`[getDragDropQuestions]  Failed to retrieve drag-and-drop questions - ${err.message}`);
         throw err;
     }
 }
@@ -326,10 +326,10 @@ module.exports.GetMultipleRadioQuestionsClientfindings = async (questionId) => {
     const sql = `SELECT * FROM tb_MultipleRadio WHERE question_id =?`; // Confirm this is the correct ID for multiple radio
     try {
         const result = await query(sql, [questionId]);
-        logger.info('✅ [getMultipleRadioQuestions] Successfully retrieved multiple-radio questions (question_type_id = 5)');
+        logger.info(' [getMultipleRadioQuestions] Successfully retrieved multiple-radio questions (question_type_id = 5)');
         return result;
     } catch (err) {
-        logger.error(`[getMultipleRadioQuestions] ❌ Failed to retrieve multiple-radio questions - ${err.message}`);
+        logger.error(`[getMultipleRadioQuestions]  Failed to retrieve multiple-radio questions - ${err.message}`);
         throw err;
     }
 }
@@ -339,10 +339,10 @@ module.exports.GetMultipleRadioQuestionsRadioOption = async (questionId) => {
     const sql = `SELECT * FROM tb_MultipleRadio WHERE question_id = ?`; // Confirm this is the correct ID for multiple radio
     try {
         const result = await query(sql, [questionId]);
-        logger.info('✅ [getMultipleRadioQuestions] Successfully retrieved multiple-radio questions (question_type_id = 5)');
+        logger.info(' [getMultipleRadioQuestions] Successfully retrieved multiple-radio questions (question_type_id = 5)');
         return result;
     } catch (err) {
-        logger.error(`[getMultipleRadioQuestions] ❌ Failed to retrieve multiple-radio questions - ${err.message}`);
+        logger.error(`[getMultipleRadioQuestions]  Failed to retrieve multiple-radio questions - ${err.message}`);
         throw err;
     }
 }
@@ -352,10 +352,10 @@ module.exports.CheckQuestionAlreadySubmitted = async (user_id, question_id, test
     const sql = `SELECT * FROM tb_submittedQuestions WHERE sq_user_id=? and sq_test_id=? and sq_question_id=?`; // Confirm this is the correct ID for multiple radio
     try {
         const result = await query(sql, [user_id, test_id, question_id]);
-        logger.info(`✅ [CheckQuestionAlreadySubmitted] Check question already submitted -user : ${user_id} question : ${question_id} test : ${test_id}`);
+        logger.info(` [CheckQuestionAlreadySubmitted] Check question already submitted -user : ${user_id} question : ${question_id} test : ${test_id}`);
         return result;
     } catch (err) {
-        logger.error(`[CheckQuestionAlreadySubmitted] ❌ Failed to Check question already submitted - ${err.message}`);
+        logger.error(`[CheckQuestionAlreadySubmitted]  Failed to Check question already submitted - ${err.message}`);
         throw err;
     }
 }
@@ -365,10 +365,10 @@ module.exports.SubmitQuestionData = async (user_id, question_id, test_id, is_cor
     const sql = `INSERT into tb_submittedQuestions ( sq_user_id, sq_test_id, sq_question_id,sq_is_correct,sq_mark) values(?,?,?,?,?)`; // Confirm this is the correct ID for multiple radio
     try {
         const result = await query(sql, [user_id, test_id, question_id, is_correct, mark]);
-        logger.info(`✅ [SubmitQuestionData] Submitting the question data -user : ${user_id} question : ${question_id} test : ${test_id}`);
+        logger.info(` [SubmitQuestionData] Submitting the question data -user : ${user_id} question : ${question_id} test : ${test_id}`);
         return result;
     } catch (err) {
-        logger.error(`[SubmitQuestionData] ❌ Failed to submit question data - ${err.message}`);
+        logger.error(`[SubmitQuestionData]  Failed to submit question data - ${err.message}`);
         throw err;
     }
 }
@@ -378,36 +378,87 @@ module.exports.CheckTestAlreadySubmitted = async (user_id, test_id) => {
     const sql = `SELECT * from tb_submittedTest where st_user_id=? and st_test_id=?`;
     try {
         const result = await query(sql, [user_id, test_id]);
-        logger.info(`✅ [CheckTestAlreadySubmitted] Check test already submitted or not -user : ${user_id} test : ${test_id}`);
+        logger.info(` [CheckTestAlreadySubmitted] Check test already submitted or not -user : ${user_id} test : ${test_id}`);
         return result;
     } catch (err) {
-        logger.error(`[CheckTestAlreadySubmitted] ❌ Failed to Check test already submitted or not - ${err.message}`);
+        logger.error(`[CheckTestAlreadySubmitted]  Failed to Check test already submitted or not - ${err.message}`);
         throw err;
     }
 }
 
 
-module.exports.SubmitTestData = async (user_id, test_id, total_score) => {
-    const sql = `INSERT into tb_submittedTest ( st_user_id, st_test_id,st_score ) values(?,?,?)`;
-    try {
-        const result = await query(sql, [user_id, test_id, total_score]);
-        logger.info(`✅ [SubmitTestData] Submitting the test data -user : ${user_id} score : ${total_score} test : ${test_id}`);
-        return result;
-    } catch (err) {
-        logger.error(`[SubmitTestData] ❌ Failed to submit test data - ${err.message}`);
-        throw err;
-    }
-}
 
 
 module.exports.GetSubmittedAnswer = async (user_id, test_id) => {
     const sql = `SELECT * from tb_submittedQuestions where sq_user_id=? and sq_test_id=?`;
     try {
         const result = await query(sql, [user_id, test_id]);
-        logger.info(`✅ [GetSubmittedAnswer] List submitted question data -user : ${user_id} test : ${test_id}`);
+        logger.info(` [GetSubmittedAnswer] List submitted question data -user : ${user_id} test : ${test_id}`);
         return result;
     } catch (err) {
-        logger.error(`[GetSubmittedAnswer] ❌ Failed to list submitted question data - ${err.message}`);
+        logger.error(`[GetSubmittedAnswer]  Failed to list submitted question data - ${err.message}`);
         throw err;
     }
 }
+module.exports.SubmitTestData = async (user_id, test_id, total_score) => {
+  const sql = `
+    INSERT INTO tb_submittedTest (st_user_id, st_test_id, st_score, st_created_at, st_updated_at, is_submitted, status) 
+    VALUES (?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 'pending')
+    ON DUPLICATE KEY UPDATE 
+      st_score = VALUES(st_score), 
+      st_updated_at = CURRENT_TIMESTAMP,
+      is_submitted = 0,
+      status = 'pending'
+  `;
+  try {
+    const result = await query(sql, [user_id, test_id, total_score]);
+    logger.info(`✅ [SubmitTestData] UPSERT test data -user: ${user_id} score: ${total_score} test: ${test_id}, affectedRows: ${result.affectedRows}`);
+    return result;
+  } catch (err) {
+    logger.error(`[SubmitTestData] ❌ Failed to UPSERT test data - ${err.message}`);
+    throw err;
+  }
+};
+
+// Ensure this method is present
+module.exports.UpdateTestSubmissionStatus = async (user_id, test_id) => {
+  const sql = `
+    UPDATE tb_submittedTest 
+    SET is_submitted = 1, status = 'completed', st_updated_at = CURRENT_TIMESTAMP 
+    WHERE st_user_id = ? AND st_test_id = ?
+  `;
+  try {
+    const result = await query(sql, [user_id, test_id]);
+    logger.info(`✅ [UpdateTestSubmissionStatus] Set completed -user: ${user_id} test: ${test_id}, affectedRows: ${result.affectedRows}`);
+    return result;
+  } catch (err) {
+    logger.error(`[UpdateTestSubmissionStatus]  Failed to set completed - ${err.message}`);
+    throw err;
+  }
+};
+
+// Enhanced ListAllTestsWithStatus (for /test/list)
+module.exports.ListAllTestsWithStatus = async (courseId, user_id) => {
+  const sql = `
+    SELECT 
+      t.*,  
+      st.is_submitted,
+      st.status,
+      st.st_score,
+      CASE WHEN st.st_id IS NOT NULL AND st.is_submitted = 1 THEN 1 ELSE 0 END AS isCompleted
+    FROM tb_tests t
+    LEFT JOIN tb_submittedTest st ON t.id = st.st_test_id AND st.st_user_id = ?
+    WHERE t.courseId = ?
+    AND DATE(t.fromDate) <= CURDATE()
+    AND DATE(t.toDate) >= CURDATE()
+    ORDER BY t.fromDate DESC
+  `;
+  try {
+    const data = await query(sql, [user_id, courseId]);
+    logger.info('[Testsmodel] Listed tests with status', { courseId, user_id });
+    return data;
+  } catch (error) {
+    logger.error('[Testsmodel] Error listing tests with status', { error: error.message });
+    throw error;
+  }
+};

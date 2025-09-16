@@ -4,17 +4,6 @@ const query = util.promisify(db.query).bind(db);
 const logger = require('../../utils/logger');
 
 
-module.exports.ListSubmittedTests = async (user_id) => {
-    const sql = `SELECT * from tb_submittedTest where st_user_id=?`;
-    try {
-        const result = await query(sql, [user_id]);
-        logger.info(`✅ [GetSubmittedAnswer] List submitted test data -user : ${user_id} `);
-        return result;
-    } catch (err) {
-        logger.error(`[GetSubmittedAnswer] ❌ Failed to list submitted test data - ${err.message}`);
-        throw err;
-    }
-}
 
 
 module.exports.GetStudentData = async (studentId) => {
@@ -41,3 +30,40 @@ module.exports.GetTestResult = async (studentId, test_id) => {
         throw error;
     }
 }
+
+
+module.exports.ListSubmittedTests = async (user_id) => {
+  const sql = `
+    SELECT 
+      st.*, 
+      t.testTitle, t.fromDate, t.toDate, t.totalQuestions, 
+      CASE WHEN st.st_score > 0 THEN 1 ELSE 0 END AS isInProgress  
+    FROM tb_submittedTest st
+    LEFT JOIN tb_tests t ON st.st_test_id = t.id
+    WHERE st.st_user_id = ?
+  `;
+  try {
+    const result = await query(sql, [user_id]);
+    logger.info(` [ListSubmittedTests] List submitted test data -user : ${user_id} `);
+    return result;
+  } catch (err) {
+    logger.error(`[ListSubmittedTests]  Failed to list submitted test data - ${err.message}`);
+    throw err;
+  }
+};
+
+module.exports.UpdateTestSubmissionStatus = async (user_id, test_id) => {
+  const sql = `
+    UPDATE tb_submittedTest 
+    SET is_submitted = 1, status = 'completed', st_updated_at = CURRENT_TIMESTAMP 
+    WHERE st_user_id = ? AND st_test_id = ?
+  `;
+  try {
+    const result = await query(sql, [user_id, test_id]);
+    logger.info(` [UpdateTestSubmissionStatus] Updated submission status -user: ${user_id} test: ${test_id}, affectedRows: ${result.affectedRows}`);
+    return result;
+  } catch (err) {
+    logger.error(`[UpdateTestSubmissionStatus]  Failed to update submission status - ${err.message}`);
+    throw err;
+  }
+};
