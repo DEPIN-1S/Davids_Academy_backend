@@ -878,8 +878,29 @@ async function countTests() {
     // Assuming result is array of rows, return count from first row:
     return Array.isArray(result) && result.length > 0 ? result[0].total : 0;
 }
-
-
+// fetch test by id
+async function fetchTestById(id) {
+    try {
+        const sql = `SELECT id,fromDate,toDate,testTitle,courseId,totalQuestions FROM tb_tests WHERE id=?`;
+        const result = await query(sql, [id]);
+        return result;
+    } catch (error) {
+        console.error('Error updating test:', error);
+        throw error;
+    }
+}
+// fetch test questions
+async function fetchTestQuestionsById(id) {
+    try {
+        const sql = `SELECT questionId FROM tb_testQuestions WHERE testId=?`;
+        const result = await query(sql, [id]);
+        return result;
+    } catch (error) {
+        console.error('Error updating test:', error);
+        throw error;
+    }
+}
+// update test from database
 async function updateTest(fromDate, toDate, testTitle, courseId, totalQuestions, id) {
     try {
         const sql = `UPDATE tb_tests SET fromDate=?, toDate=?, testTitle=?, courseId=?,totalQuestions=? WHERE id=?`;
@@ -890,28 +911,22 @@ async function updateTest(fromDate, toDate, testTitle, courseId, totalQuestions,
         throw error;
     }
 }
-
+// Delete test questions from database
 async function deleteTestQuestionsByTestId(testId) {
     const sql = `DELETE FROM tb_testQuestions WHERE testId=?`;
     return query(sql, [testId]);
 }
+// Delete test by id
 async function deleteTest(id) {
     const sql = `DELETE FROM tb_tests WHERE id=?`;
     return query(sql, [id]);
 }
-
-
 // CREATE: insert a new marklist record
 async function insertMarklist({ studentId, testId, testStatus, mark }) {
     const sql = `INSERT INTO tb_marklist (studentId, testId, testStatus, mark) VALUES (?, ?, ?,?)`;
     const result = await query(sql, [studentId, testId, testStatus, mark]);
     return result;
 }
-
-
-
-
-
 module.exports = {
     insertQuestionType,
     updateQuestionType,
@@ -975,6 +990,8 @@ module.exports = {
     insertTestQuestion,
     listTestsPaginated,
     countTests,
+    fetchTestById,
+    fetchTestQuestionsById,
     updateTest,
     deleteTestQuestionsByTestId,
     deleteTest,

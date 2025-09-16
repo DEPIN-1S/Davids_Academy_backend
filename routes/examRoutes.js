@@ -20,6 +20,7 @@ const { getQuestions,
     listQuestions,
     listMockTestQuestions,
     createTest,
+    getTestById,
     getTest,
     listTestsPaginated,
     updateTest,
@@ -100,7 +101,7 @@ route.post('/tests', verifyToken, insertTestValidation, createTest);
 // list test get method
 route.get('/list/test/:page', verifyToken, listTestsPaginated);
 // // Read
-// route.get('/tests/:id', getTest);
+route.get('/tests/:id', verifyToken, getTestById);
 // Edit
 route.put('/tests/:id', verifyToken, updateTest);
 // Delete

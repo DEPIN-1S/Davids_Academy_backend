@@ -8,3 +8,4 @@
 {"level":"error","message":"❌ Failed to retrieve  questions: ER_NO_SUCH_TABLE: Table 'u160357475_davidacademy.tb_question' doesn't exist","service":"david-academy-api","timestamp":"2025-09-09 14:37:53"}
 {"level":"error","message":"[fetchSampleQuestionnaireIds] ❌ Failed to retrieve sample questionnaire question IDs - ER_BAD_FIELD_ERROR: Unknown column 'questionId' in 'SELECT'","service":"david-academy-api","timestamp":"2025-09-09 14:38:05"}
 {"level":"error","message":"❌ Failed to retrieve  questions: ER_BAD_FIELD_ERROR: Unknown column 'questionId' in 'SELECT'","service":"david-academy-api","timestamp":"2025-09-09 14:38:05"}
+{"level":"error","message":"❌ Failed to update test: ER_BAD_FIELD_ERROR: Unknown column 'id' in 'SELECT'","service":"david-academy-api","timestamp":"2025-09-16 11:50:57"}

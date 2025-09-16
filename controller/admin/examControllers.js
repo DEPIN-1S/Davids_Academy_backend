@@ -1148,6 +1148,27 @@ module.exports.listTestsPaginated = async (req, res) => {
         });
     }
 };
+// get test by id
+module.exports.getTestById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const testDataResult = await model.fetchTestById(id); // [ RowDataPacket { ... } ]
+        const questionIdResult = await model.fetchTestQuestionsById(id); // [ RowDataPacket { questionId: ... }, ... ]
+        // Extract test data from the first RowDataPacket
+        const testData = testDataResult[0];
+        // Map array of question RowDataPackets to array of questionId numbers
+        const questionIds = questionIdResult.map(q => q.questionId);
+        // Merge into final data format
+        const responseData = {
+            ...testData,
+            questionIds
+        };
+        res.json({ data: responseData });
+    } catch (error) {
+        logger.error(`❌ Failed to fetch test: ${error.message}`);
+        res.status(500).json({ result: false, message: 'Internal Server Error', error: error.message });
+    }
+};
 // update  mock test 
 module.exports.updateTest = async (req, res) => {
     try {
