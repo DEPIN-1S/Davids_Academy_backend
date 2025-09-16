@@ -122,7 +122,20 @@ async function deleteTabImageByUrl(imageUrl) {
         throw error;
     }
 }
-
+// fetch question text from db by id
+async function doesQuestionExist(questionText) {
+    try {
+        // Delete record from database
+        const sql = `SELECT question FROM tb_questions WHERE question=?`;
+        const result = await db.query(sql, [questionText]);
+        console.log('result', result);
+        logger.info(`doesQuestionExist: Checked question text for questionText: ${questionText}`);
+        return result;
+    } catch (error) {
+        logger.error(`doesQuestionExist: Failed to check questions existence image: %o`, error);
+        throw error;
+    }
+}
 /**
  * Inserts a new MCQ question into the tb_mcq table.
  * 
@@ -969,6 +982,7 @@ module.exports = {
     deleteQuestionById,
     insertTabImage,
     deleteTabImageByUrl,
+    doesQuestionExist,
     insertMcqQuestion,
     insertMcqAnswer,
     insertMcqOptions,

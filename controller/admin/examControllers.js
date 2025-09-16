@@ -154,7 +154,27 @@ module.exports.deleteTabImage = async (req, res) => {
 
         res.json({ result: true, message: 'Image deleted successfully' });
     } catch (error) {
-        console.error(`❌ Failed to delete image: ${error.message}`);
+        logger.error(`❌ Failed to delete image: ${error.message}`);
+        res.status(500).json({ result: false, message: 'Internal server error', error: error.message });
+    }
+};
+// check question text for duplicate get method
+module.exports.checkQuestionExists = async (req, res) => {
+    try {
+        const { text } = req.params;
+        console.log('questionText', text);
+        if (!text) {
+            return res.status(400).json({ result: false, message: 'questionText is required' });
+        }
+        const data = await model.doesQuestionExist(text);
+        console.log(data)
+        if (data.length > 0) {
+            return res.status(404).json({ result: false, message: 'Question already exists' });
+        }
+
+        res.json({ result: true, message: 'Question not exists' });
+    } catch (error) {
+        logger.error(`❌ Failed to check question exists : ${error.message}`);
         res.status(500).json({ result: false, message: 'Internal server error', error: error.message });
     }
 };
