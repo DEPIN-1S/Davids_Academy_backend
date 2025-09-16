@@ -12,6 +12,8 @@ const { getQuestions,
     createQuestionType,
     updateQuestionType,
     deleteQuestionType,
+    uploadTabImage,
+    deleteTabImage,
     createQuestion,
     updateQuestion,
     getSampleQuestionnaireQuestionIds,
@@ -48,6 +50,14 @@ route.delete('/questionType/:id', verifyToken, questionTypeValidation, deleteQue
  * @desc    Validate and insert a question into the database
  * @access  Private
  */
+route.post('/tab-image', verifyToken, uploads.single('tabImage'), uploadTabImage);
+// delete tabimage
+route.delete('/tab-image', verifyToken, deleteTabImage);
+/**
+ * @route   POST /question
+ * @desc    Validate and insert a question into the database
+ * @access  Private
+ */
 route.post('/question', verifyToken, uploads.fields([{ name: 'infoimage', maxCount: 1 }, { name: 'exhibit', maxCount: 1 }]), createQuestion);
 /**
  * @route   GET /sample-questionnaire
@@ -61,6 +71,8 @@ route.get('/sample-questionnaire', getSampleQuestionnaireQuestionIds);
  * @access  Private
  */
 route.put('/question/:id', verifyToken, updateQuestion);
+// check question text get request
+route.get('/question-text/:id', verifyToken, getQuestionText);
 /**
  * @route   PUT /question
  * @desc    update question into the database

@@ -87,6 +87,41 @@ async function deleteQuestionById(id) {
     const result = await query(sql, values);
     return result;  // result contains affectedRows etc.
 }
+// insert tab image into db
+async function insertTabImage(imageUrl) {
+    const insertSql = `
+        INSERT INTO tb_tabImages (imageUrl)
+        VALUES (?)`;
+    try {
+        const result = await db.query(insertSql, [imageUrl]);
+        logger.info(`insertTabImage: Inserted image with URL ${imageUrl}`);
+        return result;
+    } catch (error) {
+        logger.error('insertTabImage: Failed to insert image: %o', error);
+        throw error;
+    }
+}
+// delete tabImage
+async function deleteTabImageByUrl(imageUrl) {
+    try {
+        // Delete record from database
+        const deleteSql = `DELETE FROM tb_tabImages WHERE imageUrl LIKE ?`;
+        const result = await db.query(deleteSql, [imageUrl]);
+        logger.info(`deleteTabImageByUrl: Deleted DB record for imageUrl: ${imageUrl}`);
+
+        // Delete file from file system if row was affected
+        if (result.affectedRows > 0) {
+            const filePath = path.join(__dirname, '..', imageUrl); // Adjust as per actual path
+            await fs.unlink(filePath);
+            logger.info(`deleteTabImageByUrl: Deleted file at path: ${filePath}`);
+        }
+
+        return result;
+    } catch (error) {
+        logger.error(`deleteTabImageByUrl: Failed to delete image: %o`, error);
+        throw error;
+    }
+}
 
 /**
  * Inserts a new MCQ question into the tb_mcq table.
@@ -932,6 +967,8 @@ module.exports = {
     updateQuestionType,
     deleteQuestionType,
     deleteQuestionById,
+    insertTabImage,
+    deleteTabImageByUrl,
     insertMcqQuestion,
     insertMcqAnswer,
     insertMcqOptions,

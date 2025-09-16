@@ -21,7 +21,9 @@ const storage = multer.diskStorage({
     } else if (file.fieldname === 'recordimage') {
       folder = 'public/uploads/records'
     }
-
+    else if (file.fieldname === 'tabImage') {
+      folder = 'public/uploads/tabImage'
+    }
     // Ensure folder exists
     fs.mkdirSync(folder, { recursive: true });
 

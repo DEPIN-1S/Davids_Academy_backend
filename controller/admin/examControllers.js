@@ -114,6 +114,51 @@ module.exports.deleteQuestionType = async (req, res) => {
     }
 };
 /**
+ * POST /api/exam/questionType
+ * Body: { id: int }
+ */
+module.exports.uploadTabImage = async (req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({ result: false, message: 'No image file uploaded' });
+        }
+
+        const imageFile = req.file.filename;
+        const imageUrl = `/uploads/tabImage/${imageFile}`;
+
+        // Save image record to DB
+        const insertId = await model.insertTabImage(imageUrl);
+
+        res.status(201).json({
+            result: true,
+            message: 'Image uploaded successfully',
+            data: { imageUrl }
+        });
+    } catch (error) {
+        console.error(`❌ Failed to upload image: ${error.message}`);
+        res.status(500).json({ result: false, message: 'Internal server error', error: error.message });
+    }
+};
+// delete tabImage
+module.exports.deleteTabImage = async (req, res) => {
+    try {
+        // Extract imageUrl from request - adjust as needed (body, query, or params)
+        const { fileName } = req.body;
+        if (!fileName) {
+            return res.status(400).json({ result: false, message: 'fileName is required' });
+        }
+        const deleteResult = await model.deleteTabImageByUrl(fileName);
+        if (deleteResult.affectedRows === 0) {
+            return res.status(404).json({ result: false, message: 'Image record not found' });
+        }
+
+        res.json({ result: true, message: 'Image deleted successfully' });
+    } catch (error) {
+        console.error(`❌ Failed to delete image: ${error.message}`);
+        res.status(500).json({ result: false, message: 'Internal server error', error: error.message });
+    }
+};
+/**
  * POST /api/exam/question
  * Body: {  }
  */
