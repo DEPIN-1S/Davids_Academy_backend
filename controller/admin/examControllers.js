@@ -161,20 +161,17 @@ module.exports.deleteTabImage = async (req, res) => {
 // check question text for duplicate get method
 module.exports.checkQuestionExists = async (req, res) => {
     try {
-        const { text } = req.params;
-        console.log('questionText', text);
-        if (!text) {
-            return res.status(400).json({ result: false, message: 'questionText is required' });
+        const { questionText } = req.query;
+        if (!questionText) {
+            return res.status(400).json({ result: false, message: 'questionText query parameter is required' });
         }
-        const data = await model.doesQuestionExist(text);
-        console.log(data)
-        if (data.length > 0) {
-            return res.status(404).json({ result: false, message: 'Question already exists' });
+        const exists = await model.doesQuestionExist(questionText);
+        if (exists) {
+            return res.json({ result: false, message: 'Question already exists' });
         }
-
-        res.json({ result: true, message: 'Question not exists' });
+        res.json({ result: true, message: 'Question does not exist' });
     } catch (error) {
-        logger.error(`❌ Failed to check question exists : ${error.message}`);
+        console.error(`checkQuestionExists: ${error.message}`);
         res.status(500).json({ result: false, message: 'Internal server error', error: error.message });
     }
 };

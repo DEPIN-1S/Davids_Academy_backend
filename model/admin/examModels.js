@@ -125,14 +125,13 @@ async function deleteTabImageByUrl(imageUrl) {
 // fetch question text from db by id
 async function doesQuestionExist(questionText) {
     try {
-        // Delete record from database
-        const sql = `SELECT question FROM tb_questions WHERE question=?`;
-        const result = await db.query(sql, [questionText]);
-        console.log('result', result);
-        logger.info(`doesQuestionExist: Checked question text for questionText: ${questionText}`);
-        return result;
+        const rows = await db.query(
+            'SELECT COUNT(*) AS count FROM tb_questions WHERE question = ?',
+            [questionText]
+        );
+        return rows[0].count > 0;
     } catch (error) {
-        logger.error(`doesQuestionExist: Failed to check questions existence image: %o`, error);
+        logger.error(`doesQuestionExist: Failed to check question existence: %o`, error);
         throw error;
     }
 }

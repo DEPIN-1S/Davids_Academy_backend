@@ -73,7 +73,7 @@ route.get('/sample-questionnaire', getSampleQuestionnaireQuestionIds);
  */
 route.put('/question/:id', verifyToken, updateQuestion);
 // check question text get request
-route.get('/question-text/:text', verifyToken, checkQuestionExists);
+route.get('/question-text', verifyToken, checkQuestionExists);
 /**
  * @route   PUT /question
  * @desc    update question into the database
