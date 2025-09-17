@@ -1,5 +1,6 @@
 // src/config/db.js
 const mysql = require('mysql');
+const util = require('util');
 const logger = require('../utils/logger');
 const pool = mysql.createPool({
     connectionLimit: 10,
@@ -9,6 +10,8 @@ const pool = mysql.createPool({
     database: process.env.DB_DATABASE,
     port: process.env.DB_PORT || 3306,
 });
+// Promisify pool.query for async/await support
+pool.query = util.promisify(pool.query);
 // Initial test connection
 pool.getConnection((err, connection) => {
     if (err) {

@@ -12,6 +12,9 @@ const { getQuestions,
     createQuestionType,
     updateQuestionType,
     deleteQuestionType,
+    uploadTabImage,
+    deleteTabImage,
+    checkQuestionExists,
     createQuestion,
     updateQuestion,
     getSampleQuestionnaireQuestionIds,
@@ -20,6 +23,7 @@ const { getQuestions,
     listQuestions,
     listMockTestQuestions,
     createTest,
+    getTestById,
     getTest,
     listTestsPaginated,
     updateTest,
@@ -47,6 +51,14 @@ route.delete('/questionType/:id', verifyToken, questionTypeValidation, deleteQue
  * @desc    Validate and insert a question into the database
  * @access  Private
  */
+route.post('/tab-image', verifyToken, uploads.single('tabImage'), uploadTabImage);
+// delete tabimage
+route.delete('/tab-image', verifyToken, deleteTabImage);
+/**
+ * @route   POST /question
+ * @desc    Validate and insert a question into the database
+ * @access  Private
+ */
 route.post('/question', verifyToken, uploads.fields([{ name: 'infoimage', maxCount: 1 }, { name: 'exhibit', maxCount: 1 }]), createQuestion);
 /**
  * @route   GET /sample-questionnaire
@@ -60,6 +72,8 @@ route.get('/sample-questionnaire', getSampleQuestionnaireQuestionIds);
  * @access  Private
  */
 route.put('/question/:id', verifyToken, updateQuestion);
+// check question text get request
+route.get('/question-text', verifyToken, checkQuestionExists);
 /**
  * @route   PUT /question
  * @desc    update question into the database
@@ -100,7 +114,7 @@ route.post('/tests', verifyToken, insertTestValidation, createTest);
 // list test get method
 route.get('/list/test/:page', verifyToken, listTestsPaginated);
 // // Read
-// route.get('/tests/:id', getTest);
+route.get('/tests/:id', verifyToken, getTestById);
 // Edit
 route.put('/tests/:id', verifyToken, updateTest);
 // Delete

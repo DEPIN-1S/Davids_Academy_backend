@@ -87,7 +87,54 @@ async function deleteQuestionById(id) {
     const result = await query(sql, values);
     return result;  // result contains affectedRows etc.
 }
+// insert tab image into db
+async function insertTabImage(imageUrl) {
+    const insertSql = `
+        INSERT INTO tb_tabImages (imageUrl)
+        VALUES (?)`;
+    try {
+        const result = await db.query(insertSql, [imageUrl]);
+        logger.info(`insertTabImage: Inserted image with URL ${imageUrl}`);
+        return result;
+    } catch (error) {
+        logger.error('insertTabImage: Failed to insert image: %o', error);
+        throw error;
+    }
+}
+// delete tabImage
+async function deleteTabImageByUrl(imageUrl) {
+    try {
+        // Delete record from database
+        const deleteSql = `DELETE FROM tb_tabImages WHERE imageUrl LIKE ?`;
+        const result = await db.query(deleteSql, [imageUrl]);
+        logger.info(`deleteTabImageByUrl: Deleted DB record for imageUrl: ${imageUrl}`);
 
+        // Delete file from file system if row was affected
+        if (result.affectedRows > 0) {
+            const filePath = path.join(__dirname, '..', imageUrl); // Adjust as per actual path
+            await fs.unlink(filePath);
+            logger.info(`deleteTabImageByUrl: Deleted file at path: ${filePath}`);
+        }
+
+        return result;
+    } catch (error) {
+        logger.error(`deleteTabImageByUrl: Failed to delete image: %o`, error);
+        throw error;
+    }
+}
+// fetch question text from db by id
+async function doesQuestionExist(questionText) {
+    try {
+        const rows = await db.query(
+            'SELECT COUNT(*) AS count FROM tb_questions WHERE question = ?',
+            [questionText]
+        );
+        return rows[0].count > 0;
+    } catch (error) {
+        logger.error(`doesQuestionExist: Failed to check question existence: %o`, error);
+        throw error;
+    }
+}
 /**
  * Inserts a new MCQ question into the tb_mcq table.
  * 
@@ -878,8 +925,29 @@ async function countTests() {
     // Assuming result is array of rows, return count from first row:
     return Array.isArray(result) && result.length > 0 ? result[0].total : 0;
 }
-
-
+// fetch test by id
+async function fetchTestById(id) {
+    try {
+        const sql = `SELECT id,fromDate,toDate,testTitle,courseId,totalQuestions FROM tb_tests WHERE id=?`;
+        const result = await query(sql, [id]);
+        return result;
+    } catch (error) {
+        console.error('Error updating test:', error);
+        throw error;
+    }
+}
+// fetch test questions
+async function fetchTestQuestionsById(id) {
+    try {
+        const sql = `SELECT questionId FROM tb_testQuestions WHERE testId=?`;
+        const result = await query(sql, [id]);
+        return result;
+    } catch (error) {
+        console.error('Error updating test:', error);
+        throw error;
+    }
+}
+// update test from database
 async function updateTest(fromDate, toDate, testTitle, courseId, totalQuestions, id) {
     try {
         const sql = `UPDATE tb_tests SET fromDate=?, toDate=?, testTitle=?, courseId=?,totalQuestions=? WHERE id=?`;
@@ -890,33 +958,30 @@ async function updateTest(fromDate, toDate, testTitle, courseId, totalQuestions,
         throw error;
     }
 }
-
+// Delete test questions from database
 async function deleteTestQuestionsByTestId(testId) {
     const sql = `DELETE FROM tb_testQuestions WHERE testId=?`;
     return query(sql, [testId]);
 }
+// Delete test by id
 async function deleteTest(id) {
     const sql = `DELETE FROM tb_tests WHERE id=?`;
     return query(sql, [id]);
 }
-
-
 // CREATE: insert a new marklist record
 async function insertMarklist({ studentId, testId, testStatus, mark }) {
     const sql = `INSERT INTO tb_marklist (studentId, testId, testStatus, mark) VALUES (?, ?, ?,?)`;
     const result = await query(sql, [studentId, testId, testStatus, mark]);
     return result;
 }
-
-
-
-
-
 module.exports = {
     insertQuestionType,
     updateQuestionType,
     deleteQuestionType,
     deleteQuestionById,
+    insertTabImage,
+    deleteTabImageByUrl,
+    doesQuestionExist,
     insertMcqQuestion,
     insertMcqAnswer,
     insertMcqOptions,
@@ -975,6 +1040,8 @@ module.exports = {
     insertTestQuestion,
     listTestsPaginated,
     countTests,
+    fetchTestById,
+    fetchTestQuestionsById,
     updateTest,
     deleteTestQuestionsByTestId,
     deleteTest,

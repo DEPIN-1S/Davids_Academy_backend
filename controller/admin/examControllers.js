@@ -114,6 +114,68 @@ module.exports.deleteQuestionType = async (req, res) => {
     }
 };
 /**
+ * POST /api/exam/questionType
+ * Body: { id: int }
+ */
+module.exports.uploadTabImage = async (req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({ result: false, message: 'No image file uploaded' });
+        }
+
+        const imageFile = req.file.filename;
+        const imageUrl = `/uploads/tabImage/${imageFile}`;
+
+        // Save image record to DB
+        const insertId = await model.insertTabImage(imageUrl);
+
+        res.status(201).json({
+            result: true,
+            message: 'Image uploaded successfully',
+            data: { imageUrl }
+        });
+    } catch (error) {
+        console.error(`❌ Failed to upload image: ${error.message}`);
+        res.status(500).json({ result: false, message: 'Internal server error', error: error.message });
+    }
+};
+// delete tabImage
+module.exports.deleteTabImage = async (req, res) => {
+    try {
+        // Extract imageUrl from request - adjust as needed (body, query, or params)
+        const { fileName } = req.body;
+        if (!fileName) {
+            return res.status(400).json({ result: false, message: 'fileName is required' });
+        }
+        const deleteResult = await model.deleteTabImageByUrl(fileName);
+        if (deleteResult.affectedRows === 0) {
+            return res.status(404).json({ result: false, message: 'Image record not found' });
+        }
+
+        res.json({ result: true, message: 'Image deleted successfully' });
+    } catch (error) {
+        logger.error(`❌ Failed to delete image: ${error.message}`);
+        res.status(500).json({ result: false, message: 'Internal server error', error: error.message });
+    }
+};
+// check question text for duplicate get method
+module.exports.checkQuestionExists = async (req, res) => {
+    try {
+        const { questionText } = req.query;
+        if (!questionText) {
+            return res.status(400).json({ result: false, message: 'questionText query parameter is required' });
+        }
+        const exists = await model.doesQuestionExist(questionText);
+        if (exists) {
+            return res.json({ result: false, message: 'Question already exists' });
+        }
+        res.json({ result: true, message: 'Question does not exist' });
+    } catch (error) {
+        console.error(`checkQuestionExists: ${error.message}`);
+        res.status(500).json({ result: false, message: 'Internal server error', error: error.message });
+    }
+};
+/**
  * POST /api/exam/question
  * Body: {  }
  */
@@ -1146,6 +1208,27 @@ module.exports.listTestsPaginated = async (req, res) => {
             message: 'Internal Server Error',
             error: error.message,
         });
+    }
+};
+// get test by id
+module.exports.getTestById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const testDataResult = await model.fetchTestById(id); // [ RowDataPacket { ... } ]
+        const questionIdResult = await model.fetchTestQuestionsById(id); // [ RowDataPacket { questionId: ... }, ... ]
+        // Extract test data from the first RowDataPacket
+        const testData = testDataResult[0];
+        // Map array of question RowDataPackets to array of questionId numbers
+        const questionIds = questionIdResult.map(q => q.questionId);
+        // Merge into final data format
+        const responseData = {
+            ...testData,
+            questionIds
+        };
+        res.json({ data: responseData });
+    } catch (error) {
+        logger.error(`❌ Failed to fetch test: ${error.message}`);
+        res.status(500).json({ result: false, message: 'Internal Server Error', error: error.message });
     }
 };
 // update  mock test 
