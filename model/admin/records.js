@@ -4,11 +4,11 @@ const query = util.promisify(db.query).bind(db);
 const logger = require('../../utils/logger');
 
 
-module.exports.InsertRecordings = async (title, thumbnail, course, duration, tutor_name, video_url) => {
+module.exports.InsertRecordings = async (title, recordDate, thumbnail, course, duration, tutor_name, video_url) => {
     try {
-        const sql = `INSERT into tb_recordings (r_title,r_thumbnail,r_course,r_duration,r_tutor_name,r_video_url) values(?,?,?,?,?,?)`;
-        logger.info('[Recordingsmodel] Inserting recordings in db', { title, thumbnail, course, duration, tutor_name, video_url });
-        const data = await query(sql, [title, thumbnail, course, duration, tutor_name, video_url]);
+        const sql = `INSERT into tb_recordings (r_title,r_record_date,r_thumbnail,r_course,r_duration,r_tutor_name,r_video_url) values(?,?,?,?,?,?,?)`;
+        logger.info('[Recordingsmodel] Inserting recordings in db', { title, recordDate, thumbnail, course, duration, tutor_name, video_url });
+        const data = await query(sql, [title, recordDate, thumbnail, course, duration, tutor_name, video_url]);
         return data;
     } catch (error) {
         logger.error('[Recordingsmodel] Error inserting recordings', { error: error.message });

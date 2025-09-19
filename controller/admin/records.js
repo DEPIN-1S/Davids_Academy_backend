@@ -4,8 +4,8 @@ const logger = require('../../utils/logger');
 
 module.exports.InsertRecord = async (req, res) => {
     try {
-        let { title, course, duration, tutor_name, video_url } = req.body;
-        if (!title || !course || !duration || !tutor_name || !video_url) {
+        let { recordDate, title, course, duration, tutor_name, video_url } = req.body;
+        if (!recordDate || !title || !course || !duration || !tutor_name || !video_url) {
             logger.warn("Missing required course fields", { title, course, duration, tutor_name, video_url });
             return res.send({
                 result: false,
@@ -16,7 +16,7 @@ module.exports.InsertRecord = async (req, res) => {
         const thumbnailImage = thumbnailFile ? `/uploads/records/${thumbnailFile}` : null;
         logger.info("Processed course image", { thumbnailImage });
 
-        const recordInsert = await model.InsertRecordings(title, thumbnailImage, course, duration, tutor_name, video_url)
+        const recordInsert = await model.InsertRecordings(title, recordDate, thumbnailImage, course, duration, tutor_name, video_url)
         if (recordInsert.affectedRows > 0) {
             logger.info("Record inserted successfully", { recordInsert });
             return res.send({
@@ -24,7 +24,8 @@ module.exports.InsertRecord = async (req, res) => {
                 message: "Record inserted successfully"
             })
         } else {
-            logger.error("Failed to insert recordings", { title, thumbnailImage, course, duration, tutor_name, video_url })
+            const recordInsert = await model.InsertRecordings(title, recordDate, thumbnailImage, course, duration, tutor_name, video_url)
+            logger.error("Failed to insert recordings", { title, recordDate, thumbnailImage, course, duration, tutor_name, video_url })
             return res.send({
                 result: false,
                 message: "Failed to insert recordings"
@@ -41,7 +42,7 @@ module.exports.InsertRecord = async (req, res) => {
 
 module.exports.EditRecordings = async (req, res) => {
     try {
-        let { recording_id, title, course, duration, tutor_name, video_url } = req.body;
+        let { recording_id, recordDate, title, course, duration, tutor_name, video_url } = req.body;
         if (!recording_id) {
             logger.warn("Missing required course fields", { recording_id });
             return res.send({
@@ -69,7 +70,10 @@ module.exports.EditRecordings = async (req, res) => {
             fields.push('r_title = ?');
             values.push(title);
         }
-
+        if (recordDate) {
+            fields.push('r_record_date = ?');
+            values.push(recordDate);
+        }
         if (course) {
             fields.push('r_course = ?');
             values.push(course);
