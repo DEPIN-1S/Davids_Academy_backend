@@ -406,14 +406,15 @@ module.exports.createQuestion = async (req, res) => {
             let {
                 question,
                 tabs,
-                answer,
+                answers,
                 highlightoptions,
                 marks
             } = req.body;
             const qstabs = typeof tabs === 'string' ? JSON.parse(tabs) : tabs;
             highlightoptions = typeof highlightoptions === 'string' ? JSON.parse(highlightoptions) : highlightoptions;
+            answers = typeof answers === 'string' ? JSON.parse(answers) : answers;
             // Insert question into tb_dropdownQuestion
-            const questionResult = await model.insertSentenceQuestion(question, question_type_id, exam_type, difficulty, courseId, answer, marks);
+            const questionResult = await model.insertSentenceQuestion(question, question_type_id, exam_type, difficulty, courseId, marks);
             const questionId = questionResult.insertId;
             logger.info(`✅ Added dropdown question with ID: ${questionId}`);
             // Insert tabs into tb_DropdownQuestionTabs
@@ -421,7 +422,11 @@ module.exports.createQuestion = async (req, res) => {
                 await model.insertHighlightOptionsortItems(questionId, option);
                 logger.info(`🔹 Inserted option for question ${questionId}: ${option}`);
             }
-
+            // insert answers to database
+            for (const ans of answers) {
+                await model.insertSentenceHiglightAnswers(questionId, ans);
+                logger.info(`🔹 Inserted answer for question ${questionId}: ${ans}`);
+            }
             for (const tab of qstabs) {
                 await model.insertTab(questionId, tab.tabKey, tab.tabValue);
                 logger.info(`📄 Inserted tab "${tab.tabKey}" for question ${questionId}`);
@@ -438,7 +443,7 @@ module.exports.createQuestion = async (req, res) => {
                     questionId,
                     question,
                     question_type_id,
-                    answer,
+                    answers,
                     exam_type,
                     qstabs,
                     highlightoptions,

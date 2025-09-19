@@ -323,9 +323,9 @@ async function insertDropdownHeadingOptions(questionId, headingtextId, option) {
  * @returns {Promise<object>} Result of the INSERT query.
  */
 
-async function insertSentenceQuestion(question, question_type_id, exam_type, difficulty, courseId, answer, marks) {
-    const sql = `INSERT INTO tb_questions (question, question_type_id, exam_type, difficulty, courseId, answer, marks) 
-VALUES (?, ?, ?, ?, ?, ?, ?);
+async function insertSentenceQuestion(question, question_type_id, exam_type, difficulty, courseId, marks) {
+    const sql = `INSERT INTO tb_questions (question, question_type_id, exam_type, difficulty, courseId, marks) 
+VALUES ( ?, ?, ?, ?, ?, ?);
 `;
 
     try {
@@ -335,7 +335,6 @@ VALUES (?, ?, ?, ?, ?, ?, ?);
             exam_type,
             difficulty,
             courseId,
-            answer,
             marks
         ]);
 
@@ -355,6 +354,18 @@ async function insertHighlightOptionsortItems(questionId, option) {
         return result;
     } catch (err) {
         logger.error(`❌ [insertHighlightOption] Failed to insert highlight option for questionId = ${questionId} - ${err.message}`);
+        throw err;
+    }
+}
+// insert sentence highligh answers into database
+async function insertSentenceHiglightAnswers(questionId, ans) {
+    const sql = `INSERT INTO tb_sentenceHighlightAnswers(questionId, answer) VALUES (?, ?)`;
+    try {
+        const result = await query(sql, [questionId, ans]);
+        logger.info(`✅ [insertSentenceHiglightAnswers] Successfully inserted answers for questionId = ${questionId}`);
+        return result;
+    } catch (err) {
+        logger.error(`❌ [insertHighlightOption] Failed to insert answers  for questionId = ${questionId} - ${err.message}`);
         throw err;
     }
 }
@@ -1007,6 +1018,7 @@ module.exports = {
     insertSortItems,
     insertSentenceQuestion,
     insertHighlightOptionsortItems,
+    insertSentenceHiglightAnswers,
     GetSentenceHighlightOptions,
     insertFillBlankQuestionContent,
     insertFillTheBlanksQuestion,
