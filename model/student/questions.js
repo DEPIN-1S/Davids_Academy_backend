@@ -167,7 +167,7 @@ module.exports.Gettabs = async (questionId) => {
         throw err;
     }
 }
-
+// get sentene highlight options
 
 module.exports.GetHighlightOptions = async (questionId) => {
     const sql = `SELECT id,questionId,options FROM tb_sentanceHighlight WHERE questionId = ?`;
@@ -180,8 +180,18 @@ module.exports.GetHighlightOptions = async (questionId) => {
         throw err;
     }
 }
-
-
+// get sentence highlight answers
+module.exports.GetHighlightAnswers = async (questionId) => {
+    const sql = `SELECT id,questionId,answer FROM tb_sentenceHighlightAnswers WHERE questionId = ?`;
+    try {
+        const result = await query(sql, [questionId]);
+        logger.info(`✅ [GetHighlightAnswers] Successfully retrieved sentence highligh answers for questionId = ${questionId}`);
+        return result;
+    } catch (err) {
+        logger.error(`[GetHighlightAnswers] ❌ Failed to retrieve sentence highligh answers for questionId = ${questionId} - ${err.message}`);
+        throw err;
+    }
+}
 module.exports.getAdditionalInfo = async (questionId) => {
     const sql = `SELECT * FROM tb_additionalInfo WHERE questionId = ?`;
     try {
