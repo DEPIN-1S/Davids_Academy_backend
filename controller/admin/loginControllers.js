@@ -32,14 +32,8 @@ module.exports.CreateUser = async (req, res) => {
         const otp = GenerateOtp();
         const createUser = await model.createStudent(firstname, lastname, email, hashedPassword, mobile, role, otp);
         if (createUser.affectedRows > 0) {
-            await transporter.sendMail({
-                from: "Dr LifeBoat <nocontact@drlifeboat.com>",
-                to: email,
-                subject: "Email Verification - Davids Academy",
-                html: buildOtpTemplate(firstname, lastname, otp)
-            });
             logger.info(`User registered successfully: ${email}`);
-            return res.send({ result: true, message: 'Registration successful. OTP sent to your email.' });
+            return res.send({ result: true, message: 'Registration successful. ' });
         } else {
             logger.error(`Failed to insert user: ${email}`);
             return res.send({ result: false, message: 'User creation failed' });
