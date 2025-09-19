@@ -87,6 +87,18 @@ async function deleteQuestionById(id) {
     const result = await query(sql, values);
     return result;  // result contains affectedRows etc.
 }
+async function isQuestionReferenced(questionId) {
+    try {
+        const rows = await db.query(
+            'SELECT COUNT(*) AS count FROM tb_testQuestions WHERE questionId = ?',
+            [questionId]
+        );
+        return rows[0].count > 0;
+    } catch (error) {
+        logger.error('isQuestionReferenced error: %o', error);
+        throw error;
+    }
+}
 // insert tab image into db
 async function insertTabImage(imageUrl) {
     const insertSql = `
@@ -978,6 +990,7 @@ module.exports = {
     insertQuestionType,
     updateQuestionType,
     deleteQuestionType,
+    isQuestionReferenced,
     deleteQuestionById,
     insertTabImage,
     deleteTabImageByUrl,

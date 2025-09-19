@@ -849,26 +849,34 @@ module.exports.deleteQuestion = async (req, res) => {
 };
 module.exports.deleteQuestionById = async (req, res) => {
     const { id } = req.params;
-    logger.info('Attempting to delete questionType: %s', id);
+    logger.info('Attempting to delete question ID: %s', id);
     try {
-        // 2. Insert into DB
+        // 1. Check if question is referenced in tb_testQuestions
+        const isReferenced = await model.isQuestionReferenced(id);
+        if (isReferenced) {
+            logger.error('Question ID %s is referenced in tb_testQuestions. Cannot delete.', id);
+            return res.status(409).json({
+                result: false,
+                message: 'Cannot delete question: It is referenced in tests.',
+            });
+        }
+        // 2. Delete from DB
         const result = await model.deleteQuestionById(id);
         if (result.affectedRows === 0) {
             logger.error('No rows affected deleting question: %s', id);
-            return res.status(500).json({
+            return res.status(404).json({
                 result: false,
-                message: 'Failed to delete question in the database',
+                message: 'Question not found or already deleted.',
             });
         }
-        logger.info('Successfully inserted question: %s', id);
+        logger.info('Successfully deleted question: %s', id);
         return res.status(200).json({
             result: true,
-            message: 'Question type deleted successfully',
+            message: 'Question deleted successfully',
             data: result
         });
 
     } catch (error) {
-        // 3. Log unexpected errors
         logger.error('deleteQuestion error: %o', error);
         return res.status(500).json({
             result: false,
