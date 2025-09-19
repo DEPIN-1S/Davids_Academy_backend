@@ -107,12 +107,14 @@ module.exports.GetQuestionDataFromQBank = async (req, res) => {
 
         if (questionData[0]?.question_type?.toLowerCase() === "sentence highlight") {
             const highlightOptions = await model.GetHighlightOptions(questionId);
+            const highlightAnswers = await model.GetHighlightAnswers(questionId);
             const tabsInfo = await model.Gettabs(questionId);
             const additionalInfo = await model.getAdditionalInfo(questionId);
             const explanation = await model.Getexplantion(questionId);
             fullQuestionData = {
                 ...questionData[0],
                 highlightOptions,
+                highlightAnswers,
                 tabsInfo,
                 additionalInfo,
                 explanation
