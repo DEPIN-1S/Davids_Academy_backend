@@ -378,11 +378,11 @@ async function insertSentenceHiglightAnswers(questionId, ans) {
  * @param {string} tabValue - Tab content.
  * @returns {Promise<object>} Result of the INSERT query.
  */
-async function insertTab(questionId, tabKey, tabValue) {
-    const sql = `INSERT INTO tb_questionTabs (questionId, tabKey, tabValue) VALUES (?, ?, ?)`;
+async function insertTab(questionId, tabKey, tabValue, tabImage) {
+    const sql = `INSERT INTO tb_questionTabs (questionId, tabKey, tabValue, tabImage) VALUES (?, ?, ?, ?)`;
     try {
-        const result = await query(sql, [questionId, tabKey, tabValue]);
-        logger.info(`📄 insertTab: Tab "${tabKey}" added for question ID=${questionId}`);
+        const result = await query(sql, [questionId, tabKey, tabValue, tabImage]);
+        logger.info(`📄 insertTab: Tab "${tabKey}" added for question ID=${questionId} with tabImage: ${tabImage}`);
         return result;
     } catch (err) {
         logger.error(`❌ insertTab: Failed for question ID=${questionId}, tabKey=${tabKey} - ${err.message}`);

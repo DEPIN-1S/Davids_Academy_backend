@@ -1,4 +1,0 @@
-{"error":"jwt expired","level":"error","message":"Invalid token","service":"david-academy-api","timestamp":"2025-09-19 14:23:35"}
-{"error":"jwt expired","level":"error","message":"Invalid token","service":"david-academy-api","timestamp":"2025-10-01 15:48:40"}
-{"error":"jwt expired","level":"error","message":"Invalid token","service":"david-academy-api","timestamp":"2025-10-03 08:04:19"}
-{"level":"error","message":"❌ Failed to add question: instructions is not defined","service":"david-academy-api","timestamp":"2025-10-03 08:21:06"}

@@ -287,7 +287,7 @@ module.exports.createQuestion = async (req, res) => {
             logger.info(`✅ Added dropdown question with ID: ${questionId}`);
             // Insert tabs into tb_DropdownQuestionTabs
             for (const tab of qstabs) {
-                await model.insertTab(questionId, tab.tabKey, tab.tabValue);
+                await model.insertTab(questionId, tab.tabKey, tab.tabValue, tab.tabImage);
                 logger.info(`📄 Inserted tab "${tab.tabKey}" for question ${questionId}`);
             }
 
@@ -416,7 +416,8 @@ module.exports.createQuestion = async (req, res) => {
                 marks,
                 instructions
             } = req.body;
-            const qstabs = typeof tabs === 'string' ? JSON.parse(tabs) : tabs;
+            logger.info('tabs data testing', tabs);
+            tabs = typeof tabs === 'string' ? JSON.parse(tabs) : tabs;
             highlightoptions = typeof highlightoptions === 'string' ? JSON.parse(highlightoptions) : highlightoptions;
             answers = typeof answers === 'string' ? JSON.parse(answers) : answers;
             // Insert question into tb_dropdownQuestion
@@ -433,8 +434,8 @@ module.exports.createQuestion = async (req, res) => {
                 await model.insertSentenceHiglightAnswers(questionId, ans);
                 logger.info(`🔹 Inserted answer for question ${questionId}: ${ans}`);
             }
-            for (const tab of qstabs) {
-                await model.insertTab(questionId, tab.tabKey, tab.tabValue);
+            for (const tab of tabs) {
+                await model.insertTab(questionId, tab.tabKey, tab.tabValue, tab.tabImage);
                 logger.info(`📄 Inserted tab "${tab.tabKey}" for question ${questionId}`);
             }
             // Insert explanation into tb_mcqExplanation
@@ -451,7 +452,7 @@ module.exports.createQuestion = async (req, res) => {
                     question_type_id,
                     answers,
                     exam_type,
-                    qstabs,
+                    tabs,
                     passage,
                     instructions,
                     highlightoptions,
@@ -471,6 +472,7 @@ module.exports.createQuestion = async (req, res) => {
                 answer,
                 question_content,
                 options,      // this comes as a JSON string in form-data
+                tabs,         // tabs array with tabImage
                 explanationHeading,
                 explanationText,
                 info,
@@ -498,6 +500,15 @@ module.exports.createQuestion = async (req, res) => {
                 FTBquestion_content = [];
             }
 
+            // Parse tabs array if present
+            let FTBtabs = [];
+            try {
+                FTBtabs = tabs ? (typeof tabs === 'string' ? JSON.parse(tabs) : tabs) : [];
+            } catch (error) {
+                console.error('Failed to parse tabs JSON:', error);
+                FTBtabs = [];
+            }
+
             const questionResult = await model.insertFillTheBlanksQuestion(
                 question,
                 question_type_id,
@@ -509,7 +520,13 @@ module.exports.createQuestion = async (req, res) => {
                 instructions
             );
             const questionId = questionResult.insertId;
-            logger.info(`✅ Added dropdown question with ID: ${questionId}`);
+            logger.info(`✅ Added fill in the blanks question with ID: ${questionId}`);
+
+            // Insert tabs if present
+            for (const tab of FTBtabs) {
+                await model.insertTab(questionId, tab.tabKey, tab.tabValue, tab.tabImage);
+                logger.info(`📄 Inserted tab "${tab.tabKey}" for fill in the blanks question ${questionId}`);
+            }
 
             // Insert question content
             for (const item of FTBquestion_content) {
@@ -559,6 +576,7 @@ module.exports.createQuestion = async (req, res) => {
                     marks,
                     instructions,
                     exam_type,
+                    tabs: FTBtabs,
                     FTBquestion_content,
                     FTBoptions,
                     difficulty,
@@ -620,7 +638,7 @@ module.exports.createQuestion = async (req, res) => {
 
             // Insert tabs into tb_DropdownQuestionTabs
             for (const tab of tabs) {
-                await model.insertTab(questionId, tab.tabKey, tab.tabValue);
+                await model.insertTab(questionId, tab.tabKey, tab.tabValue, tab.tabImage);
                 logger.info(`📄 Inserted Drag Drop tab "${tab.tabKey}" for question ${questionId}`);
             }
 
@@ -730,7 +748,7 @@ module.exports.createQuestion = async (req, res) => {
 
             // Insert tabs into tb_DropdownQuestionTabs
             for (const tab of tabs) {
-                await model.insertTab(questionId, tab.tabKey, tab.tabValue);
+                await model.insertTab(questionId, tab.tabKey, tab.tabValue, tab.tabImage);
                 logger.info(`📄 Multiple Radio Inserted tab "${tab.tabKey}" for question ${questionId}`);
             }
 
