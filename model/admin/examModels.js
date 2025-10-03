@@ -819,6 +819,70 @@ async function getSentenceHighlightQuestions(condition) {
         throw err;
     }
 }
+// insert table dropdown question
+// Model function for Table Dropdown Question
+async function insertTableDropdownQuestion(question, question_type_id, exam_type, difficulty, courseId, marks, instructions) {
+    const sql = `INSERT INTO tb_questions (
+        question, question_type_id, exam_type, difficulty, courseId, marks, instructions, question_format
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?);`;
+
+    try {
+        const result = await query(sql, [
+            question,
+            question_type_id,
+            exam_type,
+            difficulty,
+            courseId,
+            marks,
+            instructions,
+            'table_dropdown' // or whatever value you use to denote this format
+        ]);
+        logger.info(`✅ insertTableDropdownQuestion: Inserted Table Dropdown question ID=${result.insertId}`);
+        return result;
+    } catch (err) {
+        logger.error(`❌ insertTableDropdownQuestion: Failed to insert Table Dropdown question - ${err.message}`);
+        throw err;
+    }
+}
+// Insert a single Table Dropdown field/row for a question
+async function insertTableDropdownField(questionId, fieldLabel) {
+    const sql = `INSERT INTO tb_table_dropdown_fields (question_id, field_label) VALUES (?, ?);`;
+
+    try {
+        const result = await query(sql, [questionId, fieldLabel]);
+        logger.info(`✅ insertTableDropdownField: Inserted field "${fieldLabel}" for question ID=${questionId}`);
+        return result;
+    } catch (err) {
+        logger.error(`❌ insertTableDropdownField: Failed to insert field "${fieldLabel}" for question ID=${questionId} - ${err.message}`);
+        throw err;
+    }
+}
+// Model function for inserting a dropdown option for a row
+async function insertTableDropdownOption(questionId, rowId, optionValue) {
+    const sql = `INSERT INTO tb_table_dropdown_options (question_id, row_id, option_value) VALUES (?, ?, ?);`;
+    try {
+        const result = await query(sql, [questionId, rowId, optionValue]);
+        logger.info(`✅ insertTableDropdownOption: Inserted option "${optionValue}" for row ID=${rowId} (question ID=${questionId})`);
+        return result;
+    } catch (err) {
+        logger.error(`❌ insertTableDropdownOption: Failed to insert option "${optionValue}" for row ID=${rowId} - ${err.message}`);
+        throw err;
+    }
+}
+// Insert dropdown answer for a Table Dropdown question row
+async function insertTableDropdownAnswer(questionId, rowLabel, answer) {
+    const sql = `INSERT INTO tb_table_dropdown_answers (question_id, row_label, answer) VALUES (?, ?, ?);`;
+
+    try {
+        const result = await query(sql, [questionId, rowLabel, answer]);
+        logger.info(`✅ insertTableDropdownAnswer: Inserted answer "${answer}" for row "${rowLabel}" (question ID=${questionId})`);
+        return result;
+    } catch (err) {
+        logger.error(`❌ insertTableDropdownAnswer: Failed to insert answer for row "${rowLabel}" - ${err.message}`);
+        throw err;
+    }
+}
+
 /**
  * Fetch all questions from tb_questions table
  * where exam_type is 'Mock Test' and not deleted
@@ -1034,6 +1098,10 @@ module.exports = {
     insertDragDropQuestion,
     insertDragDropOptionsHeading,
     insertDragDropOptionsHeadingValues,
+    insertTableDropdownQuestion,
+    insertTableDropdownField,
+    insertTableDropdownOption,
+    insertTableDropdownAnswer,
     fetchSampleQuestionnaireIds,
     getMcqQuestions,
     Getmcqoption,

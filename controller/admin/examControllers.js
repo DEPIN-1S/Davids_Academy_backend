@@ -797,6 +797,98 @@ module.exports.createQuestion = async (req, res) => {
                 }
             });
         }
+        // Add after other question types in your createQuestion handler
+        if (questionType.toLowerCase().trim() === 'Table Dropdown') {
+            const {
+                question,
+                tabs,
+                tableDropdownFields, // Array of table rows/fields each with dropdown options
+                tableDropdownAnswers, // Answers for each dropdown
+                marks,
+                courseId,
+                instructions,
+                explanationHeading,
+                explanationText,
+                info,
+                question_type_id,
+                exam_type,
+                difficulty,
+            } = req.body;
+
+            const parsedTabs = typeof tabs === 'string' ? JSON.parse(tabs) : tabs;
+            const parsedFields = typeof tableDropdownFields === 'string' ? JSON.parse(tableDropdownFields) : tableDropdownFields;
+            const parsedAnswers = typeof tableDropdownAnswers === 'string' ? JSON.parse(tableDropdownAnswers) : tableDropdownAnswers;
+            let infoImageFile = req.files?.infoimage?.[0]?.filename || null;
+            let infoImage = infoImageFile ? `/uploads/infoimages/${infoImageFile}` : null;
+            // Insert question row (reuse your dropdown/similar model as base)
+            const questionResult = await model.insertTableDropdownQuestion(
+                question,
+                question_type_id,
+                exam_type,
+                difficulty,
+                courseId,
+                marks,
+                courseId,
+                instructions,
+            );
+            const questionId = questionResult.insertId;
+
+            // Insert tabs (category columns)
+            for (const tab of parsedTabs) {
+                await model.insertTab(questionId, tab.tabKey, tab.tabValue, tab.tabImage);
+                logger.info(`📄 Inserted tab "${tab.tabKey}" for Table Dropdown question ${questionId}`);
+            }
+
+            // Insert each table row field and dropdown options
+            for (const field of parsedFields) {
+                // Insert row: field.fieldLabel, field.dropdownOptions (array)
+                const rowResult = await model.insertTableDropdownField(
+                    questionId,
+                    field.fieldLabel
+                );
+                const rowId = rowResult.insertId;
+                for (const option of field.dropdownOptions) {
+                    await model.insertTableDropdownOption(questionId, rowId, option);
+                }
+            }
+
+            // Insert answers
+            for (const ans of parsedAnswers) {
+                // Each ans: {rowLabel, answer}
+                await model.insertTableDropdownAnswer(questionId, ans.rowLabel, ans.answer);
+            }
+
+            // Explanation and extra info
+            if (explanationText) {
+                await model.insertMcqExplanation(questionId, explanationHeading, explanationText);
+                logger.info(`📝 Explanation added for Table Dropdown question ${questionId}`);
+            }
+            if (info) {
+                await model.insertAdditionalInfo(questionId, info, infoImage);
+                logger.info(`📝 Additional information added for Table Dropdown question ${questionId}`);
+            }
+
+            return res.status(201).json({
+                result: true,
+                message: "Table Dropdown question created successfully",
+                data: {
+                    questionId,
+                    question,
+                    question_type_id,
+                    exam_type,
+                    difficulty,
+                    marks,
+                    tabs: parsedTabs,
+                    tableDropdownFields: parsedFields,
+                    tableDropdownAnswers: parsedAnswers,
+                    explanationHeading,
+                    explanationText,
+                    info,
+                    infoImage
+                }
+            });
+        }
+
     } catch (error) {
         logger.error(`❌ Failed to add question: ${error.message}`);
         return res.status(500).json({
