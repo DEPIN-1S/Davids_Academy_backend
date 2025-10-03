@@ -265,9 +265,9 @@ async function insertAdditionalInfo(questionId, info, image = null) {
  * @returns {Promise<object>} Result of the INSERT query.
  */
 
-async function insertDropdownQuestion(question, question_type_id, exam_type, difficulty, courseId, marks) {
-    const sql = `INSERT INTO tb_questions (question,question_type_id,exam_type, difficulty,courseId,marks) 
-                 VALUES (?, ?, ?, ?, ?, ?)`;
+async function insertDropdownQuestion(question, question_type_id, exam_type, difficulty, courseId, marks, instructions) {
+    const sql = `INSERT INTO tb_questions (question,question_type_id,exam_type, difficulty,courseId,marks,instructions) 
+                 VALUES (?, ?, ?, ?, ?, ?,?)`;
 
     try {
         const result = await query(sql, [
@@ -276,7 +276,8 @@ async function insertDropdownQuestion(question, question_type_id, exam_type, dif
             exam_type,
             difficulty,
             courseId,
-            marks
+            marks,
+            instructions
         ]);
 
         logger.info(`✅ insertDropdownQuestion: Inserted question ID=${result.insertId}`);
@@ -323,10 +324,9 @@ async function insertDropdownHeadingOptions(questionId, headingtextId, option) {
  * @returns {Promise<object>} Result of the INSERT query.
  */
 
-async function insertSentenceQuestion(question, question_type_id, exam_type, difficulty, courseId, marks) {
-    const sql = `INSERT INTO tb_questions (question, question_type_id, exam_type, difficulty, courseId, marks) 
-VALUES ( ?, ?, ?, ?, ?, ?);
-`;
+async function insertSentenceQuestion(question, question_type_id, exam_type, difficulty, courseId, marks, passage, instructions) {
+    const sql = `INSERT INTO tb_questions (question, question_type_id, exam_type, difficulty, courseId, marks, passage, instructions) 
+VALUES (?, ?, ?, ?, ?, ?, ?, ?);`;
 
     try {
         const result = await query(sql, [
@@ -335,7 +335,9 @@ VALUES ( ?, ?, ?, ?, ?, ?);
             exam_type,
             difficulty,
             courseId,
-            marks
+            marks,
+            passage,
+            instructions
         ]);
 
         logger.info(`✅ insertSentenceQuestion: Inserted question ID=${result.insertId}`);
@@ -407,10 +409,9 @@ async function insertSortItems(questionId, sortItem, itemOrder) {
 }
 // ---------------------------------fill in the blanks------------------------//
 
-async function insertFillTheBlanksQuestion(question, question_type_id, answer, exam_type, difficulty, courseId, marks) {
-    const sql = `INSERT INTO tb_questions (question,question_type_id,answer,exam_type, difficulty,courseId,marks) 
-VALUES (?, ?, ?, ?, ?, ?, ?)
-`;
+async function insertFillTheBlanksQuestion(question, question_type_id, answer, exam_type, difficulty, courseId, marks, instructions) {
+    const sql = `INSERT INTO tb_questions (question,question_type_id,answer,exam_type, difficulty,courseId,marks,instructions) 
+VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
     try {
         const result = await query(sql, [
             question,
@@ -419,7 +420,8 @@ VALUES (?, ?, ?, ?, ?, ?, ?)
             exam_type,
             difficulty,
             courseId,
-            marks
+            marks,
+            instructions
         ]);
 
         logger.info(`✅ insertFillTheBlanksQuestion: Inserted question ID=${result.insertId}`);
@@ -469,8 +471,8 @@ async function insertFillBlankQuestionOptionsHeadingValues(questionId, heading_i
 
 // ---------------------------------Multiple Radio------------------------//
 
-async function insertMultipleRadioQuestion(question, question_type_id, exam_type, difficulty, courseId, marks) {
-    const sql = `INSERT INTO tb_questions (question, question_type_id, exam_type, difficulty, courseId,marks) VALUES (?, ?, ?, ?, ?,?)`;
+async function insertMultipleRadioQuestion(question, question_type_id, exam_type, difficulty, courseId, marks, instructions) {
+    const sql = `INSERT INTO tb_questions (question, question_type_id, exam_type, difficulty, courseId, marks, instructions) VALUES (?, ?, ?, ?, ?, ?, ?)`;
     try {
         const result = await query(sql, [
             question,
@@ -478,7 +480,8 @@ async function insertMultipleRadioQuestion(question, question_type_id, exam_type
             exam_type,
             difficulty,
             courseId,
-            marks
+            marks,
+            instructions
         ]);
 
         logger.info(`✅ insertMultipleRadioQuestion: Inserted question ID=${result.insertId}`);
@@ -516,9 +519,9 @@ async function insertMultipleRadioOptions(questionId, option_value) {
 //--------------------------- Drag and Drop ------------------------------------------
 
 
-async function insertDragDropQuestion(question, question_type_id, exam_type, drag_drop_content, difficulty, courseId, marks) {
-    const sql = `INSERT INTO tb_questions (question,question_type_id,exam_type,drag_drop_content, difficulty,courseId,marks) 
-                 VALUES (?, ?, ?, ?, ?, ?,?)`;
+async function insertDragDropQuestion(question, question_type_id, exam_type, drag_drop_content, difficulty, courseId, marks, instructions) {
+    const sql = `INSERT INTO tb_questions (question,question_type_id,exam_type,drag_drop_content, difficulty,courseId,marks,instructions) 
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
 
     try {
         const result = await query(sql, [
@@ -528,7 +531,8 @@ async function insertDragDropQuestion(question, question_type_id, exam_type, dra
             drag_drop_content,
             difficulty,
             courseId,
-            marks
+            marks,
+            instructions
         ]);
 
         logger.info(`✅ insertMultipleRadioQuestion: Inserted question ID=${result.insertId}`);

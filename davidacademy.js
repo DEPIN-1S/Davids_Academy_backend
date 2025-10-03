@@ -71,7 +71,7 @@ app.use((err, req, res, next) => {
 });
 
 // ─── START SERVER ──────────────────────────────────────────────────────────────
-const PORT = process.env.PORT || 6040;
+const PORT = process.env.PORT;
 server.listen(PORT, () => {
   logger.info(`Server listening on port ${PORT}`);
 });

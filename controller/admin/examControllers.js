@@ -269,7 +269,8 @@ module.exports.createQuestion = async (req, res) => {
                 tabs,
                 dropdowns,
                 answers,
-                marks
+                marks,
+                instructions
             } = req.body;
 
             const qstabs = typeof tabs === 'string' ? JSON.parse(tabs) : tabs;
@@ -279,7 +280,7 @@ module.exports.createQuestion = async (req, res) => {
             const Dropdownanswers = typeof answers === 'string' ? JSON.parse(answers) : answers;
 
             // Insert question into tb_dropdownQuestion
-            const questionResult = await model.insertDropdownQuestion(question, question_type_id, exam_type, difficulty, courseId, marks);
+            const questionResult = await model.insertDropdownQuestion(question, question_type_id, exam_type, difficulty, courseId, marks, instructions);
 
             const questionId = questionResult.insertId;
 
@@ -347,6 +348,7 @@ module.exports.createQuestion = async (req, res) => {
                     qstabs,
                     dropdowns,
                     Dropdownanswers,
+                    instructions,
                     difficulty,
                     explanationHeading,
                     explanationText,
@@ -361,11 +363,12 @@ module.exports.createQuestion = async (req, res) => {
             const {
                 question,
                 sortItems,
-                marks
+                marks,
+                instructions
             } = req.body;
             const sorteditems = typeof sortItems === 'string' ? JSON.parse(sortItems) : sortItems;
             // Insert question into tb_dropdownQuestion
-            const questionResult = await model.insertDropdownQuestion(question, question_type_id, exam_type, difficulty, courseId, marks);
+            const questionResult = await model.insertDropdownQuestion(question, question_type_id, exam_type, difficulty, courseId, marks, instructions);
             const questionId = questionResult.insertId;
             logger.info(`✅ Added dropdown question with ID: ${questionId}`);
             // Insert tabs into tb_DropdownQuestionTabs
@@ -388,6 +391,7 @@ module.exports.createQuestion = async (req, res) => {
                 data: {
                     questionId,
                     question,
+                    instructions,
                     marks,
                     question_type_id,
                     exam_type,
@@ -406,15 +410,17 @@ module.exports.createQuestion = async (req, res) => {
             let {
                 question,
                 tabs,
+                passage,
                 answers,
                 highlightoptions,
-                marks
+                marks,
+                instructions
             } = req.body;
             const qstabs = typeof tabs === 'string' ? JSON.parse(tabs) : tabs;
             highlightoptions = typeof highlightoptions === 'string' ? JSON.parse(highlightoptions) : highlightoptions;
             answers = typeof answers === 'string' ? JSON.parse(answers) : answers;
             // Insert question into tb_dropdownQuestion
-            const questionResult = await model.insertSentenceQuestion(question, question_type_id, exam_type, difficulty, courseId, marks);
+            const questionResult = await model.insertSentenceQuestion(question, question_type_id, exam_type, difficulty, courseId, marks, passage, instructions);
             const questionId = questionResult.insertId;
             logger.info(`✅ Added dropdown question with ID: ${questionId}`);
             // Insert tabs into tb_DropdownQuestionTabs
@@ -446,6 +452,8 @@ module.exports.createQuestion = async (req, res) => {
                     answers,
                     exam_type,
                     qstabs,
+                    passage,
+                    instructions,
                     highlightoptions,
                     difficulty,
                     explanationHeading,
@@ -470,6 +478,7 @@ module.exports.createQuestion = async (req, res) => {
                 exam_type,
                 difficulty,
                 courseId,
+                instructions
             } = req.body;
             // Parse options string safely into array
             let FTBoptions = [];
@@ -496,7 +505,8 @@ module.exports.createQuestion = async (req, res) => {
                 exam_type,
                 difficulty,
                 courseId,
-                marks
+                marks,
+                instructions
             );
             const questionId = questionResult.insertId;
             logger.info(`✅ Added dropdown question with ID: ${questionId}`);
@@ -546,6 +556,8 @@ module.exports.createQuestion = async (req, res) => {
                     question,
                     question_type_id,
                     answer,
+                    marks,
+                    instructions,
                     exam_type,
                     FTBquestion_content,
                     FTBoptions,
@@ -570,7 +582,8 @@ module.exports.createQuestion = async (req, res) => {
                 exam_type,
                 difficulty,
                 courseId,
-                marks
+                marks,
+                instructions
             } = req.body;
 
             // Parse tabs JSON string or use empty array if not present or invalid
@@ -599,7 +612,8 @@ module.exports.createQuestion = async (req, res) => {
                 drag_drop_content,
                 difficulty,
                 courseId,
-                marks
+                marks,
+                instructions
             );
             const questionId = questionResult.insertId;
             logger.info(`✅ Added Drag Drop question with ID: ${questionId}`);
@@ -645,6 +659,7 @@ module.exports.createQuestion = async (req, res) => {
                     questionId,
                     question,
                     marks,
+                    instructions,
                     question_type_id,
                     exam_type,
                     drag_drop_content,
@@ -669,7 +684,8 @@ module.exports.createQuestion = async (req, res) => {
                 explanationHeading,
                 explanationText,
                 info,
-                marks
+                marks,
+                instructions
 
             } = req.body;
 
@@ -705,7 +721,9 @@ module.exports.createQuestion = async (req, res) => {
                 exam_type,
                 difficulty,
                 courseId,
-                marks
+                marks,
+                instructions
+
             );
             const questionId = questionResult.insertId;
             logger.info(`✅ Added Multiple Radio question with ID: ${questionId}`);
@@ -748,6 +766,8 @@ module.exports.createQuestion = async (req, res) => {
                     question,
                     question_type_id,
                     exam_type,
+                    marks,
+                    instructions,
                     tabs,
                     question_content,
                     radio_options,
