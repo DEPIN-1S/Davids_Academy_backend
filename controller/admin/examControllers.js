@@ -143,7 +143,8 @@ module.exports.uploadTabImage = async (req, res) => {
 module.exports.deleteTabImage = async (req, res) => {
     try {
         // Extract imageUrl from request - adjust as needed (body, query, or params)
-        const { fileName } = req.body;
+        let { fileName } = req.body;
+        fileName = '%' + fileName + '%';
         if (!fileName) {
             return res.status(400).json({ result: false, message: 'fileName is required' });
         }
@@ -196,6 +197,8 @@ module.exports.createQuestion = async (req, res) => {
         exam_type = exam_type?.toLowerCase()?.trim();
         // For optional uploaded files
         let infoImageFile = req.files?.infoimage?.[0]?.filename || null;
+        logger.info('Files received:', req.files);
+
         let infoImage = infoImageFile ? `/uploads/infoimages/${infoImageFile}` : null;
         let exhibitFile = req.files?.exhibit?.[0]?.filename || null;
         let exhibit = exhibitFile ? `/uploads/exhibit/${exhibitFile}` : null;
@@ -818,8 +821,6 @@ module.exports.createQuestion = async (req, res) => {
             const parsedTabs = typeof tabs === 'string' ? JSON.parse(tabs) : tabs;
             const parsedFields = typeof tableDropdownFields === 'string' ? JSON.parse(tableDropdownFields) : tableDropdownFields;
             const parsedAnswers = typeof tableDropdownAnswers === 'string' ? JSON.parse(tableDropdownAnswers) : tableDropdownAnswers;
-            let infoImageFile = req.files?.infoimage?.[0]?.filename || null;
-            let infoImage = infoImageFile ? `/uploads/infoimages/${infoImageFile}` : null;
             // Insert question row (reuse your dropdown/similar model as base)
             const questionResult = await model.insertTableDropdownQuestion(
                 question,
@@ -828,7 +829,6 @@ module.exports.createQuestion = async (req, res) => {
                 difficulty,
                 courseId,
                 marks,
-                courseId,
                 instructions,
             );
             const questionId = questionResult.insertId;

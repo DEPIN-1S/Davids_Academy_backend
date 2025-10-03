@@ -4,6 +4,8 @@ const db = require('../../config/db');
 const util = require('util');
 const query = util.promisify(db.query).bind(db);
 const logger = require('../../utils/logger');
+const path = require('path');
+const fs = require('fs');
 /**
  * Inserts a new exam type into the tb_questionType table.
  *
@@ -123,9 +125,14 @@ async function deleteTabImageByUrl(imageUrl) {
 
         // Delete file from file system if row was affected
         if (result.affectedRows > 0) {
-            const filePath = path.join(__dirname, '..', imageUrl); // Adjust as per actual path
-            await fs.unlink(filePath);
-            logger.info(`deleteTabImageByUrl: Deleted file at path: ${filePath}`);
+            let relativePath = imageUrl.startsWith('/') ? imageUrl.slice(1) : imageUrl;
+            const filePath = path.join(process.cwd(), 'public', relativePath);
+            try {
+                await fs.promises.unlink(filePath);
+                logger.info(`deleteTabImageByUrl: Deleted file at path: ${filePath}`);
+            } catch (fsErr) {
+                logger.error(`deleteTabImageByUrl: File not found or could not be deleted at path: ${filePath} - ${fsErr.message}`);
+            }
         }
 
         return result;
@@ -823,8 +830,8 @@ async function getSentenceHighlightQuestions(condition) {
 // Model function for Table Dropdown Question
 async function insertTableDropdownQuestion(question, question_type_id, exam_type, difficulty, courseId, marks, instructions) {
     const sql = `INSERT INTO tb_questions (
-        question, question_type_id, exam_type, difficulty, courseId, marks, instructions, question_format
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?);`;
+        question, question_type_id, exam_type, difficulty, courseId, marks, instructions
+    ) VALUES (?, ?, ?, ?, ?, ?, ?);`;
 
     try {
         const result = await query(sql, [
@@ -834,8 +841,7 @@ async function insertTableDropdownQuestion(question, question_type_id, exam_type
             difficulty,
             courseId,
             marks,
-            instructions,
-            'table_dropdown' // or whatever value you use to denote this format
+            instructions
         ]);
         logger.info(`✅ insertTableDropdownQuestion: Inserted Table Dropdown question ID=${result.insertId}`);
         return result;
