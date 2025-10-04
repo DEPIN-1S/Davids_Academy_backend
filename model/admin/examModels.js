@@ -850,6 +850,33 @@ async function insertTableDropdownQuestion(question, question_type_id, exam_type
         throw err;
     }
 }
+// Save table headers for a Table Dropdown question
+async function insertTableDropdownHeaders(questionId, leftHeader, rightHeader) {
+    const sql = `INSERT INTO tb_table_dropdown_headers
+               (question_id, left_header, right_header)
+               VALUES (?, ?, ?);`;
+    try {
+        const result = await query(sql, [questionId, leftHeader, rightHeader]);
+        logger.info(`✅ insertTableDropdownHeaders: headers saved for question ${questionId}`);
+        return result;
+    } catch (err) {
+        logger.error(`❌ insertTableDropdownHeaders: ${err.message}`);
+        throw err;
+    }
+}
+
+// Optional: fetch headers later
+async function getTableDropdownHeaders(questionId) {
+    const sql = `SELECT left_header, right_header
+               FROM tb_table_dropdown_headers
+               WHERE question_id = ?;`;
+    try {
+        return await query(sql, [questionId]);
+    } catch (err) {
+        logger.error(`❌ getTableDropdownHeaders: ${err.message}`);
+        throw err;
+    }
+}
 // Insert a single Table Dropdown field/row for a question
 async function insertTableDropdownField(questionId, fieldLabel) {
     const sql = `INSERT INTO tb_table_dropdown_fields (question_id, field_label) VALUES (?, ?);`;
@@ -885,6 +912,19 @@ async function insertTableDropdownAnswer(questionId, rowLabel, answer) {
         return result;
     } catch (err) {
         logger.error(`❌ insertTableDropdownAnswer: Failed to insert answer for row "${rowLabel}" - ${err.message}`);
+        throw err;
+    }
+}
+//  insert a highlight row with left/right text
+async function insertTableHighlightRow(questionId, leftColumn, rightColumn, sortOrder = null) {
+    const sql = `INSERT INTO tb_table_highlight_rows (question_id, left_column, right_column, sort_order)
+               VALUES (?, ?, ?, ?);`;
+    try {
+        const result = await query(sql, [questionId, leftColumn, rightColumn, sortOrder]);
+        logger.info(`✅ insertTableHighlightRow: (${leftColumn} | ${rightColumn}) for q=${questionId}`);
+        return result;
+    } catch (err) {
+        logger.error(`❌ insertTableHighlightRow: ${err.message}`);
         throw err;
     }
 }
@@ -1105,9 +1145,12 @@ module.exports = {
     insertDragDropOptionsHeading,
     insertDragDropOptionsHeadingValues,
     insertTableDropdownQuestion,
+    insertTableDropdownHeaders,
+    getTableDropdownHeaders,
     insertTableDropdownField,
     insertTableDropdownOption,
     insertTableDropdownAnswer,
+    insertTableHighlightRow,
     fetchSampleQuestionnaireIds,
     getMcqQuestions,
     Getmcqoption,
