@@ -5,30 +5,30 @@ const logger = require('../../utils/logger');
 
 
 module.exports.ListAllTests = async (req, res) => {
-  try {
-    const { user_id } = req?.user
-    const studentData = await model.GetStudentData(user_id)
-    if (studentData.length == 0) {
-      logger.error("Student not found.Please login again", user_id)
-      return res.send({
-        result: false,
-        message: "Student not found.Please login again"
-      })
+    try {
+        const { user_id } = req?.user
+        const studentData = await model.GetStudentData(user_id)
+        if (studentData.length == 0) {
+            logger.error("Student not found.Please login again", user_id)
+            return res.send({
+                result: false,
+                message: "Student not found.Please login again"
+            })
+        }
+        const courseId = studentData[0]?.target_exam
+        const tests = await model.ListAllTestsWithStatus(courseId, user_id)
+        logger.info("Tests listed successfully with status", user_id)
+        return res.send({
+            result: true,
+            message: "Tests listed successfully",
+            data: tests
+        })
+    } catch (error) {
+        return res.send({
+            result: false,
+            message: error.message
+        })
     }
-    const courseId = studentData[0]?.target_exam
-    const tests = await model.ListAllTestsWithStatus(courseId, user_id) 
-    logger.info("Tests listed successfully with status", user_id)
-    return res.send({
-      result: true,
-      message: "Tests listed successfully",
-      data: tests  
-    })
-  } catch (error) {
-    return res.send({
-      result: false,
-      message: error.message
-    })
-  }
 }
 
 module.exports.ListTestQuestions = async (req, res) => {
@@ -322,76 +322,76 @@ module.exports.SubmitQuestions = async (req, res) => {
 
 
 module.exports.SubmitTest = async (req, res) => {
-  try {
-    const { user_id } = req?.user
-    const { test_id } = req.body
-    if (!test_id) {
-      logger.warn("Test id is required")
-      return res.send({
-        result: false,
-        message: "Test id is required"
-      })
-    }
-    const studentData = await model.GetStudentData(user_id)
-    if (studentData.length == 0) {
-      logger.error("Student not found.Please login again", user_id)
-      return res.send({
-        result: false,
-        message: "Student not found.Please login again"
-      })
-    }
-    const courseId = studentData[0]?.target_exam
-    const checkTest = await model.CheckTest(test_id, courseId)
-    if (checkTest.length === 0) {
-      logger.error("Test data not found", test_id, courseId)
-      return res.send({
-        result: false,
-        message: "Test data not found"
-      })
-    }
-    // Check if test already submitted
-    const checkAlreadySubmitted = await model.CheckTestAlreadySubmitted(user_id, test_id)
-    if (checkAlreadySubmitted.length > 0) {
-      if (checkAlreadySubmitted[0].is_submitted === 1) {
-        logger.error("Test already submitted", test_id, courseId)
+    try {
+        const { user_id } = req?.user
+        const { test_id } = req.body
+        if (!test_id) {
+            logger.warn("Test id is required")
+            return res.send({
+                result: false,
+                message: "Test id is required"
+            })
+        }
+        const studentData = await model.GetStudentData(user_id)
+        if (studentData.length == 0) {
+            logger.error("Student not found.Please login again", user_id)
+            return res.send({
+                result: false,
+                message: "Student not found.Please login again"
+            })
+        }
+        const courseId = studentData[0]?.target_exam
+        const checkTest = await model.CheckTest(test_id, courseId)
+        if (checkTest.length === 0) {
+            logger.error("Test data not found", test_id, courseId)
+            return res.send({
+                result: false,
+                message: "Test data not found"
+            })
+        }
+        // Check if test already submitted
+        const checkAlreadySubmitted = await model.CheckTestAlreadySubmitted(user_id, test_id)
+        if (checkAlreadySubmitted.length > 0) {
+            if (checkAlreadySubmitted[0].is_submitted === 1) {
+                logger.error("Test already submitted", test_id, courseId)
+                return res.send({
+                    result: false,
+                    message: "Test already submitted"
+                })
+            }
+            // If pending, update existing record
+            const submittedAnswers = await model.GetSubmittedAnswer(user_id, test_id)
+            const totalMark = submittedAnswers.reduce((sum, item) => sum + item.sq_mark, 0)
+            await model.SubmitTestData(user_id, test_id, totalMark)
+        } else {
+            // New submission
+            const submittedAnswers = await model.GetSubmittedAnswer(user_id, test_id)
+            const totalMark = submittedAnswers.reduce((sum, item) => sum + item.sq_mark, 0)
+            const submitTest = await model.SubmitTestData(user_id, test_id, totalMark)
+            if (submitTest.affectedRows === 0) {
+                return res.send({
+                    result: false,
+                    message: "Failed to submit test"
+                })
+            }
+        }
+        // Update status to completed/submitted (for both new and existing)
+        const updateStatus = await model.UpdateTestSubmissionStatus(user_id, test_id)
+        if (updateStatus.affectedRows > 0) {
+            return res.send({
+                result: true,
+                message: "Test submitted successfully"
+            })
+        } else {
+            return res.send({
+                result: false,
+                message: "Failed to update test status"
+            })
+        }
+    } catch (error) {
         return res.send({
-          result: false,
-          message: "Test already submitted"
+            result: false,
+            message: error.message
         })
-      }
-      // If pending, update existing record
-      const submittedAnswers = await model.GetSubmittedAnswer(user_id, test_id)
-      const totalMark = submittedAnswers.reduce((sum, item) => sum + item.sq_mark, 0)
-      await model.SubmitTestData(user_id, test_id, totalMark) 
-    } else {
-      // New submission
-      const submittedAnswers = await model.GetSubmittedAnswer(user_id, test_id)
-      const totalMark = submittedAnswers.reduce((sum, item) => sum + item.sq_mark, 0)
-      const submitTest = await model.SubmitTestData(user_id, test_id, totalMark)
-      if (submitTest.affectedRows === 0) {
-        return res.send({
-          result: false,
-          message: "Failed to submit test"
-        })
-      }
     }
-    // Update status to completed/submitted (for both new and existing)
-    const updateStatus = await model.UpdateTestSubmissionStatus(user_id, test_id)
-    if (updateStatus.affectedRows > 0) {
-      return res.send({
-        result: true,
-        message: "Test submitted successfully"
-      })
-    } else {
-      return res.send({
-        result: false,
-        message: "Failed to update test status"
-      })
-    }
-  } catch (error) {
-    return res.send({
-      result: false,
-      message: error.message
-    })
-  }
 }

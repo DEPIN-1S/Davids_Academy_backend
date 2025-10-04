@@ -1014,6 +1014,102 @@ module.exports.createQuestion = async (req, res) => {
             });
         }
 
+        if (questionType && questionType.toLowerCase().trim() === 'multidropdown') {
+            const {
+                question,
+                headers,          // e.g., ["Client", "Most Likely Complication", "Parameter to Monitor"]
+                rows,             // see structure above
+                tabs,
+                marks,
+                courseId,
+                instructions,
+                explanationHeading,
+                explanationText,
+                info,
+                question_type_id,
+                exam_type,
+                difficulty,
+            } = req.body;
+
+            // Parse potentially stringified arrays
+            let parsedHeaders = [], parsedRows = [], parsedTabs = [];
+            try {
+                parsedHeaders = typeof headers === 'string' ? JSON.parse(headers) : (headers || []);
+                parsedRows = typeof rows === 'string' ? JSON.parse(rows) : (rows || []);
+                parsedTabs = typeof tabs === 'string' ? JSON.parse(tabs) : (tabs || []);
+            } catch (e) {
+                logger.error('JSON parse error (headers/rows/tabs):', e);
+                return res.status(400).json({ result: false, message: 'Invalid JSON in headers/rows/tabs' });
+            }
+
+            if (!question) return res.status(400).json({ result: false, message: 'question is required' });
+            if (!Array.isArray(parsedHeaders) || parsedHeaders.length < 2) {
+                return res.status(400).json({ result: false, message: 'headers must include at least two columns' });
+            }
+            if (!Array.isArray(parsedRows) || parsedRows.length === 0) {
+                return res.status(400).json({ result: false, message: 'rows must be a non-empty array' });
+            }
+
+            // Insert question 
+            const qRes = await model.insertTableDropdownQuestion(
+                question, question_type_id, exam_type, difficulty, courseId, marks, instructions
+            );
+            const questionId = qRes.insertId;
+
+            // Headers
+            await Promise.all(
+                parsedHeaders.map((h, idx) => model.insertMultiDropdownHeader(questionId, idx, h))
+            );
+
+            // Tabs
+            if (Array.isArray(parsedTabs) && parsedTabs.length) {
+                await Promise.all(parsedTabs.map(tab => model.insertTab(questionId, tab.tabKey, tab.tabValue, tab.tabImage)));
+            }
+
+            // Rows + per-cell options/answers
+            let order = 1;
+            for (const r of parsedRows) {
+                const rowRes = await model.insertMultiDropdownRow(questionId, r.rowLabel, order++);
+                const rowId = rowRes.insertId;
+
+                if (Array.isArray(r.columns)) {
+                    for (const c of r.columns) {
+                        const colIndex = Number(c.colIndex);
+                        // insert options
+                        if (Array.isArray(c.options)) {
+                            await Promise.all(c.options.map(opt => model.insertMultiDropdownOption(questionId, rowId, colIndex, opt)));
+                        }
+                        // insert correct answer
+                        if (typeof c.answer === 'string' && c.answer.length) {
+                            await model.insertMultiDropdownAnswer(questionId, rowId, colIndex, c.answer);
+                        }
+                    }
+                }
+            }
+
+            // Explanation and info
+            if (explanationText) await model.insertMcqExplanation(questionId, explanationHeading, explanationText);
+            if (info) await model.insertAdditionalInfo(questionId, info, infoImage);
+
+            return res.status(201).json({
+                result: true,
+                message: 'Multi Dropdown question created successfully',
+                data: {
+                    questionId,
+                    question,
+                    headers: parsedHeaders,
+                    rows: parsedRows,
+                    tabs: parsedTabs,
+                    marks,
+                    difficulty,
+                    instructions,
+                    explanationHeading,
+                    explanationText,
+                    info,
+                    infoImage
+                }
+            });
+        }
 
     } catch (error) {
         logger.error(`❌ Failed to add question: ${error.message}`);

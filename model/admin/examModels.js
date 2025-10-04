@@ -928,6 +928,61 @@ async function insertTableHighlightRow(questionId, leftColumn, rightColumn, sort
         throw err;
     }
 }
+// Headers
+async function insertMultiDropdownHeader(questionId, colIndex, headerText) {
+    const sql = `INSERT INTO tb_multi_dropdown_headers (question_id, col_index, header_text)
+               VALUES (?, ?, ?);`;
+    try {
+        const result = await query(sql, [questionId, colIndex, headerText]);
+        logger.info(`✅ insertMultiDropdownHeader: q=${questionId} col=${colIndex} "${headerText}"`);
+        return result;
+    } catch (err) {
+        logger.error(`❌ insertMultiDropdownHeader: ${err.message}`);
+        throw err;
+    }
+}
+
+// Row
+async function insertMultiDropdownRow(questionId, rowLabel, sortOrder = null) {
+    const sql = `INSERT INTO tb_multi_dropdown_rows (question_id, row_label, sort_order)
+               VALUES (?, ?, ?);`;
+    try {
+        const result = await query(sql, [questionId, rowLabel, sortOrder]);
+        logger.info(`✅ insertMultiDropdownRow: q=${questionId} "${rowLabel}"`);
+        return result;
+    } catch (err) {
+        logger.error(`❌ insertMultiDropdownRow: ${err.message}`);
+        throw err;
+    }
+}
+
+// Options per cell
+async function insertMultiDropdownOption(questionId, rowId, colIndex, optionValue) {
+    const sql = `INSERT INTO tb_multi_dropdown_options (question_id, row_id, col_index, option_value)
+               VALUES (?, ?, ?, ?);`;
+    try {
+        const result = await query(sql, [questionId, rowId, colIndex, optionValue]);
+        logger.info(`✅ insertMultiDropdownOption: q=${questionId} row=${rowId} col=${colIndex} "${optionValue}"`);
+        return result;
+    } catch (err) {
+        logger.error(`❌ insertMultiDropdownOption: ${err.message}`);
+        throw err;
+    }
+}
+
+// Answers per cell
+async function insertMultiDropdownAnswer(questionId, rowId, colIndex, answerValue) {
+    const sql = `INSERT INTO tb_multi_dropdown_answers (question_id, row_id, col_index, answer_value)
+               VALUES (?, ?, ?, ?);`;
+    try {
+        const result = await query(sql, [questionId, rowId, colIndex, answerValue]);
+        logger.info(`✅ insertMultiDropdownAnswer: q=${questionId} row=${rowId} col=${colIndex} "${answerValue}"`);
+        return result;
+    } catch (err) {
+        logger.error(`❌ insertMultiDropdownAnswer: ${err.message}`);
+        throw err;
+    }
+}
 
 /**
  * Fetch all questions from tb_questions table
@@ -1151,6 +1206,10 @@ module.exports = {
     insertTableDropdownOption,
     insertTableDropdownAnswer,
     insertTableHighlightRow,
+    insertMultiDropdownHeader,
+    insertMultiDropdownRow,
+    insertMultiDropdownOption,
+    insertMultiDropdownAnswer,
     fetchSampleQuestionnaireIds,
     getMcqQuestions,
     Getmcqoption,

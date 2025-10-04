@@ -181,7 +181,7 @@ module.exports.Getexplantion = async (questionId) => {
 
 module.exports.Getdropdownquestiontext = async (questionId) => {
     try {
-        const sql = `SELECT id, questionId, dropdownField, blankOrNot, createdAt, updatedAt FROM tb_dropdowns WHERE questionId = ?`;
+        const sql = `SELECT id, questionId, dropdownField,dropdownanswer, blankOrNot, createdAt, updatedAt FROM tb_dropdowns WHERE questionId = ?`;
         const data = await query(sql, [questionId]);
         logger.info(` [Getdropdownquestiontext] Successfully retrieved dropdown-type questions for questionId = ${questionId}`);
         return data;
@@ -401,7 +401,7 @@ module.exports.GetSubmittedAnswer = async (user_id, test_id) => {
     }
 }
 module.exports.SubmitTestData = async (user_id, test_id, total_score) => {
-  const sql = `
+    const sql = `
     INSERT INTO tb_submittedTest (st_user_id, st_test_id, st_score, st_created_at, st_updated_at, is_submitted, status) 
     VALUES (?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0, 'pending')
     ON DUPLICATE KEY UPDATE 
@@ -410,36 +410,36 @@ module.exports.SubmitTestData = async (user_id, test_id, total_score) => {
       is_submitted = 0,
       status = 'pending'
   `;
-  try {
-    const result = await query(sql, [user_id, test_id, total_score]);
-    logger.info(`✅ [SubmitTestData] UPSERT test data -user: ${user_id} score: ${total_score} test: ${test_id}, affectedRows: ${result.affectedRows}`);
-    return result;
-  } catch (err) {
-    logger.error(`[SubmitTestData] ❌ Failed to UPSERT test data - ${err.message}`);
-    throw err;
-  }
+    try {
+        const result = await query(sql, [user_id, test_id, total_score]);
+        logger.info(`✅ [SubmitTestData] UPSERT test data -user: ${user_id} score: ${total_score} test: ${test_id}, affectedRows: ${result.affectedRows}`);
+        return result;
+    } catch (err) {
+        logger.error(`[SubmitTestData] ❌ Failed to UPSERT test data - ${err.message}`);
+        throw err;
+    }
 };
 
 // Ensure this method is present
 module.exports.UpdateTestSubmissionStatus = async (user_id, test_id) => {
-  const sql = `
+    const sql = `
     UPDATE tb_submittedTest 
     SET is_submitted = 1, status = 'completed', st_updated_at = CURRENT_TIMESTAMP 
     WHERE st_user_id = ? AND st_test_id = ?
   `;
-  try {
-    const result = await query(sql, [user_id, test_id]);
-    logger.info(`✅ [UpdateTestSubmissionStatus] Set completed -user: ${user_id} test: ${test_id}, affectedRows: ${result.affectedRows}`);
-    return result;
-  } catch (err) {
-    logger.error(`[UpdateTestSubmissionStatus]  Failed to set completed - ${err.message}`);
-    throw err;
-  }
+    try {
+        const result = await query(sql, [user_id, test_id]);
+        logger.info(`✅ [UpdateTestSubmissionStatus] Set completed -user: ${user_id} test: ${test_id}, affectedRows: ${result.affectedRows}`);
+        return result;
+    } catch (err) {
+        logger.error(`[UpdateTestSubmissionStatus]  Failed to set completed - ${err.message}`);
+        throw err;
+    }
 };
 
 // Enhanced ListAllTestsWithStatus (for /test/list)
 module.exports.ListAllTestsWithStatus = async (courseId, user_id) => {
-  const sql = `
+    const sql = `
     SELECT 
       t.*,  
       st.is_submitted,
@@ -453,12 +453,12 @@ module.exports.ListAllTestsWithStatus = async (courseId, user_id) => {
     AND DATE(t.toDate) >= CURDATE()
     ORDER BY t.fromDate DESC
   `;
-  try {
-    const data = await query(sql, [user_id, courseId]);
-    logger.info('[Testsmodel] Listed tests with status', { courseId, user_id });
-    return data;
-  } catch (error) {
-    logger.error('[Testsmodel] Error listing tests with status', { error: error.message });
-    throw error;
-  }
+    try {
+        const data = await query(sql, [user_id, courseId]);
+        logger.info('[Testsmodel] Listed tests with status', { courseId, user_id });
+        return data;
+    } catch (error) {
+        logger.error('[Testsmodel] Error listing tests with status', { error: error.message });
+        throw error;
+    }
 };
