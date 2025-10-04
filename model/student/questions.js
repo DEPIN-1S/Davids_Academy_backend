@@ -311,17 +311,17 @@ module.exports.GetTableDropdownHeaders = async (questionId) => {
 };
 
 module.exports.GetTableDropdownRows = async (questionId) => {
-    const sql = `SELECT id, field_label FROM tb_table_dropdown_fields WHERE question_id = ? ORDER BY id ASC`;
+    const sql = `SELECT id, field_label FROM tb_table_dropdown_fields WHERE question_id = ?`;
     return query(sql, [questionId]);
 };
 
 module.exports.GetTableDropdownOptions = async (questionId, rowId) => {
-    const sql = `SELECT option_value FROM tb_table_dropdown_options WHERE question_id=? AND row_id = ? ORDER BY id ASC`;
+    const sql = `SELECT option_value FROM tb_table_dropdown_options WHERE question_id=? AND row_id = ?`;
     return query(sql, [questionId, rowId]);
 };
 
 module.exports.GetTableDropdownAnswer = async (questionId) => {
-    const sql = `SELECT row_label,answer FROM tb_table_dropdown_answers WHERE question_id = ? ORDER BY id ASC`;
+    const sql = `SELECT row_label,answer FROM tb_table_dropdown_answers WHERE question_id = ?`;
     return query(sql, [questionId]);
 };
 
