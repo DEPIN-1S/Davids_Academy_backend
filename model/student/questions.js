@@ -307,43 +307,141 @@ module.exports.GetMultipleRadioQuestionsRadioOption = async (questionId) => {
 // Table Dropdown
 module.exports.GetTableDropdownHeaders = async (questionId) => {
     const sql = `SELECT left_header, right_header FROM tb_table_dropdown_headers WHERE question_id = ?`;
-    return query(sql, [questionId]);
+    try {
+        const result = await query(sql, [questionId]);
+        logger.info(`[GetTableDropdownHeaders] Successfully retrieved headers for questionId = ${questionId}`);
+        return result;
+    } catch (err) {
+        logger.error(`[GetTableDropdownHeaders] ❌ Failed to retrieve headers for questionId = ${questionId} - ${err.message}`);
+        throw err;
+    }
 };
 
 module.exports.GetTableDropdownRows = async (questionId) => {
     const sql = `SELECT id, field_label FROM tb_table_dropdown_fields WHERE question_id = ?`;
-    return query(sql, [questionId]);
+    try {
+        const result = await query(sql, [questionId]);
+        logger.info(`[GetTableDropdownRows] Successfully retrieved rows for questionId = ${questionId}`);
+        return result;
+    } catch (err) {
+        logger.error(`[GetTableDropdownRows] ❌ Failed to retrieve rows for questionId = ${questionId} - ${err.message}`);
+        throw err;
+    }
 };
 
 module.exports.GetTableDropdownOptions = async (questionId, rowId) => {
     const sql = `SELECT option_value FROM tb_table_dropdown_options WHERE question_id=? AND row_id = ?`;
-    return query(sql, [questionId, rowId]);
+    try {
+        const result = await query(sql, [questionId, rowId]);
+        logger.info(`[GetTableDropdownOptions] Successfully retrieved options for questionId = ${questionId}, rowId = ${rowId}`);
+        return result;
+    } catch (err) {
+        logger.error(`[GetTableDropdownOptions] ❌ Failed to retrieve options for questionId = ${questionId}, rowId = ${rowId} - ${err.message}`);
+        throw err;
+    }
 };
 
 module.exports.GetTableDropdownAnswer = async (questionId) => {
     const sql = `SELECT row_label,answer FROM tb_table_dropdown_answers WHERE question_id = ?`;
-    return query(sql, [questionId]);
+    try {
+        const result = await query(sql, [questionId]);
+        logger.info(`[GetTableDropdownAnswer] Successfully retrieved answers for questionId = ${questionId}`);
+        return result;
+    } catch (err) {
+        logger.error(`[GetTableDropdownAnswer] ❌ Failed to retrieve answers for questionId = ${questionId} - ${err.message}`);
+        throw err;
+    }
 };
 
 // Table Highlight
 module.exports.GetTableHighlightRows = async (questionId) => {
     const sql = `SELECT id, left_column, right_column, sort_order FROM tb_table_highlight_rows WHERE question_id = ? ORDER BY COALESCE(sort_order, id) ASC`;
-    return query(sql, [questionId]);
+    try {
+        const result = await query(sql, [questionId]);
+        logger.info(`[GetTableHighlightRows] Successfully retrieved highlight rows for questionId = ${questionId}`);
+        return result;
+    } catch (err) {
+        logger.error(`[GetTableHighlightRows] ❌ Failed to retrieve highlight rows for questionId = ${questionId} - ${err.message}`);
+        throw err;
+    }
 };
 
 // Multi Dropdown
+module.exports.GetMultiDropdownHeaders = async function (questionId) {
+    const sql = `SELECT col_index, header_text
+               FROM tb_multi_dropdown_headers
+               WHERE question_id = ?
+               ORDER BY col_index ASC`;
+    try {
+        const rows = await query(sql, [questionId]);
+        logger.info(`✅ [GetMultiDropdownHeaders] q=${questionId} count=${rows.length}`);
+        return rows;
+    } catch (err) {
+        logger.error(`❌ [GetMultiDropdownHeaders] q=${questionId} - ${err.message}`);
+        throw err;
+    }
+};
+
 module.exports.GetMultiDropdownRows = async (questionId) => {
     const sql = `SELECT id, row_label, sort_order FROM tb_multi_dropdown_rows WHERE question_id = ? ORDER BY COALESCE(sort_order, id) ASC`;
-    return query(sql, [questionId]);
+    try {
+        const result = await query(sql, [questionId]);
+        logger.info(`[GetMultiDropdownRows] Successfully retrieved multi dropdown rows for questionId = ${questionId}`);
+        return result;
+    } catch (err) {
+        logger.error(`[GetMultiDropdownRows] ❌ Failed to retrieve multi dropdown rows for questionId = ${questionId} - ${err.message}`);
+        throw err;
+    }
+};
+module.exports.GetMultiDropdownCells = async function (rowId, rowId, questionId) {
+    const sql = `
+    SELECT
+      h.col_index,
+      o.option_value,
+      a.answer_value
+    FROM tb_multi_dropdown_headers h
+    LEFT JOIN tb_multi_dropdown_options o
+      ON o.question_id = h.question_id
+     AND o.row_id = ?
+     AND o.col_index = h.col_index
+    LEFT JOIN tb_multi_dropdown_answers a
+      ON a.question_id = h.question_id
+     AND a.row_id = ?
+     AND a.col_index = h.col_index
+    WHERE h.question_id = ?
+    ORDER BY h.col_index ASC, o.id ASC
+  `;
+    try {
+        const rows = await query(sql, [rowId, rowId, questionId]);
+        logger.info(`✅ [GetMultiDropdownCells] q=${questionId} row=${rowId} rows=${rows.length}`);
+        return rows;
+    } catch (err) {
+        logger.error(`❌ [GetMultiDropdownCells] q=${questionId} row=${rowId} - ${err.message}`);
+        throw err;
+    }
 };
 
 module.exports.GetMultiDropdownOptions = async (rowId) => {
     const sql = `SELECT option_value FROM tb_multi_dropdown_options WHERE row_id = ? ORDER BY id ASC`;
-    return query(sql, [rowId]);
+    try {
+        const result = await query(sql, [rowId]);
+        logger.info(`[GetMultiDropdownOptions] Successfully retrieved multi dropdown options for rowId = ${rowId}`);
+        return result;
+    } catch (err) {
+        logger.error(`[GetMultiDropdownOptions] ❌ Failed to retrieve multi dropdown options for rowId = ${rowId} - ${err.message}`);
+        throw err;
+    }
 };
 
 module.exports.GetMultiDropdownAnswers = async (rowId) => {
     const sql = `SELECT answer_value FROM tb_multi_dropdown_answers WHERE row_id = ? ORDER BY id ASC`;
-    return query(sql, [rowId]);
+    try {
+        const result = await query(sql, [rowId]);
+        logger.info(`[GetMultiDropdownAnswers] Successfully retrieved multi dropdown answers for rowId = ${rowId}`);
+        return result;
+    } catch (err) {
+        logger.error(`[GetMultiDropdownAnswers] ❌ Failed to retrieve multi dropdown answers for rowId = ${rowId} - ${err.message}`);
+        throw err;
+    }
 };
 

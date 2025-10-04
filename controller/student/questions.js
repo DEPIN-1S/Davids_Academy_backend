@@ -215,13 +215,13 @@ module.exports.GetQuestionDataFromQBank = async (req, res) => {
         }
 
         // Multi Dropdown
-        else if (questionData[0]?.question_type?.toLowerCase() === 'multi dropdown') {
+        else if (questionData[0]?.question_type?.toLowerCase() === 'multidropdown') {
             const tabsInfo = await model.Gettabs(questionId);
             const headers = await model.GetMultiDropdownHeaders(questionId);
             const rows = await model.GetMultiDropdownRows(questionId);
             // for each row, fetch per-column options and answers
             for (const r of rows) {
-                const cells = await model.GetMultiDropdownCells(questionId, r.id);
+                const cells = await model.GetMultiDropdownCells(r.id, r.id, questionId);
                 // group by col_index
                 const grouped = cells.reduce((acc, c) => {
                     if (!acc[c.col_index]) acc[c.col_index] = { colIndex: c.col_index, options: [], answer: null };
