@@ -166,7 +166,79 @@ module.exports.GetQuestionDataFromQBank = async (req, res) => {
                 explanation
             };
         }
+        // Table Dropdown
+        if (questionData[0]?.question_type?.toLowerCase() === 'table dropdown') {
+            const tabsInfo = await model.Gettabs(questionId);
+            const headers = await model.GetTableDropdownHeaders(questionId);
+            const rows = await model.GetTableDropdownRows(questionId); // fields
+            // attach options to each row
+            for (const r of rows) {
+                r.dropdownOptions = await model.GetTableDropdownOptions(questionId, r.id);
+            }
+            const answers = await model.GetTableDropdownAnswer(questionId);
+            const additionalInfo = await model.getAdditionalInfo(questionId);
+            const explanation = await model.Getexplantion(questionId);
 
+            fullQuestionData = {
+                ...questionData[0],
+                tabsInfo,
+                tableHeaders: headers?.[0] ? { leftHeader: headers[0].left_header, rightHeader: headers[0].right_header } : null,
+                tableDropdownFields: rows.map(r => ({ id: r.id, fieldLabel: r.field_label, dropdownOptions: r.dropdownOptions.map(o => o.option_value) })),
+                tableDropdownAnswers: answers.map(a => ({ rowLabel: a.row_label, answer: a.answer })),
+                additionalInfo,
+                explanation
+            };
+        }
+
+        // Table Highlight
+        else if (questionData[0]?.question_type?.toLowerCase() === 'table highlight') {
+            const tabsInfo = await model.Gettabs(questionId);
+            const headers = await model.GetTableDropdownHeaders(questionId);
+            const rows = await model.GetTableHighlightRows(questionId); // left/right text rows
+            const answers = await model.GetTableHighlightAnswers(questionId); // optional text answers if stored in mcq answers
+            const additionalInfo = await model.getAdditionalInfo(questionId);
+            const explanation = await model.Getexplantion(questionId);
+
+            fullQuestionData = {
+                ...questionData[0],
+                tabsInfo,
+                tableHeaders: headers?.[0] ? { leftHeader: headers[0].left_header, rightHeader: headers[0].right_header } : null,
+                tableFields: rows.map(r => ({ id: r.id, leftColumn: r.left_column, rightColumn: r.right_column, sortOrder: r.sort_order })),
+                answers, // array of strings if you store them
+                additionalInfo,
+                explanation
+            };
+        }
+
+        // Multi Dropdown
+        else if (questionData[0]?.question_type?.toLowerCase() === 'multi dropdown') {
+            const tabsInfo = await model.Gettabs(questionId);
+            const headers = await model.GetMultiDropdownHeaders(questionId);
+            const rows = await model.GetMultiDropdownRows(questionId);
+            // for each row, fetch per-column options and answers
+            for (const r of rows) {
+                const cells = await model.GetMultiDropdownCells(questionId, r.id);
+                // group by col_index
+                const grouped = cells.reduce((acc, c) => {
+                    if (!acc[c.col_index]) acc[c.col_index] = { colIndex: c.col_index, options: [], answer: null };
+                    if (c.option_value != null) acc[c.col_index].options.push(c.option_value);
+                    if (c.answer_value != null) acc[c.col_index].answer = c.answer_value;
+                    return acc;
+                }, {});
+                r.columns = Object.values(grouped).sort((a, b) => a.colIndex - b.colIndex);
+            }
+            const additionalInfo = await model.getAdditionalInfo(questionId);
+            const explanation = await model.Getexplantion(questionId);
+
+            fullQuestionData = {
+                ...questionData[0],
+                tabsInfo,
+                headers: headers.map(h => h.header_text),
+                rows: rows.map(r => ({ rowLabel: r.row_label, columns: r.columns })),
+                additionalInfo,
+                explanation
+            };
+        }
         return res.send({
             result: true,
             message: "Question data retrived successfuly",

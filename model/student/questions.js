@@ -203,8 +203,6 @@ module.exports.getAdditionalInfo = async (questionId) => {
         throw err;
     }
 }
-
-
 module.exports.Getexplantion = async (questionId) => {
     const sql = `SELECT * FROM tb_explanation WHERE questionId =?`;
     try {
@@ -216,8 +214,6 @@ module.exports.Getexplantion = async (questionId) => {
         throw err;
     }
 }
-
-
 module.exports.Getsortingoption = async (questionId) => {
     const sql = `SELECT id, questionId, sortItem,itemOrder FROM tb_sortItems WHERE questionId = ?`;
     try {
@@ -229,8 +225,6 @@ module.exports.Getsortingoption = async (questionId) => {
         throw err;
     }
 }
-
-
 module.exports.GetFilltheblankstext = async (questionId) => {
     const sql = `SELECT id, question_id, question_text,answers,blankOrNot FROM tb_fillTheBlanks WHERE question_id = ?`;
     try {
@@ -266,8 +260,6 @@ module.exports.GetFilltheblankstextOptions = async (questionId) => {
         throw err;
     }
 }
-
-
 module.exports.GetDragDropQuestionsheading = async (questionId) => {
     const sql = `SELECT * FROM DragAndDrop_Headings WHERE question_id = ?`;
     try {
@@ -279,8 +271,6 @@ module.exports.GetDragDropQuestionsheading = async (questionId) => {
         throw err;
     }
 }
-
-
 module.exports.GetDragDropoption = async (questionId) => {
     const sql = `SELECT * FROM DragAndDrop_Headings_Options WHERE headings_id = ?`;
     try {
@@ -292,8 +282,6 @@ module.exports.GetDragDropoption = async (questionId) => {
         throw err;
     }
 }
-
-
 module.exports.GetMultipleRadioQuestionsClientfindings = async (questionId) => {
     const sql = `SELECT * FROM tb_MultipleRadio WHERE question_id =?`; // Confirm this is the correct ID for multiple radio
     try {
@@ -305,8 +293,6 @@ module.exports.GetMultipleRadioQuestionsClientfindings = async (questionId) => {
         throw err;
     }
 }
-
-
 module.exports.GetMultipleRadioQuestionsRadioOption = async (questionId) => {
     const sql = `SELECT * FROM tb_MultipleRadio_RadioOptions WHERE question_id = ?`; // Confirm this is the correct ID for multiple radio
     try {
@@ -318,3 +304,51 @@ module.exports.GetMultipleRadioQuestionsRadioOption = async (questionId) => {
         throw err;
     }
 }
+// Table Dropdown
+module.exports.GetTableDropdownHeaders = async (questionId) => {
+    const sql = `SELECT left_header, right_header FROM tb_table_dropdown_headers WHERE question_id = ?`;
+    return query(sql, [questionId]);
+};
+
+module.exports.GetTableDropdownRows = async (questionId) => {
+    const sql = `SELECT id, field_label FROM tb_table_dropdown_fields WHERE question_id = ? ORDER BY id ASC`;
+    return query(sql, [questionId]);
+};
+
+module.exports.GetTableDropdownOptions = async (questionId, rowId) => {
+    const sql = `SELECT option_value FROM tb_table_dropdown_options WHERE question_id=? AND row_id = ? ORDER BY id ASC`;
+    return query(sql, [questionId, rowId]);
+};
+
+module.exports.GetTableDropdownAnswer = async (questionId) => {
+    const sql = `SELECT row_label,answer FROM tb_table_dropdown_answers WHERE question_id = ? ORDER BY id ASC`;
+    return query(sql, [questionId]);
+};
+
+// Table Highlight
+module.exports.GetTableHighlightRows = async (questionId) => {
+    const sql = `SELECT id, left_column, right_column, sort_order FROM tb_table_highlight_rows WHERE question_id = ? ORDER BY COALESCE(sort_order, id) ASC`;
+    return query(sql, [questionId]);
+};
+
+module.exports.GetTableHighlightAnswers = async (rowId) => {
+    const sql = `SELECT answer_text FROM tb_table_highlight_answers WHERE row_id = ? ORDER BY id ASC`;
+    return query(sql, [rowId]);
+};
+
+// Multi Dropdown
+module.exports.GetMultiDropdownRows = async (questionId) => {
+    const sql = `SELECT id, row_label, sort_order FROM tb_multi_dropdown_rows WHERE question_id = ? ORDER BY COALESCE(sort_order, id) ASC`;
+    return query(sql, [questionId]);
+};
+
+module.exports.GetMultiDropdownOptions = async (rowId) => {
+    const sql = `SELECT option_value FROM tb_multi_dropdown_options WHERE row_id = ? ORDER BY id ASC`;
+    return query(sql, [rowId]);
+};
+
+module.exports.GetMultiDropdownAnswers = async (rowId) => {
+    const sql = `SELECT answer_value FROM tb_multi_dropdown_answers WHERE row_id = ? ORDER BY id ASC`;
+    return query(sql, [rowId]);
+};
+
