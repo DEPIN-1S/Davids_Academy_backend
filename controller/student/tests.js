@@ -1,9 +1,5 @@
 const model = require('../../model/student/tests')
 const logger = require('../../utils/logger');
-
-
-
-
 module.exports.ListAllTests = async (req, res) => {
     try {
         const { user_id } = req?.user
@@ -30,7 +26,6 @@ module.exports.ListAllTests = async (req, res) => {
         })
     }
 }
-
 module.exports.ListTestQuestions = async (req, res) => {
     try {
         const { user_id } = req?.user
@@ -74,8 +69,6 @@ module.exports.ListTestQuestions = async (req, res) => {
         })
     }
 }
-
-
 module.exports.GetQuestionData = async (req, res) => {
     try {
         const { user_id } = req.user
@@ -244,7 +237,6 @@ module.exports.GetQuestionData = async (req, res) => {
         })
     }
 }
-
 // submit question method
 module.exports.SubmitQuestions = async (req, res) => {
     try {
@@ -318,9 +310,6 @@ module.exports.SubmitQuestions = async (req, res) => {
         })
     }
 }
-
-
-
 module.exports.SubmitTest = async (req, res) => {
     try {
         const { user_id } = req?.user

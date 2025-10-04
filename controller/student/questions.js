@@ -1,8 +1,5 @@
 const model = require('../../model/student/questions')
 const logger = require('../../utils/logger');
-
-
-
 module.exports.ListQuestionsFromQBank = async (req, res) => {
     try {
         const { user_id } = req?.user
@@ -30,8 +27,6 @@ module.exports.ListQuestionsFromQBank = async (req, res) => {
         })
     }
 }
-
-
 module.exports.GetQuestionDataFromQBank = async (req, res) => {
     try {
         const { user_id } = req?.user
