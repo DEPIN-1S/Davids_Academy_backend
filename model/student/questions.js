@@ -331,11 +331,6 @@ module.exports.GetTableHighlightRows = async (questionId) => {
     return query(sql, [questionId]);
 };
 
-module.exports.GetTableHighlightAnswers = async (rowId) => {
-    const sql = `SELECT answer_text FROM tb_table_highlight_answers WHERE row_id = ? ORDER BY id ASC`;
-    return query(sql, [rowId]);
-};
-
 // Multi Dropdown
 module.exports.GetMultiDropdownRows = async (questionId) => {
     const sql = `SELECT id, row_label, sort_order FROM tb_multi_dropdown_rows WHERE question_id = ? ORDER BY COALESCE(sort_order, id) ASC`;

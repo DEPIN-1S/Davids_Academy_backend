@@ -195,7 +195,11 @@ module.exports.GetQuestionDataFromQBank = async (req, res) => {
             const tabsInfo = await model.Gettabs(questionId);
             const headers = await model.GetTableDropdownHeaders(questionId);
             const rows = await model.GetTableHighlightRows(questionId); // left/right text rows
-            const answers = await model.GetTableHighlightAnswers(questionId); // optional text answers if stored in mcq answers
+            const mcqAnswers = await model.GetmcqAnswers(questionId); // array of objects
+            // Extract only the answer values as an array
+            const answer = Array.isArray(mcqAnswers)
+                ? mcqAnswers.map(obj => obj.mcqAnswer)
+                : [];
             const additionalInfo = await model.getAdditionalInfo(questionId);
             const explanation = await model.Getexplantion(questionId);
 
@@ -204,7 +208,7 @@ module.exports.GetQuestionDataFromQBank = async (req, res) => {
                 tabsInfo,
                 tableHeaders: headers?.[0] ? { leftHeader: headers[0].left_header, rightHeader: headers[0].right_header } : null,
                 tableFields: rows.map(r => ({ id: r.id, leftColumn: r.left_column, rightColumn: r.right_column, sortOrder: r.sort_order })),
-                answers, // array of strings if you store them
+                answer, // array of strings if you store them
                 additionalInfo,
                 explanation
             };
