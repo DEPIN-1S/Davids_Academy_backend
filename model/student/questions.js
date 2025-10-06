@@ -185,10 +185,10 @@ module.exports.GetHighlightAnswers = async (questionId) => {
     const sql = `SELECT id,questionId,answer FROM tb_sentenceHighlightAnswers WHERE questionId = ?`;
     try {
         const result = await query(sql, [questionId]);
-        logger.info(`✅ [GetHighlightAnswers] Successfully retrieved sentence highligh answers for questionId = ${questionId}`);
+        logger.info(`✅ [GetHighlightAnswers] Successfully retrieved sentence highlight answers for questionId = ${questionId}`);
         return result;
     } catch (err) {
-        logger.error(`[GetHighlightAnswers] ❌ Failed to retrieve sentence highligh answers for questionId = ${questionId} - ${err.message}`);
+        logger.error(`[GetHighlightAnswers] ❌ Failed to retrieve sentence highlight answers for questionId = ${questionId} - ${err.message}`);
         throw err;
     }
 }
