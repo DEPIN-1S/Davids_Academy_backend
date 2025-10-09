@@ -38,3 +38,26 @@
 {"level":"error","message":"❌ Failed to add question: model.insertMultiDropdownQuestion is not a function","service":"david-academy-api","timestamp":"2025-10-04 14:27:04"}
 {"error":"jwt expired","level":"error","message":"Invalid token","service":"david-academy-api","timestamp":"2025-10-04 15:22:24"}
 {"error":"jwt expired","level":"error","message":"Invalid token","service":"david-academy-api","timestamp":"2025-10-04 15:23:53"}
+{"error":"jwt expired","level":"error","message":"Invalid token","service":"david-academy-api","timestamp":"2025-10-06 19:40:45"}
+{"error":"jwt expired","level":"error","message":"Invalid token","service":"david-academy-api","timestamp":"2025-10-06 20:20:39"}
+{"level":"error","message":"❌ [ListQuestionIdsNotSubmitted] q=12 student=2 - ER_BAD_FIELD_ERROR: Unknown column 'questionId' in 'SELECT'","service":"david-academy-api","timestamp":"2025-10-06 20:24:44"}
+{"level":"error","message":"❌ [ListQuestionIdsNotSubmitted] q=12 student=2 - ER_BAD_FIELD_ERROR: Unknown column 'studentId' in 'WHERE'","service":"david-academy-api","timestamp":"2025-10-06 20:25:39"}
+{"level":"error","message":"Test data not found","service":"david-academy-api","timestamp":"2025-10-06 20:54:40"}
+{"level":"error","message":"Test data not found","service":"david-academy-api","timestamp":"2025-10-06 20:56:46"}
+{"level":"error","message":"Test data not found","service":"david-academy-api","timestamp":"2025-10-06 20:56:50"}
+{"level":"error","message":"Question not available in this test","service":"david-academy-api","timestamp":"2025-10-06 20:59:49"}
+{"error":"jwt expired","level":"error","message":"Invalid token","service":"david-academy-api","timestamp":"2025-10-08 10:03:43"}
+{"level":"error","message":"Error checking email (admin@gmail.com): Handshake inactivity timeout","service":"david-academy-api","timestamp":"2025-10-08 10:04:48"}
+{"level":"error","message":"Login error: Handshake inactivity timeout","service":"david-academy-api","timestamp":"2025-10-08 10:04:48"}
+{"cell":{"answer_value":null,"col_index":0,"option_value":null},"level":"error","message":"Found cell with col_index 0 in GetQuestionDataFromQBank","questionId":252,"service":"david-academy-api","timestamp":"2025-10-08 10:06:48"}
+{"cell":{"answer_value":null,"col_index":0,"option_value":null},"level":"error","message":"Found cell with col_index 0 in GetQuestionDataFromQBank","questionId":252,"service":"david-academy-api","timestamp":"2025-10-08 10:06:49"}
+{"cell":{"answer_value":null,"col_index":0,"option_value":null},"level":"error","message":"Found cell with col_index 0 in GetQuestionDataFromQBank","questionId":252,"service":"david-academy-api","timestamp":"2025-10-08 10:06:50"}
+{"cell":{"answer_value":null,"col_index":0,"option_value":null},"level":"error","message":"Found cell with col_index 0 in GetQuestionDataFromQBank","questionId":252,"service":"david-academy-api","timestamp":"2025-10-08 10:06:51"}
+{"cell":{"answer_value":null,"col_index":0,"option_value":null},"level":"error","message":"Found cell with col_index 0 in GetQuestionDataFromQBank","questionId":252,"service":"david-academy-api","timestamp":"2025-10-08 10:11:15"}
+{"groupedColumn":{"answer":null,"colIndex":0,"options":[]},"level":"error","message":"Grouped column with colIndex 0 in GetQuestionDataFromQBank","questionId":252,"rowId":10,"service":"david-academy-api","timestamp":"2025-10-08 10:11:15"}
+{"cell":{"answer_value":null,"col_index":0,"option_value":null},"level":"error","message":"Found cell with col_index 0 in GetQuestionDataFromQBank","questionId":252,"service":"david-academy-api","timestamp":"2025-10-08 10:11:16"}
+{"groupedColumn":{"answer":null,"colIndex":0,"options":[]},"level":"error","message":"Grouped column with colIndex 0 in GetQuestionDataFromQBank","questionId":252,"rowId":11,"service":"david-academy-api","timestamp":"2025-10-08 10:11:16"}
+{"cell":{"answer_value":null,"col_index":0,"option_value":null},"level":"error","message":"Found cell with col_index 0 in GetQuestionDataFromQBank","questionId":252,"service":"david-academy-api","timestamp":"2025-10-08 10:11:16"}
+{"groupedColumn":{"answer":null,"colIndex":0,"options":[]},"level":"error","message":"Grouped column with colIndex 0 in GetQuestionDataFromQBank","questionId":252,"rowId":12,"service":"david-academy-api","timestamp":"2025-10-08 10:11:16"}
+{"cell":{"answer_value":null,"col_index":0,"option_value":null},"level":"error","message":"Found cell with col_index 0 in GetQuestionDataFromQBank","questionId":252,"service":"david-academy-api","timestamp":"2025-10-08 10:11:18"}
+{"groupedColumn":{"answer":null,"colIndex":0,"options":[]},"level":"error","message":"Grouped column with colIndex 0 in GetQuestionDataFromQBank","questionId":252,"rowId":13,"service":"david-academy-api","timestamp":"2025-10-08 10:11:18"}

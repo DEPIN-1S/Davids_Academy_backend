@@ -16,6 +16,25 @@ module.exports.ListQuestionIds = async (courseId) => {
     }
 }
 
+// List question ids for a course that the student has NOT submitted yet
+module.exports.ListQuestionIdsNotSubmitted = async (courseId, studentId) => {
+    const sql = `
+      SELECT id FROM tb_questions 
+      WHERE courseId = ? AND exam_type = 'q-bank' 
+      AND id NOT IN (
+        SELECT sq_question_id FROM tb_submittedQuestions WHERE sq_user_id = ?
+      )
+    `;
+    try {
+        const rows = await query(sql, [courseId, studentId]);
+        logger.info(`✅ [ListQuestionIdsNotSubmitted] q=${courseId} student=${studentId} count=${rows.length}`);
+        return rows;
+    } catch (err) {
+        logger.error(`❌ [ListQuestionIdsNotSubmitted] q=${courseId} student=${studentId} - ${err.message}`);
+        throw err;
+    }
+}
+
 module.exports.GetStudentData = async (studentId) => {
     try {
         const sql = `SELECT * from tb_users where id=?`;

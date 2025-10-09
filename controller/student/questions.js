@@ -12,7 +12,7 @@ module.exports.ListQuestionsFromQBank = async (req, res) => {
             })
         }
         const courseId = studentData[0]?.target_exam
-        const questionData = await model.ListQuestionIds(courseId)
+        const questionData = await model.ListQuestionIdsNotSubmitted(courseId, user_id)
         const questions = questionData.map(item => item.id)
         logger.info("Question ids listed successfully", user_id, courseId)
         return res.send({
@@ -216,33 +216,50 @@ module.exports.GetQuestionDataFromQBank = async (req, res) => {
 
         // Multi Dropdown
         if (questionData[0]?.question_type?.toLowerCase() === 'multidropdown') {
-            const tabsInfo = await model.Gettabs(questionId);
-            const headers = await model.GetMultiDropdownHeaders(questionId);
-            const rows = await model.GetMultiDropdownRows(questionId);
-            // for each row, fetch per-column options and answers
+            const tabsInfo = await model.Gettabs(questionId); // [memory:2]
+            const headers = await model.GetMultiDropdownHeaders(questionId); // [memory:2]
+            const rows = await model.GetMultiDropdownRows(questionId); // [memory:2]
+
             for (const r of rows) {
-                const cells = await model.GetMultiDropdownCells(r.id, r.id, questionId);
-                // group by col_index
+                const cells = await model.GetMultiDropdownCells(r.id, r.id, questionId); // [memory:2]
+
+                // Group by col_index, skipping any col_index === 0
                 const grouped = cells.reduce((acc, c) => {
-                    if (!acc[c.col_index]) acc[c.col_index] = { colIndex: c.col_index, options: [], answer: null };
-                    if (c.option_value != null) acc[c.col_index].options.push(c.option_value);
-                    if (c.answer_value != null) acc[c.col_index].answer = c.answer_value;
-                    return acc;
-                }, {});
-                r.columns = Object.values(grouped).sort((a, b) => a.colIndex - b.colIndex);
+                    if (!c) return acc; // [memory:2]
+
+                    // Skip unwanted col_index 0 entirely
+                    if (c.col_index === 0) {
+                        logger.warn('Skipped cell with col_index 0 in GetQuestionDataFromQBank', { cell: c, questionId, rowId: r.id }); // [memory:2]
+                        return acc; // [memory:2]
+                    }
+
+                    if (!acc[c.col_index]) acc[c.col_index] = { colIndex: c.col_index, options: [], answer: null }; // [memory:2]
+                    if (c.option_value != null) acc[c.col_index].options.push(c.option_value); // [memory:2]
+                    if (c.answer_value != null) acc[c.col_index].answer = c.answer_value; // [memory:2]
+                    return acc; // [memory:2]
+                }, {}); // [memory:2]
+
+                // Materialize sorted columns (no colIndex 0 present)
+                r.columns = Object.values(grouped).sort((a, b) => a.colIndex - b.colIndex); // [memory:2]
             }
-            const additionalInfo = await model.getAdditionalInfo(questionId);
-            const explanation = await model.Getexplantion(questionId);
+
+            const additionalInfo = await model.getAdditionalInfo(questionId); // [memory:2]
+            const explanation = await model.Getexplantion(questionId); // [memory:2]
 
             fullQuestionData = {
                 ...questionData[0],
                 tabsInfo,
-                headers: headers.map(h => h.header_text),
-                rows: rows.map(r => ({ rowLabel: r.row_label, columns: r.columns })),
+                headers: headers.map(h => h.header_text), // [memory:2]
+                // Also ensure any pre-existing colIndex 0 in rows is filtered out defensively
+                rows: rows.map(r => ({
+                    rowLabel: r.row_label,
+                    columns: (r.columns || []).filter(col => col && col.colIndex !== 0).sort((a, b) => a.colIndex - b.colIndex),
+                })), // [memory:2]
                 additionalInfo,
-                explanation
-            };
+                explanation,
+            }; // [memory:2]
         }
+
         return res.send({
             result: true,
             message: "Question data retrived successfuly",
@@ -435,32 +452,48 @@ module.exports.GetSampleQuestionData = async (req, res) => {
 
         // Multi Dropdown
         if (questionData[0]?.question_type?.toLowerCase() === 'multidropdown') {
-            const tabsInfo = await model.Gettabs(questionId);
-            const headers = await model.GetMultiDropdownHeaders(questionId);
-            const rows = await model.GetMultiDropdownRows(questionId);
-            // for each row, fetch per-column options and answers
+            const tabsInfo = await model.Gettabs(questionId); // [memory:2]
+            const headers = await model.GetMultiDropdownHeaders(questionId); // [memory:2]
+            const rows = await model.GetMultiDropdownRows(questionId); // [memory:2]
+
             for (const r of rows) {
-                const cells = await model.GetMultiDropdownCells(r.id, r.id, questionId);
-                // group by col_index
+                const cells = await model.GetMultiDropdownCells(r.id, r.id, questionId); // [memory:2]
+
+                // Group by col_index, skipping any col_index === 0
                 const grouped = cells.reduce((acc, c) => {
-                    if (!acc[c.col_index]) acc[c.col_index] = { colIndex: c.col_index, options: [], answer: null };
-                    if (c.option_value != null) acc[c.col_index].options.push(c.option_value);
-                    if (c.answer_value != null) acc[c.col_index].answer = c.answer_value;
-                    return acc;
-                }, {});
-                r.columns = Object.values(grouped).sort((a, b) => a.colIndex - b.colIndex);
+                    if (!c) return acc; // [memory:2]
+
+                    // Skip unwanted col_index 0 entirely
+                    if (c.col_index === 0) {
+                        logger.warn('Skipped cell with col_index 0 in GetQuestionDataFromQBank', { cell: c, questionId, rowId: r.id }); // [memory:2]
+                        return acc; // [memory:2]
+                    }
+
+                    if (!acc[c.col_index]) acc[c.col_index] = { colIndex: c.col_index, options: [], answer: null }; // [memory:2]
+                    if (c.option_value != null) acc[c.col_index].options.push(c.option_value); // [memory:2]
+                    if (c.answer_value != null) acc[c.col_index].answer = c.answer_value; // [memory:2]
+                    return acc; // [memory:2]
+                }, {}); // [memory:2]
+
+                // Materialize sorted columns (no colIndex 0 present)
+                r.columns = Object.values(grouped).sort((a, b) => a.colIndex - b.colIndex); // [memory:2]
             }
-            const additionalInfo = await model.getAdditionalInfo(questionId);
-            const explanation = await model.Getexplantion(questionId);
+
+            const additionalInfo = await model.getAdditionalInfo(questionId); // [memory:2]
+            const explanation = await model.Getexplantion(questionId); // [memory:2]
 
             fullQuestionData = {
                 ...questionData[0],
                 tabsInfo,
-                headers: headers.map(h => h.header_text),
-                rows: rows.map(r => ({ rowLabel: r.row_label, columns: r.columns })),
+                headers: headers.map(h => h.header_text), // [memory:2]
+                // Also ensure any pre-existing colIndex 0 in rows is filtered out defensively
+                rows: rows.map(r => ({
+                    rowLabel: r.row_label,
+                    columns: (r.columns || []).filter(col => col && col.colIndex !== 0).sort((a, b) => a.colIndex - b.colIndex),
+                })), // [memory:2]
                 additionalInfo,
-                explanation
-            };
+                explanation,
+            }; // [memory:2]
         }
         return res.send({
             result: true,

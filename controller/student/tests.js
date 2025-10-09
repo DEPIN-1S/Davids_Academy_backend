@@ -275,32 +275,48 @@ module.exports.GetQuestionData = async (req, res) => {
         }
         // Multi Dropdown
         if (questionData[0]?.question_type?.toLowerCase() === 'multidropdown') {
-            const tabsInfo = await model.Gettabs(questionId);
-            const headers = await model.GetMultiDropdownHeaders(questionId);
-            const rows = await model.GetMultiDropdownRows(questionId);
-            // for each row, fetch per-column options and answers
+            const tabsInfo = await model.Gettabs(questionId); // [memory:2]
+            const headers = await model.GetMultiDropdownHeaders(questionId); // [memory:2]
+            const rows = await model.GetMultiDropdownRows(questionId); // [memory:2]
+
             for (const r of rows) {
-                const cells = await model.GetMultiDropdownCells(r.id, r.id, questionId);
-                // group by col_index
+                const cells = await model.GetMultiDropdownCells(r.id, r.id, questionId); // [memory:2]
+
+                // Group by col_index, skipping any col_index === 0
                 const grouped = cells.reduce((acc, c) => {
-                    if (!acc[c.col_index]) acc[c.col_index] = { colIndex: c.col_index, options: [], answer: null };
-                    if (c.option_value != null) acc[c.col_index].options.push(c.option_value);
-                    if (c.answer_value != null) acc[c.col_index].answer = c.answer_value;
-                    return acc;
-                }, {});
-                r.columns = Object.values(grouped).sort((a, b) => a.colIndex - b.colIndex);
+                    if (!c) return acc; // [memory:2]
+
+                    // Skip unwanted col_index 0 entirely
+                    if (c.col_index === 0) {
+                        logger.warn('Skipped cell with col_index 0 in GetQuestionDataFromQBank', { cell: c, questionId, rowId: r.id }); // [memory:2]
+                        return acc; // [memory:2]
+                    }
+
+                    if (!acc[c.col_index]) acc[c.col_index] = { colIndex: c.col_index, options: [], answer: null }; // [memory:2]
+                    if (c.option_value != null) acc[c.col_index].options.push(c.option_value); // [memory:2]
+                    if (c.answer_value != null) acc[c.col_index].answer = c.answer_value; // [memory:2]
+                    return acc; // [memory:2]
+                }, {}); // [memory:2]
+
+                // Materialize sorted columns (no colIndex 0 present)
+                r.columns = Object.values(grouped).sort((a, b) => a.colIndex - b.colIndex); // [memory:2]
             }
-            const additionalInfo = await model.getAdditionalInfo(questionId);
-            const explanation = await model.Getexplantion(questionId);
+
+            const additionalInfo = await model.getAdditionalInfo(questionId); // [memory:2]
+            const explanation = await model.Getexplantion(questionId); // [memory:2]
 
             fullQuestionData = {
                 ...questionData[0],
                 tabsInfo,
-                headers: headers.map(h => h.header_text),
-                rows: rows.map(r => ({ rowLabel: r.row_label, columns: r.columns })),
+                headers: headers.map(h => h.header_text), // [memory:2]
+                // Also ensure any pre-existing colIndex 0 in rows is filtered out defensively
+                rows: rows.map(r => ({
+                    rowLabel: r.row_label,
+                    columns: (r.columns || []).filter(col => col && col.colIndex !== 0).sort((a, b) => a.colIndex - b.colIndex),
+                })), // [memory:2]
                 additionalInfo,
-                explanation
-            };
+                explanation,
+            }; // [memory:2]
         }
         return res.send({
             result: true,
@@ -319,13 +335,6 @@ module.exports.SubmitQuestions = async (req, res) => {
     try {
         const { user_id } = req?.user
         const { test_id, questionId, is_correct, mark } = req.body
-        if (!test_id || !questionId || !is_correct || !mark) {
-            logger.warn("Test id, question id, is correct and mark are required")
-            return res.send({
-                result: false,
-                message: "Test id, question id, is correct and mark are required"
-            })
-        }
         const studentData = await model.GetStudentData(user_id)
         if (studentData.length == 0) {
             logger.error("Student not found.Please login again", user_id)
@@ -335,21 +344,24 @@ module.exports.SubmitQuestions = async (req, res) => {
             })
         }
         const courseId = studentData[0]?.target_exam
-        const checkTest = await model.CheckTest(test_id, courseId)
-        if (checkTest.length === 0) {
-            logger.error("Test data not found", test_id, courseId)
-            return res.send({
-                result: false,
-                message: "Test data not found"
-            })
-        }
-        const checkQuestionInTest = await model.CheckQuestionInTest(test_id, questionId)
-        if (checkQuestionInTest.length === 0) {
-            logger.error("Question not available in this test", test_id, questionId)
-            return res.send({
-                result: false,
-                message: "Question not available in this test"
-            })
+        // If a test_id is provided (non-null, non-empty), validate the test and question membership
+        if (test_id !== null && test_id !== '') {
+            const checkTest = await model.CheckTest(test_id, courseId)
+            if (checkTest.length === 0) {
+                logger.error("Test data not found", test_id, courseId)
+                return res.send({
+                    result: false,
+                    message: "Test data not found"
+                })
+            }
+            const checkQuestionInTest = await model.CheckQuestionInTest(test_id, questionId)
+            if (checkQuestionInTest.length === 0) {
+                logger.error("Question not available in this test", test_id, questionId)
+                return res.send({
+                    result: false,
+                    message: "Question not available in this test"
+                })
+            }
         }
         const checkQuestion = await model.CheckQuestion(questionId)
         if (checkQuestion.length === 0) {
