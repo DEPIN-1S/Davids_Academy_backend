@@ -3,7 +3,6 @@ const util = require('util');
 const query = util.promisify(db.query).bind(db);
 const logger = require('../../utils/logger');
 module.exports.ListRecordings = async (whereClause = "", params = []) => {
-    console.log('where', whereClause);
     try {
         const sql = `SELECT * from tb_recordings ${whereClause} LIMIT ? OFFSET ?`;
         logger.info('[Recordingsmodel] Listing recordings in db', { whereClause, params });

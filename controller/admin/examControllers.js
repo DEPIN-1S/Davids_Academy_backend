@@ -706,7 +706,8 @@ module.exports.createQuestion = async (req, res) => {
                 explanationText,
                 info,
                 marks,
-                instructions
+                instructions,
+                multiradioHeading
 
             } = req.body;
 
@@ -743,7 +744,8 @@ module.exports.createQuestion = async (req, res) => {
                 difficulty,
                 courseId,
                 marks,
-                instructions
+                instructions,
+                multiradioHeading
 
             );
             const questionId = questionResult.insertId;
@@ -790,6 +792,7 @@ module.exports.createQuestion = async (req, res) => {
                     marks,
                     instructions,
                     tabs,
+                    multiradioHeading,
                     question_content,
                     radio_options,
                     difficulty,

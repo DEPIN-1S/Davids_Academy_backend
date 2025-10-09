@@ -69,7 +69,6 @@ app.use((err, req, res, next) => {
     message: err.message || 'Internal Server Error',
   });
 });
-
 // ─── START SERVER ──────────────────────────────────────────────────────────────
 const PORT = process.env.PORT;
 server.listen(PORT, () => {

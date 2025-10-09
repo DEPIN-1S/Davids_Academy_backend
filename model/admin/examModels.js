@@ -478,8 +478,8 @@ async function insertFillBlankQuestionOptionsHeadingValues(questionId, heading_i
 
 // ---------------------------------Multiple Radio------------------------//
 
-async function insertMultipleRadioQuestion(question, question_type_id, exam_type, difficulty, courseId, marks, instructions) {
-    const sql = `INSERT INTO tb_questions (question, question_type_id, exam_type, difficulty, courseId, marks, instructions) VALUES (?, ?, ?, ?, ?, ?, ?)`;
+async function insertMultipleRadioQuestion(question, question_type_id, exam_type, difficulty, courseId, marks, instructions, multiradioHeading) {
+    const sql = `INSERT INTO tb_questions (question, question_type_id, exam_type, difficulty, courseId, marks, instructions,multiradioHeading) VALUES (?, ?, ?, ?, ?, ?, ?,?)`;
     try {
         const result = await query(sql, [
             question,
@@ -488,7 +488,8 @@ async function insertMultipleRadioQuestion(question, question_type_id, exam_type
             difficulty,
             courseId,
             marks,
-            instructions
+            instructions,
+            multiradioHeading
         ]);
 
         logger.info(`✅ insertMultipleRadioQuestion: Inserted question ID=${result.insertId}`);
