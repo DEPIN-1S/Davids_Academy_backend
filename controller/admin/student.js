@@ -1,3 +1,4 @@
+// Student Controller: Handles student registration, update, listing, status, and test/question submissions
 const model = require('../../model/admin/student')
 const logger = require('../../utils/logger');
 const { HashPassword } = require('../../utils/bcrypt')
@@ -202,9 +203,6 @@ module.exports.ListAllStudents = async (req, res) => {
         });
     }
 };
-
-
-
 module.exports.UpdateStudentStatus = async (req, res) => {
     try {
         let { student_id } = req.body || {}
@@ -243,8 +241,6 @@ module.exports.UpdateStudentStatus = async (req, res) => {
         })
     }
 }
-
-
 module.exports.ListStudentSubmittedTest = async (req, res) => {
     try {
         let { student_id } = req.body || {}
@@ -275,8 +271,6 @@ module.exports.ListStudentSubmittedTest = async (req, res) => {
         })
     }
 }
-
-
 module.exports.ListSubmittedQuestion = async (req, res) => {
     try {
         let { student_id, test_id } = req.body || {}

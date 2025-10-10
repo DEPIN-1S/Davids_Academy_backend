@@ -4,6 +4,8 @@ const db = require('../../config/db');
 const util = require('util');
 const query = util.promisify(db.query).bind(db);
 const logger = require('../../utils/logger');
+const path = require('path');
+const fs = require('fs');
 /**
  * Inserts a new exam type into the tb_questionType table.
  *
@@ -123,9 +125,14 @@ async function deleteTabImageByUrl(imageUrl) {
 
         // Delete file from file system if row was affected
         if (result.affectedRows > 0) {
-            const filePath = path.join(__dirname, '..', imageUrl); // Adjust as per actual path
-            await fs.unlink(filePath);
-            logger.info(`deleteTabImageByUrl: Deleted file at path: ${filePath}`);
+            let relativePath = imageUrl.startsWith('/') ? imageUrl.slice(1) : imageUrl;
+            const filePath = path.join(process.cwd(), 'public', relativePath);
+            try {
+                await fs.promises.unlink(filePath);
+                logger.info(`deleteTabImageByUrl: Deleted file at path: ${filePath}`);
+            } catch (fsErr) {
+                logger.error(`deleteTabImageByUrl: File not found or could not be deleted at path: ${filePath} - ${fsErr.message}`);
+            }
         }
 
         return result;
@@ -265,9 +272,9 @@ async function insertAdditionalInfo(questionId, info, image = null) {
  * @returns {Promise<object>} Result of the INSERT query.
  */
 
-async function insertDropdownQuestion(question, question_type_id, exam_type, difficulty, courseId, marks) {
-    const sql = `INSERT INTO tb_questions (question,question_type_id,exam_type, difficulty,courseId,marks) 
-                 VALUES (?, ?, ?, ?, ?, ?)`;
+async function insertDropdownQuestion(question, question_type_id, exam_type, difficulty, courseId, marks, instructions) {
+    const sql = `INSERT INTO tb_questions (question,question_type_id,exam_type, difficulty,courseId,marks,instructions) 
+                 VALUES (?, ?, ?, ?, ?, ?,?)`;
 
     try {
         const result = await query(sql, [
@@ -276,7 +283,8 @@ async function insertDropdownQuestion(question, question_type_id, exam_type, dif
             exam_type,
             difficulty,
             courseId,
-            marks
+            marks,
+            instructions
         ]);
 
         logger.info(`✅ insertDropdownQuestion: Inserted question ID=${result.insertId}`);
@@ -323,10 +331,9 @@ async function insertDropdownHeadingOptions(questionId, headingtextId, option) {
  * @returns {Promise<object>} Result of the INSERT query.
  */
 
-async function insertSentenceQuestion(question, question_type_id, exam_type, difficulty, courseId, marks) {
-    const sql = `INSERT INTO tb_questions (question, question_type_id, exam_type, difficulty, courseId, marks) 
-VALUES ( ?, ?, ?, ?, ?, ?);
-`;
+async function insertSentenceQuestion(question, question_type_id, exam_type, difficulty, courseId, marks, passage, instructions) {
+    const sql = `INSERT INTO tb_questions (question, question_type_id, exam_type, difficulty, courseId, marks, passage, instructions) 
+VALUES (?, ?, ?, ?, ?, ?, ?, ?);`;
 
     try {
         const result = await query(sql, [
@@ -335,7 +342,9 @@ VALUES ( ?, ?, ?, ?, ?, ?);
             exam_type,
             difficulty,
             courseId,
-            marks
+            marks,
+            passage,
+            instructions
         ]);
 
         logger.info(`✅ insertSentenceQuestion: Inserted question ID=${result.insertId}`);
@@ -376,11 +385,11 @@ async function insertSentenceHiglightAnswers(questionId, ans) {
  * @param {string} tabValue - Tab content.
  * @returns {Promise<object>} Result of the INSERT query.
  */
-async function insertTab(questionId, tabKey, tabValue) {
-    const sql = `INSERT INTO tb_questionTabs (questionId, tabKey, tabValue) VALUES (?, ?, ?)`;
+async function insertTab(questionId, tabKey, tabValue, tabImage) {
+    const sql = `INSERT INTO tb_questionTabs (questionId, tabKey, tabValue, tabImage) VALUES (?, ?, ?, ?)`;
     try {
-        const result = await query(sql, [questionId, tabKey, tabValue]);
-        logger.info(`📄 insertTab: Tab "${tabKey}" added for question ID=${questionId}`);
+        const result = await query(sql, [questionId, tabKey, tabValue, tabImage]);
+        logger.info(`📄 insertTab: Tab "${tabKey}" added for question ID=${questionId} with tabImage: ${tabImage}`);
         return result;
     } catch (err) {
         logger.error(`❌ insertTab: Failed for question ID=${questionId}, tabKey=${tabKey} - ${err.message}`);
@@ -407,10 +416,9 @@ async function insertSortItems(questionId, sortItem, itemOrder) {
 }
 // ---------------------------------fill in the blanks------------------------//
 
-async function insertFillTheBlanksQuestion(question, question_type_id, answer, exam_type, difficulty, courseId, marks) {
-    const sql = `INSERT INTO tb_questions (question,question_type_id,answer,exam_type, difficulty,courseId,marks) 
-VALUES (?, ?, ?, ?, ?, ?, ?)
-`;
+async function insertFillTheBlanksQuestion(question, question_type_id, answer, exam_type, difficulty, courseId, marks, instructions) {
+    const sql = `INSERT INTO tb_questions (question,question_type_id,answer,exam_type, difficulty,courseId,marks,instructions) 
+VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
     try {
         const result = await query(sql, [
             question,
@@ -419,7 +427,8 @@ VALUES (?, ?, ?, ?, ?, ?, ?)
             exam_type,
             difficulty,
             courseId,
-            marks
+            marks,
+            instructions
         ]);
 
         logger.info(`✅ insertFillTheBlanksQuestion: Inserted question ID=${result.insertId}`);
@@ -469,8 +478,8 @@ async function insertFillBlankQuestionOptionsHeadingValues(questionId, heading_i
 
 // ---------------------------------Multiple Radio------------------------//
 
-async function insertMultipleRadioQuestion(question, question_type_id, exam_type, difficulty, courseId, marks) {
-    const sql = `INSERT INTO tb_questions (question, question_type_id, exam_type, difficulty, courseId,marks) VALUES (?, ?, ?, ?, ?,?)`;
+async function insertMultipleRadioQuestion(question, question_type_id, exam_type, difficulty, courseId, marks, instructions, multiradioHeading) {
+    const sql = `INSERT INTO tb_questions (question, question_type_id, exam_type, difficulty, courseId, marks, instructions,multiradioHeading) VALUES (?, ?, ?, ?, ?, ?, ?,?)`;
     try {
         const result = await query(sql, [
             question,
@@ -478,7 +487,9 @@ async function insertMultipleRadioQuestion(question, question_type_id, exam_type
             exam_type,
             difficulty,
             courseId,
-            marks
+            marks,
+            instructions,
+            multiradioHeading
         ]);
 
         logger.info(`✅ insertMultipleRadioQuestion: Inserted question ID=${result.insertId}`);
@@ -516,9 +527,9 @@ async function insertMultipleRadioOptions(questionId, option_value) {
 //--------------------------- Drag and Drop ------------------------------------------
 
 
-async function insertDragDropQuestion(question, question_type_id, exam_type, drag_drop_content, difficulty, courseId, marks) {
-    const sql = `INSERT INTO tb_questions (question,question_type_id,exam_type,drag_drop_content, difficulty,courseId,marks) 
-                 VALUES (?, ?, ?, ?, ?, ?,?)`;
+async function insertDragDropQuestion(question, question_type_id, exam_type, drag_drop_content, difficulty, courseId, marks, instructions) {
+    const sql = `INSERT INTO tb_questions (question,question_type_id,exam_type,drag_drop_content, difficulty,courseId,marks,instructions) 
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
 
     try {
         const result = await query(sql, [
@@ -528,7 +539,8 @@ async function insertDragDropQuestion(question, question_type_id, exam_type, dra
             drag_drop_content,
             difficulty,
             courseId,
-            marks
+            marks,
+            instructions
         ]);
 
         logger.info(`✅ insertMultipleRadioQuestion: Inserted question ID=${result.insertId}`);
@@ -815,6 +827,164 @@ async function getSentenceHighlightQuestions(condition) {
         throw err;
     }
 }
+// insert table dropdown question
+// Model function for Table Dropdown Question
+async function insertTableDropdownQuestion(question, question_type_id, exam_type, difficulty, courseId, marks, instructions) {
+    const sql = `INSERT INTO tb_questions (
+        question, question_type_id, exam_type, difficulty, courseId, marks, instructions
+    ) VALUES (?, ?, ?, ?, ?, ?, ?);`;
+
+    try {
+        const result = await query(sql, [
+            question,
+            question_type_id,
+            exam_type,
+            difficulty,
+            courseId,
+            marks,
+            instructions
+        ]);
+        logger.info(`✅ insertTableDropdownQuestion: Inserted Table Dropdown question ID=${result.insertId}`);
+        return result;
+    } catch (err) {
+        logger.error(`❌ insertTableDropdownQuestion: Failed to insert Table Dropdown question - ${err.message}`);
+        throw err;
+    }
+}
+// Save table headers for a Table Dropdown question
+async function insertTableDropdownHeaders(questionId, leftHeader, rightHeader) {
+    const sql = `INSERT INTO tb_table_dropdown_headers
+               (question_id, left_header, right_header)
+               VALUES (?, ?, ?);`;
+    try {
+        const result = await query(sql, [questionId, leftHeader, rightHeader]);
+        logger.info(`✅ insertTableDropdownHeaders: headers saved for question ${questionId}`);
+        return result;
+    } catch (err) {
+        logger.error(`❌ insertTableDropdownHeaders: ${err.message}`);
+        throw err;
+    }
+}
+
+// Optional: fetch headers later
+async function getTableDropdownHeaders(questionId) {
+    const sql = `SELECT left_header, right_header
+               FROM tb_table_dropdown_headers
+               WHERE question_id = ?;`;
+    try {
+        return await query(sql, [questionId]);
+    } catch (err) {
+        logger.error(`❌ getTableDropdownHeaders: ${err.message}`);
+        throw err;
+    }
+}
+// Insert a single Table Dropdown field/row for a question
+async function insertTableDropdownField(questionId, fieldLabel) {
+    const sql = `INSERT INTO tb_table_dropdown_fields (question_id, field_label) VALUES (?, ?);`;
+
+    try {
+        const result = await query(sql, [questionId, fieldLabel]);
+        logger.info(`✅ insertTableDropdownField: Inserted field "${fieldLabel}" for question ID=${questionId}`);
+        return result;
+    } catch (err) {
+        logger.error(`❌ insertTableDropdownField: Failed to insert field "${fieldLabel}" for question ID=${questionId} - ${err.message}`);
+        throw err;
+    }
+}
+// Model function for inserting a dropdown option for a row
+async function insertTableDropdownOption(questionId, rowId, optionValue) {
+    const sql = `INSERT INTO tb_table_dropdown_options (question_id, row_id, option_value) VALUES (?, ?, ?);`;
+    try {
+        const result = await query(sql, [questionId, rowId, optionValue]);
+        logger.info(`✅ insertTableDropdownOption: Inserted option "${optionValue}" for row ID=${rowId} (question ID=${questionId})`);
+        return result;
+    } catch (err) {
+        logger.error(`❌ insertTableDropdownOption: Failed to insert option "${optionValue}" for row ID=${rowId} - ${err.message}`);
+        throw err;
+    }
+}
+// Insert dropdown answer for a Table Dropdown question row
+async function insertTableDropdownAnswer(questionId, rowLabel, answer) {
+    const sql = `INSERT INTO tb_table_dropdown_answers (question_id, row_label, answer) VALUES (?, ?, ?);`;
+
+    try {
+        const result = await query(sql, [questionId, rowLabel, answer]);
+        logger.info(`✅ insertTableDropdownAnswer: Inserted answer "${answer}" for row "${rowLabel}" (question ID=${questionId})`);
+        return result;
+    } catch (err) {
+        logger.error(`❌ insertTableDropdownAnswer: Failed to insert answer for row "${rowLabel}" - ${err.message}`);
+        throw err;
+    }
+}
+//  insert a highlight row with left/right text
+async function insertTableHighlightRow(questionId, leftColumn, rightColumn, sortOrder = null) {
+    const sql = `INSERT INTO tb_table_highlight_rows (question_id, left_column, right_column, sort_order)
+               VALUES (?, ?, ?, ?);`;
+    try {
+        const result = await query(sql, [questionId, leftColumn, rightColumn, sortOrder]);
+        logger.info(`✅ insertTableHighlightRow: (${leftColumn} | ${rightColumn}) for q=${questionId}`);
+        return result;
+    } catch (err) {
+        logger.error(`❌ insertTableHighlightRow: ${err.message}`);
+        throw err;
+    }
+}
+// Headers
+async function insertMultiDropdownHeader(questionId, colIndex, headerText) {
+    const sql = `INSERT INTO tb_multi_dropdown_headers (question_id, col_index, header_text)
+               VALUES (?, ?, ?);`;
+    try {
+        const result = await query(sql, [questionId, colIndex, headerText]);
+        logger.info(`✅ insertMultiDropdownHeader: q=${questionId} col=${colIndex} "${headerText}"`);
+        return result;
+    } catch (err) {
+        logger.error(`❌ insertMultiDropdownHeader: ${err.message}`);
+        throw err;
+    }
+}
+
+// Row
+async function insertMultiDropdownRow(questionId, rowLabel, sortOrder = null) {
+    const sql = `INSERT INTO tb_multi_dropdown_rows (question_id, row_label, sort_order)
+               VALUES (?, ?, ?);`;
+    try {
+        const result = await query(sql, [questionId, rowLabel, sortOrder]);
+        logger.info(`✅ insertMultiDropdownRow: q=${questionId} "${rowLabel}"`);
+        return result;
+    } catch (err) {
+        logger.error(`❌ insertMultiDropdownRow: ${err.message}`);
+        throw err;
+    }
+}
+
+// Options per cell
+async function insertMultiDropdownOption(questionId, rowId, colIndex, optionValue) {
+    const sql = `INSERT INTO tb_multi_dropdown_options (question_id, row_id, col_index, option_value)
+               VALUES (?, ?, ?, ?);`;
+    try {
+        const result = await query(sql, [questionId, rowId, colIndex, optionValue]);
+        logger.info(`✅ insertMultiDropdownOption: q=${questionId} row=${rowId} col=${colIndex} "${optionValue}"`);
+        return result;
+    } catch (err) {
+        logger.error(`❌ insertMultiDropdownOption: ${err.message}`);
+        throw err;
+    }
+}
+
+// Answers per cell
+async function insertMultiDropdownAnswer(questionId, rowId, colIndex, answerValue) {
+    const sql = `INSERT INTO tb_multi_dropdown_answers (question_id, row_id, col_index, answer_value)
+               VALUES (?, ?, ?, ?);`;
+    try {
+        const result = await query(sql, [questionId, rowId, colIndex, answerValue]);
+        logger.info(`✅ insertMultiDropdownAnswer: q=${questionId} row=${rowId} col=${colIndex} "${answerValue}"`);
+        return result;
+    } catch (err) {
+        logger.error(`❌ insertMultiDropdownAnswer: ${err.message}`);
+        throw err;
+    }
+}
+
 /**
  * Fetch all questions from tb_questions table
  * where exam_type is 'Mock Test' and not deleted
@@ -1030,6 +1200,17 @@ module.exports = {
     insertDragDropQuestion,
     insertDragDropOptionsHeading,
     insertDragDropOptionsHeadingValues,
+    insertTableDropdownQuestion,
+    insertTableDropdownHeaders,
+    getTableDropdownHeaders,
+    insertTableDropdownField,
+    insertTableDropdownOption,
+    insertTableDropdownAnswer,
+    insertTableHighlightRow,
+    insertMultiDropdownHeader,
+    insertMultiDropdownRow,
+    insertMultiDropdownOption,
+    insertMultiDropdownAnswer,
     fetchSampleQuestionnaireIds,
     getMcqQuestions,
     Getmcqoption,

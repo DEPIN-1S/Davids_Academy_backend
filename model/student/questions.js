@@ -16,6 +16,25 @@ module.exports.ListQuestionIds = async (courseId) => {
     }
 }
 
+// List question ids for a course that the student has NOT submitted yet
+module.exports.ListQuestionIdsNotSubmitted = async (courseId, studentId) => {
+    const sql = `
+      SELECT id FROM tb_questions 
+      WHERE courseId = ? AND exam_type = 'q-bank' 
+      AND id NOT IN (
+        SELECT sq_question_id FROM tb_submittedQuestions WHERE sq_user_id = ?
+      )
+    `;
+    try {
+        const rows = await query(sql, [courseId, studentId]);
+        logger.info(`✅ [ListQuestionIdsNotSubmitted] q=${courseId} student=${studentId} count=${rows.length}`);
+        return rows;
+    } catch (err) {
+        logger.error(`❌ [ListQuestionIdsNotSubmitted] q=${courseId} student=${studentId} - ${err.message}`);
+        throw err;
+    }
+}
+
 module.exports.GetStudentData = async (studentId) => {
     try {
         const sql = `SELECT * from tb_users where id=?`;
@@ -132,7 +151,7 @@ module.exports.Getexplantion = async (questionId) => {
 
 module.exports.Getdropdownquestiontext = async (questionId) => {
     try {
-        const sql = `SELECT id, questionId, dropdownField, blankOrNot FROM tb_dropdowns WHERE questionId = ?`;
+        const sql = `SELECT id, questionId, dropdownField,dropdownanswer, blankOrNot FROM tb_dropdowns WHERE questionId = ?`;
         const data = await query(sql, [questionId]);
         logger.info(`✅ [Getdropdownquestiontext] Successfully retrieved dropdown-type questions for questionId = ${questionId}`);
         return data;
@@ -185,10 +204,10 @@ module.exports.GetHighlightAnswers = async (questionId) => {
     const sql = `SELECT id,questionId,answer FROM tb_sentenceHighlightAnswers WHERE questionId = ?`;
     try {
         const result = await query(sql, [questionId]);
-        logger.info(`✅ [GetHighlightAnswers] Successfully retrieved sentence highligh answers for questionId = ${questionId}`);
+        logger.info(`✅ [GetHighlightAnswers] Successfully retrieved sentence highlight answers for questionId = ${questionId}`);
         return result;
     } catch (err) {
-        logger.error(`[GetHighlightAnswers] ❌ Failed to retrieve sentence highligh answers for questionId = ${questionId} - ${err.message}`);
+        logger.error(`[GetHighlightAnswers] ❌ Failed to retrieve sentence highlight answers for questionId = ${questionId} - ${err.message}`);
         throw err;
     }
 }
@@ -203,8 +222,6 @@ module.exports.getAdditionalInfo = async (questionId) => {
         throw err;
     }
 }
-
-
 module.exports.Getexplantion = async (questionId) => {
     const sql = `SELECT * FROM tb_explanation WHERE questionId =?`;
     try {
@@ -216,8 +233,6 @@ module.exports.Getexplantion = async (questionId) => {
         throw err;
     }
 }
-
-
 module.exports.Getsortingoption = async (questionId) => {
     const sql = `SELECT id, questionId, sortItem,itemOrder FROM tb_sortItems WHERE questionId = ?`;
     try {
@@ -229,8 +244,6 @@ module.exports.Getsortingoption = async (questionId) => {
         throw err;
     }
 }
-
-
 module.exports.GetFilltheblankstext = async (questionId) => {
     const sql = `SELECT id, question_id, question_text,answers,blankOrNot FROM tb_fillTheBlanks WHERE question_id = ?`;
     try {
@@ -266,8 +279,6 @@ module.exports.GetFilltheblankstextOptions = async (questionId) => {
         throw err;
     }
 }
-
-
 module.exports.GetDragDropQuestionsheading = async (questionId) => {
     const sql = `SELECT * FROM DragAndDrop_Headings WHERE question_id = ?`;
     try {
@@ -279,8 +290,6 @@ module.exports.GetDragDropQuestionsheading = async (questionId) => {
         throw err;
     }
 }
-
-
 module.exports.GetDragDropoption = async (questionId) => {
     const sql = `SELECT * FROM DragAndDrop_Headings_Options WHERE headings_id = ?`;
     try {
@@ -292,8 +301,6 @@ module.exports.GetDragDropoption = async (questionId) => {
         throw err;
     }
 }
-
-
 module.exports.GetMultipleRadioQuestionsClientfindings = async (questionId) => {
     const sql = `SELECT * FROM tb_MultipleRadio WHERE question_id =?`; // Confirm this is the correct ID for multiple radio
     try {
@@ -305,8 +312,6 @@ module.exports.GetMultipleRadioQuestionsClientfindings = async (questionId) => {
         throw err;
     }
 }
-
-
 module.exports.GetMultipleRadioQuestionsRadioOption = async (questionId) => {
     const sql = `SELECT * FROM tb_MultipleRadio_RadioOptions WHERE question_id = ?`; // Confirm this is the correct ID for multiple radio
     try {
@@ -318,3 +323,144 @@ module.exports.GetMultipleRadioQuestionsRadioOption = async (questionId) => {
         throw err;
     }
 }
+// Table Dropdown
+module.exports.GetTableDropdownHeaders = async (questionId) => {
+    const sql = `SELECT left_header, right_header FROM tb_table_dropdown_headers WHERE question_id = ?`;
+    try {
+        const result = await query(sql, [questionId]);
+        logger.info(`[GetTableDropdownHeaders] Successfully retrieved headers for questionId = ${questionId}`);
+        return result;
+    } catch (err) {
+        logger.error(`[GetTableDropdownHeaders] ❌ Failed to retrieve headers for questionId = ${questionId} - ${err.message}`);
+        throw err;
+    }
+};
+
+module.exports.GetTableDropdownRows = async (questionId) => {
+    const sql = `SELECT id, field_label FROM tb_table_dropdown_fields WHERE question_id = ?`;
+    try {
+        const result = await query(sql, [questionId]);
+        logger.info(`[GetTableDropdownRows] Successfully retrieved rows for questionId = ${questionId}`);
+        return result;
+    } catch (err) {
+        logger.error(`[GetTableDropdownRows] ❌ Failed to retrieve rows for questionId = ${questionId} - ${err.message}`);
+        throw err;
+    }
+};
+
+module.exports.GetTableDropdownOptions = async (questionId, rowId) => {
+    const sql = `SELECT option_value FROM tb_table_dropdown_options WHERE question_id=? AND row_id = ?`;
+    try {
+        const result = await query(sql, [questionId, rowId]);
+        logger.info(`[GetTableDropdownOptions] Successfully retrieved options for questionId = ${questionId}, rowId = ${rowId}`);
+        return result;
+    } catch (err) {
+        logger.error(`[GetTableDropdownOptions] ❌ Failed to retrieve options for questionId = ${questionId}, rowId = ${rowId} - ${err.message}`);
+        throw err;
+    }
+};
+
+module.exports.GetTableDropdownAnswer = async (questionId) => {
+    const sql = `SELECT row_label,answer FROM tb_table_dropdown_answers WHERE question_id = ?`;
+    try {
+        const result = await query(sql, [questionId]);
+        logger.info(`[GetTableDropdownAnswer] Successfully retrieved answers for questionId = ${questionId}`);
+        return result;
+    } catch (err) {
+        logger.error(`[GetTableDropdownAnswer] ❌ Failed to retrieve answers for questionId = ${questionId} - ${err.message}`);
+        throw err;
+    }
+};
+
+// Table Highlight
+module.exports.GetTableHighlightRows = async (questionId) => {
+    const sql = `SELECT id, left_column, right_column, sort_order FROM tb_table_highlight_rows WHERE question_id = ? ORDER BY COALESCE(sort_order, id) ASC`;
+    try {
+        const result = await query(sql, [questionId]);
+        logger.info(`[GetTableHighlightRows] Successfully retrieved highlight rows for questionId = ${questionId}`);
+        return result;
+    } catch (err) {
+        logger.error(`[GetTableHighlightRows] ❌ Failed to retrieve highlight rows for questionId = ${questionId} - ${err.message}`);
+        throw err;
+    }
+};
+
+// Multi Dropdown
+module.exports.GetMultiDropdownHeaders = async function (questionId) {
+    const sql = `SELECT col_index, header_text
+               FROM tb_multi_dropdown_headers
+               WHERE question_id = ?
+               ORDER BY col_index ASC`;
+    try {
+        const rows = await query(sql, [questionId]);
+        logger.info(`✅ [GetMultiDropdownHeaders] q=${questionId} count=${rows.length}`);
+        return rows;
+    } catch (err) {
+        logger.error(`❌ [GetMultiDropdownHeaders] q=${questionId} - ${err.message}`);
+        throw err;
+    }
+};
+
+module.exports.GetMultiDropdownRows = async (questionId) => {
+    const sql = `SELECT id, row_label, sort_order FROM tb_multi_dropdown_rows WHERE question_id = ? ORDER BY COALESCE(sort_order, id) ASC`;
+    try {
+        const result = await query(sql, [questionId]);
+        logger.info(`[GetMultiDropdownRows] Successfully retrieved multi dropdown rows for questionId = ${questionId}`);
+        return result;
+    } catch (err) {
+        logger.error(`[GetMultiDropdownRows] ❌ Failed to retrieve multi dropdown rows for questionId = ${questionId} - ${err.message}`);
+        throw err;
+    }
+};
+module.exports.GetMultiDropdownCells = async function (rowId, rowId, questionId) {
+    const sql = `
+    SELECT
+      h.col_index,
+      o.option_value,
+      a.answer_value
+    FROM tb_multi_dropdown_headers h
+    LEFT JOIN tb_multi_dropdown_options o
+      ON o.question_id = h.question_id
+     AND o.row_id = ?
+     AND o.col_index = h.col_index
+    LEFT JOIN tb_multi_dropdown_answers a
+      ON a.question_id = h.question_id
+     AND a.row_id = ?
+     AND a.col_index = h.col_index
+    WHERE h.question_id = ?
+    ORDER BY h.col_index ASC, o.id ASC
+  `;
+    try {
+        const rows = await query(sql, [rowId, rowId, questionId]);
+        logger.info(`✅ [GetMultiDropdownCells] q=${questionId} row=${rowId} rows=${rows.length}`);
+        return rows;
+    } catch (err) {
+        logger.error(`❌ [GetMultiDropdownCells] q=${questionId} row=${rowId} - ${err.message}`);
+        throw err;
+    }
+};
+
+module.exports.GetMultiDropdownOptions = async (rowId) => {
+    const sql = `SELECT option_value FROM tb_multi_dropdown_options WHERE row_id = ? ORDER BY id ASC`;
+    try {
+        const result = await query(sql, [rowId]);
+        logger.info(`[GetMultiDropdownOptions] Successfully retrieved multi dropdown options for rowId = ${rowId}`);
+        return result;
+    } catch (err) {
+        logger.error(`[GetMultiDropdownOptions] ❌ Failed to retrieve multi dropdown options for rowId = ${rowId} - ${err.message}`);
+        throw err;
+    }
+};
+
+module.exports.GetMultiDropdownAnswers = async (rowId) => {
+    const sql = `SELECT answer_value FROM tb_multi_dropdown_answers WHERE row_id = ? ORDER BY id ASC`;
+    try {
+        const result = await query(sql, [rowId]);
+        logger.info(`[GetMultiDropdownAnswers] Successfully retrieved multi dropdown answers for rowId = ${rowId}`);
+        return result;
+    } catch (err) {
+        logger.error(`[GetMultiDropdownAnswers] ❌ Failed to retrieve multi dropdown answers for rowId = ${rowId} - ${err.message}`);
+        throw err;
+    }
+};
+
