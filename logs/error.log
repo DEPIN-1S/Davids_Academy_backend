@@ -89,3 +89,4 @@
 {"level":"error","message":"❌ Failed to add question: ER_BAD_FIELD_ERROR: Unknown column 'multiradioHeading' in 'INSERT INTO'","service":"david-academy-api","timestamp":"2025-10-09 17:17:13"}
 {"level":"error","message":"❌ insertMultipleRadioQuestion: Failed to insert question - (intermediate value) is not iterable","service":"david-academy-api","timestamp":"2025-10-09 17:19:42"}
 {"level":"error","message":"❌ Failed to add question: (intermediate value) is not iterable","service":"david-academy-api","timestamp":"2025-10-09 17:19:42"}
+{"error":"jwt expired","level":"error","message":"Invalid token","service":"david-academy-api","timestamp":"2025-10-11 12:58:45"}
