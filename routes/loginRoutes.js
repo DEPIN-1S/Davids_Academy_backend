@@ -8,7 +8,7 @@ const {
     VerifyOtp,
     ForgotPassword,
     Login,
-    AdminResetPassword,
+
 } = require('../controller/admin/loginControllers');
 /**
  * @route   POST /user/create
@@ -34,10 +34,6 @@ route.post('/user/forgot-password', ForgotPassword);
  * @access  Public
  */
 route.post('/login', Login);
-
-route.post('/reset-password', AdminResetPassword);
-
-
 
 // Export the router to be used in the main app
 module.exports = route;
