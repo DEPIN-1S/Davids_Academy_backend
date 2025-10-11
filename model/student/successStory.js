@@ -3,20 +3,18 @@ const util = require('util');
 const query = util.promisify(db.query).bind(db);
 const logger = require('../../utils/logger');
 
-
 module.exports.GetAllSuccessStories = async (limit = 10, offset = 0) => {
     try {
-        const sql = `SELECT * FROM tb_success_stories 
-        ORDER BY createdAt DESC
-        LIMIT ? OFFSET ?`;
-        logger.info('[SuccessStoryModel] Listing all success stories', { limit, offset });
+        // Removed 'created_at' if it doesn't exist; add back if your schema has it (e.g., SELECT id, image, created_at ...)
+        const sql = `SELECT id, image FROM tb_success_stories ORDER BY id DESC LIMIT ? OFFSET ?`;
+        logger.info('[SuccessStoryModel] Fetching all success stories', { limit, offset });
         const data = await query(sql, [limit, offset]);
         return data;
     } catch (error) {
-        logger.error('[SuccessStoryModel] Error in listing success stories', { error: error.message });
+        logger.error('[SuccessStoryModel] Error fetching success stories', { error: error.message });
         throw error;
     }
-}
+};
 
 module.exports.CountSuccessStories = async () => {
     try {
@@ -25,7 +23,7 @@ module.exports.CountSuccessStories = async () => {
         const data = await query(sql);
         return data;
     } catch (error) {
-        logger.error('[SuccessStoryModel] Error in counting success stories', { error: error.message });
+        logger.error('[SuccessStoryModel] Error counting success stories', { error: error.message });
         throw error;
     }
-}
+};
