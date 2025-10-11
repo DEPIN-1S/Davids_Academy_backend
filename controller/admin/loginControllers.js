@@ -115,6 +115,7 @@ module.exports.ForgotPassword = async (req, res) => {
         return res.send({ result: false, message: error.message });
     }
 };
+
 /**
  * @desc User Login
  */
