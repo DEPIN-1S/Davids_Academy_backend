@@ -21,6 +21,16 @@ route.post('/record/edit', verifyToken, verifyRole(["admin"]), upload.fields([{ 
 route.post('/record/list', verifyToken, verifyRole(["admin"]), ListAllRecordings)
 route.post('/record/delete', verifyToken, verifyRole(["admin"]), DeleteRecordings)
 
+
+
+const {CreateSuccessStory, EditSuccessStory,DeleteSuccessStory, } = require('../controller/admin/successStory')
+route.post('/success-story/create', verifyToken, verifyRole(["admin"]), upload.single('image'), CreateSuccessStory)
+route.post('/success-story/edit/:id', verifyToken, verifyRole(["admin"]), upload.single('image'), EditSuccessStory)
+route.post('/success-story/delete', verifyToken, verifyRole(["admin"]), DeleteSuccessStory)
+
+
+
+
 const { GetDashboard } = require('../controller/admin/dashboard')
 route.get('/dashboard', verifyToken, verifyRole(["admin"]), GetDashboard)
 

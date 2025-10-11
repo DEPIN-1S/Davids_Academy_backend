@@ -185,3 +185,34 @@ module.exports.Login = async (req, res) => {
         return res.send({ result: false, message: error.message });
     }
 };
+
+
+
+module.exports.AdminResetPassword = async (req, res) => {
+    try {
+        const { email, newPassword } = req.body;
+        if (!email || !newPassword) {
+            logger.warn("Missing fields in admin reset password request");
+            return res.status(400).send({ result: false, message: 'Email and new password are required' });
+        }
+
+        const user = await model.checkEmail(email);
+        if (user.length === 0) {
+            logger.warn(`Admin reset password failed: email not found - ${email}`);
+            return res.status(404).send({ result: false, message: 'User not found' });
+        }
+
+        const hashedPassword = await HashPassword(newPassword);
+        const updateResult = await model.updatePassword(email, hashedPassword);
+        if (updateResult.affectedRows > 0) {
+            logger.info(`Admin reset password successful for user: ${email} by admin: ${req.user.email}`);
+            return res.send({ result: true, message: 'Password reset successful' });
+        } else {
+            logger.error(`Admin reset password failed for user: ${email}`);
+            return res.status(500).send({ result: false, message: 'Failed to reset password' });
+        }
+    } catch (error) {
+        logger.error(`AdminResetPassword error: ${error.message}`);
+        return res.status(500).send({ result: false, message: error.message });
+    }
+};
