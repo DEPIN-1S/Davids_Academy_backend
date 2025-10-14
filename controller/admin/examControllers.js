@@ -194,6 +194,7 @@ module.exports.createQuestion = async (req, res) => {
             info,
             marks
         } = req.body;
+        console.log('exam_type', exam_type);
         exam_type = exam_type?.toLowerCase()?.trim();
         // For optional uploaded files
         let infoImageFile = req.files?.infoimage?.[0]?.filename || null;
@@ -206,10 +207,11 @@ module.exports.createQuestion = async (req, res) => {
         if (questionType.toLowerCase().trim() === 'mcq') {
             const { question,
                 answer,
+                tabs,
                 options,
                 instructions
             } = req.body
-
+            const qstabs = typeof tabs === 'string' ? JSON.parse(tabs) : tabs;
             let mcqoptions = typeof options === 'string' ? JSON.parse(options) : options;
             let mcqAnswer = typeof answer === 'string' ? JSON.parse(answer) : answer;
             // Insert into tb_mcq
@@ -231,6 +233,11 @@ module.exports.createQuestion = async (req, res) => {
 
             logger.info('questionId', questionId);
             logger.info(`✅ Inserted MCQ (ID: ${questionId})`);
+            // Insert tabs into tb_DropdownQuestionTabs
+            for (const tab of qstabs) {
+                await model.insertTab(questionId, tab.tabKey, tab.tabValue, tab.tabImage);
+                logger.info(`📄 Inserted tab "${tab.tabKey}" for question ${questionId}`);
+            }
             // Insert options into tb_mcqOptions
             for (const option of mcqoptions) {
                 await model.insertMcqOptions(questionId, option);
@@ -255,6 +262,7 @@ module.exports.createQuestion = async (req, res) => {
                     question,
                     question_type_id,
                     instructions,
+                    qstabs,
                     answer,
                     exam_type,
                     difficulty,
