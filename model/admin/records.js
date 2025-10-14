@@ -2,8 +2,6 @@ const db = require('../../config/db');
 const util = require('util');
 const query = util.promisify(db.query).bind(db);
 const logger = require('../../utils/logger');
-
-
 module.exports.InsertRecordings = async (title, recordDate, thumbnail, course, duration, tutor_name, video_url) => {
     try {
         const sql = `INSERT into tb_recordings (r_title,r_record_date,r_thumbnail,r_course,r_duration,r_tutor_name,r_video_url) values(?,?,?,?,?,?,?)`;
@@ -15,7 +13,6 @@ module.exports.InsertRecordings = async (title, recordDate, thumbnail, course, d
         throw error;
     }
 }
-
 module.exports.CheckRecording = async (recording_id) => {
     try {
         const sql = `SELECT * from tb_recordings where r_id=?`;
@@ -27,8 +24,6 @@ module.exports.CheckRecording = async (recording_id) => {
         throw error;
     }
 }
-
-
 module.exports.EditRecordings = async (setClause, values) => {
     try {
         const sql = `UPDATE tb_recordings SET ${setClause} WHERE r_id = ?`;
@@ -40,8 +35,6 @@ module.exports.EditRecordings = async (setClause, values) => {
         throw error;
     }
 }
-
-
 module.exports.ListRecordings = async (whereClause = "", params = []) => {
     try {
         const sql = `SELECT * from tb_recordings ${whereClause} LIMIT ? OFFSET ?`;
@@ -53,8 +46,6 @@ module.exports.ListRecordings = async (whereClause = "", params = []) => {
         throw error;
     }
 }
-
-
 module.exports.CountRecordings = async (whereClause = "", params = []) => {
     try {
         const sql = `SELECT COUNT(*) AS total FROM tb_recordings ${whereClause}`;
@@ -66,8 +57,6 @@ module.exports.CountRecordings = async (whereClause = "", params = []) => {
         throw error;
     }
 }
-
-
 module.exports.DeleteRecording = async (recording_id) => {
     try {
         const sql = `DELETE from tb_recordings where r_id=?`;
