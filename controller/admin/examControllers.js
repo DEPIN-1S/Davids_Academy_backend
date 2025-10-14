@@ -376,14 +376,20 @@ module.exports.createQuestion = async (req, res) => {
         if (questionType.toLowerCase().trim() === 'sorting') {
             const {
                 question,
+                tabs,
                 sortItems,
                 marks,
                 instructions
             } = req.body;
             const sorteditems = typeof sortItems === 'string' ? JSON.parse(sortItems) : sortItems;
+            const qstabs = typeof tabs === 'string' ? JSON.parse(tabs) : tabs;
             // Insert question into tb_dropdownQuestion
             const questionResult = await model.insertDropdownQuestion(question, question_type_id, exam_type, difficulty, courseId, marks, instructions);
             const questionId = questionResult.insertId;
+            for (const tab of qstabs) {
+                await model.insertTab(questionId, tab.tabKey, tab.tabValue, tab.tabImage);
+                logger.info(`📄 Inserted tab "${tab.tabKey}" for question ${questionId}`);
+            }
             logger.info(`✅ Added dropdown question with ID: ${questionId}`);
             // Insert tabs into tb_DropdownQuestionTabs
             for (const item of sorteditems) {
@@ -405,6 +411,7 @@ module.exports.createQuestion = async (req, res) => {
                 data: {
                     questionId,
                     question,
+                    qstabs,
                     instructions,
                     marks,
                     question_type_id,
