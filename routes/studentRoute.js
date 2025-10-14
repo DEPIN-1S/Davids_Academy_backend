@@ -30,4 +30,8 @@ route.get('/result/list', verifyToken, ListSubmittedTest)
 route.post('/result/data', verifyToken, ListTestResult)
 
 
+const { GetSuccessStoriesPublic } = require('../controller/student/successStory')
+route.get('/success-story/list',GetSuccessStoriesPublic)
+
+
 module.exports = route;

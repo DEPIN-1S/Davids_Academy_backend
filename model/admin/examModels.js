@@ -165,7 +165,8 @@ async function doesQuestionExist(questionText) {
 async function insertMcqQuestion(data) {
     const sql = `
     INSERT INTO tb_questions (
-      question,question_type_id,courseId,exam_type, difficulty,exhibit,marks) VALUES (?, ?, ?, ?, ?, ?, ?)`;
+      question,question_type_id,courseId,exam_type, difficulty,exhibit,marks,instructions
+    ) VALUES (?, ?, ?, ?, ?, ?, ?,?)`;
     const values = [
         data.question,
         data.question_type_id,
@@ -173,7 +174,8 @@ async function insertMcqQuestion(data) {
         data.exam_type,
         data.difficulty,
         data.exhibit || null,
-        data.marks
+        data.marks,
+        data.instructions
     ];
 
     try {

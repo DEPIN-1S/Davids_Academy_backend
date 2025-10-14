@@ -207,6 +207,7 @@ module.exports.createQuestion = async (req, res) => {
             const { question,
                 answer,
                 options,
+                instructions
             } = req.body
 
             let mcqoptions = typeof options === 'string' ? JSON.parse(options) : options;
@@ -219,7 +220,8 @@ module.exports.createQuestion = async (req, res) => {
                 exam_type,
                 difficulty,
                 exhibit,
-                marks
+                marks,
+                instructions
             });
             const questionId = mcqResult.insertId;
             for (const ans of mcqAnswer) {
@@ -252,6 +254,7 @@ module.exports.createQuestion = async (req, res) => {
                     questionId,
                     question,
                     question_type_id,
+                    instructions,
                     answer,
                     exam_type,
                     difficulty,

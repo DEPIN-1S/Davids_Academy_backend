@@ -4,6 +4,7 @@ const db = require('../../config/db');
 const util = require('util');
 const logger = require('../../utils/logger'); // Ensure logger is correctly set up
 
+
 const query = util.promisify(db.query).bind(db);
 
 /**
@@ -103,4 +104,5 @@ module.exports = {
     createStudent,
     updateToken,
     updatePassword,
+    
 };
