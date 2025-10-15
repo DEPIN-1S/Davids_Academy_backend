@@ -106,6 +106,7 @@ module.exports.ListSubmittedTest = async (student_id) => {
     t.fromDate, 
     t.toDate, 
     t.totalQuestions,
+    COUNT(sq.sq_id) AS total_attempted,
     SUM(CASE WHEN sq.sq_is_correct = 1 THEN 1 ELSE 0 END) AS correct_count,
     SUM(CASE WHEN sq.sq_is_correct = 0 THEN 1 ELSE 0 END) AS wrong_count
 FROM tb_tests t
@@ -125,7 +126,8 @@ GROUP BY t.id, t.testTitle, t.fromDate, t.toDate, t.totalQuestions;
 // list question bank result
 module.exports.ListQuestionBankResult = async (student_id) => {
     try {
-        const sql = `SELECT 
+        const sql = `SELECT
+    COUNT(sq.sq_id) AS total_attempted,
     SUM(CASE WHEN sq.sq_is_correct = 1 THEN 1 ELSE 0 END) AS correct_count,
     SUM(CASE WHEN sq.sq_is_correct = 0 THEN 1 ELSE 0 END) AS wrong_count
     FROM  tb_submittedQuestions sq 

@@ -77,8 +77,6 @@ module.exports.AdminResetPassword = async (req, res) => {
         return res.status(500).send({ result: false, message: error.message });
     }
 };
-
-
 // update students
 module.exports.EditStudent = async (req, res) => {
     try {
@@ -298,7 +296,8 @@ module.exports.ListStudentSubmittedTest = async (req, res) => {
         const qBankSummary = {
             totalQuestions: totalQuestionsInQbank,
             correct_count: QbankResult.reduce((acc, curr) => acc + (curr.correct_count || 0), 0),
-            wrong_count: QbankResult.reduce((acc, curr) => acc + (curr.wrong_count || 0), 0)
+            wrong_count: QbankResult.reduce((acc, curr) => acc + (curr.wrong_count || 0), 0),
+            total_attempted: QbankResult.reduce((acc, curr) => acc + (curr.total_attempted || 0), 0)
         };
         return res.send({
             result: true,

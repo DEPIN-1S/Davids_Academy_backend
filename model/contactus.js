@@ -1,7 +1,7 @@
 var db = require("../config/db");
 var util = require("util")
 const query = util.promisify(db.query).bind(db);
-const logger = require('../utils/logger'); 
+const logger = require('../utils/logger');
 
 module.exports.AddcContactDetailsquery = async (name, email, phone, course_interested, message) => {
     var Query = `insert into tb_contact_us (cu_name,cu_email,cu_mobile,cu_course_interested,cu_message) values (?,?,?,?,?)`;
@@ -10,7 +10,7 @@ module.exports.AddcContactDetailsquery = async (name, email, phone, course_inter
 }
 
 module.exports.ListContactUsQuery = async () => {
-    var Query = `select * from tb_contact_us ORDER BY cu_id DESC`;
+    var Query = `select c.*,cs.cs_name from tb_contact_us c INNER JOIN courses cs ON cs.cs_id = c.cu_course_interested ORDER BY cu_id DESC`;
     var data = await query(Query);
     return data;
 }
