@@ -117,11 +117,13 @@ module.exports.GetQuestionData = async (req, res) => {
         let fullQuestionData = null
         if (questionData[0]?.question_type.toLowerCase() === "mcq") {
             const mcqoptions = await model.Getmcqoption(questionId);
+            let tabsInfo = await model.Gettabs(questionId);
             const mcqAnswers = await model.GetmcqAnswers(questionId);
             const additionalInfo = await model.GetAdditionalInfo(questionId);
             const explanation = await model.Getexplantion(questionId)
             fullQuestionData = {
                 ...questionData[0],
+                tabsInfo,
                 mcqoptions,
                 mcqAnswers,
                 additionalInfo,
@@ -152,9 +154,11 @@ module.exports.GetQuestionData = async (req, res) => {
         if (questionData[0]?.question_type.toLowerCase() === "sorting") {
             const sortingoptions = await model.Getsortingoption(questionId);
             const additionalInfo = await model.getAdditionalInfo(questionId);
+            let tabsInfo = await model.Gettabs(questionId);
             const explanation = await model.Getexplantion(questionId);
             fullQuestionData = {
                 ...questionData[0],
+                tabsInfo,
                 sortingoptions,
                 additionalInfo,
                 explanation

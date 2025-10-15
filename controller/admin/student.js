@@ -3,8 +3,6 @@ const models = require('../../model/admin/loginModels');
 const model = require('../../model/admin/student')
 const logger = require('../../utils/logger');
 const { HashPassword } = require('../../utils/bcrypt')
-
-
 module.exports.CreateStudent = async (req, res) => {
     try {
         const { fullname, email, phone, password, target_exam } = req.body || {}
@@ -51,8 +49,6 @@ module.exports.CreateStudent = async (req, res) => {
         })
     }
 }
-
-
 module.exports.AdminResetPassword = async (req, res) => {
     try {
         const { email, newPassword } = req.body;
