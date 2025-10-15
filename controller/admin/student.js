@@ -289,7 +289,7 @@ module.exports.ListStudentSubmittedTest = async (req, res) => {
         }
         const submittedTest = await model.ListSubmittedTest(student_id)
         const QbankResult = await model.ListQuestionBankResult(student_id)
-        const totlaQBankQuestions = await model.totalQuestionBankQuestions(checkStudent[0]?.target_exam)
+        const totalQBankQuestions = await model.totalQuestionBankQuestions(checkStudent[0]?.target_exam)
         // Safe extraction
         const totalQuestionsInQbank = totalQBankQuestions?.[0]?.total_questions || 0;
 

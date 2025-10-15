@@ -100,7 +100,20 @@ module.exports.UpdateStatus = async (student_id, status) => {
 
 module.exports.ListSubmittedTest = async (student_id) => {
     try {
-        const sql = `SELECT s.*,t.testTitle,t.fromDate,t.toDate from tb_submittedTest s INNER JOIN tb_tests t ON t.id=s.st_test_id where st_user_id=?`;
+        const sql = `SELECT 
+    t.id AS test_id, 
+    t.testTitle, 
+    t.fromDate, 
+    t.toDate, 
+    t.totalQuestions,
+    SUM(CASE WHEN sq.sq_is_correct = 1 THEN 1 ELSE 0 END) AS correct_count,
+    SUM(CASE WHEN sq.sq_is_correct = 0 THEN 1 ELSE 0 END) AS wrong_count
+FROM tb_tests t
+LEFT JOIN tb_submittedQuestions sq 
+    ON t.id = sq.sq_test_id
+WHERE sq.sq_user_id = ?
+GROUP BY t.id, t.testTitle, t.fromDate, t.toDate, t.totalQuestions;
+`;
         logger.info(`[ListSubmittedTest] Listing student submitted test from db`, { student_id });
         const data = await query(sql, [student_id]);
         return data;
@@ -109,7 +122,37 @@ module.exports.ListSubmittedTest = async (student_id) => {
         throw error;
     }
 }
-
+// list question bank result
+module.exports.ListQuestionBankResult = async (student_id) => {
+    try {
+        const sql = `SELECT 
+    SUM(CASE WHEN sq.sq_is_correct = 1 THEN 1 ELSE 0 END) AS correct_count,
+    SUM(CASE WHEN sq.sq_is_correct = 0 THEN 1 ELSE 0 END) AS wrong_count
+    FROM  tb_submittedQuestions sq 
+  WHERE  sq.sq_test_id=0 AND sq.sq_user_id = ?;
+`;
+        logger.info(`[ListSubmittedTest] Listing student submitted test from db`, { student_id });
+        const data = await query(sql, [student_id]);
+        return data;
+    } catch (error) {
+        logger.error('[ListSubmittedTest] Error in list student submitted test', { error: error.message });
+        throw error;
+    }
+}
+// total QBank questions
+module.exports.totalQuestionBankQuestions = async (course) => {
+    try {
+        const sql = `SELECT COUNT(*) as total_questions FROM tb_questions 
+        WHERE courseId = ? AND exam_type = 'q-bank';
+`;
+        logger.info(`[ListSubmittedTest] Listing student submitted test from db`, { course });
+        const data = await query(sql, [course]);
+        return data;
+    } catch (error) {
+        logger.error('[ListSubmittedTest] Error in list student submitted test', { error: error.message });
+        throw error;
+    }
+}
 module.exports.ListSubmittedQuestions = async (student_id, test_id) => {
     try {
         const sql = `SELECT * from tb_submittedQuestions where st_user_id=? and st_test_id=?`;
