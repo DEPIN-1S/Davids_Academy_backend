@@ -288,10 +288,22 @@ module.exports.ListStudentSubmittedTest = async (req, res) => {
             })
         }
         const submittedTest = await model.ListSubmittedTest(student_id)
+        const QbankResult = await model.ListQuestionBankResult(student_id)
+        const totlaQBankQuestions = await model.totalQuestionBankQuestions(checkStudent[0]?.target_exam)
+        // Safe extraction
+        const totalQuestionsInQbank = totalQBankQuestions?.[0]?.total_questions || 0;
+
+        // Assuming QbankResult has correct and wrong counts summed across available tests for the student,
+        // otherwise you might need to sum them here explicitly.
+        const qBankSummary = {
+            totalQuestions: totalQuestionsInQbank,
+            correct_count: QbankResult.reduce((acc, curr) => acc + (curr.correct_count || 0), 0),
+            wrong_count: QbankResult.reduce((acc, curr) => acc + (curr.wrong_count || 0), 0)
+        };
         return res.send({
             result: true,
             message: "Data retrieved successfully",
-            data: submittedTest
+            data: { mockTest: submittedTest, qBank: qBankSummary }
         })
     } catch (error) {
         return res.send({
