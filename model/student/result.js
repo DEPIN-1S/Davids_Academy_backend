@@ -3,9 +3,6 @@ const util = require('util');
 const query = util.promisify(db.query).bind(db);
 const logger = require('../../utils/logger');
 
-
-
-
 module.exports.GetStudentData = async (studentId) => {
     try {
         const sql = `SELECT * from tb_users where id=?`;
@@ -18,7 +15,6 @@ module.exports.GetStudentData = async (studentId) => {
     }
 }
 
-
 module.exports.GetTestResult = async (studentId, test_id) => {
     try {
         const sql = `SELECT * from tb_submittedQuestions where sq_user_id=? and sq_test_id=?`;
@@ -30,8 +26,6 @@ module.exports.GetTestResult = async (studentId, test_id) => {
         throw error;
     }
 }
-
-
 module.exports.ListSubmittedTests = async (user_id) => {
   const sql = `
     SELECT 
@@ -51,7 +45,6 @@ module.exports.ListSubmittedTests = async (user_id) => {
     throw err;
   }
 };
-
 module.exports.UpdateTestSubmissionStatus = async (user_id, test_id) => {
   const sql = `
     UPDATE tb_submittedTest 

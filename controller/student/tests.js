@@ -54,7 +54,7 @@ module.exports.ListTestQuestions = async (req, res) => {
                 message: "Test data not found"
             })
         }
-        const testQuestions = await model.ListTestQuestions(test_id)
+        const testQuestions = await model.ListUnsubmittedTestQuestions(test_id, user_id)
         const questionIds = testQuestions.map(item => item?.questionId)
         logger.info("Test questions listed successfully", test_id)
         return res.send({
@@ -117,11 +117,13 @@ module.exports.GetQuestionData = async (req, res) => {
         let fullQuestionData = null
         if (questionData[0]?.question_type.toLowerCase() === "mcq") {
             const mcqoptions = await model.Getmcqoption(questionId);
+            let tabsInfo = await model.Gettabs(questionId);
             const mcqAnswers = await model.GetmcqAnswers(questionId);
             const additionalInfo = await model.GetAdditionalInfo(questionId);
             const explanation = await model.Getexplantion(questionId)
             fullQuestionData = {
                 ...questionData[0],
+                tabsInfo,
                 mcqoptions,
                 mcqAnswers,
                 additionalInfo,
@@ -152,9 +154,11 @@ module.exports.GetQuestionData = async (req, res) => {
         if (questionData[0]?.question_type.toLowerCase() === "sorting") {
             const sortingoptions = await model.Getsortingoption(questionId);
             const additionalInfo = await model.getAdditionalInfo(questionId);
+            let tabsInfo = await model.Gettabs(questionId);
             const explanation = await model.Getexplantion(questionId);
             fullQuestionData = {
                 ...questionData[0],
+                tabsInfo,
                 sortingoptions,
                 additionalInfo,
                 explanation
@@ -333,72 +337,62 @@ module.exports.GetQuestionData = async (req, res) => {
 // submit question method
 module.exports.SubmitQuestions = async (req, res) => {
     try {
-        const { user_id } = req?.user
-        const { test_id, questionId, is_correct, mark } = req.body
-        const studentData = await model.GetStudentData(user_id)
+        console.log("Submit Questions", req.body);
+        const { user_id } = req?.user;
+        const { test_id, questionId, is_correct, mark } = req.body;
+
+        const studentData = await model.GetStudentData(user_id);
         if (studentData.length == 0) {
-            logger.error("Student not found.Please login again", user_id)
+            logger.error("Student not found. Please login again", user_id);
             return res.send({
                 result: false,
-                message: "Student not found.Please login again"
-            })
+                message: "Student not found. Please login again"
+            });
         }
-        const courseId = studentData[0]?.target_exam
-        // If a test_id is provided (non-null, non-empty), validate the test and question membership
-        if (test_id !== null && test_id !== '') {
-            const checkTest = await model.CheckTest(test_id, courseId)
+
+        const courseId = studentData[0]?.target_exam;
+
+        if (test_id != null) {  // If test_id is not null or undefined
+            const checkTest = await model.CheckTest(test_id, courseId);
             if (checkTest.length === 0) {
-                logger.error("Test data not found", test_id, courseId)
+                logger.error("Test data not found", test_id, courseId);
                 return res.send({
                     result: false,
                     message: "Test data not found"
-                })
+                });
             }
-            const checkQuestionInTest = await model.CheckQuestionInTest(test_id, questionId)
+
+            const checkQuestionInTest = await model.CheckQuestionInTest(test_id, questionId);
             if (checkQuestionInTest.length === 0) {
-                logger.error("Question not available in this test", test_id, questionId)
+                logger.error("Question not available in this test", test_id, questionId);
                 return res.send({
                     result: false,
                     message: "Question not available in this test"
-                })
+                });
+            }
+
+            // Insert into test submission table
+            const submitData = await model.SubmitQuestionData(user_id, questionId, test_id, is_correct, mark);
+            if (submitData.affectedRows > 0) {
+                return res.send({ result: true, message: "Question data submitted successfully" });
+            } else {
+                return res.send({ result: false, message: "Failed to submit data" });
+            }
+
+        } else {
+            // Insert into question bank submission table when test_id is null
+            const submitData = await model.SubmitQbankQuestionData(user_id, questionId, is_correct, mark);
+            if (submitData.affectedRows > 0) {
+                return res.send({ result: true, message: "Question data submitted successfully" });
+            } else {
+                return res.send({ result: false, message: "Failed to submit data" });
             }
         }
-        const checkQuestion = await model.CheckQuestion(questionId)
-        if (checkQuestion.length === 0) {
-            logger.error("Question not found. Invalid question id", questionId)
-            return res.send({
-                result: false,
-                message: "Question not found. Invalid question id"
-            })
-        }
-        // Validation for already submitted question  **** UNCOMMENT TO USE VALIDATION ****
-        // const checkAlreadySubmitted = await model.CheckQuestionAlreadySubmitted(user_id, question_id, test_id)
-        // if (checkAlreadySubmitted.length > 0) {
-        // logger.error("This question already submitted for this test", questionId)
-        //     return res.send({
-        //         result: false,
-        //         message: "This question already submitted for this test"
-        //     })
-        // }
-        const submitData = await model.SubmitQuestionData(user_id, questionId, test_id, is_correct, mark)
-        if (submitData.affectedRows > 0) {
-            return res.send({
-                result: true,
-                message: "Question data submitted successfully"
-            })
-        } else {
-            return res.send({
-                result: false,
-                message: "Failed to submit data"
-            })
-        }
     } catch (error) {
-        return res.send({
-            result: false,
-            message: error.message
-        })
+        return res.send({ result: false, message: error.message });
     }
-}
+};
+
 module.exports.SubmitTest = async (req, res) => {
     try {
         const { user_id } = req?.user

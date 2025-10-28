@@ -3,8 +3,6 @@ const models = require('../../model/admin/loginModels');
 const model = require('../../model/admin/student')
 const logger = require('../../utils/logger');
 const { HashPassword } = require('../../utils/bcrypt')
-
-
 module.exports.CreateStudent = async (req, res) => {
     try {
         const { fullname, email, phone, password, target_exam } = req.body || {}
@@ -51,8 +49,6 @@ module.exports.CreateStudent = async (req, res) => {
         })
     }
 }
-
-
 module.exports.AdminResetPassword = async (req, res) => {
     try {
         const { email, newPassword } = req.body;
@@ -81,8 +77,6 @@ module.exports.AdminResetPassword = async (req, res) => {
         return res.status(500).send({ result: false, message: error.message });
     }
 };
-
-
 // update students
 module.exports.EditStudent = async (req, res) => {
     try {
@@ -292,10 +286,23 @@ module.exports.ListStudentSubmittedTest = async (req, res) => {
             })
         }
         const submittedTest = await model.ListSubmittedTest(student_id)
+        const QbankResult = await model.ListQuestionBankResult(student_id)
+        const totalQBankQuestions = await model.totalQuestionBankQuestions(checkStudent[0]?.target_exam)
+        // Safe extraction
+        const totalQuestionsInQbank = totalQBankQuestions?.[0]?.total_questions || 0;
+
+        // Assuming QbankResult has correct and wrong counts summed across available tests for the student,
+        // otherwise you might need to sum them here explicitly.
+        const qBankSummary = {
+            totalQuestions: totalQuestionsInQbank,
+            correct_count: QbankResult.reduce((acc, curr) => acc + (curr.correct_count || 0), 0),
+            wrong_count: QbankResult.reduce((acc, curr) => acc + (curr.wrong_count || 0), 0),
+            total_attempted: QbankResult.reduce((acc, curr) => acc + (curr.total_attempted || 0), 0)
+        };
         return res.send({
             result: true,
             message: "Data retrieved successfully",
-            data: submittedTest
+            data: { mockTest: submittedTest, qBank: qBankSummary }
         })
     } catch (error) {
         return res.send({

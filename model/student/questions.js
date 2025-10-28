@@ -22,7 +22,7 @@ module.exports.ListQuestionIdsNotSubmitted = async (courseId, studentId) => {
       SELECT id FROM tb_questions 
       WHERE courseId = ? AND exam_type = 'q-bank' 
       AND id NOT IN (
-        SELECT sq_question_id FROM tb_submittedQuestions WHERE sq_user_id = ?
+        SELECT questionId FROM tb_QbankSubmit WHERE user_id = ?
       )
     `;
     try {

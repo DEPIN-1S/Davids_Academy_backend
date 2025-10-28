@@ -262,7 +262,7 @@ module.exports.createQuestion = async (req, res) => {
                     question,
                     question_type_id,
                     instructions,
-                    qstabs,
+                    tabs: qstabs,
                     answer,
                     exam_type,
                     difficulty,
@@ -411,7 +411,7 @@ module.exports.createQuestion = async (req, res) => {
                 data: {
                     questionId,
                     question,
-                    qstabs,
+                    tabs: qstabs,
                     instructions,
                     marks,
                     question_type_id,
