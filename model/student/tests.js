@@ -52,6 +52,32 @@ module.exports.ListTestQuestions = async (test_id) => {
         throw error;
     }
 }
+// list questions not submitted by student
+module.exports.ListUnsubmittedTestQuestions = async (test_id, user_id) => {
+    try {
+        const sql = `
+      SELECT questionId
+      FROM tb_testQuestions tq
+      WHERE tq.testId = ?
+        AND NOT EXISTS (
+          SELECT 1
+          FROM tb_submittedQuestions sq
+          WHERE sq.sq_test_id = tq.testId
+            AND sq.sq_user_id = ?
+            AND sq.sq_question_id = tq.questionId
+        )
+      ORDER BY tq.id ASC
+    `;
+        logger.info('[Testsmodel] List unsubmitted questions for test', { test_id, user_id });
+        const data = await query(sql, [test_id, user_id]);
+        console.log(data);
+        return data;
+    } catch (error) {
+        logger.error('[Testsmodel] Error listing unsubmitted questions', { error: error.message, test_id, user_id });
+        throw error;
+    }
+};
+
 module.exports.CheckQuestionInTest = async (test_id, questionId) => {
     try {
         const sql = `SELECT * from tb_testQuestions where testId=? and questionId=?`;
@@ -465,6 +491,7 @@ module.exports.CheckQuestionAlreadySubmitted = async (user_id, question_id, test
         throw err;
     }
 }
+// insert mock test answers
 module.exports.SubmitQuestionData = async (user_id, question_id, test_id, is_correct, mark) => {
     const sql = `INSERT into tb_submittedQuestions ( sq_user_id, sq_test_id, sq_question_id,sq_is_correct,sq_mark) values(?,?,?,?,?)`; // Confirm this is the correct ID for multiple radio
     try {
@@ -476,6 +503,19 @@ module.exports.SubmitQuestionData = async (user_id, question_id, test_id, is_cor
         throw err;
     }
 }
+// insert q bank answers
+module.exports.SubmitQbankQuestionData = async (user_id, question_id, is_correct, mark) => {
+    const sql = `INSERT INTO tb_QbankSubmit (user_id, questionId, is_correct, mark) VALUES (?, ?, ?, ?)`;
+    try {
+        const result = await query(sql, [user_id, question_id, is_correct, mark]);
+        logger.info(`[SubmitQbankQuestionData] Submitting question data - user: ${user_id}, question: ${question_id}`);
+        return result;
+    } catch (err) {
+        logger.error(`[SubmitQbankQuestionData] Failed to submit question data - ${err.message}`);
+        throw err;
+    }
+}
+
 module.exports.CheckTestAlreadySubmitted = async (user_id, test_id) => {
     const sql = `SELECT * from tb_submittedTest where st_user_id=? and st_test_id=?`;
     try {
@@ -536,21 +576,39 @@ module.exports.UpdateTestSubmissionStatus = async (user_id, test_id) => {
 // Enhanced ListAllTestsWithStatus (for /test/list)
 module.exports.ListAllTestsWithStatus = async (courseId, user_id) => {
     const sql = `
-    SELECT 
-      t.*,  
-      st.is_submitted,
-      st.status,
-      st.st_score,
-      CASE WHEN st.st_id IS NOT NULL AND st.is_submitted = 1 THEN 1 ELSE 0 END AS isCompleted
-    FROM tb_tests t
-    LEFT JOIN tb_submittedTest st ON t.id = st.st_test_id AND st.st_user_id = ?
-    WHERE t.courseId = ?
-    AND DATE(t.fromDate) <= CURDATE()
-    AND DATE(t.toDate) >= CURDATE()
-    ORDER BY t.fromDate DESC
+    SELECT
+  t.id, t.testTitle, t.courseId, t.fromDate, t.toDate,t.totalQuestions,
+  st.is_submitted, st.status,
+  usq.submittedQuestions, usq.correctAnswers, usq.wrongAnswers,
+  CASE WHEN st.is_submitted = 1 THEN 1 ELSE 0 END AS isCompleted
+FROM tb_tests t
+LEFT JOIN (
+  SELECT 
+    st_test_id, st_user_id,
+    MAX(is_submitted) AS is_submitted,
+    MAX(status) AS status
+  FROM tb_submittedTest
+  GROUP BY st_test_id, st_user_id
+) st
+  ON t.id = st.st_test_id AND st.st_user_id = ?
+LEFT JOIN (
+  SELECT 
+    sq_test_id, sq_user_id,
+    COUNT(DISTINCT sq_question_id) AS submittedQuestions,
+    COUNT(DISTINCT CASE WHEN sq_is_correct = 1 THEN sq_question_id END) AS correctAnswers,
+    COUNT(DISTINCT CASE WHEN sq_is_correct = 0 THEN sq_question_id END) AS wrongAnswers
+  FROM tb_submittedQuestions
+  GROUP BY sq_test_id, sq_user_id
+) usq
+  ON t.id = usq.sq_test_id AND usq.sq_user_id = ?
+WHERE t.courseId = ?
+  AND DATE(t.fromDate) <= CURDATE()
+  AND DATE(t.toDate) >= CURDATE()
+ORDER BY t.fromDate DESC;
+
   `;
     try {
-        const data = await query(sql, [user_id, courseId]);
+        const data = await query(sql, [user_id, user_id, courseId]);
         logger.info('[Testsmodel] Listed tests with status', { courseId, user_id });
         return data;
     } catch (error) {

@@ -127,11 +127,11 @@ GROUP BY t.id, t.testTitle, t.fromDate, t.toDate, t.totalQuestions;
 module.exports.ListQuestionBankResult = async (student_id) => {
     try {
         const sql = `SELECT
-    COUNT(sq.sq_id) AS total_attempted,
-    SUM(CASE WHEN sq.sq_is_correct = 1 THEN 1 ELSE 0 END) AS correct_count,
-    SUM(CASE WHEN sq.sq_is_correct = 0 THEN 1 ELSE 0 END) AS wrong_count
-    FROM  tb_submittedQuestions sq 
-  WHERE  sq.sq_test_id=0 AND sq.sq_user_id = ?;
+    COUNT(id) AS total_attempted,
+    SUM(CASE WHEN is_correct = 1 THEN 1 ELSE 0 END) AS correct_count,
+    SUM(CASE WHEN is_correct = 0 THEN 1 ELSE 0 END) AS wrong_count
+    FROM  tb_QbankSubmit  
+  WHERE  user_id = ?;
 `;
         logger.info(`[ListSubmittedTest] Listing student submitted test from db`, { student_id });
         const data = await query(sql, [student_id]);
