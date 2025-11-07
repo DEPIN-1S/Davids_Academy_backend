@@ -155,6 +155,7 @@ module.exports.totalQuestionBankQuestions = async (course) => {
         throw error;
     }
 }
+
 module.exports.ListSubmittedQuestions = async (student_id, test_id) => {
     try {
         const sql = `SELECT * from tb_submittedQuestions where st_user_id=? and st_test_id=?`;
@@ -167,5 +168,39 @@ module.exports.ListSubmittedQuestions = async (student_id, test_id) => {
     }
 }
 
+module.exports.CheckTest = async (test_id) => {
+    try {
+        const sql = `SELECT * from tb_tests where id=?`;
+        logger.info(`[Check Test] Check test exist in db`, { test_id });
+        const data = await query(sql, [test_id]);
+        return data;
+    } catch (error) {
+        logger.error('[Check Test] Error in  Check test exist in db', { error: error.message });
+        throw error;
+    }
+}
 
 
+module.exports.DeleteSubmittedTest = async (student_id, test_id) => {
+    try {
+        const sql = `Delete from tb_submittedQuestions where st_user_id=? and st_test_id=?`;
+        logger.info(`[Delete submitted test] Delete submitted test from db`, { student_id, test_id });
+        const data = await query(sql, [student_id, test_id]);
+        return data;
+    } catch (error) {
+        logger.error('[Delete submitted test] Error in Delete submitted test from db', { error: error.message });
+        throw error;
+    }
+}
+
+module.exports.DeleteQuestionBank=async(student_id)=>{
+    try {
+        const sql = `Delete from tb_QbankSubmit where user_id=? `;
+        logger.info(`[Delete submitted question bank] Delete submitted question bank from db`, { student_id});
+        const data = await query(sql, [student_id]);
+        return data;
+    } catch (error) {
+        logger.error('[Delete submitted question bank] Error in Delete submitted question bank from db', { error: error.message });
+        throw error;
+    }
+}

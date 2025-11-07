@@ -341,3 +341,89 @@ module.exports.ListSubmittedQuestion = async (req, res) => {
         })
     }
 }
+
+module.exports.ResetTest = async (req, res) => {
+    try {
+        let { student_id, test_id } = req.body || {}
+        if (!student_id || !test_id) {
+            return res.send({
+                result: false,
+                message: "student id and test id are required"
+            })
+        }
+        const checkStudent = await model.CheckStudent(student_id)
+        if (checkStudent.length === 0) {
+            logger.error('Student not found in db: %s', student_id);
+            return res.send({
+                result: false,
+                message: "Student not found."
+            })
+        }
+        const checkTest = await model.CheckTest(test_id)
+        if (checkTest.length === 0) {
+            logger.error('Test not found in db: %s', test_id);
+            return res.send({
+                result: false,
+                message: "Test not found."
+            })
+        }
+        const deleteSubmittedTest = await model.DeleteSubmittedTest(student_id, test_id)
+        if (deleteSubmittedTest.affectedRows > 0) {
+            logger.info('Submitted test deleted successfully from DB. Test ID: %s, Student ID: %s', test_id, student_id);
+            return res.send({
+                result: true,
+                message: "Submitted test deleted successfully."
+            });
+        } else {
+            logger.error('Failed to delete submitted test from DB. Test ID: %s, Student ID: %s', test_id, student_id);
+            return res.send({
+                result: false,
+                message: "Failed to delete submitted test."
+            });
+        }
+    } catch (error) {
+        return res.send({
+            result: false,
+            message: error.message
+        })
+    }
+}
+
+module.exports.ResetQuestionBank = async (req, res) => {
+    try {
+        let { student_id } = req.body || {}
+        if (!student_id) {
+            return res.send({
+                result: false,
+                message: "student id is required"
+            })
+        }
+        const checkStudent = await model.CheckStudent(student_id)
+        if (checkStudent.length === 0) {
+            logger.error('Student not found in db: %s', student_id);
+            return res.send({
+                result: false,
+                message: "Student not found."
+            })
+        }
+        const deleteQbank = await model.DeleteQuestionBank(student_id)
+        if (deleteQbank.affectedRows > 0) {
+            logger.info('Submitted question bank deleted successfully from DB. Student ID: %s', student_id);
+            return res.send({
+                result: true,
+                message: "Submitted question bank deleted successfully."
+            });
+        } else {
+            logger.error('Failed to delete submitted question bank from DB. Test ID: %s, Student ID: %s', test_id, student_id);
+            return res.send({
+                result: false,
+                message: "Failed to delete submitted question bank."
+            });
+        }
+    } catch (error) {
+        return res.send({
+            result: false,
+            message: error.message
+        })
+    }
+}
