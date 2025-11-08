@@ -3,20 +3,21 @@ const fs = require('fs');
 const path = require('path');
 const { createLogger, format, transports } = require('winston');
 
-// ✅ Ensure log directory exists
+// ✅ Ensure logs directory exists
 const logDir = path.join(__dirname, '../../logs');
 if (!fs.existsSync(logDir)) {
     fs.mkdirSync(logDir, { recursive: true });
 }
 
-// ✅ Define log format
+// ✅ Define a human-readable log format (same for both local & live)
 const logFormat = format.combine(
     format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
-    format.errors({ stack: true }),
-    format.splat(),
-    format.json()
+    format.printf(({ timestamp, level, message, stack }) => {
+        return `${timestamp} [${level}]: ${stack || message}`;
+    })
 );
 
+// ✅ Create logger
 const logger = createLogger({
     level: process.env.LOG_LEVEL || 'info',
     format: logFormat,
@@ -29,7 +30,7 @@ const logger = createLogger({
             handleExceptions: true,
         }),
 
-        // ✅ Info and all other logs
+        // ✅ General logs (info, warn, etc.)
         new transports.File({
             filename: path.join(logDir, 'app.log'),
             level: 'info',
@@ -39,17 +40,15 @@ const logger = createLogger({
     exitOnError: false,
 });
 
-// ✅ Add console output only in non-production environments
-if (process.env.NODE_ENV !== 'production') {
-    logger.add(new transports.Console({
-        format: format.combine(
-            format.colorize(),
-            format.printf(info => `${info.timestamp} [${info.level}]: ${info.message}`)
-        )
-    }));
-}
+// ✅ Add console output (for both local and production)
+logger.add(new transports.Console({
+    format: format.combine(
+        format.colorize(),
+        logFormat
+    )
+}));
 
-// ✅ Optional: handle unhandled promise rejections and uncaught exceptions
+// ✅ Handle unhandled rejections and exceptions
 process.on('unhandledRejection', (reason) => {
     logger.error(`Unhandled Rejection: ${reason}`);
 });
