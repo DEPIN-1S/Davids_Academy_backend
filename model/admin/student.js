@@ -158,7 +158,7 @@ module.exports.totalQuestionBankQuestions = async (course) => {
 
 module.exports.ListSubmittedQuestions = async (student_id, test_id) => {
     try {
-        const sql = `SELECT * from tb_submittedQuestions where st_user_id=? and st_test_id=?`;
+        const sql = `SELECT * from tb_submittedQuestions where sq_user_id=? and sq_test_id=?`;
         logger.info(`[ListSubmittedTest] Listing student submitted questions from db`, { student_id });
         const data = await query(sql, [student_id, test_id]);
         return data;
@@ -183,7 +183,7 @@ module.exports.CheckTest = async (test_id) => {
 
 module.exports.DeleteSubmittedTest = async (student_id, test_id) => {
     try {
-        const sql = `Delete from tb_submittedQuestions where st_user_id=? and st_test_id=?`;
+        const sql = `Delete from tb_submittedQuestions where sq_user_id=? and sq_test_id=?`;
         logger.info(`[Delete submitted test] Delete submitted test from db`, { student_id, test_id });
         const data = await query(sql, [student_id, test_id]);
         return data;
@@ -193,10 +193,10 @@ module.exports.DeleteSubmittedTest = async (student_id, test_id) => {
     }
 }
 
-module.exports.DeleteQuestionBank=async(student_id)=>{
+module.exports.DeleteQuestionBank = async (student_id) => {
     try {
         const sql = `Delete from tb_QbankSubmit where user_id=? `;
-        logger.info(`[Delete submitted question bank] Delete submitted question bank from db`, { student_id});
+        logger.info(`[Delete submitted question bank] Delete submitted question bank from db`, { student_id });
         const data = await query(sql, [student_id]);
         return data;
     } catch (error) {
