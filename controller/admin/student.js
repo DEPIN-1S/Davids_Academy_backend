@@ -414,7 +414,7 @@ module.exports.ResetQuestionBank = async (req, res) => {
                 message: "Submitted question bank deleted successfully."
             });
         } else {
-            logger.error('Failed to delete submitted question bank from DB. Test ID: %s, Student ID: %s', test_id, student_id);
+            logger.error('Failed to delete submitted question bank from DB. Test ID: %s, Student ID: %s', student_id);
             return res.send({
                 result: false,
                 message: "Failed to delete submitted question bank."
