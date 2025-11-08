@@ -183,7 +183,7 @@ module.exports.CheckTest = async (test_id) => {
 
 module.exports.DeleteSubmittedTest = async (student_id, test_id) => {
     try {
-        const sql = `Delete from tb_submittedQuestions where st_user_id=? and st_test_id=?`;
+        const sql = `Delete from tb_submittedQuestions where sq_user_id=? and sq_test_id=?`;
         logger.info(`[Delete submitted test] Delete submitted test from db`, { student_id, test_id });
         const data = await query(sql, [student_id, test_id]);
         return data;
