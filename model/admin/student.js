@@ -192,7 +192,17 @@ module.exports.DeleteSubmittedTest = async (student_id, test_id) => {
         throw error;
     }
 }
-
+module.exports.DeleteSubmittedMockTest = async (student_id, test_id) => {
+    try {
+        const sql = `Delete from tb_submittedTest where st_user_id=? and st_test_id=?`;
+        logger.info(`[Delete submitted mock test] Delete submitted test from db`, { student_id, test_id });
+        const data = await query(sql, [student_id, test_id]);
+        return data;
+    } catch (error) {
+        logger.error('[Delete submitted test] Error in Delete submitted test from db', { error: error.message });
+        throw error;
+    }
+}
 module.exports.DeleteQuestionBank = async (student_id) => {
     try {
         const sql = `Delete from tb_QbankSubmit where user_id=? `;
