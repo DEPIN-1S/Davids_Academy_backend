@@ -372,13 +372,13 @@ module.exports.ResetTest = async (req, res) => {
             logger.info('Submitted test deleted successfully from DB. Test ID: %s, Student ID: %s', test_id, student_id);
             return res.send({
                 result: true,
-                message: "Submitted test deleted successfully."
+                message: "Mock test reset successfully."
             });
         } else {
             logger.error('Failed to delete submitted test from DB. Test ID: %s, Student ID: %s', test_id, student_id);
             return res.send({
                 result: false,
-                message: "Failed to delete submitted test."
+                message: "Failed to reset mock test."
             });
         }
     } catch (error) {
@@ -411,10 +411,10 @@ module.exports.ResetQuestionBank = async (req, res) => {
             logger.info('Submitted question bank deleted successfully from DB. Student ID: %s', student_id);
             return res.send({
                 result: true,
-                message: "Submitted question bank deleted successfully."
+                message: "Question bank reset successfully"
             });
         } else {
-            logger.error('Failed to delete submitted question bank from DB. Test ID: %s, Student ID: %s', test_id, student_id);
+            logger.error('Failed to delete submitted question bank from DB. Test ID: %s, Student ID: %s', student_id);
             return res.send({
                 result: false,
                 message: "Failed to delete submitted question bank."
