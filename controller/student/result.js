@@ -60,3 +60,29 @@ module.exports.ListTestResult = async (req, res) => {
         })
     }
 }
+
+
+module.exports.ListQuestionBankResults = async (req, res) => {
+    try {
+        const { user_id } = req?.user
+        const studentData = await model.GetStudentData(user_id)
+        if (studentData.length == 0) {
+            logger.error("Student not found.Please login again", user_id)
+            return res.send({
+                result: false,
+                message: "Student not found.Please login again"
+            })
+        }
+        const results = await model.GetQuestionBankResult(user_id)
+        return res.send({
+            result: true,
+            message: "Data retrieved successfully",
+            data: results
+        })
+    } catch (error) {
+        return res.send({
+            result: false,
+            message: error.message
+        })
+    }
+}

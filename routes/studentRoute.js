@@ -25,9 +25,10 @@ const { ListQuestionsFromQBank, GetQuestionDataFromQBank, GetSampleQuestionData 
 route.get('/questions/list', verifyToken, ListQuestionsFromQBank)
 route.post('/questions/data', verifyToken, GetQuestionDataFromQBank)
 route.post('/questions/sample-questionnaire', GetSampleQuestionData)
-const { ListSubmittedTest, ListTestResult } = require('../controller/student/result')
+const { ListSubmittedTest, ListTestResult, ListQuestionBankResults } = require('../controller/student/result')
 route.get('/result/list', verifyToken, ListSubmittedTest)
 route.post('/result/data', verifyToken, ListTestResult)
+route.get('/result/question-bank', verifyToken, ListQuestionBankResults)
 
 
 const { GetSuccessStoriesPublic } = require('../controller/student/successStory')
