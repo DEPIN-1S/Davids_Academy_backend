@@ -1578,6 +1578,11 @@ module.exports.listTestsPaginated = async (req, res) => {
 
         // Get paginated tests
         const tests = await model.listTestsPaginated(limit, offset);
+        const updated = await Promise.all(tests.map(async (el) => {
+            const questionIdsResult = await model.fetchTestQuestionsById(el.id);
+            const questionIds = questionIdsResult.map(q => q.questionId);
+            return { ...el, questionIds };
+        }));
         return res.status(200).json({
             result: true,
             message: 'Tests retrieved successfully',
@@ -1585,7 +1590,7 @@ module.exports.listTestsPaginated = async (req, res) => {
             totalCount: totalCount,
             page: page,
             totalPages: Math.ceil(totalCount / limit),
-            list: tests
+            list: updated
         });
     } catch (error) {
         logger.error(`❌ Failed to retrieve tests: ${error.message}`);
