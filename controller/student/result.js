@@ -73,13 +73,15 @@ module.exports.ListQuestionBankResults = async (req, res) => {
                 message: "Student not found.Please login again"
             })
         }
+        const totalQuestions = await model.GetTotalQuestionsInQBank()
         const results = await model.GetQuestionBankResult(user_id)
         const isCorrect = results.filter(item => item.is_correct == 1);
         return res.send({
             result: true,
             message: "Data retrieved successfully",
             data: {
-                total: results.length,
+                total: totalQuestions,
+                attempted: results.length,
                 correct: isCorrect.length,
                 details: results
             }

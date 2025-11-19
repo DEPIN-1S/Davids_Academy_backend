@@ -74,3 +74,19 @@ module.exports.GetQuestionBankResult = async (user_id) => {
     throw err;
   }
 }
+
+module.exports.GetTotalQuestionsInQBank = async () => {
+  const sql = `
+    SELECT id 
+  FROM tb_questions 
+  WHERE LOWER(exam_type) = LOWER(?)
+  `;
+  try {
+    const result = await query(sql, ["q-bank"]);
+    logger.info(` [Get questionbank Questions] Get question bank questions -user: ${user_id}`);
+    return result;
+  } catch (err) {
+    logger.error(`[Get questionbank questions]  Failed to get question bank questions - ${err.message}`);
+    throw err;
+  }
+}
