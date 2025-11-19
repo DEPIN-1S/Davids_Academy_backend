@@ -83,7 +83,7 @@ module.exports.GetTotalQuestionsInQBank = async () => {
   `;
   try {
     const result = await query(sql, ["q-bank"]);
-    logger.info(` [Get questionbank Questions] Get question bank questions -user: ${user_id}`);
+    logger.info(` [Get questionbank Questions] Get question bank questions `);
     return result;
   } catch (err) {
     logger.error(`[Get questionbank questions]  Failed to get question bank questions - ${err.message}`);

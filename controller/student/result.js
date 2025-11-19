@@ -80,7 +80,7 @@ module.exports.ListQuestionBankResults = async (req, res) => {
             result: true,
             message: "Data retrieved successfully",
             data: {
-                total: totalQuestions,
+                total: totalQuestions.length,
                 attempted: results.length,
                 correct: isCorrect.length,
                 details: results
