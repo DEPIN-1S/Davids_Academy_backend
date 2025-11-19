@@ -74,10 +74,15 @@ module.exports.ListQuestionBankResults = async (req, res) => {
             })
         }
         const results = await model.GetQuestionBankResult(user_id)
+        const isCorrect = results.filter(item => item.is_correct == 1);
         return res.send({
             result: true,
             message: "Data retrieved successfully",
-            data: results
+            data: {
+                total: results.length,
+                correct: isCorrect.length,
+                details: results
+            }
         })
     } catch (error) {
         return res.send({
