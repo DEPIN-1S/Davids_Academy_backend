@@ -511,3 +511,373 @@ module.exports.GetSampleQuestionData = async (req, res) => {
         })
     }
 }
+
+
+// controller/questions.js
+module.exports.submitQuestionResponse = async (req, res) => {
+    logger.info('📥 Received student answer submission');
+    try {
+        const student_id = req?.user?.user_id
+        let {
+            questionId,
+            questionType,
+            exam_type,
+            test_id,
+        } = req.body;
+
+        if (!questionId || !questionType) {
+            return res.status(400).json({
+                result: false,
+                message: 'questionId, questionType are required'
+            });
+        }
+        console.log("body   :  ", req.body)
+
+        exam_type = exam_type?.toLowerCase()?.trim();
+        questionType = questionType?.toLowerCase()?.trim();
+
+        // Common meta that you might want to store with every answer
+        const baseMeta = {
+            student_id,
+            test_id,
+            questionId
+        };
+
+        /* ============== MCQ ============== */
+        if (questionType === 'mcq') {
+            // expected: selectedOptions = ["A", "C"] or ["option_id_1", "option_id_2"]
+            let { selectedOptions } = req.body;
+            const parsedSelected = typeof selectedOptions === 'string'
+                ? JSON.parse(selectedOptions)
+                : (selectedOptions || []);
+
+            // Example model call – implement this in your model:
+            // Save one row per option or one row per question (answer as JSON).
+            for (const option of parsedSelected) {
+                await model.insertStudentMockTestMcqResponse({
+                    ...baseMeta,
+                    option
+                });
+            }
+
+            return res.status(201).json({
+                result: true,
+                message: 'MCQ answer saved successfully',
+                data: {
+                    ...baseMeta,
+                    selectedOptions: parsedSelected
+                }
+            });
+        }
+
+        /* ============== DROPDOWN ============== */
+        if (questionType === 'dropdown') {
+            /**
+             * expected request:
+             * answers: JSON string/array like:
+             * [
+             *   { dropdownField: "Na+", selectedValue: "135–145 mEq/L" },
+             *   { dropdownField: "K+", selectedValue: "3.5–5.0 mEq/L" }
+             * ]
+             */
+            let { answers } = req.body;
+            const parsedAnswers = typeof answers === 'string'
+                ? JSON.parse(answers)
+                : (answers || []);
+
+            for (const ans of parsedAnswers) {
+                await model.insertStudentMockTestDropdownAnswer({
+                    ...baseMeta,
+                    dropdownField: ans.dropdownField,
+                    selectedValue: ans.selectedValue
+                });
+            }
+
+            return res.status(201).json({
+                result: true,
+                message: 'Dropdown answer saved successfully',
+                data: {
+                    ...baseMeta,
+                    answers: parsedAnswers
+                }
+            });
+        }
+
+        /* ============== SORTING ============== */
+        if (questionType === 'sorting') {
+            /**
+             * expected:
+             * sortItems: [
+             *   { sortItem: "Step 1", order: 2 },
+             *   { sortItem: "Step 2", order: 1 },
+             * ]
+             */
+            let { sortItems } = req.body;
+            const parsedSortItems = typeof sortItems === 'string'
+                ? JSON.parse(sortItems)
+                : (sortItems || []);
+
+            for (const item of parsedSortItems) {
+                await model.insertStudentMockTestSortingAnswer({
+                    ...baseMeta,
+                    sortItem: item.sortItem,
+                    order: item.order
+                });
+            }
+
+            return res.status(201).json({
+                result: true,
+                message: 'Sorting answer saved successfully',
+                data: {
+                    ...baseMeta,
+                    sortItems: parsedSortItems
+                }
+            });
+        }
+
+        /* ============== SENTENCE HIGHLIGHT ============== */
+        if (questionType === 'sentence highlight') {
+            /**
+             * expected:
+             * answers: ["sentence_id_1", "sentence_id_3"]
+             * OR text itself – depends on how you render options.
+             */
+            let { answers } = req.body;
+            const parsedAnswers = typeof answers === 'string'
+                ? JSON.parse(answers)
+                : (answers || []);
+
+            for (const ans of parsedAnswers) {
+                await model.insertStudentMockTestSentenceHighlightAnswer({
+                    ...baseMeta,
+                    answer: ans
+                });
+            }
+
+            return res.status(201).json({
+                result: true,
+                message: 'Sentence Highlight answer saved successfully',
+                data: {
+                    ...baseMeta,
+                    answers: parsedAnswers
+                }
+            });
+        }
+
+        /* ============== FILL IN THE BLANKS ============== */
+        if (questionType === 'fill in the blanks') {
+            /**
+             * expected:
+             * blanks: [
+             *   { blank_index: 1, answer: "heart" },
+             *   { blank_index: 2, answer: "lungs" }
+             * ]
+             */
+            let { blanks } = req.body;
+            const parsedBlanks = typeof blanks === 'string'
+                ? JSON.parse(blanks)
+                : (blanks || []);
+
+            for (const b of parsedBlanks) {
+                await model.insertStudentFillBlankAnswer({
+                    ...baseMeta,
+                    blank_index: b.blank_index,
+                    answer: b.answer
+                });
+            }
+
+            return res.status(201).json({
+                result: true,
+                message: 'Fill in the Blanks answer saved successfully',
+                data: {
+                    ...baseMeta,
+                    blanks: parsedBlanks
+                }
+            });
+        }
+
+        /* ============== DRAG DROP ============== */
+        if (questionType === 'drag drop') {
+            /**
+             * expected:
+             * drag_and_drop_answer: [
+             *   { option_heading: "Vitamin", droppedValue: "Vitamin D" },
+             *   { option_heading: "Mineral", droppedValue: "Calcium" }
+             * ]
+             */
+            let { drag_and_drop_answer } = req.body;
+            const parsed = typeof drag_and_drop_answer === 'string'
+                ? JSON.parse(drag_and_drop_answer)
+                : (drag_and_drop_answer || []);
+
+            for (const item of parsed) {
+                await model.insertStudentMockTestDragDropAnswer({
+                    ...baseMeta,
+                    option_heading: item.option_heading,
+                    droppedValue: item.droppedValue
+                });
+            }
+
+            return res.status(201).json({
+                result: true,
+                message: 'Drag & Drop answer saved successfully',
+                data: {
+                    ...baseMeta,
+                    drag_and_drop_answer: parsed
+                }
+            });
+        }
+
+        /* ============== MULTIPLE RADIO ============== */
+        if (questionType === 'multiple radio') {
+            /**
+             * expected:
+             * question_content_answers: [
+             *   { question_text: "Client A", selected: "Option 2" },
+             *   { question_text: "Client B", selected: "Option 1" }
+             * ]
+             */
+            let { question_content_answers } = req.body;
+            const parsedAns = typeof question_content_answers === 'string'
+                ? JSON.parse(question_content_answers)
+                : (question_content_answers || []);
+
+            for (const item of parsedAns) {
+                await model.insertStudentMockTestMultipleRadioAnswer({
+                    ...baseMeta,
+                    question_text: item.question_text,
+                    selected: item.selected
+                });
+            }
+
+            return res.status(201).json({
+                result: true,
+                message: 'Multiple Radio answer saved successfully',
+                data: {
+                    ...baseMeta,
+                    question_content_answers: parsedAns
+                }
+            });
+        }
+
+        /* ============== TABLE DROPDOWN ============== */
+        if (questionType === 'table dropdown') {
+            /**
+             * expected:
+             * tableDropdownAnswers: [
+             *   { rowLabel: "Client A", answer: "Option 1" },
+             *   { rowLabel: "Client B", answer: "Option 3" }
+             * ]
+             */
+            let { tableDropdownAnswers } = req.body;
+            const parsed = typeof tableDropdownAnswers === 'string'
+                ? JSON.parse(tableDropdownAnswers)
+                : (tableDropdownAnswers || []);
+
+            for (const ans of parsed) {
+                await model.insertStudentMockTestTableDropdownAnswer({
+                    ...baseMeta,
+                    rowLabel: ans.rowLabel,
+                    answer: ans.answer
+                });
+            }
+
+            return res.status(201).json({
+                result: true,
+                message: 'Table Dropdown answer saved successfully',
+                data: {
+                    ...baseMeta,
+                    tableDropdownAnswers: parsed
+                }
+            });
+        }
+
+        /* ============== TABLE HIGHLIGHT ============== */
+        if (questionType === 'table highlight') {
+            /**
+             * expected:
+             * answers: [
+             *   { rowOrder: 1, column: "left" },
+             *   { rowOrder: 3, column: "right" }
+             * ]
+             */
+            let { answers } = req.body;
+            const parsed = typeof answers === 'string'
+                ? JSON.parse(answers)
+                : (answers || []);
+
+            for (const ans of parsed) {
+                await model.insertStudentTableMockTestHighlightAnswer({
+                    ...baseMeta,
+                    rowOrder: ans.rowOrder,
+                    column: ans.column
+                });
+            }
+
+            return res.status(201).json({
+                result: true,
+                message: 'Table Highlight answer saved successfully',
+                data: {
+                    ...baseMeta,
+                    answers: parsed
+                }
+            });
+        }
+
+        /* ============== MULTIDROPDOWN ============== */
+        if (questionType === 'multidropdown') {
+            /**
+             * expected:
+             * rowsAnswer: [
+             *   {
+             *     rowLabel: "Client A",
+             *     columns: [
+             *       { colIndex: 0, selected: "Option 1" },
+             *       { colIndex: 1, selected: "Option 3" }
+             *     ]
+             *   },
+             *   ...
+             * ]
+             */
+            let { rowsAnswer } = req.body;
+            const parsedRows = typeof rowsAnswer === 'string'
+                ? JSON.parse(rowsAnswer)
+                : (rowsAnswer || []);
+
+            for (const r of parsedRows) {
+                if (!Array.isArray(r.columns)) continue;
+                for (const c of r.columns) {
+                    await model.insertStudentMockTestMultiDropdownAnswer({
+                        ...baseMeta,
+                        rowLabel: r.rowLabel,
+                        colIndex: Number(c.colIndex),
+                        selected: c.selected
+                    });
+                }
+            }
+
+            return res.status(201).json({
+                result: true,
+                message: 'Multi Dropdown answer saved successfully',
+                data: {
+                    ...baseMeta,
+                    rowsAnswer: parsedRows
+                }
+            });
+        }
+
+        // Unknown question type
+        return res.status(400).json({
+            result: false,
+            message: `Unsupported questionType: ${questionType}`
+        });
+
+    } catch (error) {
+        logger.error(`❌ Failed to save student answer: ${error.message}`, error);
+        return res.status(500).json({
+            result: false,
+            message: 'Internal Server Error',
+            error: error.message
+        });
+    }
+};

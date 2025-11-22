@@ -464,3 +464,119 @@ module.exports.GetMultiDropdownAnswers = async (rowId) => {
     }
 };
 
+module.exports.insertStudentMockTestMcqResponse = async (userId, testId, questionId, answer) => {
+    const sql = `insert into tb_Mocktest_Mcq_Student_Answers (userId,testId,questionId,answer) values (?,?,?,?)`;
+    try {
+        const result = await query(sql, [userId, testId, questionId, answer]);
+        logger.info(`[Submitting student mocktest MCQ answer] Successfully submitted mocktest MCQ answer for userId = ${userId}, testId = ${testId}, questionId = ${questionId}`);
+        return result;
+    } catch (err) {
+        logger.error(`[Submitting student mocktest MCQ answer] ❌ Failed to submit mocktest MCQ answer for userId = ${userId}, testId = ${testId}, questionId = ${questionId} - ${err.message}`);
+        throw err;
+    }
+};
+
+
+module.exports.insertStudentMockTestDropdownAnswer = async (userId, testId, questionId, dropdownField, answer) => {
+    const sql = `insert into tb_dropdown_Mocktest_student_answers (userId,testId,questionId,dropdownField,answer) values (?,?,?,?,?)`;
+    try {
+        const result = await query(sql, [userId, testId, questionId, dropdownField, answer]);
+        logger.info(`[Submitting student mocktest Dropdown answer] Successfully submitted mocktest dropdown answer for userId = ${userId}, testId = ${testId}, questionId = ${questionId}, dropdownField=${dropdownField}`);
+        return result;
+    } catch (err) {
+        logger.error(`[Submitting student mocktest Dropdown answer] ❌ Failed to submit mocktest dropdown answer for userId = ${userId}, testId = ${testId}, questionId = ${questionId} , dropdownField=${dropdownField} - ${err.message}`);
+        throw err;
+    }
+};
+
+
+module.exports.insertStudentMockTestSortingAnswer = async (userId, testId, questionId, sortItem, sortOrder) => {
+    const sql = `insert into tb_sort_Mocktest_student_answers (userId,testId,questionId,sortItem,sortOrder) values (?,?,?,?,?)`;
+    try {
+        const result = await query(sql, [userId, testId, questionId, sortItem, sortOrder]);
+        logger.info(`[Submitting student mocktest sort answer] Successfully submitted mocktest sort answer for userId = ${userId}, testId = ${testId}, questionId = ${questionId}, sortItem=${sortItem}`);
+        return result;
+    } catch (err) {
+        logger.error(`[Submitting student mocktest sort answer] ❌ Failed to submit mocktest sort answer for userId = ${userId}, testId = ${testId}, questionId = ${questionId} , sortItem=${sortItem} - ${err.message}`);
+        throw err;
+    }
+};
+
+
+module.exports.insertStudentMockTestSentenceHighlightAnswer = async (userId, testId, questionId, answer) => {
+    const sql = `insert into tb_sentenceHiglight_Mocktest_student_answers (userId,testId,questionId,answer) values (?,?,?,?)`;
+    try {
+        const result = await query(sql, [userId, testId, questionId, answer]);
+        logger.info(`[Submitting student mocktest sentence highlight answer] Successfully submitted mocktest sentence highlight answer for userId = ${userId}, testId = ${testId}, questionId = ${questionId}`);
+        return result;
+    } catch (err) {
+        logger.error(`[Submitting student mocktest sentence highlight answer] ❌ Failed to submit mocktest sentence highlight answer for userId = ${userId}, testId = ${testId}, questionId = ${questionId} - ${err.message}`);
+        throw err;
+    }
+};
+
+
+module.exports.insertStudentMockTestDragDropAnswer = async (userId, testId, questionId, heading, answer) => {
+    const sql = `insert into tb_dragdrop_Mocktest_student_answers (userId,testId,questionId,heading,answer) values (?,?,?,?,?)`;
+    try {
+        const result = await query(sql, [userId, testId, questionId, heading, answer]);
+        logger.info(`[Submitting student mocktest drag drop answer] Successfully submitted mocktest drag drop answer for userId = ${userId}, testId = ${testId}, questionId = ${questionId}, heading=${heading}`);
+        return result;
+    } catch (err) {
+        logger.error(`[Submitting student mocktest drag drop answer] ❌ Failed to submit mocktest drag drop answer for userId = ${userId}, testId = ${testId}, questionId = ${questionId}, heading=${heading} - ${err.message}`);
+        throw err;
+    }
+};
+
+
+module.exports.insertStudentMockTestMultipleRadioAnswer = async (userId, testId, questionId, clientfindings, answer) => {
+    const sql = `insert into tb_multiradio_Mocktest_student_answers (userId,testId,questionId,clientfindings,answer) values (?,?,?,?,?)`;
+    try {
+        const result = await query(sql, [userId, testId, questionId, clientfindings, answer]);
+        logger.info(`[Submitting student mocktest multiple radio answer] Successfully submitted mocktest multiple radio answer for userId = ${userId}, testId = ${testId}, questionId = ${questionId}, clientfindings=${clientfindings}`);
+        return result;
+    } catch (err) {
+        logger.error(`[Submitting student mocktest multiple radio answer] ❌ Failed to submit mocktest multiple radio answer for userId = ${userId}, testId = ${testId}, questionId = ${questionId}, clientfindings=${clientfindings} - ${err.message}`);
+        throw err;
+    }
+};
+
+module.exports.insertStudentMockTestTableDropdownAnswer = async (userId, testId, questionId, rowlabel, answer) => {
+    const sql = `insert into tb_tabledropdown_Mocktest_student_answers (userId,testId,questionId,rowlabel,answer) values (?,?,?,?,?)`;
+    try {
+        const result = await query(sql, [userId, testId, questionId, rowlabel, answer]);
+        logger.info(`[Submitting student mocktest table dropdown answer] Successfully submitted mocktest table dropdown answer for userId = ${userId}, testId = ${testId}, questionId = ${questionId}, rowlabel=${rowlabel}`);
+        return result;
+    } catch (err) {
+        logger.error(`[Submitting student mocktest table dropdown answer] ❌ Failed to submit mocktest table dropdown answer for userId = ${userId}, testId = ${testId}, questionId = ${questionId}, rowlabel=${rowlabel} - ${err.message}`);
+        throw err;
+    }
+};
+
+
+module.exports.insertStudentTableMockTestHighlightAnswer = async (userId, testId, questionId, leftColumn, rightColumn, answer) => {
+    const sql = `insert into tb_tablehighlight_Mocktest_student_answers (userId,testId,questionId,leftColumn,rightColumn,answer) values (?,?,?,?,?,?)`;
+    try {
+        const result = await query(sql, [userId, testId, questionId, leftColumn, rightColumn, answer]);
+        logger.info(`[Submitting student mocktest highlight answer] Successfully submitted mocktest highlight answer for userId = ${userId}, testId = ${testId}, questionId = ${questionId}, leftColumn=${leftColumn}, rightColumn=${rightColumn}`);
+        return result;
+    } catch (err) {
+        logger.error(`[Submitting student mocktest highlight answer] ❌ Failed to submit mocktest highlight answer for userId = ${userId}, testId = ${testId}, questionId = ${questionId}, leftColumn=${leftColumn}, rightColumn=${rightColumn} - ${err.message}`);
+        throw err;
+    }
+};
+
+
+
+module.exports.insertStudentMockTestMultiDropdownAnswer = async (userId, testId, questionId, rowId, colIndex, answer) => {
+    const sql = `insert into tb_multidropdown_Mocktest_student_answers (userId,testId,questionId,rowId,colIndex,answer) values (?,?,?,?,?,?)`;
+    try {
+        const result = await query(sql, [userId, testId, questionId, rowId, colIndex, answer]);
+        logger.info(`[Submitting student mocktest multi dropdown answer] Successfully submitted mocktest multi dropdown answer for userId = ${userId}, testId = ${testId}, questionId = ${questionId}, rowId=${rowId}, colIndex=${colIndex}`);
+        return result;
+    } catch (err) {
+        logger.error(`[Submitting student mocktest multi dropdown answer] ❌ Failed to submit mocktest multi dropdown answer for userId = ${userId}, testId = ${testId}, questionId = ${questionId}, rowId=${rowId}, colIndex=${colIndex} - ${err.message}`);
+        throw err;
+    }
+};
+
