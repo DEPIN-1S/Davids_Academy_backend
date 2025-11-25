@@ -93,3 +93,100 @@ module.exports.ListQuestionBankResults = async (req, res) => {
         })
     }
 }
+
+
+module.exports.GetSubmittedResponse = async (req, res) => {
+    try {
+        const { user_id } = req?.user
+        const studentData = await model.GetStudentData(user_id)
+        if (studentData.length == 0) {
+            logger.error("Student not found.Please login again", user_id)
+            return res.send({
+                result: false,
+                message: "Student not found.Please login again"
+            })
+        }
+        const { question_id, test_id } = req.body
+        if (!test_id) {
+            return res.send({
+                result: false,
+                message: "Test id is required"
+            })
+        }
+        const checkTest = await model.CheckTest(test_id)
+        if (!checkTest || checkTest.length === 0) {
+            logger.error("Test not found - ", test_id)
+            return res.send({
+                result: false,
+                message: "Test not found."
+            })
+        }
+        let result = null
+        if (question_id) {
+            const checkQuestion = await model.CheckQuestion(question_id);
+            if (checkQuestion.length === 0) {
+                logger.error("Question not found. Invalid question id", question_id);
+                return res.send({ result: false, message: "Question not found. Invalid question id" });
+            }
+
+            const questionData = await model.GetQuestionData(question_id);
+            const qTypeRaw = questionData?.[0]?.question_type;
+            const qType = typeof qTypeRaw === 'string' ? qTypeRaw.toLowerCase().trim() : null;
+
+            if (!qType) {
+                logger.error("Question type missing for question:", question_id);
+                return res.send({ result: false, message: "Question type missing." });
+            }
+
+            // Map normalized question types to model function names
+            const submittedAnswerFnMap = {
+                mcq: "GetMockTestMCQSubmittedAnswer",
+                dropdown: "GetMockTestDropdownSubmittedAnswer",
+                sorting: "GetMockTestSortSubmittedAnswer",
+                "sentence highlight": "GetMockTestSentenceHighlightSubmittedAnswer",
+                "drag drop": "GetMockTestDragDropSubmittedAnswer",
+                "multiple radio": "GetMockTestMultipleRadioSubmittedAnswer",
+                "table dropdown": "GetMockTestTableDropdownSubmittedAnswer",
+                "table highlight": "GetMockTestTableHighlightSubmittedAnswer",
+                multidropdown: "GetMockTestMultiDropDownSubmittedAnswer",
+                // add more mappings here as needed
+            };
+
+            const fnName = submittedAnswerFnMap[qType];
+
+            if (!fnName || typeof model[fnName] !== "function") {
+                logger.error("No submitted-answer handler for question type:", qType, "question_id:", question_id);
+                return res.send({ result: false, message: `Unsupported question type: ${qType}` });
+            }
+
+            // Call the selected model function
+            const submittedData = await model[fnName](user_id, test_id, question_id);
+            if (!Array.isArray(submittedData) || submittedData.length === 0) {
+                logger.error("Submitted result not found", { user_id, test_id, question_id, qType });
+                return res.send({ result: false, message: "Submitted result not found." });
+            }
+
+            result = submittedData[0];
+        }
+        const checkTestSubmitted = await model.CheckTestSubmitted(test_id, user_id)
+        // if(!checkTestSubmitted||checkTestSubmitted.length===0){
+        //     return res.send({
+        //         result: false,
+        //         message: "Submitted test not found."
+        //     })
+        // }
+        return res.send({
+            result: true,
+            message: "Data retrieved successfully",
+            result: {
+                test: checkTestSubmitted[0],
+                question_result: result
+            }
+        })
+    } catch (error) {
+        return res.send({
+            result: false,
+            message: error.message
+        })
+    }
+}
