@@ -518,6 +518,7 @@ module.exports.submitQuestionResponse = async (req, res) => {
     logger.info('📥 Received student answer submission');
     try {
         const student_id = req?.user?.user_id
+        console.log("student_id : ", student_id)
         let {
             questionId,
             questionType,
@@ -538,11 +539,10 @@ module.exports.submitQuestionResponse = async (req, res) => {
 
         // Common meta that you might want to store with every answer
         const baseMeta = {
-            student_id,
-            test_id,
-            questionId
+            userId: student_id,
+            testId: test_id,
+            questionId: questionId
         };
-
         /* ============== MCQ ============== */
         if (questionType === 'mcq') {
             // expected: selectedOptions = ["A", "C"] or ["option_id_1", "option_id_2"]
@@ -556,7 +556,7 @@ module.exports.submitQuestionResponse = async (req, res) => {
             for (const option of parsedSelected) {
                 await model.insertStudentMockTestMcqResponse({
                     ...baseMeta,
-                    option
+                    answer:option
                 });
             }
 
@@ -589,7 +589,7 @@ module.exports.submitQuestionResponse = async (req, res) => {
                 await model.insertStudentMockTestDropdownAnswer({
                     ...baseMeta,
                     dropdownField: ans.dropdownField,
-                    selectedValue: ans.selectedValue
+                    answer: ans.selectedValue
                 });
             }
 
@@ -621,7 +621,7 @@ module.exports.submitQuestionResponse = async (req, res) => {
                 await model.insertStudentMockTestSortingAnswer({
                     ...baseMeta,
                     sortItem: item.sortItem,
-                    order: item.order
+                    sortOrder: item.order
                 });
             }
 
@@ -713,8 +713,8 @@ module.exports.submitQuestionResponse = async (req, res) => {
             for (const item of parsed) {
                 await model.insertStudentMockTestDragDropAnswer({
                     ...baseMeta,
-                    option_heading: item.option_heading,
-                    droppedValue: item.droppedValue
+                    heading: item.option_heading,
+                    answer: item.droppedValue
                 });
             }
 
@@ -745,8 +745,8 @@ module.exports.submitQuestionResponse = async (req, res) => {
             for (const item of parsedAns) {
                 await model.insertStudentMockTestMultipleRadioAnswer({
                     ...baseMeta,
-                    question_text: item.question_text,
-                    selected: item.selected
+                    clientfindings: item.question_text,
+                    answer: item.selected
                 });
             }
 
@@ -777,7 +777,7 @@ module.exports.submitQuestionResponse = async (req, res) => {
             for (const ans of parsed) {
                 await model.insertStudentMockTestTableDropdownAnswer({
                     ...baseMeta,
-                    rowLabel: ans.rowLabel,
+                    rowlabel: ans.rowLabel,
                     answer: ans.answer
                 });
             }
@@ -849,9 +849,9 @@ module.exports.submitQuestionResponse = async (req, res) => {
                 for (const c of r.columns) {
                     await model.insertStudentMockTestMultiDropdownAnswer({
                         ...baseMeta,
-                        rowLabel: r.rowLabel,
+                        rowId: r.rowLabel,
                         colIndex: Number(c.colIndex),
-                        selected: c.selected
+                        answer: c.selected
                     });
                 }
             }

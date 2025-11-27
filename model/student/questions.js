@@ -464,7 +464,8 @@ module.exports.GetMultiDropdownAnswers = async (rowId) => {
     }
 };
 
-module.exports.insertStudentMockTestMcqResponse = async (userId, testId, questionId, answer) => {
+module.exports.insertStudentMockTestMcqResponse = async ({ userId, testId, questionId, answer }) => {
+    console.log("Inside query function :  ", userId, questionId, testId, answer)
     const sql = `insert into tb_Mocktest_Mcq_Student_Answers (userId,testId,questionId,answer) values (?,?,?,?)`;
     try {
         const result = await query(sql, [userId, testId, questionId, answer]);
@@ -477,7 +478,7 @@ module.exports.insertStudentMockTestMcqResponse = async (userId, testId, questio
 };
 
 
-module.exports.insertStudentMockTestDropdownAnswer = async (userId, testId, questionId, dropdownField, answer) => {
+module.exports.insertStudentMockTestDropdownAnswer = async ({userId, testId, questionId, dropdownField, answer}) => {
     const sql = `insert into tb_dropdown_Mocktest_student_answers (userId,testId,questionId,dropdownField,answer) values (?,?,?,?,?)`;
     try {
         const result = await query(sql, [userId, testId, questionId, dropdownField, answer]);
@@ -490,7 +491,7 @@ module.exports.insertStudentMockTestDropdownAnswer = async (userId, testId, ques
 };
 
 
-module.exports.insertStudentMockTestSortingAnswer = async (userId, testId, questionId, sortItem, sortOrder) => {
+module.exports.insertStudentMockTestSortingAnswer = async ({userId, testId, questionId, sortItem, sortOrder}) => {
     const sql = `insert into tb_sort_Mocktest_student_answers (userId,testId,questionId,sortItem,sortOrder) values (?,?,?,?,?)`;
     try {
         const result = await query(sql, [userId, testId, questionId, sortItem, sortOrder]);
@@ -503,7 +504,7 @@ module.exports.insertStudentMockTestSortingAnswer = async (userId, testId, quest
 };
 
 
-module.exports.insertStudentMockTestSentenceHighlightAnswer = async (userId, testId, questionId, answer) => {
+module.exports.insertStudentMockTestSentenceHighlightAnswer = async ({userId, testId, questionId, answer}) => {
     const sql = `insert into tb_sentenceHiglight_Mocktest_student_answers (userId,testId,questionId,answer) values (?,?,?,?)`;
     try {
         const result = await query(sql, [userId, testId, questionId, answer]);
@@ -516,7 +517,7 @@ module.exports.insertStudentMockTestSentenceHighlightAnswer = async (userId, tes
 };
 
 
-module.exports.insertStudentMockTestDragDropAnswer = async (userId, testId, questionId, heading, answer) => {
+module.exports.insertStudentMockTestDragDropAnswer = async ({userId, testId, questionId, heading, answer}) => {
     const sql = `insert into tb_dragdrop_Mocktest_student_answers (userId,testId,questionId,heading,answer) values (?,?,?,?,?)`;
     try {
         const result = await query(sql, [userId, testId, questionId, heading, answer]);
@@ -529,7 +530,7 @@ module.exports.insertStudentMockTestDragDropAnswer = async (userId, testId, ques
 };
 
 
-module.exports.insertStudentMockTestMultipleRadioAnswer = async (userId, testId, questionId, clientfindings, answer) => {
+module.exports.insertStudentMockTestMultipleRadioAnswer = async ({userId, testId, questionId, clientfindings, answer}) => {
     const sql = `insert into tb_multiradio_Mocktest_student_answers (userId,testId,questionId,clientfindings,answer) values (?,?,?,?,?)`;
     try {
         const result = await query(sql, [userId, testId, questionId, clientfindings, answer]);
@@ -541,7 +542,7 @@ module.exports.insertStudentMockTestMultipleRadioAnswer = async (userId, testId,
     }
 };
 
-module.exports.insertStudentMockTestTableDropdownAnswer = async (userId, testId, questionId, rowlabel, answer) => {
+module.exports.insertStudentMockTestTableDropdownAnswer = async ({userId, testId, questionId, rowlabel, answer}) => {
     const sql = `insert into tb_tabledropdown_Mocktest_student_answers (userId,testId,questionId,rowlabel,answer) values (?,?,?,?,?)`;
     try {
         const result = await query(sql, [userId, testId, questionId, rowlabel, answer]);
@@ -568,7 +569,7 @@ module.exports.insertStudentTableMockTestHighlightAnswer = async (userId, testId
 
 
 
-module.exports.insertStudentMockTestMultiDropdownAnswer = async (userId, testId, questionId, rowId, colIndex, answer) => {
+module.exports.insertStudentMockTestMultiDropdownAnswer = async ({userId, testId, questionId, rowId, colIndex, answer}) => {
     const sql = `insert into tb_multidropdown_Mocktest_student_answers (userId,testId,questionId,rowId,colIndex,answer) values (?,?,?,?,?,?)`;
     try {
         const result = await query(sql, [userId, testId, questionId, rowId, colIndex, answer]);
