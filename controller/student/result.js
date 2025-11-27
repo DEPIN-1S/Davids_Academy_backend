@@ -178,7 +178,7 @@ module.exports.GetSubmittedResponse = async (req, res) => {
         return res.send({
             result: true,
             message: "Data retrieved successfully",
-            result: {
+            data: {
                 test: checkTestSubmitted[0],
                 question_result: result
             }
@@ -233,8 +233,8 @@ module.exports.GetQbankSubmittedResponse = async (req, res) => {
             "drag drop": "GetQbankDragDropSubmittedAnswer",
             "multiple radio": "GetQbankMultipleRadioSubmittedAnswer",
             "table dropdown": "GetQbankTableDropdownSubmittedAnswer",
-            "table highlight": "GetMockTestTableHighlightSubmittedAnswer",
-            multidropdown: "GetMockTestMultiDropDownSubmittedAnswer",
+            "table highlight": "GetQbankTableHighlightSubmittedAnswer",
+            multidropdown: "GetQbankMultiDropDownSubmittedAnswer",
             // add more mappings here as needed
         };
 
@@ -248,25 +248,13 @@ module.exports.GetQbankSubmittedResponse = async (req, res) => {
         // Call the selected model function
         const submittedData = await model[fnName](user_id, questionId);
         if (!Array.isArray(submittedData) || submittedData.length === 0) {
-            logger.error("Submitted result not found", { user_id, test_id, questionId, qType });
+            logger.error("Submitted result not found", { user_id, questionId, qType });
             return res.send({ result: false, message: "Submitted result not found." });
         }
-
-        const result = submittedData[0];
-        const checkTestSubmitted = await model.CheckTestSubmitted(test_id, user_id)
-        // if(!checkTestSubmitted||checkTestSubmitted.length===0){
-        //     return res.send({
-        //         result: false,
-        //         message: "Submitted test not found."
-        //     })
-        // }
         return res.send({
             result: true,
             message: "Data retrieved successfully",
-            result: {
-                test: checkTestSubmitted[0],
-                question_result: result
-            }
+            data: submittedData[0]
         })
     } catch (error) {
         return res.send({
