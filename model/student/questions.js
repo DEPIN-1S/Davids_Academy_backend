@@ -555,10 +555,10 @@ module.exports.insertStudentMockTestTableDropdownAnswer = async ({userId, testId
 };
 
 
-module.exports.insertStudentTableMockTestHighlightAnswer = async (userId, testId, questionId, leftColumn, rightColumn, answer) => {
-    const sql = `insert into tb_tablehighlight_Mocktest_student_answers (userId,testId,questionId,leftColumn,rightColumn,answer) values (?,?,?,?,?,?)`;
+module.exports.insertStudentTableMockTestHighlightAnswer = async (userId, testId, questionId, leftColumn, rightColumn) => {
+    const sql = `insert into tb_tablehighlight_Mocktest_student_answers (userId,testId,questionId,leftColumn,rightColumn) values (?,?,?,?,?)`;
     try {
-        const result = await query(sql, [userId, testId, questionId, leftColumn, rightColumn, answer]);
+        const result = await query(sql, [userId, testId, questionId, leftColumn, rightColumn]);
         logger.info(`[Submitting student mocktest highlight answer] Successfully submitted mocktest highlight answer for userId = ${userId}, testId = ${testId}, questionId = ${questionId}, leftColumn=${leftColumn}, rightColumn=${rightColumn}`);
         return result;
     } catch (err) {

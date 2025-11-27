@@ -809,8 +809,8 @@ module.exports.submitQuestionResponse = async (req, res) => {
             for (const ans of parsed) {
                 await model.insertStudentTableMockTestHighlightAnswer({
                     ...baseMeta,
-                    rowOrder: ans.rowOrder,
-                    column: ans.column
+                    leftColumn: ans.rowOrder,
+                    rightColumn: ans.column
                 });
             }
 
