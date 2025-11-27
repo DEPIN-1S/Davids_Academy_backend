@@ -518,7 +518,6 @@ module.exports.submitQuestionResponse = async (req, res) => {
     logger.info('📥 Received student answer submission');
     try {
         const student_id = req?.user?.user_id
-        console.log("student_id : ", student_id)
         let {
             questionId,
             questionType,
@@ -526,13 +525,12 @@ module.exports.submitQuestionResponse = async (req, res) => {
             test_id,
         } = req.body;
 
-        if (!questionId || !questionType) {
+        if (!questionId || !questionType || !["mock test", "qbank"].includes(exam_type)) {
             return res.status(400).json({
                 result: false,
-                message: 'questionId, questionType are required'
+                message: 'questionId, questionType and exam type are required and exam type should be mock test / qbank'
             });
         }
-        console.log("body   :  ", req.body)
 
         exam_type = exam_type?.toLowerCase()?.trim();
         questionType = questionType?.toLowerCase()?.trim();
@@ -554,10 +552,17 @@ module.exports.submitQuestionResponse = async (req, res) => {
             // Example model call – implement this in your model:
             // Save one row per option or one row per question (answer as JSON).
             for (const option of parsedSelected) {
-                await model.insertStudentMockTestMcqResponse({
-                    ...baseMeta,
-                    answer:option
-                });
+                if (exam_type === "mock test") {
+                    await model.insertStudentMockTestMcqResponse({
+                        ...baseMeta,
+                        answer: option
+                    });
+                } else {
+                    await model.insertStudentQbankMcqResponse({
+                        ...baseMeta,
+                        answer: option
+                    })
+                }
             }
 
             return res.status(201).json({
@@ -586,11 +591,19 @@ module.exports.submitQuestionResponse = async (req, res) => {
                 : (answers || []);
 
             for (const ans of parsedAnswers) {
-                await model.insertStudentMockTestDropdownAnswer({
-                    ...baseMeta,
-                    dropdownField: ans.dropdownField,
-                    answer: ans.selectedValue
-                });
+                if (exam_type === "mock test") {
+                    await model.insertStudentMockTestDropdownAnswer({
+                        ...baseMeta,
+                        dropdownField: ans.dropdownField,
+                        answer: ans.selectedValue
+                    });
+                } else {
+                    await model.insertStudentQbankDropdownAnswer({
+                        ...baseMeta,
+                        dropdownField: ans.dropdownField,
+                        answer: ans.selectedValue
+                    })
+                }
             }
 
             return res.status(201).json({
@@ -618,11 +631,19 @@ module.exports.submitQuestionResponse = async (req, res) => {
                 : (sortItems || []);
 
             for (const item of parsedSortItems) {
-                await model.insertStudentMockTestSortingAnswer({
-                    ...baseMeta,
-                    sortItem: item.sortItem,
-                    sortOrder: item.order
-                });
+                if (exam_type === "mock test") {
+                    await model.insertStudentMockTestSortingAnswer({
+                        ...baseMeta,
+                        sortItem: item.sortItem,
+                        sortOrder: item.order
+                    });
+                } else {
+                    await model.insertStudentQbankSortingAnswer({
+                        ...baseMeta,
+                        sortItem: item.sortItem,
+                        sortOrder: item.order
+                    })
+                }
             }
 
             return res.status(201).json({
@@ -648,10 +669,17 @@ module.exports.submitQuestionResponse = async (req, res) => {
                 : (answers || []);
 
             for (const ans of parsedAnswers) {
-                await model.insertStudentMockTestSentenceHighlightAnswer({
-                    ...baseMeta,
-                    answer: ans
-                });
+                if (exam_type === "mock test") {
+                    await model.insertStudentMockTestSentenceHighlightAnswer({
+                        ...baseMeta,
+                        answer: ans
+                    });
+                } else {
+                    await model.insertStudentQbankSentenceHighlightAnswer({
+                        ...baseMeta,
+                        answer: ans
+                    })
+                }
             }
 
             return res.status(201).json({
@@ -711,13 +739,20 @@ module.exports.submitQuestionResponse = async (req, res) => {
                 : (drag_and_drop_answer || []);
 
             for (const item of parsed) {
-                await model.insertStudentMockTestDragDropAnswer({
-                    ...baseMeta,
-                    heading: item.option_heading,
-                    answer: item.droppedValue
-                });
+                if (exam_type === "mock test") {
+                    await model.insertStudentMockTestDragDropAnswer({
+                        ...baseMeta,
+                        heading: item.option_heading,
+                        answer: item.droppedValue
+                    });
+                } else {
+                    await model.insertStudentQbankDragDropAnswer({
+                        ...baseMeta,
+                        heading: item.option_heading,
+                        answer: item.droppedValue
+                    })
+                }
             }
-
             return res.status(201).json({
                 result: true,
                 message: 'Drag & Drop answer saved successfully',
@@ -743,11 +778,19 @@ module.exports.submitQuestionResponse = async (req, res) => {
                 : (question_content_answers || []);
 
             for (const item of parsedAns) {
-                await model.insertStudentMockTestMultipleRadioAnswer({
-                    ...baseMeta,
-                    clientfindings: item.question_text,
-                    answer: item.selected
-                });
+                if (exam_type === "mock test") {
+                    await model.insertStudentMockTestMultipleRadioAnswer({
+                        ...baseMeta,
+                        clientfindings: item.question_text,
+                        answer: item.selected
+                    });
+                } else {
+                    await model.insertStudentQbankMultipleRadioAnswer({
+                        ...baseMeta,
+                        clientfindings: item.question_text,
+                        answer: item.selected
+                    })
+                }
             }
 
             return res.status(201).json({
@@ -775,11 +818,19 @@ module.exports.submitQuestionResponse = async (req, res) => {
                 : (tableDropdownAnswers || []);
 
             for (const ans of parsed) {
-                await model.insertStudentMockTestTableDropdownAnswer({
-                    ...baseMeta,
-                    rowlabel: ans.rowLabel,
-                    answer: ans.answer
-                });
+                if (exam_type === "mock test") {
+                    await model.insertStudentMockTestTableDropdownAnswer({
+                        ...baseMeta,
+                        rowlabel: ans.rowLabel,
+                        answer: ans.answer
+                    });
+                } else {
+                    await model.insertStudentQbankTableDropdownAnswer({
+                        ...baseMeta,
+                        rowlabel: ans.rowLabel,
+                        answer: ans.answer
+                    })
+                }
             }
 
             return res.status(201).json({
@@ -807,11 +858,19 @@ module.exports.submitQuestionResponse = async (req, res) => {
                 : (answers || []);
 
             for (const ans of parsed) {
-                await model.insertStudentTableMockTestHighlightAnswer({
-                    ...baseMeta,
-                    leftColumn: ans.rowOrder,
-                    rightColumn: ans.column
-                });
+                if (exam_type === "mock test") {
+                    await model.insertStudentTableMockTestHighlightAnswer({
+                        ...baseMeta,
+                        leftColumn: ans.rowOrder,
+                        rightColumn: ans.column
+                    });
+                } else {
+                    await model.insertStudentTableQbankHighlightAnswer({
+                        ...baseMeta,
+                        leftColumn: ans.rowOrder,
+                        rightColumn: ans.column
+                    })
+                }
             }
 
             return res.status(201).json({
@@ -847,12 +906,21 @@ module.exports.submitQuestionResponse = async (req, res) => {
             for (const r of parsedRows) {
                 if (!Array.isArray(r.columns)) continue;
                 for (const c of r.columns) {
-                    await model.insertStudentMockTestMultiDropdownAnswer({
-                        ...baseMeta,
-                        rowId: r.rowLabel,
-                        colIndex: Number(c.colIndex),
-                        answer: c.selected
-                    });
+                    if (exam_type === "mock test") {
+                        await model.insertStudentMockTestMultiDropdownAnswer({
+                            ...baseMeta,
+                            rowId: r.rowLabel,
+                            colIndex: Number(c.colIndex),
+                            answer: c.selected
+                        });
+                    } else {
+                        await model.insertStudentQbankMultiDropdownAnswer({
+                            ...baseMeta,
+                            rowId: r.rowLabel,
+                            colIndex: Number(c.colIndex),
+                            answer: c.selected
+                        })
+                    }
                 }
             }
 
@@ -871,7 +939,6 @@ module.exports.submitQuestionResponse = async (req, res) => {
             result: false,
             message: `Unsupported questionType: ${questionType}`
         });
-
     } catch (error) {
         logger.error(`❌ Failed to save student answer: ${error.message}`, error);
         return res.status(500).json({

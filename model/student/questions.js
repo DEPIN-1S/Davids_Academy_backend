@@ -465,7 +465,6 @@ module.exports.GetMultiDropdownAnswers = async (rowId) => {
 };
 
 module.exports.insertStudentMockTestMcqResponse = async ({ userId, testId, questionId, answer }) => {
-    console.log("Inside query function :  ", userId, questionId, testId, answer)
     const sql = `insert into tb_Mocktest_Mcq_Student_Answers (userId,testId,questionId,answer) values (?,?,?,?)`;
     try {
         const result = await query(sql, [userId, testId, questionId, answer]);
@@ -477,8 +476,20 @@ module.exports.insertStudentMockTestMcqResponse = async ({ userId, testId, quest
     }
 };
 
+module.exports.insertStudentQbankMcqResponse = async ({ userId, questionId, answer }) => {
+    const sql = `insert into tb_Qbank_Mcq_Student_Answers (userId,questionId,answer) values (?,?,?)`;
+    try {
+        const result = await query(sql, [userId, questionId, answer]);
+        logger.info(`[Submitting student qbank MCQ answer] Successfully submitted qbank MCQ answer for userId = ${userId}, questionId = ${questionId}`);
+        return result;
+    } catch (err) {
+        logger.error(`[Submitting student qbank MCQ answer] ❌ Failed to submit qbank MCQ answer for userId = ${userId}, questionId = ${questionId} - ${err.message}`);
+        throw err;
+    }
+};
 
-module.exports.insertStudentMockTestDropdownAnswer = async ({userId, testId, questionId, dropdownField, answer}) => {
+
+module.exports.insertStudentMockTestDropdownAnswer = async ({ userId, testId, questionId, dropdownField, answer }) => {
     const sql = `insert into tb_dropdown_Mocktest_student_answers (userId,testId,questionId,dropdownField,answer) values (?,?,?,?,?)`;
     try {
         const result = await query(sql, [userId, testId, questionId, dropdownField, answer]);
@@ -490,8 +501,20 @@ module.exports.insertStudentMockTestDropdownAnswer = async ({userId, testId, que
     }
 };
 
+module.exports.insertStudentQbankDropdownAnswer = async ({ userId, questionId, dropdownField, answer }) => {
+    const sql = `insert into tb_dropdown_Qbank_student_answers (userId,questionId,dropdownField,answer) values (?,?,?,?)`;
+    try {
+        const result = await query(sql, [userId, questionId, dropdownField, answer]);
+        logger.info(`[Submitting student qbank Dropdown answer] Successfully submitted qbank dropdown answer for userId = ${userId}, questionId = ${questionId}, dropdownField=${dropdownField}`);
+        return result;
+    } catch (err) {
+        logger.error(`[Submitting student qbank Dropdown answer] ❌ Failed to submit qbank dropdown answer for userId = ${userId}, questionId = ${questionId} , dropdownField=${dropdownField} - ${err.message}`);
+        throw err;
+    }
+};
 
-module.exports.insertStudentMockTestSortingAnswer = async ({userId, testId, questionId, sortItem, sortOrder}) => {
+
+module.exports.insertStudentMockTestSortingAnswer = async ({ userId, testId, questionId, sortItem, sortOrder }) => {
     const sql = `insert into tb_sort_Mocktest_student_answers (userId,testId,questionId,sortItem,sortOrder) values (?,?,?,?,?)`;
     try {
         const result = await query(sql, [userId, testId, questionId, sortItem, sortOrder]);
@@ -503,8 +526,20 @@ module.exports.insertStudentMockTestSortingAnswer = async ({userId, testId, ques
     }
 };
 
+module.exports.insertStudentQbankSortingAnswer = async ({ userId, questionId, sortItem, sortOrder }) => {
+    const sql = `insert into tb_sort_Qbank_student_answers (userId,questionId,sortItem,sortOrder) values (?,?,?,?)`;
+    try {
+        const result = await query(sql, [userId, questionId, sortItem, sortOrder]);
+        logger.info(`[Submitting student qbank sort answer] Successfully submitted qbank sort answer for userId = ${userId},  questionId = ${questionId}, sortItem=${sortItem}`);
+        return result;
+    } catch (err) {
+        logger.error(`[Submitting student qbank sort answer] ❌ Failed to submit qbank sort answer for userId = ${userId},  questionId = ${questionId} , sortItem=${sortItem} - ${err.message}`);
+        throw err;
+    }
+};
 
-module.exports.insertStudentMockTestSentenceHighlightAnswer = async ({userId, testId, questionId, answer}) => {
+
+module.exports.insertStudentMockTestSentenceHighlightAnswer = async ({ userId, testId, questionId, answer }) => {
     const sql = `insert into tb_sentenceHiglight_Mocktest_student_answers (userId,testId,questionId,answer) values (?,?,?,?)`;
     try {
         const result = await query(sql, [userId, testId, questionId, answer]);
@@ -516,8 +551,20 @@ module.exports.insertStudentMockTestSentenceHighlightAnswer = async ({userId, te
     }
 };
 
+module.exports.insertStudentQbankSentenceHighlightAnswer = async ({ userId, questionId, answer }) => {
+    const sql = `insert into tb_sentenceHiglight_Qbank_student_answers (userId,questionId,answer) values (?,?,?)`;
+    try {
+        const result = await query(sql, [userId, questionId, answer]);
+        logger.info(`[Submitting student qbank sentence highlight answer] Successfully submitted qbank sentence highlight answer for userId = ${userId},  questionId = ${questionId}`);
+        return result;
+    } catch (err) {
+        logger.error(`[Submitting student qbank sentence highlight answer] ❌ Failed to submit qbank sentence highlight answer for userId = ${userId}, questionId = ${questionId} - ${err.message}`);
+        throw err;
+    }
+};
 
-module.exports.insertStudentMockTestDragDropAnswer = async ({userId, testId, questionId, heading, answer}) => {
+
+module.exports.insertStudentMockTestDragDropAnswer = async ({ userId, testId, questionId, heading, answer }) => {
     const sql = `insert into tb_dragdrop_Mocktest_student_answers (userId,testId,questionId,heading,answer) values (?,?,?,?,?)`;
     try {
         const result = await query(sql, [userId, testId, questionId, heading, answer]);
@@ -529,8 +576,20 @@ module.exports.insertStudentMockTestDragDropAnswer = async ({userId, testId, que
     }
 };
 
+module.exports.insertStudentQbankDragDropAnswer = async ({ userId, questionId, heading, answer }) => {
+    const sql = `insert into tb_dragdrop_Qbank_student_answers (userId,questionId,heading,answer) values (?,?,?,?)`;
+    try {
+        const result = await query(sql, [userId, questionId, heading, answer]);
+        logger.info(`[Submitting student qbank drag drop answer] Successfully submitted qbank drag drop answer for userId = ${userId},  questionId = ${questionId}, heading=${heading}`);
+        return result;
+    } catch (err) {
+        logger.error(`[Submitting student qbank drag drop answer] ❌ Failed to submit qbank drag drop answer for userId = ${userId},  questionId = ${questionId}, heading=${heading} - ${err.message}`);
+        throw err;
+    }
+};
 
-module.exports.insertStudentMockTestMultipleRadioAnswer = async ({userId, testId, questionId, clientfindings, answer}) => {
+
+module.exports.insertStudentMockTestMultipleRadioAnswer = async ({ userId, testId, questionId, clientfindings, answer }) => {
     const sql = `insert into tb_multiradio_Mocktest_student_answers (userId,testId,questionId,clientfindings,answer) values (?,?,?,?,?)`;
     try {
         const result = await query(sql, [userId, testId, questionId, clientfindings, answer]);
@@ -542,7 +601,19 @@ module.exports.insertStudentMockTestMultipleRadioAnswer = async ({userId, testId
     }
 };
 
-module.exports.insertStudentMockTestTableDropdownAnswer = async ({userId, testId, questionId, rowlabel, answer}) => {
+module.exports.insertStudentQbankMultipleRadioAnswer = async ({ userId, questionId, clientfindings, answer }) => {
+    const sql = `insert into tb_multidropdown_Qbank_student_answers (userId,questionId,clientfindings,answer) values (?,?,?,?)`;
+    try {
+        const result = await query(sql, [userId, questionId, clientfindings, answer]);
+        logger.info(`[Submitting student qbank multiple radio answer] Successfully submitted qbank multiple radio answer for userId = ${userId},  questionId = ${questionId}, clientfindings=${clientfindings}`);
+        return result;
+    } catch (err) {
+        logger.error(`[Submitting student qbank multiple radio answer] ❌ Failed to submit qbank multiple radio answer for userId = ${userId}, questionId = ${questionId}, clientfindings=${clientfindings} - ${err.message}`);
+        throw err;
+    }
+};
+
+module.exports.insertStudentMockTestTableDropdownAnswer = async ({ userId, testId, questionId, rowlabel, answer }) => {
     const sql = `insert into tb_tabledropdown_Mocktest_student_answers (userId,testId,questionId,rowlabel,answer) values (?,?,?,?,?)`;
     try {
         const result = await query(sql, [userId, testId, questionId, rowlabel, answer]);
@@ -550,6 +621,18 @@ module.exports.insertStudentMockTestTableDropdownAnswer = async ({userId, testId
         return result;
     } catch (err) {
         logger.error(`[Submitting student mocktest table dropdown answer] ❌ Failed to submit mocktest table dropdown answer for userId = ${userId}, testId = ${testId}, questionId = ${questionId}, rowlabel=${rowlabel} - ${err.message}`);
+        throw err;
+    }
+};
+
+module.exports.insertStudentQbankTableDropdownAnswer = async ({ userId, questionId, rowlabel, answer }) => {
+    const sql = `insert into tb_tabledropdown_Qbank_student_answers (userId,questionId,rowlabel,answer) values (?,?,?,?)`;
+    try {
+        const result = await query(sql, [userId, questionId, rowlabel, answer]);
+        logger.info(`[Submitting student qbank table dropdown answer] Successfully submitted qbank table dropdown answer for userId = ${userId}, questionId = ${questionId}, rowlabel=${rowlabel}`);
+        return result;
+    } catch (err) {
+        logger.error(`[Submitting student qbank table dropdown answer] ❌ Failed to submit qbank table dropdown answer for userId = ${userId}, questionId = ${questionId}, rowlabel=${rowlabel} - ${err.message}`);
         throw err;
     }
 };
@@ -567,9 +650,21 @@ module.exports.insertStudentTableMockTestHighlightAnswer = async (userId, testId
     }
 };
 
+module.exports.insertStudentTableQbankHighlightAnswer = async (userId, questionId, leftColumn, rightColumn) => {
+    const sql = `insert into tb_tablehighlight_Qbank_student_answers (userId,questionId,leftColumn,rightColumn) values (?,?,?,?)`;
+    try {
+        const result = await query(sql, [userId, questionId, leftColumn, rightColumn]);
+        logger.info(`[Submitting student qbank highlight answer] Successfully submitted qbank highlight answer for userId = ${userId}, questionId = ${questionId}, leftColumn=${leftColumn}, rightColumn=${rightColumn}`);
+        return result;
+    } catch (err) {
+        logger.error(`[Submitting student qbank highlight answer] ❌ Failed to submit qbank highlight answer for userId = ${userId}, questionId = ${questionId}, leftColumn=${leftColumn}, rightColumn=${rightColumn} - ${err.message}`);
+        throw err;
+    }
+};
 
 
-module.exports.insertStudentMockTestMultiDropdownAnswer = async ({userId, testId, questionId, rowId, colIndex, answer}) => {
+
+module.exports.insertStudentMockTestMultiDropdownAnswer = async ({ userId, testId, questionId, rowId, colIndex, answer }) => {
     const sql = `insert into tb_multidropdown_Mocktest_student_answers (userId,testId,questionId,rowId,colIndex,answer) values (?,?,?,?,?,?)`;
     try {
         const result = await query(sql, [userId, testId, questionId, rowId, colIndex, answer]);
@@ -577,6 +672,19 @@ module.exports.insertStudentMockTestMultiDropdownAnswer = async ({userId, testId
         return result;
     } catch (err) {
         logger.error(`[Submitting student mocktest multi dropdown answer] ❌ Failed to submit mocktest multi dropdown answer for userId = ${userId}, testId = ${testId}, questionId = ${questionId}, rowId=${rowId}, colIndex=${colIndex} - ${err.message}`);
+        throw err;
+    }
+};
+
+
+module.exports.insertStudentQbankMultiDropdownAnswer = async ({ userId, questionId, rowId, colIndex, answer }) => {
+    const sql = `insert into tb_multidropdown_Qbank_student_answers (userId,questionId,rowId,colIndex,answer) values (?,?,?,?,?)`;
+    try {
+        const result = await query(sql, [userId, questionId, rowId, colIndex, answer]);
+        logger.info(`[Submitting student qbank multi dropdown answer] Successfully submitted qbank multi dropdown answer for userId = ${userId}, questionId = ${questionId}, rowId=${rowId}, colIndex=${colIndex}`);
+        return result;
+    } catch (err) {
+        logger.error(`[Submitting student qbank multi dropdown answer] ❌ Failed to submit qbank multi dropdown answer for userId = ${userId}, questionId = ${questionId}, rowId=${rowId}, colIndex=${colIndex} - ${err.message}`);
         throw err;
     }
 };
