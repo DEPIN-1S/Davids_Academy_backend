@@ -525,7 +525,7 @@ module.exports.submitQuestionResponse = async (req, res) => {
             test_id,
         } = req.body;
 
-        if (!questionId || !questionType || !["Mock Test", "qbank"].includes(exam_type)) {
+        if (!questionId || !questionType || !["Mock Test", "q-bank"].includes(exam_type)) {
             return res.status(400).json({
                 result: false,
                 message: 'questionId, questionType and exam type are required and exam type should be mock test / qbank'
