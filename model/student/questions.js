@@ -638,7 +638,7 @@ module.exports.insertStudentQbankTableDropdownAnswer = async ({ userId, question
 };
 
 
-module.exports.insertStudentTableMockTestHighlightAnswer = async (userId, testId, questionId, leftColumn, rightColumn) => {
+module.exports.insertStudentTableMockTestHighlightAnswer = async ({userId, testId, questionId, leftColumn, rightColumn}) => {
     const sql = `insert into tb_tablehighlight_Mocktest_student_answers (userId,testId,questionId,leftColumn,rightColumn) values (?,?,?,?,?)`;
     try {
         const result = await query(sql, [userId, testId, questionId, leftColumn, rightColumn]);
@@ -650,7 +650,7 @@ module.exports.insertStudentTableMockTestHighlightAnswer = async (userId, testId
     }
 };
 
-module.exports.insertStudentTableQbankHighlightAnswer = async (userId, questionId, leftColumn, rightColumn) => {
+module.exports.insertStudentTableQbankHighlightAnswer = async ({userId, questionId, leftColumn, rightColumn}) => {
     const sql = `insert into tb_tablehighlight_Qbank_student_answers (userId,questionId,leftColumn,rightColumn) values (?,?,?,?)`;
     try {
         const result = await query(sql, [userId, questionId, leftColumn, rightColumn]);

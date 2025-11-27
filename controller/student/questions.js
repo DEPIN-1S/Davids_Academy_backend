@@ -861,14 +861,14 @@ module.exports.submitQuestionResponse = async (req, res) => {
                 if (exam_type === "mock test") {
                     await model.insertStudentTableMockTestHighlightAnswer({
                         ...baseMeta,
-                        leftColumn: ans.rowOrder,
-                        rightColumn: ans.column
+                        leftColumn: ans.leftColumn,
+                        rightColumn: ans.rightColumn
                     });
                 } else {
                     await model.insertStudentTableQbankHighlightAnswer({
                         ...baseMeta,
-                        leftColumn: ans.rowOrder,
-                        rightColumn: ans.column
+                        leftColumn: ans.leftColumn,
+                        rightColumn: ans.rightColumn
                     })
                 }
             }

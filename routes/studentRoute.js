@@ -27,11 +27,12 @@ route.post('/questions/data', verifyToken, GetQuestionDataFromQBank)
 route.post('/questions/sample-questionnaire', GetSampleQuestionData)
 route.post('/questions/mocktest/submit-response', verifyToken, submitQuestionResponse)
 
-const { ListSubmittedTest, ListTestResult, ListQuestionBankResults, GetSubmittedResponse } = require('../controller/student/result')
+const { ListSubmittedTest, ListTestResult, ListQuestionBankResults, GetSubmittedResponse, GetQbankSubmittedResponse} = require('../controller/student/result')
 route.get('/result/list', verifyToken, ListSubmittedTest)
 route.post('/result/data', verifyToken, ListTestResult)
 route.get('/result/question-bank', verifyToken, ListQuestionBankResults)
 route.post('/result/mocktest/submitted', verifyToken, GetSubmittedResponse)
+route.post('/result/qbank/submitted', verifyToken, GetQbankSubmittedResponse)
 
 
 const { GetSuccessStoriesPublic } = require('../controller/student/successStory')

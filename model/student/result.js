@@ -270,3 +270,107 @@ module.exports.GetMockTestMultiDropDownSubmittedAnswer = async (user_id, test_id
     throw error;
   }
 }
+
+
+module.exports.GetQbankMCQSubmittedAnswer = async (user_id, question_id) => {
+  try {
+    const sql = `SELECT * from tb_Qbank_Mcq_Student_Answers where userId=?  and questionId=?`;
+    logger.info(`[Usermodel] Check qbank mcq submitted answer in db - userId : ${user_id}, questionId : ${question_id}`);
+    const data = await query(sql, [user_id, question_id]);
+    return data;
+  } catch (error) {
+    logger.error('[Usermodel] Error in qbank mcq submitted answer in db', { error: error.message });
+    throw error;
+  }
+}
+
+
+module.exports.GetQbankDropdownSubmittedAnswer = async (user_id, question_id) => {
+  try {
+    const sql = `SELECT * from tb_tabledropdown_Qbank_student_answers where userId=?  and questionId=?`;
+    logger.info(`[Usermodel] Check qbank dropdown submitted answer in db - userId : ${user_id}, questionId : ${question_id}`);
+    const data = await query(sql, [user_id, question_id]);
+    return data;
+  } catch (error) {
+    logger.error('[Usermodel] Error in qbank dropdown submitted answer in db', { error: error.message });
+    throw error;
+  }
+}
+
+
+module.exports.GetQbankSortSubmittedAnswer = async (user_id, question_id) => {
+  try {
+    const sql = `SELECT * from tb_sort_Qbank_student_answers where userId=? and questionId=?`;
+    logger.info(`[Usermodel] Check qbank sort submitted answer in db - userId : ${user_id}, questionId : ${question_id}`);
+    const data = await query(sql, [user_id, question_id]);
+    return data;
+  } catch (error) {
+    logger.error('[Usermodel] Error in qbank sort submitted answer in db', { error: error.message });
+    throw error;
+  }
+}
+
+
+module.exports.GetQbankSentenceHighlightSubmittedAnswer = async (user_id, question_id) => {
+  try {
+    const sql = `SELECT * from tb_sentenceHiglight_Qbank_student_answers where userId=? and questionId=?`;
+    logger.info(`[Usermodel] Check qbank sentence highlight submitted answer in db - userId : ${user_id},  questionId : ${question_id}`);
+    const data = await query(sql, [user_id, question_id]);
+    return data;
+  } catch (error) {
+    logger.error('[Usermodel] Error in qbank sentence highlight submitted answer in db', { error: error.message });
+    throw error;
+  }
+}
+
+
+module.exports.GetQbankDragDropSubmittedAnswer = async (user_id, question_id) => {
+  try {
+    const sql = `SELECT * from tb_dragdrop_Qbank_student_answers where userId=? and questionId=?`;
+    logger.info(`[Usermodel] Check qbank drag drop submitted answer in db - userId : ${user_id},  questionId : ${question_id}`);
+    const data = await query(sql, [user_id, question_id]);
+    return data;
+  } catch (error) {
+    logger.error('[Usermodel] Error in qbank drag drop submitted answer in db', { error: error.message });
+    throw error;
+  }
+}
+
+
+module.exports.GetQbankMultipleRadioSubmittedAnswer = async (user_id, question_id) => {
+  try {
+    const sql = `SELECT * from tb_multiradio_Qbank_student_answers where userId=? and questionId=?`;
+    logger.info(`[Usermodel] Check qbank multiple radio submitted answer in db - userId : ${user_id}, questionId : ${question_id}`);
+    const data = await query(sql, [user_id, question_id]);
+    return data;
+  } catch (error) {
+    logger.error('[Usermodel] Error in qbank multiple radio submitted answer in db', { error: error.message });
+    throw error;
+  }
+}
+
+
+module.exports.GetQbankTableDropdownSubmittedAnswer = async (user_id, question_id) => {
+  try {
+    const sql = `SELECT * from tb_tabledropdown_Qbank_student_answers where userId=? and questionId=?`;
+    logger.info(`[Usermodel] Check qbank table dropdown submitted answer in db - userId : ${user_id},  questionId : ${question_id}`);
+    const data = await query(sql, [user_id, question_id]);
+    return data;
+  } catch (error) {
+    logger.error('[Usermodel] Error in qbank table dropdown submitted answer in db', { error: error.message });
+    throw error;
+  }
+}
+
+
+module.exports.GetQbankTableHighlightSubmittedAnswer = async (user_id, question_id) => {
+  try {
+    const sql = `SELECT * from tb_tablehighlight_Qbank_student_answers where userId=? and questionId=?`;
+    logger.info(`[Usermodel] Check qbank table highlight submitted answer in db - userId : ${user_id},  questionId : ${question_id}`);
+    const data = await query(sql, [user_id, question_id]);
+    return data;
+  } catch (error) {
+    logger.error('[Usermodel] Error in qbank table highlight submitted answer in db', { error: error.message });
+    throw error;
+  }
+}
