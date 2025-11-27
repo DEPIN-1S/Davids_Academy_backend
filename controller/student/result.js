@@ -106,7 +106,7 @@ module.exports.GetSubmittedResponse = async (req, res) => {
                 message: "Student not found.Please login again"
             })
         }
-        const { question_id, test_id } = req.body
+        const { questionId, test_id } = req.body
         if (!test_id) {
             return res.send({
                 result: false,
@@ -122,19 +122,19 @@ module.exports.GetSubmittedResponse = async (req, res) => {
             })
         }
         let result = null
-        if (question_id) {
-            const checkQuestion = await model.CheckQuestion(question_id);
+        if (questionId) {
+            const checkQuestion = await model.CheckQuestion(questionId);
             if (checkQuestion.length === 0) {
-                logger.error("Question not found. Invalid question id", question_id);
+                logger.error("Question not found. Invalid question id", questionId);
                 return res.send({ result: false, message: "Question not found. Invalid question id" });
             }
 
-            const questionData = await model.GetQuestionData(question_id);
+            const questionData = await model.GetQuestionData(questionId);
             const qTypeRaw = questionData?.[0]?.question_type;
             const qType = typeof qTypeRaw === 'string' ? qTypeRaw.toLowerCase().trim() : null;
 
             if (!qType) {
-                logger.error("Question type missing for question:", question_id);
+                logger.error("Question type missing for question:", questionId);
                 return res.send({ result: false, message: "Question type missing." });
             }
 
@@ -155,14 +155,14 @@ module.exports.GetSubmittedResponse = async (req, res) => {
             const fnName = submittedAnswerFnMap[qType];
 
             if (!fnName || typeof model[fnName] !== "function") {
-                logger.error("No submitted-answer handler for question type:", qType, "question_id:", question_id);
+                logger.error("No submitted-answer handler for question type:", qType, "question_id:", questionId);
                 return res.send({ result: false, message: `Unsupported question type: ${qType}` });
             }
 
             // Call the selected model function
-            const submittedData = await model[fnName](user_id, test_id, question_id);
+            const submittedData = await model[fnName](user_id, test_id, questionId);
             if (!Array.isArray(submittedData) || submittedData.length === 0) {
-                logger.error("Submitted result not found", { user_id, test_id, question_id, qType });
+                logger.error("Submitted result not found", { user_id, test_id, questionId, qType });
                 return res.send({ result: false, message: "Submitted result not found." });
             }
 
