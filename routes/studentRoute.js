@@ -34,7 +34,6 @@ route.get('/result/question-bank', verifyToken, ListQuestionBankResults)
 route.post('/result/mocktest/submitted', verifyToken, GetSubmittedResponse)
 route.post('/result/qbank/submitted', verifyToken, GetQbankSubmittedResponse)
 
-
 const { GetSuccessStoriesPublic } = require('../controller/student/successStory')
 route.get('/success-story/list', GetSuccessStoriesPublic)
 
