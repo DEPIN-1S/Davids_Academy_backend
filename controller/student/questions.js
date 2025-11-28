@@ -68,13 +68,15 @@ module.exports.GetQuestionDataFromQBank = async (req, res) => {
             const mcqAnswers = await model.GetmcqAnswers(questionId);
             const additionalInfo = await model.GetAdditionalInfo(questionId);
             const explanation = await model.Getexplantion(questionId)
+            const submittedAnswer = await model.GetQbankMCQSubmittedAnswer(user_id, questionId)
             fullQuestionData = {
                 ...questionData[0],
                 tabsInfo,
                 mcqoptions,
                 mcqAnswers,
                 additionalInfo,
-                explanation
+                explanation,
+                submittedAnswer
             };
         }
         if (questionData[0]?.question_type?.toLowerCase() === "dropdown") {
@@ -88,12 +90,14 @@ module.exports.GetQuestionDataFromQBank = async (req, res) => {
             let tabsInfo = await model.Gettabs(questionId);
             let additionalInfo = await model.getAdditionalInfo(questionId);
             let explanation = await model.Getexplantion(questionId);
+            const submittedAnswer = await model.GetQbankDropdownSubmittedAnswer(user_id, questionId)
             fullQuestionData = {
                 ...questionData[0],
                 tabsInfo,
                 dropdowns: dropdownTexts,
                 additionalInfo,
-                explanation
+                explanation,
+                submittedAnswer
             };
         }
 
@@ -102,12 +106,14 @@ module.exports.GetQuestionDataFromQBank = async (req, res) => {
             const additionalInfo = await model.getAdditionalInfo(questionId);
             const explanation = await model.Getexplantion(questionId);
             let tabsInfo = await model.Gettabs(questionId);
+            const submittedAnswer = await model.GetQbankSortSubmittedAnswer(user_id, questionId)
             fullQuestionData = {
                 ...questionData[0],
                 tabsInfo,
                 sortingoptions,
                 additionalInfo,
-                explanation
+                explanation,
+                submittedAnswer
             };
         }
 
@@ -117,13 +123,15 @@ module.exports.GetQuestionDataFromQBank = async (req, res) => {
             const tabsInfo = await model.Gettabs(questionId);
             const additionalInfo = await model.getAdditionalInfo(questionId);
             const explanation = await model.Getexplantion(questionId);
+            const submittedAnswer = await model.GetQbankSentenceHighlightSubmittedAnswer(user_id, questionId)
             fullQuestionData = {
                 ...questionData[0],
                 highlightOptions,
                 highlightAnswers,
                 tabsInfo,
                 additionalInfo,
-                explanation
+                explanation,
+                submittedAnswer
             };
         }
 
@@ -154,12 +162,14 @@ module.exports.GetQuestionDataFromQBank = async (req, res) => {
             const tabsInfo = await model.Gettabs(questionId);
             const additionalInfo = await model.getAdditionalInfo(questionId);
             const explanation = await model.Getexplantion(questionId);
+            const submittedAnswer = await model.GetQbankDragDropSubmittedAnswer(user_id, questionId)
             fullQuestionData = {
                 ...questionData[0],
                 tabsInfo,
                 branches: headings,
                 additionalInfo,
-                explanation
+                explanation,
+                submittedAnswer
             };
         };
         if (questionData[0]?.question_type?.toLowerCase() === "multiple radio") {
@@ -168,13 +178,15 @@ module.exports.GetQuestionDataFromQBank = async (req, res) => {
             const tabsInfo = await model.Gettabs(questionId);
             const additionalInfo = await model.getAdditionalInfo(questionId);
             const explanation = await model.Getexplantion(questionId);
+            const submittedAnswer = await model.GetQbankMultipleRadioSubmittedAnswer(user_id, questionId)
             fullQuestionData = {
                 ...questionData[0],
                 questionContent: clientfindings,
                 radioOption,
                 tabsInfo,
                 additionalInfo,
-                explanation
+                explanation,
+                submittedAnswer
             };
         }
         // Table Dropdown
@@ -189,6 +201,7 @@ module.exports.GetQuestionDataFromQBank = async (req, res) => {
             const answers = await model.GetTableDropdownAnswer(questionId);
             const additionalInfo = await model.getAdditionalInfo(questionId);
             const explanation = await model.Getexplantion(questionId);
+            const submittedAnswer = await model.GetQbankTableDropdownSubmittedAnswer(user_id, questionId)
 
             fullQuestionData = {
                 ...questionData[0],
@@ -197,7 +210,8 @@ module.exports.GetQuestionDataFromQBank = async (req, res) => {
                 tableDropdownFields: rows.map(r => ({ id: r.id, fieldLabel: r.field_label, dropdownOptions: r.dropdownOptions.map(o => o.option_value) })),
                 tableDropdownAnswers: answers.map(a => ({ rowLabel: a.row_label, answer: a.answer })),
                 additionalInfo,
-                explanation
+                explanation,
+                submittedAnswer
             };
         }
 
@@ -213,7 +227,7 @@ module.exports.GetQuestionDataFromQBank = async (req, res) => {
                 : [];
             const additionalInfo = await model.getAdditionalInfo(questionId);
             const explanation = await model.Getexplantion(questionId);
-
+            const submittedAnswer = await model.GetQbankTableHighlightSubmittedAnswer(user_id, questionId)
             fullQuestionData = {
                 ...questionData[0],
                 tabsInfo,
@@ -221,7 +235,8 @@ module.exports.GetQuestionDataFromQBank = async (req, res) => {
                 tableFields: rows.map(r => ({ id: r.id, leftColumn: r.left_column, rightColumn: r.right_column, sortOrder: r.sort_order })),
                 answer, // array of strings if you store them
                 additionalInfo,
-                explanation
+                explanation,
+                submittedAnswer
             };
         }
 
@@ -256,7 +271,7 @@ module.exports.GetQuestionDataFromQBank = async (req, res) => {
 
             const additionalInfo = await model.getAdditionalInfo(questionId); // [memory:2]
             const explanation = await model.Getexplantion(questionId); // [memory:2]
-
+            const submittedAnswer = await model.GetQbankMultiDropDownSubmittedAnswer(user_id, questionId)
             fullQuestionData = {
                 ...questionData[0],
                 tabsInfo,
@@ -268,6 +283,7 @@ module.exports.GetQuestionDataFromQBank = async (req, res) => {
                 })), // [memory:2]
                 additionalInfo,
                 explanation,
+                submittedAnswer
             }; // [memory:2]
         }
 
