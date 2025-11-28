@@ -13,12 +13,17 @@ module.exports.ListQuestionsFromQBank = async (req, res) => {
         }
         const courseId = studentData[0]?.target_exam
         const questionData = await model.ListQuestionIdsNotSubmitted(courseId, user_id)
+        const submittedQuestionData = await model.GetQuestionBankResult(user_id)
+        const submittedQuestions = submittedQuestionData.map(item => item.questionId)
         const questions = questionData.map(item => item.id)
         logger.info("Question ids listed successfully", user_id, courseId)
         return res.send({
             result: true,
             message: "Question ids listed successfully",
-            data: questions
+            data: {
+                submittedQuestions,
+                questions
+            }
         })
     } catch (error) {
         return res.send({
@@ -27,6 +32,8 @@ module.exports.ListQuestionsFromQBank = async (req, res) => {
         })
     }
 }
+
+
 module.exports.GetQuestionDataFromQBank = async (req, res) => {
     try {
         const { user_id } = req?.user
