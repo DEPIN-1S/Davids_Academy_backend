@@ -379,7 +379,7 @@ module.exports.GetQbankMultiDropDownSubmittedAnswer = async (user_id, question_i
   try {
     const sql = `SELECT * from tb_multidropdown_Qbank_student_answers where userId=? and questionId=?`;
     logger.info(`[Usermodel] Check qbank multi dropdown submitted answer in db - userId : ${user_id},  questionId : ${question_id}`);
-    const data = await query(sql, [user_id, test_id, question_id]);
+    const data = await query(sql, [user_id, question_id]);
     return data;
   } catch (error) {
     logger.error('[Usermodel] Error in qbank multi dropdown submitted answer in db', { error: error.message });
