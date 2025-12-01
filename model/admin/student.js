@@ -214,3 +214,111 @@ module.exports.DeleteQuestionBank = async (student_id) => {
         throw error;
     }
 }
+
+module.exports.DeleteSubmittedMockTestMCQAnswers = async (student_id, test_id) => {
+    try {
+        const sql = `Delete from tb_Mocktest_Mcq_Student_Answers where userId=? and testId=? `;
+        logger.info(`[Delete submitted MCQ mock test student answer] Delete submitted mocktest mcq answer from db`, { student_id, test_id });
+        const data = await query(sql, [student_id, test_id]);
+        return data;
+    } catch (error) {
+        logger.error('[Delete submitted MCQ mock test answer] Error in Delete submitted mocktest mcq answer from db', { error: error.message });
+        throw error;
+    }
+}
+
+module.exports.DeleteSubmittedMockTestDropdownAnswers = async (student_id, test_id) => {
+    try {
+        const sql = `Delete from tb_dropdown_Mocktest_student_answers where userId=? and testId=? `;
+        logger.info(`[Delete submitted dropdown mock test student answer] Delete submitted dropdown mocktest answer from db`, { student_id, test_id });
+        const data = await query(sql, [student_id, test_id]);
+        return data;
+    } catch (error) {
+        logger.error('[Delete submitted dropdown mock test answer] Error in Delete submitted dropdown mock test answer from db', { error: error.message });
+        throw error;
+    }
+}
+
+module.exports.DeleteSubmittedMockTestSortAnswers = async (student_id, test_id) => {
+    try {
+        const sql = `Delete from tb_sort_Mocktest_student_answers where userId=? and testId=? `;
+        logger.info(`[Delete submitted sort mock test student answer] Delete submitted sort mocktest answer from db`, { student_id, test_id });
+        const data = await query(sql, [student_id, test_id]);
+        return data;
+    } catch (error) {
+        logger.error('[Delete submitted sort mock test answer] Error in Delete submitted sort mock test answer from db', { error: error.message });
+        throw error;
+    }
+}
+
+module.exports.DeleteSubmittedMockTestSentenceHighlightAnswers = async (student_id, test_id) => {
+    try {
+        const sql = `Delete from tb_sentenceHiglight_Mocktest_student_answers where userId=? and testId=? `;
+        logger.info(`[Delete submitted sentence highlight mock test student answer] Delete submitted sentence highlight mocktest answer from db`, { student_id, test_id });
+        const data = await query(sql, [student_id, test_id]);
+        return data;
+    } catch (error) {
+        logger.error('[Delete submitted sentence highlight mock test answer] Error in Delete submitted sentence highlight mock test answer from db', { error: error.message });
+        throw error;
+    }
+}
+
+module.exports.DeleteSubmittedMockTestDragdropAnswers = async (student_id, test_id) => {
+    try {
+        const sql = `Delete from tb_dragdrop_Mocktest_student_answers where userId=? and testId=? `;
+        logger.info(`[Delete submitted dragdrop mock test student answer] Delete submitted dragdrop mocktest answer from db`, { student_id, test_id });
+        const data = await query(sql, [student_id, test_id]);
+        return data;
+    } catch (error) {
+        logger.error('[Delete submitted dragdrop mock test answer] Error in Delete submitted dragdrop mock test answer from db', { error: error.message });
+        throw error;
+    }
+}
+
+module.exports.DeleteSubmittedMockTestMultiRadioAnswers = async (student_id, test_id) => {
+    try {
+        const sql = `Delete from tb_multiradio_Mocktest_student_answers where userId=? and testId=? `;
+        logger.info(`[Delete submitted multiradio mock test student answer] Delete submitted multiradio mocktest answer from db`, { student_id, test_id });
+        const data = await query(sql, [student_id, test_id]);
+        return data;
+    } catch (error) {
+        logger.error('[Delete submitted multiradio mock test answer] Error in Delete submitted multiradio mock test answer from db', { error: error.message });
+        throw error;
+    }
+}
+
+module.exports.DeleteSubmittedMockTestTableDropdownAnswers = async (student_id, test_id) => {
+    try {
+        const sql = `Delete from tb_tabledropdown_Mocktest_student_answers where userId=? and testId=? `;
+        logger.info(`[Delete submitted table dropdown mock test student answer] Delete submitted table dropdown mocktest answer from db`, { student_id, test_id });
+        const data = await query(sql, [student_id, test_id]);
+        return data;
+    } catch (error) {
+        logger.error('[Delete submitted table dropdown mock test answer] Error in Delete submitted table dropdown mock test answer from db', { error: error.message });
+        throw error;
+    }
+}
+
+module.exports.DeleteSubmittedMockTestTableHighlightAnswers = async (student_id, test_id) => {
+    try {
+        const sql = `Delete from tb_tablehighlight_Mocktest_student_answers where userId=? and testId=? `;
+        logger.info(`[Delete submitted table highlight mock test student answer] Delete submitted table highlight mocktest answer from db`, { student_id, test_id });
+        const data = await query(sql, [student_id, test_id]);
+        return data;
+    } catch (error) {
+        logger.error('[Delete submitted table highlight mock test answer] Error in Delete submitted table highlight mock test answer from db', { error: error.message });
+        throw error;
+    }
+}
+
+module.exports.DeleteSubmittedMockTestMultiDropdownAnswers = async (student_id, test_id) => {
+    try {
+        const sql = `Delete from tb_multidropdown_Mocktest_student_answers where userId=? and testId=? `;
+        logger.info(`[Delete submitted multi dropdown mock test student answer] Delete submitted multi dropdown mocktest answer from db`, { student_id, test_id });
+        const data = await query(sql, [student_id, test_id]);
+        return data;
+    } catch (error) {
+        logger.error('[Delete submitted multi dropdown mock test answer] Error in Delete submitted multi dropdown mock test answer from db', { error: error.message });
+        throw error;
+    }
+}

@@ -369,6 +369,15 @@ module.exports.ResetTest = async (req, res) => {
         }
         const deleteSubmittedTest = await model.DeleteSubmittedTest(student_id, test_id)
         const deleteSubmittedMockTest = await model.DeleteSubmittedMockTest(student_id, test_id)
+        const deleteSubmittedMCQAnswers = await model.DeleteSubmittedMockTestMCQAnswers(student_id, test_id)
+        const deleteSubmittedDropdownAnswers = await model.DeleteSubmittedMockTestDropdownAnswers(student_id, test_id)
+        const deleteSubmittedSortAnswers = await model.DeleteSubmittedMockTestSortAnswers(student_id, test_id)
+        const deleteSubmittedSentenceHighlightAnswers = await model.DeleteSubmittedMockTestSentenceHighlightAnswers(student_id, test_id)
+        const deleteSubmittedDragdropAnswers = await model.DeleteSubmittedMockTestDragdropAnswers(student_id, test_id)
+        const deleteSubmittedMultiRadioAnswers = await model.DeleteSubmittedMockTestMultiRadioAnswers(student_id, test_id)
+        const deleteSubmittedTableDropdownAnswers = await model.DeleteSubmittedMockTestTableDropdownAnswers(student_id, test_id)
+        const deleteSubmittedTableHighlightAnswers = await model.DeleteSubmittedMockTestTableHighlightAnswers(student_id, test_id)
+        const deleteSubmittedMultiDropdownAnswers = await model.DeleteSubmittedMockTestMultiDropdownAnswers(student_id, test_id)
         if (deleteSubmittedTest.affectedRows > 0 && deleteSubmittedMockTest.affectedRows > 0) {
             logger.info('Submitted test deleted successfully from DB. Test ID: %s, Student ID: %s', test_id, student_id);
             return res.send({
