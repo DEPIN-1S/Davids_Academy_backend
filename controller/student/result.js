@@ -166,7 +166,7 @@ module.exports.GetSubmittedResponse = async (req, res) => {
                 return res.send({ result: false, message: "Submitted result not found." });
             }
 
-            result = submittedData[0];
+            result = submittedData;
         }
         const checkTestSubmitted = await model.CheckTestSubmitted(test_id, user_id)
         // if(!checkTestSubmitted||checkTestSubmitted.length===0){
@@ -218,7 +218,7 @@ module.exports.GetQbankSubmittedResponse = async (req, res) => {
         const questionData = await model.GetQuestionData(questionId);
         const qTypeRaw = questionData?.[0]?.question_type;
         const qType = typeof qTypeRaw === 'string' ? qTypeRaw.toLowerCase().trim() : null;
-
+        console.log("questionData : ", questionData)
         if (!qType) {
             logger.error("Question type missing for question:", questionId);
             return res.send({ result: false, message: "Question type missing." });
@@ -254,7 +254,7 @@ module.exports.GetQbankSubmittedResponse = async (req, res) => {
         return res.send({
             result: true,
             message: "Data retrieved successfully",
-            data: submittedData[0]
+            data: submittedData
         })
     } catch (error) {
         return res.send({
