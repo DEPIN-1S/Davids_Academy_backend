@@ -417,6 +417,15 @@ module.exports.ResetQuestionBank = async (req, res) => {
             })
         }
         const deleteQbank = await model.DeleteQuestionBank(student_id)
+        await model.DeleteSubmittedQbankMCQAnswers(student_id)
+        await model.DeleteSubmittedQbankDropdownAnswers(student_id)
+        await model.DeleteSubmittedQbankSortAnswers(student_id)
+        await model.DeleteSubmittedQbankSentenceHighlightAnswers(student_id)
+        await model.DeleteSubmittedQbankDragdropAnswers(student_id)
+        await model.DeleteSubmittedQbankMultiRadioAnswers(student_id)
+        await model.DeleteSubmittedQbankTableDropdownAnswers(student_id)
+        await model.DeleteSubmittedQbankTableHighlightAnswers(student_id)
+        await model.DeleteSubmittedQbankMultiDropdownAnswers(student_id)
         if (deleteQbank.affectedRows > 0) {
             logger.info('Submitted question bank deleted successfully from DB. Student ID: %s', student_id);
             return res.send({
