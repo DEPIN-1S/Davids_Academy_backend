@@ -287,7 +287,7 @@ module.exports.GetQbankMCQSubmittedAnswer = async (user_id, question_id) => {
 
 module.exports.GetQbankDropdownSubmittedAnswer = async (user_id, question_id) => {
   try {
-    const sql = `SELECT * from tb_tabledropdown_Qbank_student_answers where userId=?  and questionId=?`;
+    const sql = `SELECT * from tb_dropdown_Qbank_student_answers where userId=?  and questionId=?`;
     logger.info(`[Usermodel] Check qbank dropdown submitted answer in db - userId : ${user_id}, questionId : ${question_id}`);
     const data = await query(sql, [user_id, question_id]);
     return data;
