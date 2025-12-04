@@ -178,10 +178,8 @@ module.exports.GetSubmittedResponse = async (req, res) => {
         return res.send({
             result: true,
             message: "Data retrieved successfully",
-            data: {
-                test: checkTestSubmitted[0],
-                question_result: result
-            }
+            answers: result,
+            test_result: checkTestSubmitted
         })
     } catch (error) {
         return res.send({
@@ -254,7 +252,7 @@ module.exports.GetQbankSubmittedResponse = async (req, res) => {
         return res.send({
             result: true,
             message: "Data retrieved successfully",
-            data: submittedData
+            answers: submittedData
         })
     } catch (error) {
         return res.send({
