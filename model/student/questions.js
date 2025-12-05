@@ -20,7 +20,7 @@ module.exports.ListQuestionIds = async (courseId) => {
 module.exports.ListQuestionIdsNotSubmitted = async (courseId, studentId) => {
     const sql = `
       SELECT id FROM tb_questions 
-      WHERE courseId = ? AND exam_type = 'q-bank' 
+      WHERE courseId = ? AND exam_type = 'q-bank'
       AND id NOT IN (
         SELECT questionId FROM tb_QbankSubmit WHERE user_id = ?
       )
@@ -602,7 +602,7 @@ module.exports.insertStudentMockTestMultipleRadioAnswer = async ({ userId, testI
 };
 
 module.exports.insertStudentQbankMultipleRadioAnswer = async ({ userId, questionId, clientfindings, answer }) => {
-    const sql = `insert into tb_multidropdown_Qbank_student_answers (userId,questionId,clientfindings,answer) values (?,?,?,?)`;
+    const sql = `insert into tb_multiradio_Qbank_student_answers (userId,questionId,clientfindings,answer) values (?,?,?,?)`;
     try {
         const result = await query(sql, [userId, questionId, clientfindings, answer]);
         logger.info(`[Submitting student qbank multiple radio answer] Successfully submitted qbank multiple radio answer for userId = ${userId},  questionId = ${questionId}, clientfindings=${clientfindings}`);

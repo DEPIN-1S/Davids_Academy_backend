@@ -378,17 +378,36 @@ module.exports.ResetTest = async (req, res) => {
         const deleteSubmittedTableDropdownAnswers = await model.DeleteSubmittedMockTestTableDropdownAnswers(student_id, test_id)
         const deleteSubmittedTableHighlightAnswers = await model.DeleteSubmittedMockTestTableHighlightAnswers(student_id, test_id)
         const deleteSubmittedMultiDropdownAnswers = await model.DeleteSubmittedMockTestMultiDropdownAnswers(student_id, test_id)
-        if (deleteSubmittedTest.affectedRows > 0 && deleteSubmittedMockTest.affectedRows > 0) {
-            logger.info('Submitted test deleted successfully from DB. Test ID: %s, Student ID: %s', test_id, student_id);
+        const somethingDeleted = deleteSubmittedTest.affectedRows > 0 ||
+            deleteSubmittedMockTest.affectedRows > 0 ||
+            deleteSubmittedMCQAnswers.affectedRows > 0 ||
+            deleteSubmittedDropdownAnswers.affectedRows > 0 ||
+            deleteSubmittedSortAnswers.affectedRows > 0 ||
+            deleteSubmittedSentenceHighlightAnswers.affectedRows > 0 ||
+            deleteSubmittedDragdropAnswers.affectedRows > 0 ||
+            deleteSubmittedMultiRadioAnswers.affectedRows > 0 ||
+            deleteSubmittedTableDropdownAnswers.affectedRows > 0 ||
+            deleteSubmittedTableHighlightAnswers.affectedRows > 0 ||
+            deleteSubmittedMultiDropdownAnswers.affectedRows > 0
+        if (somethingDeleted) {
+            logger.info(
+                'Submitted test deleted successfully from DB. Test ID: %s, Student ID: %s',
+                test_id,
+                student_id
+            );
             return res.send({
                 result: true,
                 message: "Mock test reset successfully."
             });
         } else {
-            logger.error('Failed to delete submitted test from DB. Test ID: %s, Student ID: %s', test_id, student_id);
+            logger.info(
+                'No submissions found to delete. Test already reset. Test ID: %s, Student ID: %s',
+                test_id,
+                student_id
+            );
             return res.send({
-                result: false,
-                message: "Failed to reset mock test."
+                result: true,
+                message: "No submissions found. Mock test is already reset."
             });
         }
     } catch (error) {
