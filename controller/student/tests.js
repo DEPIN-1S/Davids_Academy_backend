@@ -3,6 +3,7 @@ const logger = require('../../utils/logger');
 module.exports.ListAllTests = async (req, res) => {
     try {
         const { user_id } = req?.user
+        const { search } = req.body
         const studentData = await model.GetStudentData(user_id)
         if (studentData.length == 0) {
             logger.error("Student not found.Please login again", user_id)
@@ -12,7 +13,7 @@ module.exports.ListAllTests = async (req, res) => {
             })
         }
         const courseId = studentData[0]?.target_exam
-        const tests = await model.ListAllTestsWithStatus(courseId, user_id)
+        const tests = await model.ListAllTestsWithStatus(courseId, user_id, search)
         logger.info("Tests listed successfully with status", user_id)
         return res.send({
             result: true,

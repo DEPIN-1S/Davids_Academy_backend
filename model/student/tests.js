@@ -574,45 +574,110 @@ module.exports.UpdateTestSubmissionStatus = async (user_id, test_id) => {
     }
 };
 // Enhanced ListAllTestsWithStatus (for /test/list)
-module.exports.ListAllTestsWithStatus = async (courseId, user_id) => {
+// module.exports.ListAllTestsWithStatus = async (courseId, user_id) => {
+//     const sql = `
+//     SELECT
+//   t.id, t.testTitle, t.courseId, t.fromDate, t.toDate,t.totalQuestions,
+//   st.is_submitted, st.status,
+//   usq.submittedQuestions, usq.correctAnswers, usq.wrongAnswers,
+//   CASE WHEN st.is_submitted = 1 THEN 1 ELSE 0 END AS isCompleted
+// FROM tb_tests t
+// LEFT JOIN (
+//   SELECT 
+//     st_test_id, st_user_id,
+//     MAX(is_submitted) AS is_submitted,
+//     MAX(status) AS status
+//   FROM tb_submittedTest
+//   GROUP BY st_test_id, st_user_id
+// ) st
+//   ON t.id = st.st_test_id AND st.st_user_id = ?
+// LEFT JOIN (
+//   SELECT 
+//     sq_test_id, sq_user_id,
+//     COUNT(DISTINCT sq_question_id) AS submittedQuestions,
+//     COUNT(DISTINCT CASE WHEN sq_is_correct = 1 THEN sq_question_id END) AS correctAnswers,
+//     COUNT(DISTINCT CASE WHEN sq_is_correct = 0 THEN sq_question_id END) AS wrongAnswers
+//   FROM tb_submittedQuestions
+//   GROUP BY sq_test_id, sq_user_id
+// ) usq
+//   ON t.id = usq.sq_test_id AND usq.sq_user_id = ?
+// WHERE t.courseId = ?
+//   AND DATE(t.fromDate) <= CURDATE()
+//   AND DATE(t.toDate) >= CURDATE()
+// ORDER BY t.fromDate DESC;
+
+//   `;
+//     try {
+//         const data = await query(sql, [user_id, user_id, courseId]);
+//         logger.info('[Testsmodel] Listed tests with status', { courseId, user_id });
+//         return data;
+//     } catch (error) {
+//         logger.error('[Testsmodel] Error listing tests with status', { error: error.message });
+//         throw error;
+//     }
+// };
+
+module.exports.ListAllTestsWithStatus = async (courseId, user_id, search = "") => {
     const sql = `
     SELECT
-  t.id, t.testTitle, t.courseId, t.fromDate, t.toDate,t.totalQuestions,
-  st.is_submitted, st.status,
-  usq.submittedQuestions, usq.correctAnswers, usq.wrongAnswers,
-  CASE WHEN st.is_submitted = 1 THEN 1 ELSE 0 END AS isCompleted
-FROM tb_tests t
-LEFT JOIN (
-  SELECT 
-    st_test_id, st_user_id,
-    MAX(is_submitted) AS is_submitted,
-    MAX(status) AS status
-  FROM tb_submittedTest
-  GROUP BY st_test_id, st_user_id
-) st
-  ON t.id = st.st_test_id AND st.st_user_id = ?
-LEFT JOIN (
-  SELECT 
-    sq_test_id, sq_user_id,
-    COUNT(DISTINCT sq_question_id) AS submittedQuestions,
-    COUNT(DISTINCT CASE WHEN sq_is_correct = 1 THEN sq_question_id END) AS correctAnswers,
-    COUNT(DISTINCT CASE WHEN sq_is_correct = 0 THEN sq_question_id END) AS wrongAnswers
-  FROM tb_submittedQuestions
-  GROUP BY sq_test_id, sq_user_id
-) usq
-  ON t.id = usq.sq_test_id AND usq.sq_user_id = ?
-WHERE t.courseId = ?
-  AND DATE(t.fromDate) <= CURDATE()
-  AND DATE(t.toDate) >= CURDATE()
-ORDER BY t.fromDate DESC;
+      t.id,
+      t.testTitle,
+      t.courseId,
+      t.fromDate,
+      t.toDate,
+      t.totalQuestions,
+      st.is_submitted,
+      st.status,
+      usq.submittedQuestions,
+      usq.correctAnswers,
+      usq.wrongAnswers,
+      CASE WHEN st.is_submitted = 1 THEN 1 ELSE 0 END AS isCompleted
+    FROM tb_tests t
+    LEFT JOIN (
+      SELECT 
+        st_test_id,
+        st_user_id,
+        MAX(is_submitted) AS is_submitted,
+        MAX(status) AS status
+      FROM tb_submittedTest
+      GROUP BY st_test_id, st_user_id
+    ) st
+      ON t.id = st.st_test_id AND st.st_user_id = ?
+    LEFT JOIN (
+      SELECT 
+        sq_test_id,
+        sq_user_id,
+        COUNT(DISTINCT sq_question_id) AS submittedQuestions,
+        COUNT(DISTINCT CASE WHEN sq_is_correct = 1 THEN sq_question_id END) AS correctAnswers,
+        COUNT(DISTINCT CASE WHEN sq_is_correct = 0 THEN sq_question_id END) AS wrongAnswers
+      FROM tb_submittedQuestions
+      GROUP BY sq_test_id, sq_user_id
+    ) usq
+      ON t.id = usq.sq_test_id AND usq.sq_user_id = ?
+    WHERE t.courseId = ?
+      AND DATE(t.fromDate) <= CURDATE()
+      AND DATE(t.toDate) >= CURDATE()
+      AND (
+        ? = '' 
+        OR t.testTitle LIKE CONCAT('%', ?, '%')
+      )
+    ORDER BY t.fromDate DESC;
+    `;
 
-  `;
     try {
-        const data = await query(sql, [user_id, user_id, courseId]);
-        logger.info('[Testsmodel] Listed tests with status', { courseId, user_id });
+        const data = await query(sql, [
+            user_id,
+            user_id,
+            courseId,
+            search,
+            search
+        ]);
+
+        logger.info('[Testsmodel] Listed tests with status', { courseId, user_id, search });
         return data;
     } catch (error) {
         logger.error('[Testsmodel] Error listing tests with status', { error: error.message });
         throw error;
     }
 };
+
