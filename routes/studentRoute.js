@@ -15,7 +15,7 @@ const { ListAllRecordings } = require('../controller/student/recordings')
 route.post('/recodings/list', verifyToken, ListAllRecordings)
 
 const { ListAllTests, ListTestQuestions, GetQuestionData, SubmitQuestions, SubmitTest } = require('../controller/student/tests')
-route.get('/test/list', verifyToken, ListAllTests)
+route.post('/test/list', verifyToken, ListAllTests)
 route.post('/test/questions', verifyToken, ListTestQuestions)
 route.post('/test/question/data', verifyToken, GetQuestionData)
 route.post('/test/question/submit', verifyToken, SubmitQuestions)
