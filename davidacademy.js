@@ -49,6 +49,15 @@ const studentRoutes = require('./routes/studentRoute');
 const adminRoute = require('./routes/adminRoute');
 const topicRoutes = require('./routes/topicRoutes'); // [NEW] Topic Routes
 
+app.get('/', (req, res) => {
+  res.send('API is running 🚀');
+});
+
+// For backward compatibility or if Nginx proxies /api to /
+app.get('/api', (req, res) => {
+  res.send('API is running 🚀');
+});
+
 app.use('/davidsacademy', loginRoutes);
 app.use('/davidsacademy/exam', examRoutes);
 app.use('/davidsacademy/course', courseRoutes);
