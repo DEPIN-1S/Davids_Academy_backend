@@ -73,8 +73,15 @@ module.exports.ListQuestionBankResults = async (req, res) => {
                 message: "Student not found.Please login again"
             })
         }
-        const totalQuestions = await model.GetTotalQuestionsInQBank()
-        const results = await model.GetQuestionBankResult(user_id)
+        
+        const courseId = studentData[0]?.target_exam;
+        let topics = [];
+        if (req.query.topics) {
+            topics = req.query.topics.split(',').map(id => Number(id.trim())).filter(id => !isNaN(id));
+        }
+
+        const totalQuestions = await model.GetTotalQuestionsInQBank(courseId, topics)
+        const results = await model.GetQuestionBankResult(user_id, topics)
         const isCorrect = results.filter(item => item.is_correct == 1);
         return res.send({
             result: true,

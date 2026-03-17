@@ -61,12 +61,22 @@ module.exports.UpdateTestSubmissionStatus = async (user_id, test_id) => {
   }
 };
 
-module.exports.GetQuestionBankResult = async (user_id) => {
-  const sql = `
-    Select * from tb_QbankSubmit where user_id = ?
+module.exports.GetQuestionBankResult = async (user_id, topics = []) => {
+  let sql = `
+    SELECT qs.* 
+    FROM tb_QbankSubmit qs
+    INNER JOIN tb_questions q ON qs.questionId = q.id
+    WHERE qs.user_id = ?
   `;
+  const params = [user_id];
+
+  if (topics && topics.length > 0) {
+    sql += ` AND q.topic_id IN (?)`;
+    params.push(topics);
+  }
+
   try {
-    const result = await query(sql, [user_id]);
+    const result = await query(sql, params);
     logger.info(` [Get questionbank result] Get question bank result -user: ${user_id}`);
     return result;
   } catch (err) {
@@ -75,14 +85,21 @@ module.exports.GetQuestionBankResult = async (user_id) => {
   }
 }
 
-module.exports.GetTotalQuestionsInQBank = async () => {
-  const sql = `
+module.exports.GetTotalQuestionsInQBank = async (courseId, topics = []) => {
+  let sql = `
     SELECT id 
-  FROM tb_questions 
-  WHERE LOWER(exam_type) = LOWER(?)
+    FROM tb_questions 
+    WHERE LOWER(exam_type) = LOWER(?) AND courseId = ?
   `;
+  const params = ["q-bank", courseId];
+
+  if (topics && topics.length > 0) {
+    sql += ` AND topic_id IN (?)`;
+    params.push(topics);
+  }
+
   try {
-    const result = await query(sql, ["q-bank"]);
+    const result = await query(sql, params);
     logger.info(` [Get questionbank Questions] Get question bank questions `);
     return result;
   } catch (err) {

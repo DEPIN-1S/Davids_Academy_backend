@@ -17,17 +17,36 @@ module.exports.ListQuestionIds = async (courseId) => {
 }
 
 // List question ids for a course that the student has NOT submitted yet
-module.exports.ListQuestionIdsNotSubmitted = async (courseId, studentId) => {
-    const sql = `
+module.exports.ListQuestionIdsNotSubmitted = async (courseId, studentId, topics = null, limitCount = null) => {
+    let sql = `
       SELECT id FROM tb_questions 
       WHERE courseId = ? AND exam_type = 'q-bank'
       AND id NOT IN (
         SELECT questionId FROM tb_QbankSubmit WHERE user_id = ?
       )
     `;
+    const params = [courseId, studentId];
+
+    if (topics && topics.length > 0) {
+        // topics should be an array of topic IDs or a comma-separated string
+        const topicList = Array.isArray(topics) ? topics : topics.split(',').map(t => t.trim());
+        const placeholders = topicList.map(() => '?').join(',');
+        sql += ` AND topic_id IN (${placeholders})`;
+        params.push(...topicList);
+    }
+    
+    // Always randomize for Q-Bank practice? Or just when a limit is provided?
+    // According to best practices, custom mock exams are randomized. Let's strictly do this for count.
+    if (limitCount && !isNaN(limitCount)) {
+        sql += ` ORDER BY RAND() LIMIT ?`;
+        params.push(Number(limitCount));
+    }
+
     try {
-        const rows = await query(sql, [courseId, studentId]);
-        logger.info(`✅ [ListQuestionIdsNotSubmitted] q=${courseId} student=${studentId} count=${rows.length}`);
+        console.log("🔍 SQL QUERY GENERATED FOR Q-BANK:");
+        console.log({ sql, params });
+        const rows = await query(sql, params);
+        logger.info(`✅ [ListQuestionIdsNotSubmitted] q=${courseId} student=${studentId} filtered by ${topics ? 'topics' : 'no topics'}, limit ${limitCount ? limitCount : 'none'} count=${rows.length}`);
         return rows;
     } catch (err) {
         logger.error(`❌ [ListQuestionIdsNotSubmitted] q=${courseId} student=${studentId} - ${err.message}`);

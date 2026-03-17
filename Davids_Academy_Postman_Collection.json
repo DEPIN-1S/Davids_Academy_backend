@@ -1,0 +1,2197 @@
+{
+  "info": {
+    "name": "Davids Academy Postman Collection",
+    "description": "Comprehensive Postman collection for all Davids Academy Backend API Endpoints.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "YOUR_AUTH_TOKEN_HERE",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Login / Auth",
+      "item": [
+        {
+          "name": "Create User",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/user/create",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "user",
+                "create"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Verify OTP",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/user/verify-otp",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "user",
+                "verify-otp"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Forgot Password",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/user/forgot-password",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "user",
+                "forgot-password"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Exam",
+      "item": [
+        {
+          "name": "Create Question Type",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/exam/questionType",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "exam",
+                "questionType"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Update Question Type",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/exam/questionType/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "exam",
+                "questionType",
+                ":id"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Delete Question Type",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/exam/questionType/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "exam",
+                "questionType",
+                ":id"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Upload Tab Image",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/exam/tab-image",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "exam",
+                "tab-image"
+              ]
+            },
+            "body": {
+              "mode": "formdata",
+              "formdata": []
+            }
+          }
+        },
+        {
+          "name": "Delete Tab Image",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/exam/tab-image",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "exam",
+                "tab-image"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Question",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/exam/question",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "exam",
+                "question"
+              ]
+            },
+            "body": {
+              "mode": "formdata",
+              "formdata": []
+            }
+          }
+        },
+        {
+          "name": "Get Sample Questionnaire",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/exam/sample-questionnaire",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "exam",
+                "sample-questionnaire"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Question",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/exam/question/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "exam",
+                "question",
+                ":id"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Check Question Exists",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/exam/question-text",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "exam",
+                "question-text"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete(Patch) Question",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/exam/question/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "exam",
+                "question",
+                ":id"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "List Questions",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/exam/list/questions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "exam",
+                "list",
+                "questions"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Add Question Types",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/exam/add/question-types",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "exam",
+                "add",
+                "question-types"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "List Question Types",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/exam/list/question-types",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "exam",
+                "list",
+                "question-types"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Edit Question Types",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/exam/edit/question-types",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "exam",
+                "edit",
+                "question-types"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Question Types",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/exam/delete/question-types",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "exam",
+                "delete",
+                "question-types"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "List Questions Paginated",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/exam/list/questions/:page",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "exam",
+                "list",
+                "questions",
+                ":page"
+              ]
+            }
+          }
+        },
+        {
+          "name": "List Mock Test Questions",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/exam/list/mock-test-questions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "exam",
+                "list",
+                "mock-test-questions"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Question By Id",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/exam/questions/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "exam",
+                "questions",
+                ":id"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Test",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/exam/tests",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "exam",
+                "tests"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "List Tests Paginated",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/exam/list/test/:page",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "exam",
+                "list",
+                "test",
+                ":page"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Test By Id",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/exam/tests/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "exam",
+                "tests",
+                ":id"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Test",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/exam/tests/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "exam",
+                "tests",
+                ":id"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Delete Test",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/exam/tests/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "exam",
+                "tests",
+                ":id"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Marklist",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/exam/marklist",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "exam",
+                "marklist"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Course",
+      "item": [
+        {
+          "name": "Create Course",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/course/create/course",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "course",
+                "create",
+                "course"
+              ]
+            },
+            "body": {
+              "mode": "formdata",
+              "formdata": []
+            }
+          }
+        },
+        {
+          "name": "List Courses",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/course/list/courses",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "course",
+                "list",
+                "courses"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Course",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/course/update/course",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "course",
+                "update",
+                "course"
+              ]
+            },
+            "body": {
+              "mode": "formdata",
+              "formdata": []
+            }
+          }
+        },
+        {
+          "name": "Delete Course",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/course/delete/course/:cs_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "course",
+                "delete",
+                "course",
+                ":cs_id"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Student",
+      "item": [
+        {
+          "name": "Contact Us",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/student/contact-us",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "student",
+                "contact-us"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Create Note",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/student/note/create",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "student",
+                "note",
+                "create"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Edit Note",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/student/note/edit",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "student",
+                "note",
+                "edit"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "List Notes",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/student/note/list",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "student",
+                "note",
+                "list"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Delete Note",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/student/note/delete",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "student",
+                "note",
+                "delete"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "List Recordings",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/student/recodings/list",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "student",
+                "recodings",
+                "list"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "List Tests",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/student/test/list",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "student",
+                "test",
+                "list"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "List Test Questions",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/student/test/questions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "student",
+                "test",
+                "questions"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Get Test Question Data",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/student/test/question/data",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "student",
+                "test",
+                "question",
+                "data"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Submit Test Questions",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/student/test/question/submit",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "student",
+                "test",
+                "question",
+                "submit"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Submit Test",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/student/test/submit",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "student",
+                "test",
+                "submit"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "List Questions From QBank",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/student/questions/list",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "student",
+                "questions",
+                "list"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Question Data From QBank",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/student/questions/data",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "student",
+                "questions",
+                "data"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Get Sample Question Data",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/student/questions/sample-questionnaire",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "student",
+                "questions",
+                "sample-questionnaire"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Submit Question Response",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/student/questions/mocktest/submit-response",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "student",
+                "questions",
+                "mocktest",
+                "submit-response"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "List Submitted Tests",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/student/result/list",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "student",
+                "result",
+                "list"
+              ]
+            }
+          }
+        },
+        {
+          "name": "List Test Result",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/student/result/data",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "student",
+                "result",
+                "data"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "List Question Bank Results",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/student/result/question-bank",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "student",
+                "result",
+                "question-bank"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Submitted Response",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/student/result/mocktest/submitted",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "student",
+                "result",
+                "mocktest",
+                "submitted"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Get QBank Submitted Response",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/student/result/qbank/submitted",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "student",
+                "result",
+                "qbank",
+                "submitted"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "List Success Stories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/student/success-story/list",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "student",
+                "success-story",
+                "list"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin",
+      "item": [
+        {
+          "name": "List Contacts",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/admin/list/contact-us",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "admin",
+                "list",
+                "contact-us"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Update Contact Status",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/admin/contact-us/update-status",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "admin",
+                "contact-us",
+                "update-status"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Create Student",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/admin/student/create",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "admin",
+                "student",
+                "create"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Edit Student",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/admin/student/edit",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "admin",
+                "student",
+                "edit"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "List Students",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/admin/student/list",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "admin",
+                "student",
+                "list"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Update Student Status",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/admin/student/update-status",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "admin",
+                "student",
+                "update-status"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "List Student Submitted Tests",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/admin/student/test",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "admin",
+                "student",
+                "test"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "List Submitted Questions",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/admin/student/test/questions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "admin",
+                "student",
+                "test",
+                "questions"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Admin Reset Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/admin/student/reset-password",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "admin",
+                "student",
+                "reset-password"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Admin Reset Test",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/admin/student/reset-test",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "admin",
+                "student",
+                "reset-test"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Admin Reset QBank",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/admin/student/reset-qbank",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "admin",
+                "student",
+                "reset-qbank"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Create Record",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/admin/record/create",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "admin",
+                "record",
+                "create"
+              ]
+            },
+            "body": {
+              "mode": "formdata",
+              "formdata": []
+            }
+          }
+        },
+        {
+          "name": "Edit Record",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/admin/record/edit",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "admin",
+                "record",
+                "edit"
+              ]
+            },
+            "body": {
+              "mode": "formdata",
+              "formdata": []
+            }
+          }
+        },
+        {
+          "name": "List Records",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/admin/record/list",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "admin",
+                "record",
+                "list"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Delete Record",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/admin/record/delete",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "admin",
+                "record",
+                "delete"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Create Success Story",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/admin/success-story/create",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "admin",
+                "success-story",
+                "create"
+              ]
+            },
+            "body": {
+              "mode": "formdata",
+              "formdata": []
+            }
+          }
+        },
+        {
+          "name": "Edit Success Story",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/admin/success-story/edit/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "admin",
+                "success-story",
+                "edit",
+                ":id"
+              ]
+            },
+            "body": {
+              "mode": "formdata",
+              "formdata": []
+            }
+          }
+        },
+        {
+          "name": "Delete Success Story",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/admin/success-story/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "admin",
+                "success-story",
+                ":id"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Dashboard",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/davidsacademy/admin/dashboard",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "davidsacademy",
+                "admin",
+                "dashboard"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

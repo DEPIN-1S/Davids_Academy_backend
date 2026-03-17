@@ -11,8 +11,9 @@ module.exports.ListQuestionsFromQBank = async (req, res) => {
                 message: "Student not found.Please login again"
             })
         }
-        const courseId = studentData[0]?.target_exam
-        const questionData = await model.ListQuestionIdsNotSubmitted(courseId, user_id)
+        const { topics, count } = req.query;
+        const courseId = studentData[0]?.target_exam;
+        const questionData = await model.ListQuestionIdsNotSubmitted(courseId, user_id, topics, count);
         const submittedQuestionData = await model.GetQuestionBankResult(user_id)
         const submittedQuestions = submittedQuestionData.map(item => item.questionId)
         const questions = questionData.map(item => item.id)

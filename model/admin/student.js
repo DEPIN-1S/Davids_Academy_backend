@@ -106,17 +106,17 @@ module.exports.ListSubmittedTest = async (student_id) => {
     t.fromDate, 
     t.toDate, 
     t.totalQuestions,
-    COUNT(sq.sq_id) AS total_attempted,
-    SUM(CASE WHEN sq.sq_is_correct = 1 THEN 1 ELSE 0 END) AS correct_count,
-    SUM(CASE WHEN sq.sq_is_correct = 0 THEN 1 ELSE 0 END) AS wrong_count
+    COUNT(DISTINCT sq.sq_question_id) AS total_attempted,
+    COUNT(DISTINCT CASE WHEN sq.sq_is_correct = 1 THEN sq.sq_question_id END) AS correct_count,
+    COUNT(DISTINCT CASE WHEN sq.sq_is_correct = 0 THEN sq.sq_question_id END) AS wrong_count
 FROM tb_tests t
 LEFT JOIN tb_submittedQuestions sq 
-    ON t.id = sq.sq_test_id
-WHERE sq.sq_user_id = ?
+    ON t.id = sq.sq_test_id AND sq.sq_user_id = ?
+WHERE (sq.sq_user_id = ? OR sq.sq_user_id IS NULL)
 GROUP BY t.id, t.testTitle, t.fromDate, t.toDate, t.totalQuestions;
 `;
         logger.info(`[ListSubmittedTest] Listing student submitted test from db`, { student_id });
-        const data = await query(sql, [student_id]);
+        const data = await query(sql, [student_id, student_id]);
         return data;
     } catch (error) {
         logger.error('[ListSubmittedTest] Error in list student submitted test', { error: error.message });
@@ -124,34 +124,40 @@ GROUP BY t.id, t.testTitle, t.fromDate, t.toDate, t.totalQuestions;
     }
 }
 // list question bank result
-module.exports.ListQuestionBankResult = async (student_id) => {
+module.exports.ListQuestionBankResult = async (student_id, courseId) => {
     try {
-        const sql = `SELECT
-    COUNT(id) AS total_attempted,
-    SUM(CASE WHEN is_correct = 1 THEN 1 ELSE 0 END) AS correct_count,
-    SUM(CASE WHEN is_correct = 0 THEN 1 ELSE 0 END) AS wrong_count
-    FROM  tb_QbankSubmit  
-  WHERE  user_id = ?;
-`;
-        logger.info(`[ListSubmittedTest] Listing student submitted test from db`, { student_id });
-        const data = await query(sql, [student_id]);
+        const sql = `SELECT 
+            top.topic_id,
+            top.topic_name,
+            COUNT(DISTINCT qb.id) AS total_attempted,
+            SUM(CASE WHEN qb.is_correct = 1 THEN 1 ELSE 0 END) AS correct_count,
+            SUM(CASE WHEN qb.is_correct = 0 THEN 1 ELSE 0 END) AS wrong_count
+        FROM tb_topics top
+        LEFT JOIN tb_questions q ON q.topic_id = top.topic_id AND q.exam_type = 'q-bank' AND q.courseId = ?
+        LEFT JOIN tb_QbankSubmit qb ON qb.questionId = q.id AND qb.user_id = ?
+        WHERE top.course_id = ?
+        GROUP BY top.topic_id, top.topic_name;`;
+        
+        logger.info(`[ListQuestionBankResult] Listing student submitted qbank from db`, { student_id, courseId });
+        const data = await query(sql, [courseId, student_id, courseId]);
         return data;
     } catch (error) {
-        logger.error('[ListSubmittedTest] Error in list student submitted test', { error: error.message });
+        logger.error('[ListQuestionBankResult] Error in list student submitted qbank', { error: error.message });
         throw error;
     }
 }
-// total QBank questions
+// total QBank questions per topic
 module.exports.totalQuestionBankQuestions = async (course) => {
     try {
-        const sql = `SELECT COUNT(*) as total_questions FROM tb_questions 
-        WHERE courseId = ? AND exam_type = 'q-bank';
+        const sql = `SELECT topic_id, COUNT(*) as total_questions FROM tb_questions 
+        WHERE courseId = ? AND exam_type = 'q-bank' AND topic_id IS NOT NULL
+        GROUP BY topic_id;
 `;
-        logger.info(`[ListSubmittedTest] Listing student submitted test from db`, { course });
+        logger.info(`[totalQuestionBankQuestions] Counting total query bank questions`, { course });
         const data = await query(sql, [course]);
         return data;
     } catch (error) {
-        logger.error('[ListSubmittedTest] Error in list student submitted test', { error: error.message });
+        logger.error('[totalQuestionBankQuestions] Error in getting total qbank questions', { error: error.message });
         throw error;
     }
 }
@@ -203,11 +209,20 @@ module.exports.DeleteSubmittedMockTest = async (student_id, test_id) => {
         throw error;
     }
 }
-module.exports.DeleteQuestionBank = async (student_id) => {
+module.exports.DeleteQuestionBank = async (student_id, topic_id = null) => {
     try {
-        const sql = `Delete from tb_QbankSubmit where user_id=? `;
-        logger.info(`[Delete submitted question bank] Delete submitted question bank from db`, { student_id });
-        const data = await query(sql, [student_id]);
+        let sql = `DELETE qb FROM tb_QbankSubmit qb `;
+        const params = [student_id];
+        
+        if (topic_id) {
+            sql += `JOIN tb_questions q ON qb.questionId = q.id WHERE qb.user_id = ? AND q.topic_id = ?`;
+            params.push(topic_id);
+        } else {
+            sql += `WHERE qb.user_id = ?`;
+        }
+        
+        logger.info(`[Delete submitted question bank] Delete submitted question bank from db`, { student_id, topic_id });
+        const data = await query(sql, params);
         return data;
     } catch (error) {
         logger.error('[Delete submitted question bank] Error in Delete submitted question bank from db', { error: error.message });
@@ -323,11 +338,20 @@ module.exports.DeleteSubmittedMockTestMultiDropdownAnswers = async (student_id, 
     }
 }
 
-module.exports.DeleteSubmittedQbankMCQAnswers = async (student_id) => {
+module.exports.DeleteSubmittedQbankMCQAnswers = async (student_id, topic_id = null) => {
     try {
-        const sql = `Delete from tb_Qbank_Mcq_Student_Answers where userId=? `;
-        logger.info(`[Delete submitted mcq qbank student answer] Delete submitted mcq qbank answer from db`, { student_id });
-        const data = await query(sql, [student_id]);
+        let sql = `DELETE qb FROM tb_Qbank_Mcq_Student_Answers qb `;
+        const params = [student_id];
+        
+        if (topic_id) {
+            sql += `JOIN tb_questions q ON qb.questionId = q.id WHERE qb.userId = ? AND q.topic_id = ?`;
+            params.push(topic_id);
+        } else {
+            sql += `WHERE qb.userId = ?`;
+        }
+        
+        logger.info(`[Delete submitted mcq qbank student answer] Delete submitted mcq qbank answer from db`, { student_id, topic_id });
+        const data = await query(sql, params);
         return data;
     } catch (error) {
         logger.error('[Delete submitted mcq qbank answer] Error in Delete submitted mcq qbank answer from db', { error: error.message });
@@ -335,11 +359,20 @@ module.exports.DeleteSubmittedQbankMCQAnswers = async (student_id) => {
     }
 }
 
-module.exports.DeleteSubmittedQbankDropdownAnswers = async (student_id) => {
+module.exports.DeleteSubmittedQbankDropdownAnswers = async (student_id, topic_id = null) => {
     try {
-        const sql = `Delete from tb_dropdown_Qbank_student_answers where userId=? `;
-        logger.info(`[Delete submitted dropdown qbank student answer] Delete submitted dropdown qbank answer from db`, { student_id });
-        const data = await query(sql, [student_id]);
+        let sql = `DELETE qb FROM tb_dropdown_Qbank_student_answers qb `;
+        const params = [student_id];
+        
+        if (topic_id) {
+            sql += `JOIN tb_questions q ON qb.questionId = q.id WHERE qb.userId = ? AND q.topic_id = ?`;
+            params.push(topic_id);
+        } else {
+            sql += `WHERE qb.userId = ?`;
+        }
+        
+        logger.info(`[Delete submitted dropdown qbank student answer] Delete submitted dropdown qbank answer from db`, { student_id, topic_id });
+        const data = await query(sql, params);
         return data;
     } catch (error) {
         logger.error('[Delete submitted dropdown qbank answer] Error in Delete submitted dropdown qbank answer from db', { error: error.message });
@@ -347,11 +380,20 @@ module.exports.DeleteSubmittedQbankDropdownAnswers = async (student_id) => {
     }
 }
 
-module.exports.DeleteSubmittedQbankSortAnswers = async (student_id) => {
+module.exports.DeleteSubmittedQbankSortAnswers = async (student_id, topic_id = null) => {
     try {
-        const sql = `Delete from tb_sort_Qbank_student_answers where userId=? `;
-        logger.info(`[Delete submitted sort qbank student answer] Delete submitted sort qbank answer from db`, { student_id });
-        const data = await query(sql, [student_id]);
+        let sql = `DELETE qb FROM tb_sort_Qbank_student_answers qb `;
+        const params = [student_id];
+        
+        if (topic_id) {
+            sql += `JOIN tb_questions q ON qb.questionId = q.id WHERE qb.userId = ? AND q.topic_id = ?`;
+            params.push(topic_id);
+        } else {
+            sql += `WHERE qb.userId = ?`;
+        }
+        
+        logger.info(`[Delete submitted sort qbank student answer] Delete submitted sort qbank answer from db`, { student_id, topic_id });
+        const data = await query(sql, params);
         return data;
     } catch (error) {
         logger.error('[Delete submitted sort qbank answer] Error in Delete submitted sort qbank answer from db', { error: error.message });
@@ -359,11 +401,20 @@ module.exports.DeleteSubmittedQbankSortAnswers = async (student_id) => {
     }
 }
 
-module.exports.DeleteSubmittedQbankSentenceHighlightAnswers = async (student_id) => {
+module.exports.DeleteSubmittedQbankSentenceHighlightAnswers = async (student_id, topic_id = null) => {
     try {
-        const sql = `Delete from tb_sentenceHiglight_Qbank_student_answers where userId=? `;
-        logger.info(`[Delete submitted sentence hightlight qbank student answer] Delete submitted sentence hightlight qbank answer from db`, { student_id });
-        const data = await query(sql, [student_id]);
+        let sql = `DELETE qb FROM tb_sentenceHiglight_Qbank_student_answers qb `;
+        const params = [student_id];
+        
+        if (topic_id) {
+            sql += `JOIN tb_questions q ON qb.questionId = q.id WHERE qb.userId = ? AND q.topic_id = ?`;
+            params.push(topic_id);
+        } else {
+            sql += `WHERE qb.userId = ?`;
+        }
+        
+        logger.info(`[Delete submitted sentence hightlight qbank student answer] Delete submitted sentence hightlight qbank answer from db`, { student_id, topic_id });
+        const data = await query(sql, params);
         return data;
     } catch (error) {
         logger.error('[Delete submitted sentence hightlight qbank answer] Error in Delete submitted sentence hightlight qbank answer from db', { error: error.message });
@@ -371,11 +422,20 @@ module.exports.DeleteSubmittedQbankSentenceHighlightAnswers = async (student_id)
     }
 }
 
-module.exports.DeleteSubmittedQbankDragdropAnswers = async (student_id) => {
+module.exports.DeleteSubmittedQbankDragdropAnswers = async (student_id, topic_id = null) => {
     try {
-        const sql = `Delete from tb_dragdrop_Qbank_student_answers where userId=? `;
-        logger.info(`[Delete submitted dragdrop qbank student answer] Delete submitted dragdrop qbank answer from db`, { student_id });
-        const data = await query(sql, [student_id]);
+        let sql = `DELETE qb FROM tb_dragdrop_Qbank_student_answers qb `;
+        const params = [student_id];
+        
+        if (topic_id) {
+            sql += `JOIN tb_questions q ON qb.questionId = q.id WHERE qb.userId = ? AND q.topic_id = ?`;
+            params.push(topic_id);
+        } else {
+            sql += `WHERE qb.userId = ?`;
+        }
+        
+        logger.info(`[Delete submitted dragdrop qbank student answer] Delete submitted dragdrop qbank answer from db`, { student_id, topic_id });
+        const data = await query(sql, params);
         return data;
     } catch (error) {
         logger.error('[Delete submitted dragdrop qbank answer] Error in Delete submitted dragdrop qbank answer from db', { error: error.message });
@@ -383,11 +443,20 @@ module.exports.DeleteSubmittedQbankDragdropAnswers = async (student_id) => {
     }
 }
 
-module.exports.DeleteSubmittedQbankMultiRadioAnswers = async (student_id) => {
+module.exports.DeleteSubmittedQbankMultiRadioAnswers = async (student_id, topic_id = null) => {
     try {
-        const sql = `Delete from tb_multiradio_Qbank_student_answers where userId=? `;
-        logger.info(`[Delete submitted multi radio qbank student answer] Delete submitted multi radio qbank answer from db`, { student_id });
-        const data = await query(sql, [student_id]);
+        let sql = `DELETE qb FROM tb_multiradio_Qbank_student_answers qb `;
+        const params = [student_id];
+        
+        if (topic_id) {
+            sql += `JOIN tb_questions q ON qb.questionId = q.id WHERE qb.userId = ? AND q.topic_id = ?`;
+            params.push(topic_id);
+        } else {
+            sql += `WHERE qb.userId = ?`;
+        }
+        
+        logger.info(`[Delete submitted multi radio qbank student answer] Delete submitted multi radio qbank answer from db`, { student_id, topic_id });
+        const data = await query(sql, params);
         return data;
     } catch (error) {
         logger.error('[Delete submitted multi radio qbank answer] Error in Delete submitted multi radio qbank answer from db', { error: error.message });
@@ -395,11 +464,20 @@ module.exports.DeleteSubmittedQbankMultiRadioAnswers = async (student_id) => {
     }
 }
 
-module.exports.DeleteSubmittedQbankTableDropdownAnswers = async (student_id) => {
+module.exports.DeleteSubmittedQbankTableDropdownAnswers = async (student_id, topic_id = null) => {
     try {
-        const sql = `Delete from tb_tabledropdown_Qbank_student_answers where userId=? `;
-        logger.info(`[Delete submitted table dropdown qbank student answer] Delete submitted table dropdown qbank answer from db`, { student_id });
-        const data = await query(sql, [student_id]);
+        let sql = `DELETE qb FROM tb_tabledropdown_Qbank_student_answers qb `;
+        const params = [student_id];
+        
+        if (topic_id) {
+            sql += `JOIN tb_questions q ON qb.questionId = q.id WHERE qb.userId = ? AND q.topic_id = ?`;
+            params.push(topic_id);
+        } else {
+            sql += `WHERE qb.userId = ?`;
+        }
+        
+        logger.info(`[Delete submitted table dropdown qbank student answer] Delete submitted table dropdown qbank answer from db`, { student_id, topic_id });
+        const data = await query(sql, params);
         return data;
     } catch (error) {
         logger.error('[Delete submitted table dropdown qbank answer] Error in Delete submitted table dropdown qbank answer from db', { error: error.message });
@@ -407,11 +485,20 @@ module.exports.DeleteSubmittedQbankTableDropdownAnswers = async (student_id) => 
     }
 }
 
-module.exports.DeleteSubmittedQbankTableHighlightAnswers = async (student_id) => {
+module.exports.DeleteSubmittedQbankTableHighlightAnswers = async (student_id, topic_id = null) => {
     try {
-        const sql = `Delete from tb_tablehighlight_Qbank_student_answers where userId=? `;
-        logger.info(`[Delete submitted table highlight qbank student answer] Delete submitted table highlight qbank answer from db`, { student_id });
-        const data = await query(sql, [student_id]);
+        let sql = `DELETE qb FROM tb_tablehighlight_Qbank_student_answers qb `;
+        const params = [student_id];
+        
+        if (topic_id) {
+            sql += `JOIN tb_questions q ON qb.questionId = q.id WHERE qb.userId = ? AND q.topic_id = ?`;
+            params.push(topic_id);
+        } else {
+            sql += `WHERE qb.userId = ?`;
+        }
+        
+        logger.info(`[Delete submitted table highlight qbank student answer] Delete submitted table highlight qbank answer from db`, { student_id, topic_id });
+        const data = await query(sql, params);
         return data;
     } catch (error) {
         logger.error('[Delete submitted table highlight qbank answer] Error in Delete submitted table highlight qbank answer from db', { error: error.message });
@@ -419,11 +506,20 @@ module.exports.DeleteSubmittedQbankTableHighlightAnswers = async (student_id) =>
     }
 }
 
-module.exports.DeleteSubmittedQbankMultiDropdownAnswers = async (student_id) => {
+module.exports.DeleteSubmittedQbankMultiDropdownAnswers = async (student_id, topic_id = null) => {
     try {
-        const sql = `Delete from tb_multidropdown_Qbank_student_answers where userId=? `;
-        logger.info(`[Delete submitted multi dropdown qbank student answer] Delete submitted multi dropdown qbank answer from db`, { student_id });
-        const data = await query(sql, [student_id]);
+        let sql = `DELETE qb FROM tb_multidropdown_Qbank_student_answers qb `;
+        const params = [student_id];
+        
+        if (topic_id) {
+            sql += `JOIN tb_questions q ON qb.questionId = q.id WHERE qb.userId = ? AND q.topic_id = ?`;
+            params.push(topic_id);
+        } else {
+            sql += `WHERE qb.userId = ?`;
+        }
+        
+        logger.info(`[Delete submitted multi dropdown qbank student answer] Delete submitted multi dropdown qbank answer from db`, { student_id, topic_id });
+        const data = await query(sql, params);
         return data;
     } catch (error) {
         logger.error('[Delete submitted multi dropdown qbank answer] Error in Delete submitted multi dropdown qbank answer from db', { error: error.message });

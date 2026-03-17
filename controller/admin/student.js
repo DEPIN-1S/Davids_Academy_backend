@@ -286,19 +286,21 @@ module.exports.ListStudentSubmittedTest = async (req, res) => {
             })
         }
         const submittedTest = await model.ListSubmittedTest(student_id)
-        const QbankResult = await model.ListQuestionBankResult(student_id)
+        const QbankResult = await model.ListQuestionBankResult(student_id, checkStudent[0]?.target_exam)
         const totalQBankQuestions = await model.totalQuestionBankQuestions(checkStudent[0]?.target_exam)
-        // Safe extraction
-        const totalQuestionsInQbank = totalQBankQuestions?.[0]?.total_questions || 0;
 
-        // Assuming QbankResult has correct and wrong counts summed across available tests for the student,
-        // otherwise you might need to sum them here explicitly.
-        const qBankSummary = {
-            totalQuestions: totalQuestionsInQbank,
-            correct_count: QbankResult.reduce((acc, curr) => acc + (curr.correct_count || 0), 0),
-            wrong_count: QbankResult.reduce((acc, curr) => acc + (curr.wrong_count || 0), 0),
-            total_attempted: QbankResult.reduce((acc, curr) => acc + (curr.total_attempted || 0), 0)
-        };
+        const qBankSummary = QbankResult.map(topicResult => {
+            const topicTotal = totalQBankQuestions.find(t => t.topic_id === topicResult.topic_id);
+            return {
+                topic_id: topicResult.topic_id,
+                topic_name: topicResult.topic_name,
+                totalQuestions: topicTotal ? topicTotal.total_questions : 0,
+                correct_count: Number(topicResult.correct_count) || 0,
+                wrong_count: Number(topicResult.wrong_count) || 0,
+                total_attempted: Number(topicResult.total_attempted) || 0
+            };
+        });
+
         return res.send({
             result: true,
             message: "Data retrieved successfully",
@@ -420,7 +422,7 @@ module.exports.ResetTest = async (req, res) => {
 
 module.exports.ResetQuestionBank = async (req, res) => {
     try {
-        let { student_id } = req.body || {}
+        let { student_id, topic_id } = req.body || {}
         if (!student_id) {
             return res.send({
                 result: false,
@@ -435,16 +437,16 @@ module.exports.ResetQuestionBank = async (req, res) => {
                 message: "Student not found."
             })
         }
-        const deleteQbank = await model.DeleteQuestionBank(student_id)
-        await model.DeleteSubmittedQbankMCQAnswers(student_id)
-        await model.DeleteSubmittedQbankDropdownAnswers(student_id)
-        await model.DeleteSubmittedQbankSortAnswers(student_id)
-        await model.DeleteSubmittedQbankSentenceHighlightAnswers(student_id)
-        await model.DeleteSubmittedQbankDragdropAnswers(student_id)
-        await model.DeleteSubmittedQbankMultiRadioAnswers(student_id)
-        await model.DeleteSubmittedQbankTableDropdownAnswers(student_id)
-        await model.DeleteSubmittedQbankTableHighlightAnswers(student_id)
-        await model.DeleteSubmittedQbankMultiDropdownAnswers(student_id)
+        const deleteQbank = await model.DeleteQuestionBank(student_id, topic_id)
+        await model.DeleteSubmittedQbankMCQAnswers(student_id, topic_id)
+        await model.DeleteSubmittedQbankDropdownAnswers(student_id, topic_id)
+        await model.DeleteSubmittedQbankSortAnswers(student_id, topic_id)
+        await model.DeleteSubmittedQbankSentenceHighlightAnswers(student_id, topic_id)
+        await model.DeleteSubmittedQbankDragdropAnswers(student_id, topic_id)
+        await model.DeleteSubmittedQbankMultiRadioAnswers(student_id, topic_id)
+        await model.DeleteSubmittedQbankTableDropdownAnswers(student_id, topic_id)
+        await model.DeleteSubmittedQbankTableHighlightAnswers(student_id, topic_id)
+        await model.DeleteSubmittedQbankMultiDropdownAnswers(student_id, topic_id)
         if (deleteQbank.affectedRows > 0) {
             logger.info('Submitted question bank deleted successfully from DB. Student ID: %s', student_id);
             return res.send({

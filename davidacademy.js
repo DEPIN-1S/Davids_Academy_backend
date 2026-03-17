@@ -47,12 +47,14 @@ const examRoutes = require('./routes/examRoutes');
 const courseRoutes = require('./routes/courseRoutes');
 const studentRoutes = require('./routes/studentRoute');
 const adminRoute = require('./routes/adminRoute');
+const topicRoutes = require('./routes/topicRoutes'); // [NEW] Topic Routes
 
 app.use('/davidsacademy', loginRoutes);
 app.use('/davidsacademy/exam', examRoutes);
 app.use('/davidsacademy/course', courseRoutes);
 app.use('/davidsacademy/student', studentRoutes);
 app.use('/davidsacademy/admin', adminRoute);
+app.use('/davidsacademy/topic', topicRoutes); // [NEW] Mount Topic API
 
 // ─── 404 HANDLER ───────────────────────────────────────────────────────────────
 app.use((req, res) => {

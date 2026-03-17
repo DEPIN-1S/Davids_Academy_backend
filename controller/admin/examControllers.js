@@ -192,7 +192,8 @@ module.exports.createQuestion = async (req, res) => {
             explanationHeading,
             explanationText,
             info,
-            marks
+            marks,
+            topic_id
         } = req.body;
         console.log('exam_type', exam_type);
         exam_type = exam_type?.toLowerCase()?.trim();
@@ -223,7 +224,8 @@ module.exports.createQuestion = async (req, res) => {
                 difficulty,
                 exhibit,
                 marks,
-                instructions
+                instructions,
+                topic_id
             });
             const questionId = mcqResult.insertId;
             for (const ans of mcqAnswer) {
@@ -294,7 +296,7 @@ module.exports.createQuestion = async (req, res) => {
             const Dropdownanswers = typeof answers === 'string' ? JSON.parse(answers) : answers;
 
             // Insert question into tb_dropdownQuestion
-            const questionResult = await model.insertDropdownQuestion(question, question_type_id, exam_type, difficulty, courseId, marks, instructions);
+            const questionResult = await model.insertDropdownQuestion(question, question_type_id, exam_type, difficulty, courseId, marks, instructions, topic_id);
 
             const questionId = questionResult.insertId;
 
@@ -384,7 +386,7 @@ module.exports.createQuestion = async (req, res) => {
             const sorteditems = typeof sortItems === 'string' ? JSON.parse(sortItems) : sortItems;
             const qstabs = typeof tabs === 'string' ? JSON.parse(tabs) : tabs;
             // Insert question into tb_dropdownQuestion
-            const questionResult = await model.insertDropdownQuestion(question, question_type_id, exam_type, difficulty, courseId, marks, instructions);
+            const questionResult = await model.insertDropdownQuestion(question, question_type_id, exam_type, difficulty, courseId, marks, instructions, topic_id);
             const questionId = questionResult.insertId;
             for (const tab of qstabs) {
                 await model.insertTab(questionId, tab.tabKey, tab.tabValue, tab.tabImage);
@@ -442,7 +444,7 @@ module.exports.createQuestion = async (req, res) => {
             highlightoptions = typeof highlightoptions === 'string' ? JSON.parse(highlightoptions) : highlightoptions;
             answers = typeof answers === 'string' ? JSON.parse(answers) : answers;
             // Insert question into tb_dropdownQuestion
-            const questionResult = await model.insertSentenceQuestion(question, question_type_id, exam_type, difficulty, courseId, marks, passage, instructions);
+            const questionResult = await model.insertSentenceQuestion(question, question_type_id, exam_type, difficulty, courseId, marks, passage, instructions, topic_id);
             const questionId = questionResult.insertId;
             logger.info(`✅ Added dropdown question with ID: ${questionId}`);
             // Insert tabs into tb_DropdownQuestionTabs
@@ -538,7 +540,8 @@ module.exports.createQuestion = async (req, res) => {
                 difficulty,
                 courseId,
                 marks,
-                instructions
+                instructions,
+                topic_id
             );
             const questionId = questionResult.insertId;
             logger.info(`✅ Added fill in the blanks question with ID: ${questionId}`);
@@ -652,7 +655,8 @@ module.exports.createQuestion = async (req, res) => {
                 difficulty,
                 courseId,
                 marks,
-                instructions
+                instructions,
+                topic_id
             );
             const questionId = questionResult.insertId;
             logger.info(`✅ Added Drag Drop question with ID: ${questionId}`);
@@ -763,8 +767,8 @@ module.exports.createQuestion = async (req, res) => {
                 courseId,
                 marks,
                 instructions,
-                multiradioHeading
-
+                multiradioHeading,
+                topic_id
             );
             const questionId = questionResult.insertId;
             logger.info(`✅ Added Multiple Radio question with ID: ${questionId}`);
@@ -875,7 +879,8 @@ module.exports.createQuestion = async (req, res) => {
                 difficulty,
                 courseId,
                 marks,
-                instructions
+                instructions,
+                topic_id
             );
             const questionId = questionResult.insertId;
 
@@ -982,7 +987,7 @@ module.exports.createQuestion = async (req, res) => {
 
             // Insert question
             const questionResult = await model.insertTableDropdownQuestion(
-                question, question_type_id, exam_type, difficulty, courseId, marks, instructions
+                question, question_type_id, exam_type, difficulty, courseId, marks, instructions, topic_id
             );
             const questionId = questionResult.insertId;
 
@@ -1073,7 +1078,7 @@ module.exports.createQuestion = async (req, res) => {
 
             // Insert question 
             const qRes = await model.insertTableDropdownQuestion(
-                question, question_type_id, exam_type, difficulty, courseId, marks, instructions
+                question, question_type_id, exam_type, difficulty, courseId, marks, instructions, topic_id
             );
             const questionId = qRes.insertId;
 
@@ -1484,8 +1489,8 @@ module.exports.listQuestions = async (req, res) => {
 // list mock test questions
 module.exports.listMockTestQuestions = async (req, res) => {
     try {
-        const { courseId } = req.query
-        const questions = await model.listMockTestQuestions(courseId);
+        const { courseId, topics } = req.query
+        const questions = await model.listMockTestQuestions(courseId, topics);
         return res.status(200).json({
             result: true,
             message: 'Questions retrieved successfully',

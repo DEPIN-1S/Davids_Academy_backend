@@ -37,5 +37,8 @@ route.post('/result/qbank/submitted', verifyToken, GetQbankSubmittedResponse)
 const { GetSuccessStoriesPublic } = require('../controller/student/successStory')
 route.get('/success-story/list', GetSuccessStoriesPublic)
 
+const { GetStudentTopics } = require('../controller/student/topics')
+route.get('/topic/list', verifyToken, GetStudentTopics)
+
 
 module.exports = route;
