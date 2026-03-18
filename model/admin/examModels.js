@@ -196,7 +196,7 @@ async function insertMcqQuestion(data) {
  * @returns {Promise<object>} Result of the INSERT operation.
  */
 async function insertMcqOptions(questionId, optionText) {
-    const sql = `INSERT INTO tb_mcqOptions (questionId, option) VALUES (?, ?)`;
+    const sql = `INSERT INTO tb_mcqOptions (questionId, \`option\`) VALUES (?, ?)`;
     try {
         const result = await query(sql, [questionId, optionText]);
         logger.info(`insertMcqOption: Inserted option for questionId=${questionId}`);
@@ -361,7 +361,7 @@ VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);`;
 }
 
 async function insertHighlightOptionsortItems(questionId, option) {
-    const sql = `INSERT INTO tb_sentanceHighlight (questionId, options) VALUES (?, ?)`;
+    const sql = `INSERT INTO tb_sentanceHighlight (questionId, \`options\`) VALUES (?, ?)`;
     try {
         const result = await query(sql, [questionId, option]);
         logger.info(`✅ [insertHighlightOption] Successfully inserted highlight option for questionId = ${questionId}`);
@@ -519,7 +519,7 @@ async function insertMultipleRadioQuestionContent(questionId, question_text, que
 }
 
 async function insertMultipleRadioOptions(questionId, option_value) {
-    const sql = `INSERT INTO tb_MultipleRadio_RadioOptions (question_id,options) VALUES (?,?)`;
+    const sql = `INSERT INTO tb_MultipleRadio_RadioOptions (question_id,\`options\`) VALUES (?,?)`;
     try {
         const result = await query(sql, [questionId, option_value]);
         logger.info(`insert MultipleRadio radio Options: Inserted question option for questionId=${questionId}`);

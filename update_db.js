@@ -24,6 +24,16 @@ async function updateDb() {
       console.log("Column topic_id already exists in tb_questions.");
     }
 
+    console.log("Checking if passage column exists in tb_questions...");
+    const passageStatus = await pool.query(`SHOW COLUMNS FROM tb_questions LIKE 'passage'`);
+    if (passageStatus.length > 0 && passageStatus[0].Null === 'NO') {
+      console.log("Altering passage column to allow NULL...");
+      await pool.query(`ALTER TABLE tb_questions MODIFY passage TEXT DEFAULT NULL`);
+      console.log("Column passage modified.");
+    } else {
+      console.log("Column passage already supports NULL or does not exist.");
+    }
+
   } catch (error) {
     console.error("Error updating database:", error);
   } finally {
