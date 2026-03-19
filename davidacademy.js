@@ -34,6 +34,9 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 app.use(express.static(path.join(__dirname, 'public')));
+
+// ✅ Serve uploads folder
+app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
 // ─── REQUEST LOGGING ───────────────────────────────────────────────────────────
 app.use(expressWinston.logger({
   winstonInstance: logger,
