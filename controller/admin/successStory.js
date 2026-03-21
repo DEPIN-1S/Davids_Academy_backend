@@ -166,7 +166,7 @@ module.exports.GetAllSuccessStories = async (req, res) => {
         logger.info("Student success stories list fetched", { limit, offset, total: count[0].count });
         return res.send({
             result: true,
-            data: data.map(item => ({ id: item.id, image: `/public/uploads/successimage/${item.image}` })),  // Serve full image URL
+            data: data.map(item => ({ id: item.id, image: `/uploads/successimage/${item.image}` })),  // Serve full image URL
             count: count[0].count
         });
     } catch (error) {

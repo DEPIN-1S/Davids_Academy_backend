@@ -17,11 +17,10 @@ module.exports.GetSuccessStoriesPublic = async (req, res) => {
         let successStories = await model.GetAllSuccessStories(parsedLimit, parsedOffset);
         let count = await model.CountSuccessStories();
 
-        // Optional: Construct full image URLs for frontend (assuming base URL)
-        const baseUrl = `${req.protocol}://${req.get('host')}`;
+        // Return relative image paths — frontend will prepend the API base URL
         successStories = successStories.map(story => ({
             ...story,
-            imageUrl: `${baseUrl}/uploads/successimage/${story.image}`
+            imageUrl: `/uploads/successimage/${story.image}`
         }));
 
         logger.info("Public success stories fetched successfully", { limit: parsedLimit, offset: parsedOffset, total: count[0].count });
