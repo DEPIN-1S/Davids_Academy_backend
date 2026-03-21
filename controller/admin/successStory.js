@@ -163,10 +163,24 @@ module.exports.GetAllSuccessStories = async (req, res) => {
         const { limit = 10, offset = 0 } = req.query;  // Use query params for pagination
         const data = await model.GetAllSuccessStories(parseInt(limit), parseInt(offset));
         const count = await model.CountSuccessStories();
+        
+        // Filter out stories whose image files don't exist on disk
+        const uploadsDir = path.join(__dirname, '../../public/uploads/successimage');
+        const validData = data
+            .filter(item => {
+                const filePath = path.join(uploadsDir, item.image);
+                const exists = fs.existsSync(filePath);
+                if (!exists) {
+                    logger.warn("Success story image file missing on disk", { id: item.id, image: item.image });
+                }
+                return exists;
+            })
+            .map(item => ({ id: item.id, image: `/uploads/successimage/${item.image}` }));
+        
         logger.info("Student success stories list fetched", { limit, offset, total: count[0].count });
         return res.send({
             result: true,
-            data: data.map(item => ({ id: item.id, image: `/uploads/successimage/${item.image}` })),  // Serve full image URL
+            data: validData,
             count: count[0].count
         });
     } catch (error) {
