@@ -19,20 +19,33 @@ module.exports.ContactUs = async (req, res) => {
         }
         let addcontactdetails = await model.AddcContactDetailsquery(name, email, phone, course_interested, usermessage);
 
+        let courseName = "Not Specified";
+        try {
+            const fetchedCourseName = await model.GetCourseNameById(course_interested);
+            if (fetchedCourseName) {
+                courseName = fetchedCourseName;
+            }
+        } catch (err) {
+            logger.error('Error fetching course name for email: %o', err);
+        }
+
+        const smtpPort = parseInt(process.env.SMTP_PORT || 587);
         let transporter = nodemailer.createTransport({
-            host: "smtp.hostinger.com",
-            port: 587,
+            host: process.env.SMTP_HOST,
+            port: smtpPort,
+            secure: smtpPort === 465,
             auth: {
                 type: 'custom',
                 method: 'PLAIN',
-                user: 'noreply@cyberechelonacademy.com',
-                pass: 'noreply@Cyber2024',
+                user: process.env.SMTP_USER ,
+                pass: process.env.SMTP_PASS ,
             },
         });
-
+       
         let data = [{
             email: email,
             subject: "MESSAGE FROM DAVIDS ACADEMY",
+            text: `Dear ${name},\n\nThank you for contacting us. We appreciate your message and will get back to you as soon as possible. Your feedback is important to us!\n\nThank you!\nThe DAVIDS ACADEMY Team`,
             html: `<!DOCTYPE html>
     <html lang="en">
     <head>
@@ -97,8 +110,10 @@ module.exports.ContactUs = async (req, res) => {
     `
         },
         {
-            email: 'cyberechelonacademy@gmail.com',
+            // email: 'anoopjosecj@gmail.com',
+             email: 'sdepin4@gmail.com',
             subject: `New Enquiry From : ${name}`,
+            text: `New Contact Us Submission\n\nYou have received a new message from the contact form on the website.\n\nUser Details:\nName: ${name}\nEmail: ${email}\nPhone Number: ${phone}\nCourse Interested: ${courseName}\nMessage:\n${usermessage}\n\nThank you for your attention!\nThe DAVIDS ACADEMY Team`,
             html: `<!DOCTYPE html>
     <html lang="en">
     <head>
@@ -149,7 +164,7 @@ module.exports.ContactUs = async (req, res) => {
                 <p><strong>Name:</strong> ${name}</p>
                 <p><strong>Email:</strong> ${email}</p>
                 <p><strong>Phone Number:</strong> ${phone}</p>
-                <p><strong>Subject:</strong> ${course_interested}</p>
+                <p><strong>Course Interested:</strong> ${courseName}</p>
                 <p><strong>Message:</strong></p>
                 <p>${usermessage}</p>
             </div>
@@ -166,9 +181,10 @@ module.exports.ContactUs = async (req, res) => {
 
         data.forEach(async (el) => {
             let infos = await transporter.sendMail({
-                from: "DAVIDS ACADEMY <noreply@cyberechelonacademy.com>",
+                from: `DAVIDS ACADEMY <${process.env.SMTP_USER || 'enquiries.davidsacademy@gmail.com'}>`,
                 to: el.email,
                 subject: el.subject,
+                text: el.text,
                 html: el.html
             });
             nodemailer.getTestMessageUrl(infos);

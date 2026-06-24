@@ -38,3 +38,14 @@ module.exports.UpdateContactUsStatus = async (contact_us_id, status) => {
         throw error;
     }
 }
+
+module.exports.GetCourseNameById = async (course_id) => {
+    try {
+        const sql = `SELECT cs_name FROM courses WHERE cs_id = ?`;
+        const data = await query(sql, [course_id]);
+        return data.length > 0 ? data[0].cs_name : null;
+    } catch (error) {
+        logger.error('[ContactUsModel] Error in GetCourseNameById', { error: error.message });
+        throw error;
+    }
+}
