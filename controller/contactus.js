@@ -110,8 +110,7 @@ module.exports.ContactUs = async (req, res) => {
     `
         },
         {
-            // email: 'anoopjosecj@gmail.com',
-             email: 'sdepin4@gmail.com',
+            email: 'anoopjosecj@gmail.com',
             subject: `New Enquiry From : ${name}`,
             text: `New Contact Us Submission\n\nYou have received a new message from the contact form on the website.\n\nUser Details:\nName: ${name}\nEmail: ${email}\nPhone Number: ${phone}\nCourse Interested: ${courseName}\nMessage:\n${usermessage}\n\nThank you for your attention!\nThe DAVIDS ACADEMY Team`,
             html: `<!DOCTYPE html>
