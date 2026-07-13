@@ -169,7 +169,7 @@ module.exports.GetSubmittedResponse = async (req, res) => {
             // Call the selected model function
             const submittedData = await model[fnName](user_id, test_id, questionId);
             if (!Array.isArray(submittedData) || submittedData.length === 0) {
-                logger.error("Submitted result not found", { user_id, test_id, questionId, qType });
+                logger.info("Submitted result not found (unsubmitted)", { user_id, test_id, questionId, qType });
                 return res.send({ result: false, message: "Submitted result not found." });
             }
 
@@ -253,7 +253,7 @@ module.exports.GetQbankSubmittedResponse = async (req, res) => {
         // Call the selected model function
         const submittedData = await model[fnName](user_id, questionId);
         if (!Array.isArray(submittedData) || submittedData.length === 0) {
-            logger.error("Submitted result not found", { user_id, questionId, qType });
+            logger.info("Submitted result not found (unsubmitted)", { user_id, questionId, qType });
             return res.send({ result: false, message: "Submitted result not found." });
         }
         return res.send({
