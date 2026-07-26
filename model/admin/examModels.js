@@ -998,7 +998,8 @@ async function insertMultiDropdownAnswer(questionId, rowId, colIndex, answerValu
 async function listQuestionsPaginated(exam_type, limit, offset, search = '') {
     try {
         let sql = `
-            SELECT q.id,q.exam_type, q.question, q.difficulty,c.cs_name,t.type as questionType, top.topic_name
+            SELECT q.id, q.exam_type, q.question, q.difficulty, q.question_type_id, q.courseId, q.topic_id,
+                   c.cs_name, t.type as questionType, top.topic_name
             FROM tb_questions q INNER JOIN courses c ON c.cs_id=q.courseId
             INNER JOIN  tb_questionType t ON q.question_type_id=t.id
             LEFT JOIN tb_topics top ON q.topic_id = top.topic_id
@@ -1028,7 +1029,8 @@ async function listQuestionsPaginated(exam_type, limit, offset, search = '') {
 async function listMockTestQuestions(courseId, topics) {
     try {
         let sql = `
-            SELECT  q.id,q.question,q.difficulty,t.type as questionType, top.topic_name
+            SELECT q.id, q.question, q.difficulty, q.question_type_id, q.courseId, q.topic_id,
+                   t.type as questionType, top.topic_name
             FROM tb_questions q INNER JOIN tb_questionType t ON q.question_type_id=t.id
             LEFT JOIN tb_topics top ON q.topic_id = top.topic_id
             WHERE q.exam_type = 'mock test' AND q.courseId=?
