@@ -994,28 +994,30 @@ async function insertMultiDropdownAnswer(questionId, rowId, colIndex, answerValu
     }
 }
 
-/**
- * Fetch all questions from tb_questions table
- * where exam_type is 'Mock Test' and not deleted
- *
- * @returns {Promise<Array>} List of questions
- */
 // Model method to get paginated questions
-async function listQuestionsPaginated(exam_type, limit, offset) {
+async function listQuestionsPaginated(exam_type, limit, offset, search = '') {
     try {
-        const sql = `
+        let sql = `
             SELECT q.id,q.exam_type, q.question, q.difficulty,c.cs_name,t.type as questionType, top.topic_name
             FROM tb_questions q INNER JOIN courses c ON c.cs_id=q.courseId
             INNER JOIN  tb_questionType t ON q.question_type_id=t.id
             LEFT JOIN tb_topics top ON q.topic_id = top.topic_id
             WHERE q.exam_type = ?
-              AND (q.isDeleted IS NULL OR q.isDeleted = 0) ORDER BY q.id DESC
-            LIMIT ?
-            OFFSET ?
+              AND (q.isDeleted IS NULL OR q.isDeleted = 0)
         `;
+        const params = [exam_type];
 
-        const rows = await query(sql, [exam_type, limit, offset]);
-        logger.info(`✅ Retrieved ${rows.length} Mock Test questions from database with pagination`);
+        if (search && search.trim()) {
+            const term = `%${search.trim()}%`;
+            sql += ` AND (CAST(q.id AS CHAR) LIKE ? OR c.cs_name LIKE ? OR top.topic_name LIKE ? OR q.question LIKE ? OR t.type LIKE ?)`;
+            params.push(term, term, term, term, term);
+        }
+
+        sql += ` ORDER BY q.id DESC LIMIT ? OFFSET ?`;
+        params.push(limit, offset);
+
+        const rows = await query(sql, params);
+        logger.info(`✅ Retrieved ${rows.length} questions from database with pagination`);
         return rows;
     } catch (error) {
         logger.error(`❌ Error in listQuestionsPaginated: ${error.message}`);

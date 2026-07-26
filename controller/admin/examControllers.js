@@ -1444,7 +1444,7 @@ module.exports.getQuestions = async (req, res) => {
 // Controller method with pagination support
 module.exports.listQuestions = async (req, res) => {
     try {
-        let { exam_type, limit = 10 } = req.query;
+        let { exam_type, limit = 10, search = '' } = req.query;
         let { page = 1, } = req.params;
         page = parseInt(page);
         limit = parseInt(limit);
@@ -1461,12 +1461,12 @@ module.exports.listQuestions = async (req, res) => {
         exam_type = exam_type.toLowerCase();
 
         // Get total count of matching questions for pagination metadata
-        const totalCount = await model.countQuestions(exam_type);
+        const totalCount = await model.countQuestions(exam_type, search);
 
         // Calculate the offset for the query
         const offset = (page - 1) * limit;
 
-        const questions = await model.listQuestionsPaginated(exam_type, limit, offset);
+        const questions = await model.listQuestionsPaginated(exam_type, limit, offset, search);
 
         return res.status(200).json({
             result: true,
