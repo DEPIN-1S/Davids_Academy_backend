@@ -189,6 +189,58 @@ async function insertMcqQuestion(data) {
     }
 }
 
+async function updateMcqQuestion(data, targetQuestionId) {
+    const sql = `
+    UPDATE tb_questions 
+    SET question=?, question_type_id=?, courseId=?, exam_type=?, difficulty=?, exhibit=COALESCE(?, exhibit), marks=?, instructions=?, topic_id=?
+    WHERE id=?`;
+    const values = [
+        data.question,
+        data.question_type_id,
+        data.courseId,
+        data.exam_type,
+        data.difficulty,
+        data.exhibit || null,
+        data.marks,
+        data.instructions,
+        data.topic_id,
+        targetQuestionId
+    ];
+
+    try {
+        const result = await query(sql, values);
+        logger.info(`updateMcqQuestion: Updated MCQ with ID ${targetQuestionId}`);
+        return result;
+    } catch (error) {
+        logger.error('updateMcqQuestion: Failed to update MCQ: %o', error);
+        throw error;
+    }
+}
+
+async function clearQuestionChildRecords(targetQuestionId) {
+    try {
+        const tables = [
+            'tb_mcqOptions', 'tb_mcqAnswers', 'tb_explanation', 'tb_additionalInfo',
+            'tb_questionTabs', 'tb_DropdownQuestionTabs', 'tb_dropdowns', 'tb_dropdown_options',
+            'tb_sort_items', 'tb_sentence_highlights', 'tb_sentence_highlight_answers',
+            'tb_fillin_blanks_content', 'tb_fillin_blanks_options', 'tb_fillin_blanks_options_values',
+            'tb_drag_drop_options', 'tb_multiradio_content', 'tb_multiradio_options',
+            'tb_table_dropdown_headers', 'tb_table_dropdown_fields', 'tb_table_dropdown_options',
+            'tb_table_dropdown_answers', 'tb_table_highlight_rows', 'tb_multidropdown_headers',
+            'tb_multidropdown_rows', 'tb_multidropdown_options', 'tb_multidropdown_answers'
+        ];
+        for (const tbl of tables) {
+            try {
+                await query(`DELETE FROM ${tbl} WHERE questionId = ?`, [targetQuestionId]);
+            } catch (err) {
+                // Table or column might differ slightly across legacy schemas; catch individually to be safe
+            }
+        }
+    } catch (error) {
+        logger.error('clearQuestionChildRecords: Error clearing child records for questionId=%d: %o', targetQuestionId, error);
+    }
+}
+
 /**
  * Inserts a single MCQ option into tb_mcqOptions table.
  * @param {number} questionId - The ID of the MCQ question.
@@ -1284,6 +1336,8 @@ module.exports = {
     updateTest,
     deleteTestQuestionsByTestId,
     deleteTest,
-    insertMarklist
+    insertMarklist,
+    updateMcqQuestion,
+    clearQuestionChildRecords
 };
 

@@ -181,7 +181,11 @@ module.exports.checkQuestionExists = async (req, res) => {
  * Body: {  }
  */
 module.exports.createQuestion = async (req, res) => {
-    logger.info('📥 Received request to add new question');
+    logger.info('📥 Received request to add/update question', { questionId: req.body.questionId, id: req.body.id, type: req.body.questionType });
+    console.log('🔑 FULL req.body dump:', JSON.stringify(req.body));
+    console.log('🔑 req.body.questionId:', req.body.questionId, '| typeof:', typeof req.body.questionId);
+    console.log('🔑 req.body.id:', req.body.id, '| typeof:', typeof req.body.id);
+    console.log('🔑 req.files:', req.files ? Object.keys(req.files) : 'none');
     try {
         let {
             exam_type,
@@ -212,22 +216,50 @@ module.exports.createQuestion = async (req, res) => {
                 options,
                 instructions
             } = req.body
-            const qstabs = typeof tabs === 'string' ? JSON.parse(tabs) : tabs;
-            let mcqoptions = typeof options === 'string' ? JSON.parse(options) : options;
-            let mcqAnswer = typeof answer === 'string' ? JSON.parse(answer) : answer;
-            // Insert into tb_mcq
-            const mcqResult = await model.insertMcqQuestion({
-                question,
-                question_type_id,
-                courseId,
-                exam_type,
-                difficulty,
-                exhibit,
-                marks,
-                instructions,
-                topic_id
-            });
-            const questionId = mcqResult.insertId;
+            let qstabs = [];
+            try { qstabs = typeof tabs === 'string' ? JSON.parse(tabs) : (tabs || []); } catch (e) { qstabs = []; }
+
+            let mcqoptions = [];
+            try { mcqoptions = typeof options === 'string' ? JSON.parse(options) : (options || []); } catch (e) { mcqoptions = Array.isArray(options) ? options : [options].filter(Boolean); }
+            if (!Array.isArray(mcqoptions)) mcqoptions = [mcqoptions];
+
+            let mcqAnswer = [];
+            try { mcqAnswer = typeof answer === 'string' ? JSON.parse(answer) : (answer || []); } catch (e) { mcqAnswer = [answer].filter(Boolean); }
+            if (!Array.isArray(mcqAnswer)) mcqAnswer = [mcqAnswer];
+            let questionId;
+            const rawTargetId = req.body.questionId || req.body.id;
+            const targetId = (rawTargetId && rawTargetId !== 'null' && rawTargetId !== 'undefined') ? parseInt(rawTargetId, 10) : null;
+            console.log('🎯 MCQ rawTargetId:', rawTargetId, '| parsed targetId:', targetId);
+            if (targetId && !isNaN(targetId)) {
+                questionId = targetId;
+                await model.updateMcqQuestion({
+                    question,
+                    question_type_id,
+                    courseId,
+                    exam_type,
+                    difficulty,
+                    exhibit,
+                    marks,
+                    instructions,
+                    topic_id
+                }, questionId);
+                await model.clearQuestionChildRecords(questionId);
+                logger.info(`✅ Updated existing MCQ (ID: ${questionId})`);
+            } else {
+                const mcqResult = await model.insertMcqQuestion({
+                    question,
+                    question_type_id,
+                    courseId,
+                    exam_type,
+                    difficulty,
+                    exhibit,
+                    marks,
+                    instructions,
+                    topic_id
+                });
+                questionId = mcqResult.insertId;
+                logger.info(`✅ Inserted MCQ (ID: ${questionId})`);
+            }
             for (const ans of mcqAnswer) {
                 const mcqAnswerResult = await model.insertMcqAnswer(questionId, ans);
             }
@@ -295,12 +327,20 @@ module.exports.createQuestion = async (req, res) => {
 
             const Dropdownanswers = typeof answers === 'string' ? JSON.parse(answers) : answers;
 
-            // Insert question into tb_dropdownQuestion
-            const questionResult = await model.insertDropdownQuestion(question, question_type_id, exam_type, difficulty, courseId, marks, instructions, topic_id);
-
-            const questionId = questionResult.insertId;
-
-            logger.info(`✅ Added dropdown question with ID: ${questionId}`);
+            let questionId;
+            const rawTargetId = req.body.questionId || req.body.id;
+            const targetId = (rawTargetId && rawTargetId !== 'null' && rawTargetId !== 'undefined') ? parseInt(rawTargetId, 10) : null;
+            console.log('u{1F3AF} update check - rawTargetId:', rawTargetId, '| parsed targetId:', targetId);
+            if (targetId && !isNaN(targetId)) {
+                questionId = targetId;
+                await model.updateMcqQuestion({ question, question_type_id, courseId, exam_type, difficulty, exhibit: null, marks, instructions, topic_id }, questionId);
+                await model.clearQuestionChildRecords(questionId);
+                logger.info(`✅ Updated existing dropdown question with ID: ${questionId}`);
+            } else {
+                const questionResult = await model.insertDropdownQuestion(question, question_type_id, exam_type, difficulty, courseId, marks, instructions, topic_id);
+                questionId = questionResult.insertId;
+                logger.info(`✅ Added dropdown question with ID: ${questionId}`);
+            }
             // Insert tabs into tb_DropdownQuestionTabs
             for (const tab of qstabs) {
                 await model.insertTab(questionId, tab.tabKey, tab.tabValue, tab.tabImage);
@@ -385,14 +425,20 @@ module.exports.createQuestion = async (req, res) => {
             } = req.body;
             const sorteditems = typeof sortItems === 'string' ? JSON.parse(sortItems) : sortItems;
             const qstabs = typeof tabs === 'string' ? JSON.parse(tabs) : tabs;
-            // Insert question into tb_dropdownQuestion
-            const questionResult = await model.insertDropdownQuestion(question, question_type_id, exam_type, difficulty, courseId, marks, instructions, topic_id);
-            const questionId = questionResult.insertId;
-            for (const tab of qstabs) {
-                await model.insertTab(questionId, tab.tabKey, tab.tabValue, tab.tabImage);
-                logger.info(`📄 Inserted tab "${tab.tabKey}" for question ${questionId}`);
+            let questionId;
+            const rawTargetId = req.body.questionId || req.body.id;
+            const targetId = (rawTargetId && rawTargetId !== 'null' && rawTargetId !== 'undefined') ? parseInt(rawTargetId, 10) : null;
+            console.log('u{1F3AF} update check - rawTargetId:', rawTargetId, '| parsed targetId:', targetId);
+            if (targetId && !isNaN(targetId)) {
+                questionId = targetId;
+                await model.updateMcqQuestion({ question, question_type_id, courseId, exam_type, difficulty, exhibit: null, marks, instructions, topic_id }, questionId);
+                await model.clearQuestionChildRecords(questionId);
+                logger.info(`✅ Updated existing sorting question with ID: ${questionId}`);
+            } else {
+                const questionResult = await model.insertDropdownQuestion(question, question_type_id, exam_type, difficulty, courseId, marks, instructions, topic_id);
+                questionId = questionResult.insertId;
+                logger.info(`✅ Added sorting question with ID: ${questionId}`);
             }
-            logger.info(`✅ Added dropdown question with ID: ${questionId}`);
             // Insert tabs into tb_DropdownQuestionTabs
             for (const item of sorteditems) {
                 await model.insertSortItems(questionId, item.sortItem, item.itemOrder);
@@ -443,10 +489,20 @@ module.exports.createQuestion = async (req, res) => {
             tabs = typeof tabs === 'string' ? JSON.parse(tabs) : tabs;
             highlightoptions = typeof highlightoptions === 'string' ? JSON.parse(highlightoptions) : highlightoptions;
             answers = typeof answers === 'string' ? JSON.parse(answers) : answers;
-            // Insert question into tb_dropdownQuestion
-            const questionResult = await model.insertSentenceQuestion(question, question_type_id, exam_type, difficulty, courseId, marks, passage, instructions, topic_id);
-            const questionId = questionResult.insertId;
-            logger.info(`✅ Added dropdown question with ID: ${questionId}`);
+            let questionId;
+            const rawTargetId = req.body.questionId || req.body.id;
+            const targetId = (rawTargetId && rawTargetId !== 'null' && rawTargetId !== 'undefined') ? parseInt(rawTargetId, 10) : null;
+            console.log('u{1F3AF} update check - rawTargetId:', rawTargetId, '| parsed targetId:', targetId);
+            if (targetId && !isNaN(targetId)) {
+                questionId = targetId;
+                await model.updateMcqQuestion({ question, question_type_id, courseId, exam_type, difficulty, exhibit: null, marks, instructions, topic_id }, questionId);
+                await model.clearQuestionChildRecords(questionId);
+                logger.info(`✅ Updated existing Sentence Highlight question with ID: ${questionId}`);
+            } else {
+                const questionResult = await model.insertSentenceQuestion(question, question_type_id, exam_type, difficulty, courseId, marks, passage, instructions, topic_id);
+                questionId = questionResult.insertId;
+                logger.info(`✅ Added Sentence Highlight question with ID: ${questionId}`);
+            }
             // Insert tabs into tb_DropdownQuestionTabs
             for (const option of highlightoptions) {
                 await model.insertHighlightOptionsortItems(questionId, option);
@@ -532,19 +588,30 @@ module.exports.createQuestion = async (req, res) => {
                 FTBtabs = [];
             }
 
-            const questionResult = await model.insertFillTheBlanksQuestion(
-                question,
-                question_type_id,
-                answer,
-                exam_type,
-                difficulty,
-                courseId,
-                marks,
-                instructions,
-                topic_id
-            );
-            const questionId = questionResult.insertId;
-            logger.info(`✅ Added fill in the blanks question with ID: ${questionId}`);
+            let questionId;
+            const rawTargetId = req.body.questionId || req.body.id;
+            const targetId = (rawTargetId && rawTargetId !== 'null' && rawTargetId !== 'undefined') ? parseInt(rawTargetId, 10) : null;
+            console.log('u{1F3AF} update check - rawTargetId:', rawTargetId, '| parsed targetId:', targetId);
+            if (targetId && !isNaN(targetId)) {
+                questionId = targetId;
+                await model.updateMcqQuestion({ question, question_type_id, courseId, exam_type, difficulty, exhibit: null, marks, instructions, topic_id }, questionId);
+                await model.clearQuestionChildRecords(questionId);
+                logger.info(`✅ Updated existing fill in the blanks question with ID: ${questionId}`);
+            } else {
+                const questionResult = await model.insertFillTheBlanksQuestion(
+                    question,
+                    question_type_id,
+                    answer,
+                    exam_type,
+                    difficulty,
+                    courseId,
+                    marks,
+                    instructions,
+                    topic_id
+                );
+                questionId = questionResult.insertId;
+                logger.info(`✅ Added fill in the blanks question with ID: ${questionId}`);
+            }
 
             // Insert tabs if present
             for (const tab of FTBtabs) {
@@ -646,20 +713,30 @@ module.exports.createQuestion = async (req, res) => {
                 drag_and_drop = [];
             }
 
-            // Insert question into tb_dropdownQuestion
-            const questionResult = await model.insertDragDropQuestion(
-                question,
-                question_type_id,
-                exam_type,
-                drag_drop_content,
-                difficulty,
-                courseId,
-                marks,
-                instructions,
-                topic_id
-            );
-            const questionId = questionResult.insertId;
-            logger.info(`✅ Added Drag Drop question with ID: ${questionId}`);
+            let questionId;
+            const rawTargetId = req.body.questionId || req.body.id;
+            const targetId = (rawTargetId && rawTargetId !== 'null' && rawTargetId !== 'undefined') ? parseInt(rawTargetId, 10) : null;
+            console.log('u{1F3AF} update check - rawTargetId:', rawTargetId, '| parsed targetId:', targetId);
+            if (targetId && !isNaN(targetId)) {
+                questionId = targetId;
+                await model.updateMcqQuestion({ question, question_type_id, courseId, exam_type, difficulty, exhibit: null, marks, instructions, topic_id }, questionId);
+                await model.clearQuestionChildRecords(questionId);
+                logger.info(`✅ Updated existing Drag Drop question with ID: ${questionId}`);
+            } else {
+                const questionResult = await model.insertDragDropQuestion(
+                    question,
+                    question_type_id,
+                    exam_type,
+                    drag_drop_content,
+                    difficulty,
+                    courseId,
+                    marks,
+                    instructions,
+                    topic_id
+                );
+                questionId = questionResult.insertId;
+                logger.info(`✅ Added Drag Drop question with ID: ${questionId}`);
+            }
 
             // Insert tabs into tb_DropdownQuestionTabs
             for (const tab of tabs) {
@@ -758,20 +835,30 @@ module.exports.createQuestion = async (req, res) => {
                 radio_options = [];
             }
 
-            // Insert question into tb_dropdownQuestion
-            const questionResult = await model.insertMultipleRadioQuestion(
-                question,
-                question_type_id,
-                exam_type,
-                difficulty,
-                courseId,
-                marks,
-                instructions,
-                multiradioHeading,
-                topic_id
-            );
-            const questionId = questionResult.insertId;
-            logger.info(`✅ Added Multiple Radio question with ID: ${questionId}`);
+            let questionId;
+            const rawTargetId = req.body.questionId || req.body.id;
+            const targetId = (rawTargetId && rawTargetId !== 'null' && rawTargetId !== 'undefined') ? parseInt(rawTargetId, 10) : null;
+            console.log('u{1F3AF} update check - rawTargetId:', rawTargetId, '| parsed targetId:', targetId);
+            if (targetId && !isNaN(targetId)) {
+                questionId = targetId;
+                await model.updateMcqQuestion({ question, question_type_id, courseId, exam_type, difficulty, exhibit: null, marks, instructions, topic_id }, questionId);
+                await model.clearQuestionChildRecords(questionId);
+                logger.info(`✅ Updated existing Multiple Radio question with ID: ${questionId}`);
+            } else {
+                const questionResult = await model.insertMultipleRadioQuestion(
+                    question,
+                    question_type_id,
+                    exam_type,
+                    difficulty,
+                    courseId,
+                    marks,
+                    instructions,
+                    multiradioHeading,
+                    topic_id
+                );
+                questionId = questionResult.insertId;
+                logger.info(`✅ Added Multiple Radio question with ID: ${questionId}`);
+            }
 
             // Insert tabs into tb_DropdownQuestionTabs
             for (const tab of tabs) {
@@ -871,18 +958,29 @@ module.exports.createQuestion = async (req, res) => {
                 return res.status(400).json({ result: false, message: 'tableDropdownFields must be a non-empty array' });
             }
 
-            // Insert question
-            const questionResult = await model.insertTableDropdownQuestion(
-                question,
-                question_type_id,
-                exam_type,
-                difficulty,
-                courseId,
-                marks,
-                instructions,
-                topic_id
-            );
-            const questionId = questionResult.insertId;
+            let questionId;
+            const rawTargetId = req.body.questionId || req.body.id;
+            const targetId = (rawTargetId && rawTargetId !== 'null' && rawTargetId !== 'undefined') ? parseInt(rawTargetId, 10) : null;
+            console.log('u{1F3AF} update check - rawTargetId:', rawTargetId, '| parsed targetId:', targetId);
+            if (targetId && !isNaN(targetId)) {
+                questionId = targetId;
+                await model.updateMcqQuestion({ question, question_type_id, courseId, exam_type, difficulty, exhibit: null, marks, instructions, topic_id }, questionId);
+                await model.clearQuestionChildRecords(questionId);
+                logger.info(`✅ Updated existing Table Dropdown question with ID: ${questionId}`);
+            } else {
+                const questionResult = await model.insertTableDropdownQuestion(
+                    question,
+                    question_type_id,
+                    exam_type,
+                    difficulty,
+                    courseId,
+                    marks,
+                    instructions,
+                    topic_id
+                );
+                questionId = questionResult.insertId;
+                logger.info(`✅ Added Table Dropdown question with ID: ${questionId}`);
+            }
 
             // Insert table headers (defaults if not provided)
             const leftHeader = parsedHeaders.leftHeader;
@@ -985,11 +1083,22 @@ module.exports.createQuestion = async (req, res) => {
                 return res.status(400).json({ result: false, message: 'tableFields must be a non-empty array' });
             }
 
-            // Insert question
-            const questionResult = await model.insertTableDropdownQuestion(
-                question, question_type_id, exam_type, difficulty, courseId, marks, instructions, topic_id
-            );
-            const questionId = questionResult.insertId;
+            let questionId;
+            const rawTargetId = req.body.questionId || req.body.id;
+            const targetId = (rawTargetId && rawTargetId !== 'null' && rawTargetId !== 'undefined') ? parseInt(rawTargetId, 10) : null;
+            console.log('u{1F3AF} update check - rawTargetId:', rawTargetId, '| parsed targetId:', targetId);
+            if (targetId && !isNaN(targetId)) {
+                questionId = targetId;
+                await model.updateMcqQuestion({ question, question_type_id, courseId, exam_type, difficulty, exhibit: null, marks, instructions, topic_id }, questionId);
+                await model.clearQuestionChildRecords(questionId);
+                logger.info(`✅ Updated existing Table Highlight question with ID: ${questionId}`);
+            } else {
+                const questionResult = await model.insertTableDropdownQuestion(
+                    question, question_type_id, exam_type, difficulty, courseId, marks, instructions, topic_id
+                );
+                questionId = questionResult.insertId;
+                logger.info(`✅ Added Table Highlight question with ID: ${questionId}`);
+            }
 
             // Headers
             const leftHeader = parsedHeaders.leftHeader;
@@ -1076,11 +1185,22 @@ module.exports.createQuestion = async (req, res) => {
                 return res.status(400).json({ result: false, message: 'rows must be a non-empty array' });
             }
 
-            // Insert question 
-            const qRes = await model.insertTableDropdownQuestion(
-                question, question_type_id, exam_type, difficulty, courseId, marks, instructions, topic_id
-            );
-            const questionId = qRes.insertId;
+            let questionId;
+            const rawTargetId = req.body.questionId || req.body.id;
+            const targetId = (rawTargetId && rawTargetId !== 'null' && rawTargetId !== 'undefined') ? parseInt(rawTargetId, 10) : null;
+            console.log('u{1F3AF} update check - rawTargetId:', rawTargetId, '| parsed targetId:', targetId);
+            if (targetId && !isNaN(targetId)) {
+                questionId = targetId;
+                await model.updateMcqQuestion({ question, question_type_id, courseId, exam_type, difficulty, exhibit: null, marks, instructions, topic_id }, questionId);
+                await model.clearQuestionChildRecords(questionId);
+                logger.info(`✅ Updated existing Multidropdown question with ID: ${questionId}`);
+            } else {
+                const qRes = await model.insertTableDropdownQuestion(
+                    question, question_type_id, exam_type, difficulty, courseId, marks, instructions, topic_id
+                );
+                questionId = qRes.insertId;
+                logger.info(`✅ Added Multidropdown question with ID: ${questionId}`);
+            }
 
             // Headers
             await Promise.all(
@@ -1730,3 +1850,4 @@ exports.updateMarklistByStudentId = async (req, res) => {
         res.status(500).json({ result: false, message: error.message });
     }
 };
+
