@@ -1116,16 +1116,26 @@ async function listMockTestQuestions(courseId, topics) {
     }
 }
 // Model method to count total questions matching criteria
-async function countQuestions(exam_type) {
+async function countQuestions(exam_type, search = '') {
     try {
-        const sql = `
+        let sql = `
             SELECT COUNT(*) as count
-            FROM tb_questions
-            WHERE exam_type = ?
-              AND (isDeleted IS NULL OR isDeleted = 0)
+            FROM tb_questions q
+            INNER JOIN courses c ON c.cs_id = q.courseId
+            INNER JOIN tb_questionType t ON q.question_type_id = t.id
+            LEFT JOIN tb_topics top ON q.topic_id = top.topic_id
+            WHERE q.exam_type = ?
+              AND (q.isDeleted IS NULL OR q.isDeleted = 0)
         `;
+        const params = [exam_type];
 
-        const rows = await query(sql, [exam_type]);
+        if (search && search.trim()) {
+            const term = `%${search.trim()}%`;
+            sql += ` AND (CAST(q.id AS CHAR) LIKE ? OR c.cs_name LIKE ? OR top.topic_name LIKE ? OR q.question LIKE ? OR t.type LIKE ?)`;
+            params.push(term, term, term, term, term);
+        }
+
+        const rows = await query(sql, params);
         return rows[0].count;
     } catch (error) {
         logger.error(`❌ Error in countQuestions: ${error.message}`);
