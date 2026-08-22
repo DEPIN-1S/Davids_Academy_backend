@@ -82,7 +82,8 @@ module.exports.GetQuestionDataFromQBank = async (req, res) => {
         }
         if (questionData[0]?.question_type?.toLowerCase() === "dropdown") {
             let dropdownTexts = await model.Getdropdownquestiontext(questionId);
-            let dropdownquestiontext = await Promise.all(
+            // Attach options to each dropdown field
+            const dropdownsWithOptions = await Promise.all(
                 dropdownTexts.map(async (item) => {
                     item.dropdownoption = await model.Getdropdownoption(item.id);
                     return item;
@@ -92,10 +93,11 @@ module.exports.GetQuestionDataFromQBank = async (req, res) => {
             let additionalInfo = await model.getAdditionalInfo(questionId);
             let explanation = await model.Getexplantion(questionId);
             const submittedAnswer = await model.GetQbankDropdownSubmittedAnswer(user_id, questionId)
+            logger.info(`✅ [GetQuestionDataFromQBank] Dropdown question ${questionId}: ${dropdownsWithOptions.length} dropdown fields, ${tabsInfo.length} tabs`);
             fullQuestionData = {
                 ...questionData[0],
                 tabsInfo,
-                dropdowns: dropdownTexts,
+                dropdowns: dropdownsWithOptions,
                 additionalInfo,
                 explanation,
                 submittedAnswer

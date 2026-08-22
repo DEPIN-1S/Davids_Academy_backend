@@ -133,7 +133,8 @@ module.exports.GetQuestionData = async (req, res) => {
         }
         if (questionData[0]?.question_type.toLowerCase() === "dropdown") {
             let dropdownTexts = await model.Getdropdownquestiontext(questionId);
-            let dropdownquestiontext = await Promise.all(
+            // Attach options to each dropdown field
+            const dropdownsWithOptions = await Promise.all(
                 dropdownTexts.map(async (item) => {
                     item.dropdownoption = await model.Getdropdownoption(item.id);
                     return item;
@@ -144,8 +145,7 @@ module.exports.GetQuestionData = async (req, res) => {
             let explanation = await model.Getexplantion(questionId);
             fullQuestionData = {
                 ...questionData[0],
-                dropdownTexts,
-                dropdownquestiontext,
+                dropdowns: dropdownsWithOptions,
                 tabsInfo,
                 additionalInfo,
                 explanation

@@ -221,7 +221,7 @@ async function clearQuestionChildRecords(targetQuestionId) {
     try {
         const tables = [
             'tb_mcqOptions', 'tb_mcqAnswers', 'tb_explanation', 'tb_additionalInfo',
-            'tb_questionTabs', 'tb_DropdownQuestionTabs', 'tb_dropdowns', 'tb_dropdown_options',
+            'tb_questionTabs', 'tb_dropdowns', 'tb_dropdownOptions',
             'tb_sort_items', 'tb_sentence_highlights', 'tb_sentence_highlight_answers',
             'tb_fillin_blanks_content', 'tb_fillin_blanks_options', 'tb_fillin_blanks_options_values',
             'tb_drag_drop_options', 'tb_multiradio_content', 'tb_multiradio_options',
