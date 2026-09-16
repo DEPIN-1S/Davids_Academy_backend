@@ -13,15 +13,28 @@ const app = express();
 // ─── HTTPS/HTTP SETUP ──────────────────────────────────────────────────────────
 
 let server;
-if (process.env.NODE_ENV === 'production') {
-  // Enable HTTPS in production
-  const privateKey = fs.readFileSync('/etc/ssl/private.key', 'utf8');
-  const certificate = fs.readFileSync('/etc/ssl/certificate.crt', 'utf8');
-  const ca = fs.readFileSync('/etc/ssl/ca_bundle.crt', 'utf8');
-  const options = { key: privateKey, cert: certificate, ca: ca };
+const sslKeyPath = '/etc/ssl/private.key';
+const sslCertPath = '/etc/ssl/certificate.crt';
+const sslCaPath = '/etc/ssl/ca_bundle.crt';
+const hasSslFiles =
+  process.env.NODE_ENV === 'production' &&
+  fs.existsSync(sslKeyPath) &&
+  fs.existsSync(sslCertPath) &&
+  fs.existsSync(sslCaPath);
+
+if (hasSslFiles) {
+  const options = {
+    key: fs.readFileSync(sslKeyPath, 'utf8'),
+    cert: fs.readFileSync(sslCertPath, 'utf8'),
+    ca: fs.readFileSync(sslCaPath, 'utf8'),
+  };
   server = https.createServer(options, app);
 } else {
-  // Use HTTP in development/local
+  // Production VPS uses HTTP; put HTTPS on Nginx if needed.
+  // Missing /etc/ssl certs must not crash the live process.
+  if (process.env.NODE_ENV === 'production') {
+    logger.warn('SSL certs not found; starting production server over HTTP');
+  }
   server = http.createServer(app);
 }
 
@@ -86,5 +99,5 @@ app.use((err, req, res, next) => {
 // ─── START SERVER ──────────────────────────────────────────────────────────────
 const PORT = process.env.PORT;
 server.listen(PORT, () => {
-  logger.info(`Server listening on port ${PORT}`);
+  logger.info(`Server listening on port ${PORT} (${hasSslFiles ? 'HTTPS' : 'HTTP'})`);
 });
