@@ -160,22 +160,25 @@ module.exports.DeleteSuccessStory = async (req, res) => {
 
 module.exports.GetAllSuccessStories = async (req, res) => {
     try {
-        const { limit = 10, offset = 0 } = req.query;  // Use query params for pagination
+        const { limit = 100, offset = 0 } = req.query;  // Use query params for pagination
         const data = await model.GetAllSuccessStories(parseInt(limit), parseInt(offset));
         const count = await model.CountSuccessStories();
-        
-        // Filter out stories whose image files don't exist on disk
+
         const uploadsDir = path.join(__dirname, '../../public/uploads/successimage');
-        const validData = data
-            .filter(item => {
-                const filePath = path.join(uploadsDir, item.image);
-                const exists = fs.existsSync(filePath);
-                if (!exists) {
-                    logger.warn("Success story image file missing on disk", { id: item.id, image: item.image });
-                }
-                return exists;
-            })
-            .map(item => ({ id: item.id, image: `/uploads/successimage/${item.image}` }));
+        const remoteUploadsBase = (
+            process.env.PUBLIC_UPLOADS_BASE_URL ||
+            (process.env.NODE_ENV === 'local' ? 'https://api.davids-academy.com' : '')
+        ).replace(/\/$/, '');
+
+        const validData = data.map(item => {
+            const relativeUrl = `/uploads/successimage/${item.image}`;
+            const filePath = path.join(uploadsDir, item.image);
+            const exists = fs.existsSync(filePath);
+            const imageUrl = !exists && remoteUploadsBase
+                ? `${remoteUploadsBase}${relativeUrl}`
+                : relativeUrl;
+            return { id: item.id, image: imageUrl, imageUrl };
+        });
         
         logger.info("Student success stories list fetched", { limit, offset, total: count[0].count });
         return res.send({

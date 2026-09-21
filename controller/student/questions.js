@@ -142,7 +142,7 @@ module.exports.GetQuestionDataFromQBank = async (req, res) => {
             const filltheblankstext = await model.GetFilltheblankstext(questionId);
             const filltheblanksoptions = await model.GetFilltheblankstextOptions(questionId);
             const filltheblanksHeading = await model.GetFilltheblanksHeading(questionId);
-            let heading = filltheblanksHeading[0].headings;
+            let heading = filltheblanksHeading?.[0]?.headings || "";
             const additionalInfo = await model.getAdditionalInfo(questionId);
             const explanation = await model.Getexplantion(questionId);
             fullQuestionData = {
@@ -358,8 +358,10 @@ module.exports.GetSampleQuestionData = async (req, res) => {
             const sortingoptions = await model.Getsortingoption(questionId);
             const additionalInfo = await model.getAdditionalInfo(questionId);
             const explanation = await model.Getexplantion(questionId);
+            let tabsInfo = await model.Gettabs(questionId);
             fullQuestionData = {
                 ...questionData[0],
+                tabsInfo,
                 sortingoptions,
                 additionalInfo,
                 explanation
@@ -386,11 +388,13 @@ module.exports.GetSampleQuestionData = async (req, res) => {
             const filltheblankstext = await model.GetFilltheblankstext(questionId);
             const filltheblanksoptions = await model.GetFilltheblankstextOptions(questionId);
             const filltheblanksHeading = await model.GetFilltheblanksHeading(questionId);
-            let heading = filltheblanksHeading[0].headings;
+            let heading = filltheblanksHeading?.[0]?.headings || "";
             const additionalInfo = await model.getAdditionalInfo(questionId);
             const explanation = await model.Getexplantion(questionId);
+            let tabsInfo = await model.Gettabs(questionId);
             fullQuestionData = {
                 ...questionData[0],
+                tabsInfo,
                 FTBquestion_content: filltheblankstext,
                 FTBoptions: { heading: heading, options: filltheblanksoptions },
                 additionalInfo,

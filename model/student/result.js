@@ -17,7 +17,13 @@ module.exports.GetStudentData = async (studentId) => {
 
 module.exports.GetTestResult = async (studentId, test_id) => {
   try {
-    const sql = `SELECT * from tb_submittedQuestions where sq_user_id=? and sq_test_id=?`;
+    const sql = `
+      SELECT sq.*, q.topic_id, top.topic_name
+      FROM tb_submittedQuestions sq
+      INNER JOIN tb_questions q ON sq.sq_question_id = q.id
+      LEFT JOIN tb_topics top ON q.topic_id = top.topic_id
+      WHERE sq.sq_user_id = ? AND sq.sq_test_id = ?
+    `;
     logger.info('[Usermodel] Get data of student submitted test in db', studentId, test_id);
     const data = await query(sql, [studentId, test_id]);
     return data;
@@ -63,9 +69,10 @@ module.exports.UpdateTestSubmissionStatus = async (user_id, test_id) => {
 
 module.exports.GetQuestionBankResult = async (user_id, topics = []) => {
   let sql = `
-    SELECT qs.* 
+    SELECT qs.*, q.topic_id, top.topic_name
     FROM tb_QbankSubmit qs
     INNER JOIN tb_questions q ON qs.questionId = q.id
+    LEFT JOIN tb_topics top ON q.topic_id = top.topic_id
     WHERE qs.user_id = ?
   `;
   const params = [user_id];
