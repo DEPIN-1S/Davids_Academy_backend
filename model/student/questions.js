@@ -34,6 +34,29 @@ module.exports.ListQuestionIdsNotSubmitted = async (courseId, studentId, topics 
         sql += ` AND topic_id IN (${placeholders})`;
         params.push(...topicList);
     }
+
+    // Incomplete dropdown saves have a question row but no answer fields.
+    // Keep them out of the student bank so the attempt screen is never empty.
+    sql += `
+      AND NOT EXISTS (
+        SELECT 1 FROM tb_questionType qt
+        WHERE qt.id = tb_questions.question_type_id
+          AND LOWER(qt.type) = 'dropdown'
+          AND NOT EXISTS (SELECT 1 FROM tb_dropdowns d WHERE d.questionId = tb_questions.id)
+      )
+      AND NOT EXISTS (
+        SELECT 1 FROM tb_questionType qt
+        WHERE qt.id = tb_questions.question_type_id
+          AND LOWER(qt.type) = 'table dropdown'
+          AND NOT EXISTS (SELECT 1 FROM tb_table_dropdown_fields f WHERE f.question_id = tb_questions.id)
+      )
+      AND NOT EXISTS (
+        SELECT 1 FROM tb_questionType qt
+        WHERE qt.id = tb_questions.question_type_id
+          AND LOWER(qt.type) = 'multidropdown'
+          AND NOT EXISTS (SELECT 1 FROM tb_multi_dropdown_rows r WHERE r.question_id = tb_questions.id)
+      )
+    `;
     
     // Always randomize for Q-Bank practice? Or just when a limit is provided?
     // According to best practices, custom mock exams are randomized. Let's strictly do this for count.

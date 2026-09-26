@@ -327,6 +327,14 @@ module.exports.createQuestion = async (req, res) => {
 
             const Dropdownanswers = typeof answers === 'string' ? JSON.parse(answers) : answers;
 
+            if (!Array.isArray(dropdowndetails) || dropdowndetails.length === 0) {
+                logger.error('❌ dropdowndetails is not a valid array or missing from request body');
+                return res.status(400).json({
+                    result: false,
+                    message: 'A dropdown question needs at least one dropdown field.',
+                });
+            }
+
             let questionId;
             const rawTargetId = req.body.questionId || req.body.id;
             const targetId = (rawTargetId && rawTargetId !== 'null' && rawTargetId !== 'undefined') ? parseInt(rawTargetId, 10) : null;
@@ -347,7 +355,6 @@ module.exports.createQuestion = async (req, res) => {
                 logger.info(`📄 Inserted tab "${tab.tabKey}" for question ${questionId}`);
             }
 
-            // Insert dropdown fields into tb_dropdowns
             // Insert dropdown fields into tb_dropdowns
             if (Array.isArray(dropdowndetails)) {
                 for (const dropdown of dropdowndetails) {

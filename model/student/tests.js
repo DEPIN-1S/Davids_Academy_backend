@@ -66,6 +66,27 @@ module.exports.ListUnsubmittedTestQuestions = async (test_id, user_id) => {
             AND sq.sq_user_id = ?
             AND sq.sq_question_id = tq.questionId
         )
+        AND NOT EXISTS (
+          SELECT 1 FROM tb_questions q
+          JOIN tb_questionType qt ON qt.id = q.question_type_id
+          WHERE q.id = tq.questionId
+            AND LOWER(qt.type) = 'dropdown'
+            AND NOT EXISTS (SELECT 1 FROM tb_dropdowns d WHERE d.questionId = q.id)
+        )
+        AND NOT EXISTS (
+          SELECT 1 FROM tb_questions q
+          JOIN tb_questionType qt ON qt.id = q.question_type_id
+          WHERE q.id = tq.questionId
+            AND LOWER(qt.type) = 'table dropdown'
+            AND NOT EXISTS (SELECT 1 FROM tb_table_dropdown_fields f WHERE f.question_id = q.id)
+        )
+        AND NOT EXISTS (
+          SELECT 1 FROM tb_questions q
+          JOIN tb_questionType qt ON qt.id = q.question_type_id
+          WHERE q.id = tq.questionId
+            AND LOWER(qt.type) = 'multidropdown'
+            AND NOT EXISTS (SELECT 1 FROM tb_multi_dropdown_rows r WHERE r.question_id = q.id)
+        )
       ORDER BY tq.id ASC
     `;
         logger.info('[Testsmodel] List unsubmitted questions for test', { test_id, user_id });
