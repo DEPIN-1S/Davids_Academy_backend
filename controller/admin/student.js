@@ -424,44 +424,45 @@ module.exports.ResetQuestionBank = async (req, res) => {
     try {
         let { student_id, topic_id } = req.body || {}
         if (!student_id) {
-            return res.send({
+            return res.status(400).send({
                 result: false,
                 message: "student id is required"
             })
         }
+        const hasTopicId = topic_id !== undefined && topic_id !== null && topic_id !== "";
+        if (hasTopicId) {
+            topic_id = Number(topic_id);
+            if (!Number.isInteger(topic_id) || topic_id <= 0) {
+                return res.status(400).send({
+                    result: false,
+                    message: "topic id must be a positive integer"
+                });
+            }
+        } else {
+            topic_id = null;
+        }
         const checkStudent = await model.CheckStudent(student_id)
         if (checkStudent.length === 0) {
             logger.error('Student not found in db: %s', student_id);
-            return res.send({
+            return res.status(404).send({
                 result: false,
                 message: "Student not found."
             })
         }
-        const deleteQbank = await model.DeleteQuestionBank(student_id, topic_id)
-        await model.DeleteSubmittedQbankMCQAnswers(student_id, topic_id)
-        await model.DeleteSubmittedQbankDropdownAnswers(student_id, topic_id)
-        await model.DeleteSubmittedQbankSortAnswers(student_id, topic_id)
-        await model.DeleteSubmittedQbankSentenceHighlightAnswers(student_id, topic_id)
-        await model.DeleteSubmittedQbankDragdropAnswers(student_id, topic_id)
-        await model.DeleteSubmittedQbankMultiRadioAnswers(student_id, topic_id)
-        await model.DeleteSubmittedQbankTableDropdownAnswers(student_id, topic_id)
-        await model.DeleteSubmittedQbankTableHighlightAnswers(student_id, topic_id)
-        await model.DeleteSubmittedQbankMultiDropdownAnswers(student_id, topic_id)
-        if (deleteQbank.affectedRows > 0) {
-            logger.info('Submitted question bank deleted successfully from DB. Student ID: %s', student_id);
-            return res.send({
-                result: true,
-                message: "Question bank reset successfully"
-            });
-        } else {
-            logger.error('Failed to delete submitted question bank from DB. Test ID: %s, Student ID: %s', student_id);
-            return res.send({
-                result: false,
-                message: "Failed to delete submitted question bank."
-            });
-        }
-    } catch (error) {
+        const resetResult = await model.ResetQuestionBankProgress(
+            student_id,
+            topic_id
+        );
+        const message = resetResult.affectedRows > 0
+            ? "Question bank reset successfully"
+            : "No Q-Bank progress was found. The topic is already reset.";
         return res.send({
+            result: true,
+            message,
+            data: resetResult
+        });
+    } catch (error) {
+        return res.status(500).send({
             result: false,
             message: error.message
         })

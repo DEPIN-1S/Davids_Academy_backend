@@ -230,6 +230,104 @@ module.exports.DeleteQuestionBank = async (student_id, topic_id = null) => {
     }
 }
 
+// Reset all Q-Bank progress as one unit. If any delete fails, every delete is
+// rolled back so the summary and question-type answer tables cannot disagree.
+module.exports.ResetQuestionBankProgress = async (student_id, topic_id = null) => {
+    const connection = await new Promise((resolve, reject) => {
+        db.getConnection((error, conn) => error ? reject(error) : resolve(conn));
+    });
+    const run = (sql, params) => new Promise((resolve, reject) => {
+        connection.query(sql, params, (error, result) =>
+            error ? reject(error) : resolve(result)
+        );
+    });
+    const begin = () => new Promise((resolve, reject) => {
+        connection.beginTransaction(error => error ? reject(error) : resolve());
+    });
+    const commit = () => new Promise((resolve, reject) => {
+        connection.commit(error => error ? reject(error) : resolve());
+    });
+    const rollback = () => new Promise(resolve => {
+        connection.rollback(() => resolve());
+    });
+
+    const tables = [
+        { name: 'tb_QbankSubmit', userColumn: 'user_id' },
+        { name: 'tb_Qbank_Mcq_Student_Answers', userColumn: 'userId' },
+        { name: 'tb_dropdown_Qbank_student_answers', userColumn: 'userId' },
+        { name: 'tb_sort_Qbank_student_answers', userColumn: 'userId' },
+        { name: 'tb_sentenceHiglight_Qbank_student_answers', userColumn: 'userId' },
+        { name: 'tb_dragdrop_Qbank_student_answers', userColumn: 'userId' },
+        { name: 'tb_multiradio_Qbank_student_answers', userColumn: 'userId' },
+        { name: 'tb_tabledropdown_Qbank_student_answers', userColumn: 'userId' },
+        { name: 'tb_tablehighlight_Qbank_student_answers', userColumn: 'userId' },
+        { name: 'tb_multidropdown_Qbank_student_answers', userColumn: 'userId' },
+    ];
+
+    try {
+        await begin();
+        const deletedByTable = {};
+
+        for (const table of tables) {
+            let sql;
+            let params;
+            if (topic_id != null) {
+                sql = `DELETE progress
+                    FROM ${table.name} progress
+                    INNER JOIN tb_questions q ON progress.questionId = q.id
+                    WHERE progress.${table.userColumn} = ? AND q.topic_id = ?`;
+                params = [student_id, topic_id];
+            } else {
+                sql = `DELETE FROM ${table.name} WHERE ${table.userColumn} = ?`;
+                params = [student_id];
+            }
+            const result = await run(sql, params);
+            deletedByTable[table.name] = result.affectedRows || 0;
+        }
+
+        let remainingSql = `
+            SELECT COUNT(*) AS count
+            FROM tb_QbankSubmit progress
+            INNER JOIN tb_questions q ON progress.questionId = q.id
+            WHERE progress.user_id = ?`;
+        const remainingParams = [student_id];
+        if (topic_id != null) {
+            remainingSql += ` AND q.topic_id = ?`;
+            remainingParams.push(topic_id);
+        }
+        const remaining = await run(remainingSql, remainingParams);
+        const remainingSubmissions = Number(remaining[0]?.count) || 0;
+        if (remainingSubmissions !== 0) {
+            throw new Error('Q-Bank reset verification failed');
+        }
+
+        await commit();
+        logger.info('[ResetQuestionBankProgress] Q-Bank progress reset', {
+            student_id,
+            topic_id,
+            deletedByTable,
+        });
+        return {
+            affectedRows: Object.values(deletedByTable).reduce(
+                (total, count) => total + count,
+                0
+            ),
+            deletedByTable,
+            remainingSubmissions,
+        };
+    } catch (error) {
+        await rollback();
+        logger.error('[ResetQuestionBankProgress] Transaction rolled back', {
+            student_id,
+            topic_id,
+            error: error.message,
+        });
+        throw error;
+    } finally {
+        connection.release();
+    }
+};
+
 module.exports.DeleteSubmittedMockTestMCQAnswers = async (student_id, test_id) => {
     try {
         const sql = `Delete from tb_Mocktest_Mcq_Student_Answers where userId=? and testId=? `;
